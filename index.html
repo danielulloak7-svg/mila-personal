@@ -242,6 +242,16 @@
   .milabox .pn-item:first-of-type{border-top:1px dashed var(--line);margin-top:8px}
   .pn-verified{display:inline-block;font-size:8.5px;font-weight:800;letter-spacing:.06em;color:var(--success);background:rgba(78,124,90,.1);border:1px solid rgba(78,124,90,.32);border-radius:9px;padding:2px 7px;margin-left:8px;vertical-align:middle}
 
+  /* PHASE 12 — content verification badge (reuses the .sp-unverified / .alk-absent color vocabulary) */
+  .itm-verif{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:5px;margin-left:9px;vertical-align:middle;cursor:pointer;border:1px solid transparent}
+  .itm-verif.off{color:#b2600d;background:rgba(214,120,20,.14);border-color:rgba(214,120,20,.4)}
+  .itm-verif.on{color:#3f6b4b;background:rgba(78,124,90,.14);border-color:rgba(78,124,90,.4)}
+  .itm-verif.mini{font-size:9px;padding:1px 5px;margin-left:6px}
+  .itm-verif-by{font-weight:500;text-transform:none;letter-spacing:0;margin-left:2px;opacity:.85}
+  .itm-verif-src{margin-top:8px}
+  .itm-verif-src-inp{width:100%;box-sizing:border-box;margin-top:0;font-size:12px;padding:7px 9px}
+  .fchip.vf-toggle{border-style:dashed}
+
   /* fix: the "photo pending" badge used to sit exactly on top of the category pill (both top-left) */
   .needimg-badge{left:auto!important;right:10px!important}
   /* fix: a photo-less bottle tile is only an icon + the caption band — collapse the ~200px of
@@ -392,7 +402,18 @@
   .dish.zconf{position:relative;box-shadow:0 0 0 2px rgba(178,59,50,.55)}
   .dish.zconf::before{content:"EN CONFLICTO";position:absolute;z-index:6;top:8px;left:8px;
     font-size:8.5px;font-weight:700;letter-spacing:.06em;color:#fff;background:#a83226;
-    padding:3px 7px;border-radius:5px;pointer-events:none}</style>
+    padding:3px 7px;border-radius:5px;pointer-events:none}
+  /* ================= PHASE 13 — persistent "+" (thumb-reachable, survives scroll) ================= */
+  .p13-fab{position:fixed;right:max(18px,calc(50% - 212px));bottom:calc(var(--safeB) + 22px);z-index:44;
+    width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(145deg,var(--gold-deep),var(--gold));color:var(--cream);
+    box-shadow:0 10px 26px -8px rgba(143,111,69,.65),0 2px 6px rgba(0,0,0,.25),0 0 0 4px rgba(243,240,233,.55);
+    transition:transform .18s}
+  .p13-fab:active{transform:scale(.92)}
+  .p13-fab-ic{font-size:24px;line-height:1;margin-top:-2px}
+
+</style>
 <style>
   :root{
     --charcoal:#1C1814;--charcoal-soft:#241F19;--cream:#F3F0E9;--cream-card:#FBFAF7;
@@ -1497,7 +1518,6 @@
       <div class="lg-mark"><svg viewBox="0 0 48 48" fill="none" stroke="#16161A" stroke-width="1.5"><circle cx="24" cy="24" r="20"/><ellipse cx="24" cy="24" rx="8" ry="20"/><line x1="4" y1="24" x2="44" y2="24"/></svg></div>
       <div class="lg-word">Zapheria</div>
       <div class="lg-venue">KNOW WHAT YOU SERVE</div>
-      <div class="lg-field"><div class="lg-label">Email</div><div class="lg-input">danielulloak7@gmail.com</div></div>
       <div class="lg-field lg-who"><div class="lg-label">¿Quién eres?</div>
         <div class="lg-who-list" id="lgWhoList"></div>
         <div class="lg-who-note">Se usa para firmar lo que edites. No es una contraseña ni protege nada: cualquiera con este teléfono puede elegir cualquier nombre.</div>
@@ -1540,6 +1560,7 @@
 <div class="view hidden" id="view-food">
   <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="food" type="button">＋ Añadir</button></div>
   <div class="secwrap">
+  <button class="p13-fab" data-p13add type="button" aria-label="Añadir al menú"><span class="p13-fab-ic">＋</span></button>
     <h1 class="sectitle">Food Menu</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="foodSearch" type="text" placeholder="Search dishes or ingredients…" autocomplete="off"></div>
@@ -1557,6 +1578,7 @@
 <div class="view hidden" id="view-bev">
   <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="bev" type="button">＋ Añadir</button></div>
   <div class="secwrap">
+  <button class="p13-fab" data-p13add type="button" aria-label="Añadir al menú"><span class="p13-fab-ic">＋</span></button>
     <h1 class="sectitle">Beverages</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="bevSearch" type="text" placeholder="Search drinks or ingredients…" autocomplete="off"></div>
@@ -1574,6 +1596,7 @@
 <div class="view hidden" id="view-wine">
   <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="wine" type="button">＋ Añadir</button></div>
   <div class="secwrap">
+  <button class="p13-fab" data-p13add type="button" aria-label="Añadir al menú"><span class="p13-fab-ic">＋</span></button>
     <h1 class="sectitle">Wine Catalog</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="wineSearch" type="text" placeholder="Search wines, producers, appellations…" autocomplete="off"></div>
@@ -1589,6 +1612,7 @@
 <div class="view hidden" id="view-spirits">
   <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="spirit" type="button">＋ Añadir</button></div>
   <div class="secwrap">
+  <button class="p13-fab" data-p13add type="button" aria-label="Añadir al menú"><span class="p13-fab-ic">＋</span></button>
     <h1 class="sectitle">Spirits Catalog</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="spiritSearch" type="text" placeholder="Search spirits, distilleries, origins…" autocomplete="off"></div>
@@ -1879,11 +1903,11 @@
 </nav>
 <div class="menupop" id="menuPop" aria-hidden="true">
   <div class="menupop-title">Menu &amp; Knowledge</div>
-  <button data-view="food"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M5 18a7 7 0 0 1 14 0"/><path d="M12 8V6.5"/><circle cx="12" cy="5.6" r="0.7" fill="currentColor" stroke="none"/></svg></span><span class="mp-lbl">Food Menu</span><span class="mp-n">74 dishes</span></button>
-  <button data-view="bev"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h14l-6 7.5v6"/><path d="M9 21h6"/><path d="M7.4 8h9.2"/></svg></span><span class="mp-lbl">Beverages</span><span class="mp-n">53 drinks</span></button>
-  <button data-view="wine"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l-.6 5.2a3.4 3.4 0 0 1-6.8 0z"/><path d="M12 14.5V20"/><path d="M8.5 20h7"/></svg></span><span class="mp-lbl">Wine Catalog</span><span class="mp-n">532 selections</span></button>
-  <button data-view="spirits"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 5h11l-1 14h-9z"/><path d="M7.5 12h9"/></svg></span><span class="mp-lbl">Spirits</span><span class="mp-n">309 selections</span></button>
-  <button data-view="glossary"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M19 17H6a2 2 0 0 0-2 2"/></svg></span><span class="mp-lbl">Glossary</span><span class="mp-n">744 terms</span></button>
+  <button data-view="food"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M5 18a7 7 0 0 1 14 0"/><path d="M12 8V6.5"/><circle cx="12" cy="5.6" r="0.7" fill="currentColor" stroke="none"/></svg></span><span class="mp-lbl">Food Menu</span><span class="mp-n">75 dishes</span></button>
+  <button data-view="bev"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h14l-6 7.5v6"/><path d="M9 21h6"/><path d="M7.4 8h9.2"/></svg></span><span class="mp-lbl">Beverages</span><span class="mp-n">54 drinks</span></button>
+  <button data-view="wine"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l-.6 5.2a3.4 3.4 0 0 1-6.8 0z"/><path d="M12 14.5V20"/><path d="M8.5 20h7"/></svg></span><span class="mp-lbl">Wine Catalog</span><span class="mp-n">30 selections</span></button>
+  <button data-view="spirits"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 5h11l-1 14h-9z"/><path d="M7.5 12h9"/></svg></span><span class="mp-lbl">Spirits</span><span class="mp-n">30 selections</span></button>
+  <button data-view="glossary"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M19 17H6a2 2 0 0 0-2 2"/></svg></span><span class="mp-lbl">Glossary</span><span class="mp-n">71 terms</span></button>
   <button data-view="alink" data-mgo="alink"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 13.4a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 0 0-5.7-5.7l-1.3 1.3"/><path d="M13.4 10.6a4 4 0 0 0-5.7 0l-2.6 2.6a4 4 0 0 0 5.7 5.7l1.3-1.3"/></svg></span><span class="mp-lbl">Allergen Links</span><span class="mp-n" id="alinkPendN">pending</span></button>
 </div>
 <div class="dim" id="dim"></div>
@@ -1891,7 +1915,7 @@
 <div class="view hidden" id="view-alink">
   <div class="secbar"><button class="backbtn" data-back>‹ Back</button></div>
   <div class="secwrap">
-    <span class="mgr-pill">◆ MANAGER · ALLERGEN LINKS</span>
+    <span class="mgr-pill">◆ DATA INTEGRITY · ALLERGEN LINKS</span>
     <h1 class="sectitle">Allergen Links</h1>
     <div id="alinkBody"></div>
   </div>
@@ -2806,6 +2830,8 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
      origin:"Mexico",tableside:"An elegant Mexican Pilsner — refreshing with notes of cereal and honey.",allerg:[]},
     {id:"drink.coedo-marihana",kind:"beer",name:"Coedo Marihana",sense:"BEER",sub:"Session IPA (Ale) · 4.5%",price:"$15",photo:"",needsImage:true,
      origin:"Japan",tableside:"A Japanese Session IPA with citrus aroma and golden hue — brewed with 6 hop varieties.",allerg:[]},
+    {id:"drink.stella-artois-zero-proof",kind:"beer",name:"Stella Artois zero-proof",sense:"BEER",sub:"",price:"",photo:"",needsImage:true,
+     origin:"",tableside:"",allerg:[],needsReview:true},
     {id:"drink.wakatake-onikoroshi",kind:"wine",name:"Wakatake Onikoroshi",sense:"SAKE",sub:"",price:"$24",bottlePrice:"$170",photo:"",needsImage:true,
      allerg:[],
      producer:"Wakatake",cuvee:"Onikoroshi",vintage:"NV",appellation:"",format:"750ml",
@@ -3012,14 +3038,57 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       ${milaPairPanel(d)}
       ${_allergBox(d)}`;
   }
+  /* ===================================================================
+     PHASE 12 — content verification badge + one-tap toggle (card-level).
+     Provenance shape documented at the top of this generator phase.
+     UNRELATED to allergen-absence verification (absentVerified /
+     allergenProvenance) — different fields, different meaning, never
+     merged. Reuses the app's existing pill/badge color vocabulary
+     (.sp-unverified / .alk-absent / .pn-verified).
+     =================================================================== */
+  function _verifShortDate(iso){
+    if(!iso)return '';
+    try{
+      var dt=new Date(iso);if(isNaN(dt.getTime()))return '';
+      return (dt.getMonth()+1)+'/'+dt.getDate()+'/'+String(dt.getFullYear()).slice(2);
+    }catch(e){return '';}
+  }
+  function _verifBadge(m){
+    var id=(m&&m.id)?m.id:'';
+    if(m&&m.contentVerified){
+      var v=m.contentVerification||{};
+      var who=v.verifiedBy?window.__esc(String(v.verifiedBy)):'';
+      var when=_verifShortDate(v.verifiedAt);
+      var meta=(who||when)?('<span class="itm-verif-by"> — '+who+(who&&when?' · ':'')+when+'</span>'):'';
+      return '<span class="itm-verif on" data-verif="'+id+'" data-verif-state="on" role="button">✓ Verificado'+meta+'</span>';
+    }
+    return '<span class="itm-verif off" data-verif="'+id+'" data-verif-state="off" role="button">Sin verificar</span>';
+  }
+  function _verifBadgeCompact(m){
+    var id=(m&&m.id)?m.id:'';
+    if(m&&m.contentVerified)return '<span class="itm-verif on mini" data-verif="'+id+'" data-verif-state="on" role="button">✓</span>';
+    return '<span class="itm-verif off mini" data-verif="'+id+'" data-verif-state="off" role="button">○</span>';
+  }
+  /* the OPTIONAL source field lives here, next to the badge — never in the
+     one-tap path itself, so it can never block or delay the tap. */
+  function _verifSourceInput(m){
+    if(!m||!m.contentVerified)return '';
+    var id=(m&&m.id)?m.id:'';
+    var v=m.contentVerification||{};
+    var src=v.source?window.__escA(String(v.source)):'';
+    return '<div class="itm-verif-src"><input class="ed-inp itm-verif-src-inp" data-verifsrc="'+id+'" placeholder="Fuente (opcional)" value="'+src+'"></div>';
+  }
   function beerCard(d){
     const front=_bevPhotoFront(d,'tumbler');
     const fgrad=`<div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(d.sub||'')}</div>
           <div class="fbottom">${d.price?`<span class="dprice">${d.price}</span>`:''}${d.allerg&&d.allerg.length?`<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span>`:''}</div><button class="detailsbtn" data-flip>details ↗</button>`;
-    const back=`<div class="bname">${window.__esc(d.name)}</div><div class="bdiv"></div>
+    const back=`<div class="bname">${window.__esc(d.name)}${_verifBadge(d)}</div><div class="bdiv"></div>
       ${brow('Style · ABV',`<span class="bval">${window.__esc(d.sub||'')}</span>`)}
       ${d.origin?brow('Origin',`<span class="bval">${d.origin}</span>`):''}
       ${d.tableside?brow('Tableside',`<div class="bts">${window.__esc(d.tableside)}</div>`):''}
+      ${(d.ingredients&&d.ingredients.length)?brow('🌿 Ingredients',`<div class="chips2">${chipsList(d.ingredients)}</div>`):''}
+      ${(d.glass||(d.garnish&&d.garnish.length))?`<div class="service-block">${d.glass?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${d.glass}</div></div>`:''}${d.garnish&&d.garnish.length?`<div class="svc-item" style="flex-basis:100%"><div class="svc-k">Garnish</div><div class="chips2" style="margin-top:4px">${chipsList(d.garnish,{gar:true,link:true})}</div></div>`:''}</div>`:''}
+      ${_verifSourceInput(d)}
       ${_allergBox(d)}`;
     return _bevWrap(d, front, fgrad, back);
   }
@@ -3028,12 +3097,13 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     const fgrad=`<div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(d.sub)}</div>
           <div class="fbottom">${d.price?`<span class="dprice">${d.price}</span>`:''}<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span></div><button class="detailsbtn" data-flip>details ↗</button>`;
     const baseChips=d.base.map(b=>`<span class="chip2 base-chip">${em(b[0])}${window.__esc(b[0])}${b[1]?` <span class="note">(${window.__esc(b[1])})</span>`:''}</span>`).join("");
-    const back=`<div class="bname">${window.__esc(d.name)}</div>${d.price?`<div class="bprice">${d.price}</div>`:``}<div class="bdiv"></div>
+    const back=`<div class="bname">${window.__esc(d.name)}${_verifBadge(d)}</div>${d.price?`<div class="bprice">${d.price}</div>`:``}<div class="bdiv"></div>
         ${brow('Tableside',`<div class="bts">${window.__esc(d.tableside)}</div>`)}
         ${d.flavorRaw?`<div class="flavorstrip">${d.flavorRaw}</div>`:''}
         ${brow('🍶 Base spirits',`<div class="chips2">${baseChips}</div>`)}
         ${brow('🌿 Ingredients',`<div class="chips2">${chipsList(d.ingredients)}</div>`)}
         <div class="service-block">${d.glass?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${d.glass}</div></div>`:''}${d.garnish&&d.garnish.length?`<div class="svc-item" style="flex-basis:100%"><div class="svc-k">Garnish</div><div class="chips2" style="margin-top:4px">${chipsList(d.garnish,{gar:true,link:true})}</div></div>`:''}</div>
+        ${_verifSourceInput(d)}
         ${_allergBox(d)}`;
     return _bevWrap(d, front, fgrad, back);
   }
@@ -3043,7 +3113,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
   const foodChipNames=["✨ Specials","🍽 All","🥢 Amuse","🥗 Tapas","🐟 Raw Bar","🥬 Salads","⭐ Signatures","💧 Water","🌿 Earth","🥦 Vegetables","🍣 Sushi","🍮 Pastry"];
   const bevCats=[{e:"🔍",l:"All",n:53},{e:"👇",l:"Smell",n:4},{e:"👁",l:"Sight",n:4},{e:"✋",l:"Touch",n:4},{e:"🍸",l:"Signature",n:4},{e:"🌿",l:"Zero-Proof",n:3},{e:"🥂",l:"Sparkling",n:1},{e:"🍾",l:"Champagne",n:2},{e:"🌸",l:"Champagne Rosé",n:1},{e:"🥂",l:"Prestige",n:1},{e:"🥂",l:"White",n:6},{e:"🌸",l:"Rosé",n:2},{e:"🍇",l:"Red",n:10},{e:"🍷",l:"Port",n:1},{e:"🍯",l:"Dessert Wine",n:1},{e:"🍯",l:"Sauternes",n:2},{e:"🍶",l:"Sake",n:4},{e:"🍺",l:"Beer",n:3}];
   document.getElementById('foodChips').innerHTML=foodChipNames.map(c=>`<button class="fchip${c.includes('All')?' on':''}">${c}</button>`).join("");
-  document.getElementById('bevChips').innerHTML=bevCats.map((c,i)=>`<button class="fchip${i===0?' on':''}" data-bev="${c.l}">${c.e} ${c.l} <span class="fcount">${c.n}</span></button>`).join("");
+  document.getElementById('bevChips').innerHTML=bevCats.map((c,i)=>`<button class="fchip${i===0?' on':''}" data-bev="${c.l}">${c.e} ${c.l} <span class="fcount">${c.n}</span></button>`).join("")+'<button class="fchip vf-toggle" id="bevVfChip" type="button">🔎 Sin verificar <span class="fcount">0</span></button>';
   /* ---- FOOD: dynamic render with real search + category + free-from ---- */
   const SPECIAL={id:"special.dry-aged-wagyu-sliders",
     name:"Dry Aged Wagyu Sliders", cat:"SPECIAL", special:true,
@@ -3211,17 +3281,31 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       renderFood();
     });
   })();
-  var bevState={cat:"All",q:""};
+  var bevState={cat:"All",q:"",onlyUnverified:false};
   function bevText(d){d=window.__mrgItem(d);var s=[d.name,d.sub,d.tableside];["ingredients","garnish"].forEach(function(k){if(Array.isArray(d[k]))s=s.concat(d[k]);});if(Array.isArray(d.base))d.base.forEach(function(b){s.push(b&&b[0]);});return s.join(" ").toLowerCase();}
-  function bevMatches(d){d=window.__mrgItem(d);if(bevState.cat!=="All"&&String(d.sense||"").toUpperCase()!==bevState.cat.toUpperCase())return false;if(bevState.q&&bevText(d).indexOf(bevState.q)<0)return false;return true;}
+  function bevMatches(d){d=window.__mrgItem(d);if(bevState.cat!=="All"&&String(d.sense||"").toUpperCase()!==bevState.cat.toUpperCase())return false;if(bevState.q&&bevText(d).indexOf(bevState.q)<0)return false;if(bevState.onlyUnverified&&(d.kind==='wine'||d.contentVerified))return false;return true;}
+  /* PHASE 12: live count of unverified, verifiable (non-wine, non-off-menu) drinks — never hardcoded */
+  function _bevUnverifCount(){
+    var n=0;(typeof BEV!=='undefined'?BEV:[]).forEach(function(d){
+      if(window.__avOff&&window.__avOff(d))return;
+      if(d.kind==='wine')return;
+      var m=window.__mrgItem(d);
+      if(!m.contentVerified)n++;
+    });
+    return n;
+  }
+  window.__bevUnverifCount=_bevUnverifCount;
+  window.__bevOnlyUnverified=function(){return !!bevState.onlyUnverified;};
+  window.__toggleBevUnverif=function(){bevState.onlyUnverified=!bevState.onlyUnverified;renderBev();};
   function renderBev(){
     var list=BEV.filter(function(d){return !(window.__avOff&&window.__avOff(d))&&bevMatches(d);});
     var html=list.length?list.map(bevCard).join(""):'<div class="emptystate">No drinks in this category.</div>';
     document.getElementById('bevFeed').innerHTML=html+`<div class="feed-note">The full on-menu beverage list — cocktails by sense, plus wines, sake &amp; more.</div>`;
     var bs=document.getElementById('bevShowing');if(bs)bs.textContent=list.length+" drink"+(list.length!==1?"s":"")+(bevState.cat!=="All"?" · "+bevState.cat:"");
+    var vc=document.getElementById('bevVfChip');if(vc){var n=_bevUnverifCount();var fc=vc.querySelector('.fcount');if(fc)fc.textContent=n;vc.classList.toggle('on',!!bevState.onlyUnverified);}
   }
   window.__setBevQ=function(v){bevState.q=v;renderBev();};
-  (function(){var w=document.getElementById('bevChips');if(!w)return;w.addEventListener('click',function(e){var b=e.target.closest('.fchip');if(!b)return;w.querySelectorAll('.fchip').forEach(function(c){c.classList.remove('on');});b.classList.add('on');bevState.cat=b.getAttribute('data-bev')||"All";renderBev();});})();
+  (function(){var w=document.getElementById('bevChips');if(!w)return;w.addEventListener('click',function(e){var b=e.target.closest('.fchip');if(!b)return;if(b.classList.contains('vf-toggle')){window.__toggleBevUnverif();return;}w.querySelectorAll('.fchip').forEach(function(c){if(!c.classList.contains('vf-toggle'))c.classList.remove('on');});b.classList.add('on');bevState.cat=b.getAttribute('data-bev')||"All";renderBev();});})();
   renderBev();
 
   /* ---- WINE ---- */
@@ -3318,23 +3402,37 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
   let SID=0; const SMAP={};
   function spiritRow(s){
     if(s&&s._created&&window.__p4Disp)s=window.__p4Disp(s);
+    s=(window.__mergeOv?window.__mergeOv(s):s);   /* PHASE 12 prerequisite fix: see note above spiritRow */
     const id='s'+(SID++);SMAP[id]=s; if(s&&s.id&&window.__P4SORD)window.__P4SORD[id]=s.id;
     const price=(s.oz||s.btl)?`<div class="lprice">${s.oz?s.oz+'/oz':''}${s.btl?`${s.oz?' · ':''}<span class="btl">${s.btl}/btl</span>`:''}</div>`:'';
-    return `<div class="lrow" data-sid="${id}"><div class="lmain"><div class="lname">${s.name}</div><div class="lprod">${s.dist}</div></div>${price}</div>`;}
+    return `<div class="lrow" data-sid="${id}"><div class="lmain"><div class="lname">${s.name}${_verifBadgeCompact(s)}</div><div class="lprod">${s.dist}</div></div>${price}</div>`;}
   var spiritChips=[["all","🥃 All"],["vodka","🍸 Vodka"],["gin","🌿 Gin"],["rum","🍹 Rum"],["tequila","🌵 Tequila"],["mezcal","🔥 Mezcal"],["whiskey","🥃 Whiskey"],["cognac","🍇 Cognac"],["other","✨ Other"]];
   var spiritSectOrder=[["vodka","Vodka"],["gin","Gin"],["rum","Rum"],["tequila","Tequila"],["mezcal","Mezcal"],["whiskey","Whiskey"],["cognac","Cognac"],["other","Other"]];
-  document.getElementById('spiritChips').innerHTML=spiritChips.map(function(c,i){return '<button class="fchip'+(i===0?' on':'')+'" data-sf="'+c[0]+'">'+c[1]+'</button>';}).join("");
+  document.getElementById('spiritChips').innerHTML=spiritChips.map(function(c,i){return '<button class="fchip'+(i===0?' on':'')+'" data-sf="'+c[0]+'">'+c[1]+'</button>';}).join("")+'<button class="fchip vf-toggle" id="spiritVfChip" type="button">🔎 Sin verificar <span class="fcount">0</span></button>';
   var spiritFilter='all';
   var spiritQ="";
+  var spiritUnverifOnly=false;
+  /* PHASE 12: live count of unverified, non-off-menu spirits — never hardcoded */
+  function _spiritUnverifCount(){
+    var n=0;SPIRITS.forEach(function(s){
+      if(window.__avOff&&window.__avOff(s))return;
+      var m=(window.__mergeOv?window.__mergeOv(s):s);
+      if(!m.contentVerified)n++;
+    });
+    return n;
+  }
+  window.__spiritUnverifCount=_spiritUnverifCount;
+  window.__toggleSpiritUnverif=function(){spiritUnverifOnly=!spiritUnverifOnly;renderSpiritList();};
   function renderSpiritList(){
-    var rows=SPIRITS.filter(function(s){if(window.__avOff&&window.__avOff(s))return false;if(!(spiritFilter==='all'||s.cat===spiritFilter))return false;if(spiritQ){var t=[s.name,s.dist,s.catLabel,s.origin].join(" ").toLowerCase();if(t.indexOf(spiritQ)<0)return false;}return true;});
+    var rows=SPIRITS.filter(function(s){if(window.__avOff&&window.__avOff(s))return false;if(!(spiritFilter==='all'||s.cat===spiritFilter))return false;if(spiritQ){var t=[s.name,s.dist,s.catLabel,s.origin].join(" ").toLowerCase();if(t.indexOf(spiritQ)<0)return false;}if(spiritUnverifOnly){var mv=(window.__mergeOv?window.__mergeOv(s):s);if(mv.contentVerified)return false;}return true;});
     var html='';
     spiritSectOrder.forEach(function(so){var g=rows.filter(function(s){return s.cat===so[0];});if(!g.length)return;html+='<div class="lgroup">'+so[1]+'</div>'+g.map(spiritRow).join('');});
     document.getElementById('spiritList').innerHTML=html||'<div class="showing">No spirits in this filter.</div>';
     document.getElementById('spiritShowing').textContent='Showing '+rows.length+' of '+SPIRITS.length+' selections';
+    var vc=document.getElementById('spiritVfChip');if(vc){var n=_spiritUnverifCount();var fc=vc.querySelector('.fcount');if(fc)fc.textContent=n;vc.classList.toggle('on',!!spiritUnverifOnly);}
   }
   window.__setSpiritQ=function(v){spiritQ=v;renderSpiritList();};
-  document.getElementById('spiritChips').addEventListener('click',function(e){var b=e.target.closest('.fchip');if(!b)return;this.querySelectorAll('.fchip').forEach(function(c){c.classList.remove('on');});b.classList.add('on');spiritFilter=b.getAttribute('data-sf');renderSpiritList();});
+  document.getElementById('spiritChips').addEventListener('click',function(e){var b=e.target.closest('.fchip');if(!b)return;if(b.classList.contains('vf-toggle')){window.__toggleSpiritUnverif();return;}this.querySelectorAll('.fchip').forEach(function(c){if(!c.classList.contains('vf-toggle'))c.classList.remove('on');});b.classList.add('on');spiritFilter=b.getAttribute('data-sf');renderSpiritList();});
   window.__renderSpiritList=renderSpiritList;
   renderSpiritList();
   function openSpirit(s){s.detail==='beluga'?openSheet(belugaDetail()):openSheet(basicSpirit(s));}
@@ -3343,7 +3441,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     var tags='<div class="sh-tags"><span class="sh-tag">'+s.catLabel+'</span></div>';
     var box=(s.origin||s.serve)?'<div class="sh-box">'+(s.origin?'<div><div class="k">Origin</div><div class="vv">'+s.origin+'</div></div>':'')+(s.serve?'<div><div class="k">Serve</div><div class="vv">'+s.serve+'</div></div>':'')+'</div>':'';
     var notes=(s.aroma||s.palate||s.finish)?'<div class="sh-sec">Tasting notes</div>'+(s.aroma?'<div class="sh-note"><b>Aroma</b>'+s.aroma+'</div>':'')+(s.palate?'<div class="sh-note"><b>Palate</b>'+s.palate+'</div>':'')+(s.finish?'<div class="sh-note"><b>Finish</b>'+s.finish+'</div>':''):'';
-    return '<div class="sh-top"><div><div class="sh-name">'+s.name+'</div><div class="sh-sub">'+s.dist+'</div><div class="sh-prices">'+price+'</div></div></div>'+tags+box+(s.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+s.desc+'</div>':'')+(s.production?'<div class="sh-sec">Production</div><div class="sh-p">'+s.production+'</div>':'')+notes;
+    return '<div class="sh-top"><div><div class="sh-name">'+s.name+_verifBadge(s)+'</div><div class="sh-sub">'+s.dist+'</div><div class="sh-prices">'+price+'</div></div></div>'+tags+box+(s.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+s.desc+'</div>':'')+(s.production?'<div class="sh-sec">Production</div><div class="sh-p">'+s.production+'</div>':'')+notes+_verifSourceInput(s);
   }
   function belugaDetail(){return `
     <div class="sh-top"><div><div class="sh-name">Beluga Gold Line</div><div class="sh-sub">Russia, Mariinsk, Siberia</div>
@@ -4374,7 +4472,8 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
      buildId + exportedAt, so an import can tell a Zapheria backup from a random JSON and
      one restaurant's backup from another's. An export carrying NONE of the three is a
      LEGACY export (pre-2026-07-26): still ACCEPTED, then migrated in on save. */
-  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-07-28-p9';
+  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-07-28-p11';
+  window.__buildId=BUILD_ID;   /* PHASE 12: cross-scope read of the build id that stamps a verification record */
   /* (B5) sticky marker: IndexedDB has held real data on this device at least once. */
   var IDB_SEEN='mila_overlay_idb_seen_v1';
   var _overlay={items:{}};
@@ -4778,6 +4877,20 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
         else _warnField(d.id,'allergenProvenance',it.allergenProvenance);
       }
     }catch(e){_warnField(d.id,'allergenProvenance',it.allergenProvenance);}
+    /* PHASE 12: content verification — a SEPARATE object from allergenProvenance.
+       Different keys, different meaning; never merged with / read as allergen data. */
+    try{
+      if(it.contentVerified!=null){
+        if(typeof it.contentVerified==='boolean')m.contentVerified=it.contentVerified;
+        else _warnField(d.id,'contentVerified',it.contentVerified);
+      }
+    }catch(e){_warnField(d.id,'contentVerified',it.contentVerified);}
+    try{
+      if(it.contentVerification!=null){
+        if(isPlainObj(it.contentVerification))m.contentVerification=Object.assign({},it.contentVerification);
+        else _warnField(d.id,'contentVerification',it.contentVerification);
+      }
+    }catch(e){_warnField(d.id,'contentVerification',it.contentVerification);}
     try{
       if(it.availability!=null){
         if(typeof it.availability==='string')m.availability=it.availability;
@@ -5148,7 +5261,8 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   var _REVLBL={name:'nombre',description:'descripción',ingredients:'ingredientes',sauces:'salsas',
                garnish:'guarnición',allergens:'alérgenos',absentVerified:'verificaciones “Sin ✓”',
                allergenState:'estado de alérgenos',allergenProvenance:'procedencia de alérgenos',
-               availability:'disponibilidad'};
+               availability:'disponibilidad',contentVerified:'verificación de contenido',
+               contentVerification:'procedencia de verificación'};
   function revertLoss(id){
     var o=getOverlay(),it=(o.items||{})[id]||{};
     var keys=Object.keys(_REVLBL).filter(function(k){return it[k]!=null;});
@@ -5178,43 +5292,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   window.__rerender=rerender;window.__openEditor=openEditor;
 
   /* ---------- MIS CAMBIOS panel ---------- */
-  function renderPanel(){
-    var o=getOverlay(),ids=editedIds(),n=ids.length;
-    var h='<div class="ed-title">Mis cambios</div><div class="ed-sub"><b>'+n+'</b> ítem'+(n!==1?'s':'')+' editado'+(n!==1?'s':'')+' · guardado en este dispositivo</div>';
-    if(n){h+='<div class="mc-list">'+ids.map(function(id){var b=baseItem(id);var nm=(o.items[id]&&o.items[id].name)||(b&&b.name)||id;return '<div class="mc-row"><span>'+esc(nm)+'</span><button class="mc-revert" data-mcrev="'+esc(id)+'" type="button">Revertir</button></div>';}).join('')+'</div>';}
-    /* PHASE C — “Fuera de carta”: recuperación. Nada se borra nunca. */
-    var offs=(window.__avOffList?window.__avOffList():[]);
-    var n86=0;
-    function _n86(a){(a||[]).forEach(function(d){if(window.__av86&&window.__av86(d))n86++;});}
-    try{_n86((typeof FOOD!=='undefined')?FOOD:[]);}catch(e){}
-    try{_n86((typeof BEV!=='undefined')?BEV:[]);}catch(e){}
-    try{_n86((typeof WINE!=='undefined')?WINE:[]);}catch(e){}
-    try{_n86((typeof SPIRITS!=='undefined')?SPIRITS:[]);}catch(e){}
-    try{if(typeof SPECIAL!=='undefined'&&SPECIAL&&window.__av86&&window.__av86(SPECIAL))n86++;}catch(e){}
-    h+='<div class="om-sec"><div class="ed-title" style="font-size:15px">Fuera de carta</div>'
-      +'<div class="ed-sub"><b>'+offs.length+'</b> ítem'+(offs.length!==1?'s':'')+' oculto'+(offs.length!==1?'s':'')+' del menú'
-      +(n86?(' · <b>'+n86+'</b> marcado'+(n86!==1?'s':'')+' 86 hoy'):'')+'</div>';
-    if(offs.length){
-      h+='<div class="om-list">'+offs.map(function(d){
-        var nm=(o.items[d.id]&&o.items[d.id].name)||d.name||d.id;
-        var kd=d.kind?String(d.kind).toUpperCase():(d.cat||d.sense||'');
-        return '<div class="om-row"><div class="om-name">'+esc(nm)+'<span class="om-kind">'+esc(kd)+'</span></div>'
-          +'<button class="om-rest" data-restore="'+esc(d.id)+'" type="button">Restaurar</button></div>';
-      }).join('')+'</div>';
-    }else{
-      h+='<div class="om-empty">Ningún ítem está fuera de carta. Todo el menú está activo.</div>';
-    }
-    h+='</div>';
-    h+=p4PanelSection(o);
-    h+='<button class="ed-btn" data-mc="export" type="button">⬇ Exportar cambios</button>'
-      +'<label class="ed-btn ghost" for="mcImport">⬆ Importar cambios</label><input type="file" id="mcImport" accept="application/json,.json" style="display:none">'
-      +'<div id="mcResetWrap"><button class="ed-btn danger" data-mc="reset" type="button">↩ Volver a la versión base</button></div>'
-      +'<button class="ed-btn ghost" data-mc="close" type="button">Cerrar</button>';
-    document.getElementById('panelBody').innerHTML=h;
-    var imp=document.getElementById('mcImport');
-    /* (B1) the file only opens the PREVIEW now — importOverlay writes nothing by itself. */
-    if(imp)imp.addEventListener('change',function(){var file=this.files&&this.files[0];if(!file)return;var r=new FileReader();r.onload=function(){importOverlay(r.result);};r.onerror=function(){toast('No se pudo leer el archivo');};r.readAsText(file);});
-  }
+
   /* ---------- (B1) import PREVIEW: what is coming in, and what it REPLACES ---------- */
   function renderImportPreview(){
     if(!_pendingImport)return;
@@ -5614,6 +5692,17 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
       return '<button class="fchip'+(String(x.l).toUpperCase()===cur?' on':'')+'" data-bev="'+escAttr(x.l)+'">'
         +esc(x.e+' '+x.l)+' <span class="fcount">'+x.n+'</span></button>';
     }).join('');
+    /* PHASE 12: this function just replaced #bevChips wholesale — re-append the
+       "Sin verificar" toggle chip or it is silently lost on the next edit. */
+    try{
+      var vfN=window.__bevUnverifCount?window.__bevUnverifCount():0;
+      var vfOn=window.__bevOnlyUnverified?window.__bevOnlyUnverified():false;
+      var vfBtn=document.createElement('button');
+      vfBtn.type='button';vfBtn.id='bevVfChip';
+      vfBtn.className='fchip vf-toggle'+(vfOn?' on':'');
+      vfBtn.innerHTML='🔎 Sin verificar <span class="fcount">'+vfN+'</span>';
+      w.appendChild(vfBtn);
+    }catch(e){}
   };
   window.__chipRows=function(){
     function rd(sel){
@@ -5992,6 +6081,15 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   document.addEventListener('click',function(e){
     var b=e.target.closest('[data-p5add]');
     if(b){e.preventDefault();e.stopPropagation();openCreate(b.getAttribute('data-p5add'));}
+  },true);
+
+  /* ---- PHASE 13 — persistent "+": opens the SAME newpick step the gear's
+     own "Añadir al menú" row opens (panelReset, not panelGo — see block
+     comment above for why). No kind hint: newpick has none to accept. ---- */
+  window.__p13OpenAdd=function(){openS('panelDim','panelSheet');panelReset(['root','newpick']);};
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-p13add]');
+    if(b){e.preventDefault();e.stopPropagation();window.__p13OpenAdd();}
   },true);
 
   /* ---- (5.D) ESC: back one level if the panel is deep, otherwise close ----
@@ -6416,5 +6514,60 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
 
   function boot(){mount();load(function(){mount();marks();});}
   if(document.readyState!=='loading')boot();else document.addEventListener('DOMContentLoaded',boot);
+})();
+</script><script>
+(function(){
+  /* PHASE 12 — one-tap content verification: WHO (the active person from the
+     existing picker) + WHEN (ISO timestamp) + optional SOURCE, stamped via
+     the existing setItemOverride overlay path. If nobody is the active
+     person, the tap opens the person picker instead of writing an
+     anonymous record — see __zOpenPerson below. */
+  function _p12Now(){return new Date().toISOString();}
+  window.__toggleContentVerify=function(id){
+    if(!id)return;
+    var o=window.getOverlay?window.getOverlay():null;
+    var cur=(o&&o.items&&o.items[id])||{};
+    if(cur.contentVerified){
+      window.setItemOverride&&window.setItemOverride(id,{contentVerified:false});
+    }else{
+      var who=window.__zActive?window.__zActive():'';
+      if(!who){
+        try{if(window.__zOpenPerson)window.__zOpenPerson();}catch(e){}
+        try{if(window.__toast)window.__toast('Elige quién eres para verificar');}catch(e){}
+        return;
+      }
+      var prevSrc='';try{prevSrc=(cur.contentVerification&&cur.contentVerification.source)||'';}catch(e){}
+      window.setItemOverride&&window.setItemOverride(id,{contentVerified:true,contentVerification:{
+        verifiedBy:who,verifiedAt:_p12Now(),source:prevSrc,appBuild:(window.__buildId||'')
+      }});
+      try{if(window.__toast)window.__toast('Verificado');}catch(e){}
+    }
+    try{if(window.__rerender)window.__rerender();}catch(e){}
+  };
+  /* optional source, edited AFTER the one-tap verify — never blocks it, never required */
+  window.__setContentVerifySource=function(id,val){
+    if(!id)return;
+    var o=window.getOverlay?window.getOverlay():null;
+    var cur=(o&&o.items&&o.items[id])||{};
+    if(!cur.contentVerified)return;
+    var prevCV=cur.contentVerification||{};
+    window.setItemOverride&&window.setItemOverride(id,{contentVerification:{
+      verifiedBy:prevCV.verifiedBy||(window.__zActive?window.__zActive():''),
+      verifiedAt:prevCV.verifiedAt||_p12Now(),
+      source:String(val==null?'':val),
+      appBuild:prevCV.appBuild||(window.__buildId||'')
+    }});
+  };
+  document.addEventListener('click',function(e){
+    var t=e.target&&e.target.closest?e.target.closest('[data-verif]'):null;
+    if(!t)return;
+    e.preventDefault();e.stopPropagation();
+    window.__toggleContentVerify(t.getAttribute('data-verif'));
+  },true);
+  document.addEventListener('change',function(e){
+    var t=e.target&&e.target.closest?e.target.closest('[data-verifsrc]'):null;
+    if(!t)return;
+    window.__setContentVerifySource(t.getAttribute('data-verifsrc'),t.value);
+  },true);
 })();
 </script>
