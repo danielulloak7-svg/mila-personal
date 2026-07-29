@@ -194,7 +194,7 @@
   .hoy-pick-list{display:flex;flex-direction:column;gap:2px;max-height:260px;overflow-y:auto;border:1px solid var(--line);border-radius:11px;padding:6px}
   .hoy-pick-row{display:flex;align-items:center;gap:10px;padding:8px 6px;font-size:13px;color:var(--ink);cursor:pointer}
   .hoy-pick-row input{width:18px;height:18px;flex:0 0 auto}
-  /* (P4.b) card-back footer: flip + Editar side-by-side, no overlap */
+  /* (P4.b) card-back footer: flip + Edit side-by-side, no overlap */
   .backfoot{display:flex;gap:10px;align-items:center}
   .backfoot .flipback{flex:1;width:auto}
   .backfoot .editbtn{flex:none;margin-left:0}
@@ -270,7 +270,7 @@
   /* the badge lives on the .dish wrapper, NOT inside .face.front: a filtered element
      filters its own ::after too, which washed the red out to grey. */
   .dish.av86{position:relative}
-  .dish.av86::after{content:'86 · HOY NO';position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  .dish.av86::after{content:'86 · NOT TODAY';position:absolute;top:14px;left:50%;transform:translateX(-50%);
     z-index:6;font-size:10px;font-weight:800;letter-spacing:.09em;color:#fff;background:rgba(168,50,38,.94);
     border:1px solid rgba(255,255,255,.28);padding:4px 10px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.28);
     pointer-events:none;white-space:nowrap}
@@ -407,7 +407,7 @@
   .zc-more{font-size:10.5px;color:var(--muted);margin:2px 0 8px}
 
   .dish.zconf{position:relative;box-shadow:0 0 0 2px rgba(178,59,50,.55)}
-  .dish.zconf::before{content:"EN CONFLICTO";position:absolute;z-index:6;top:8px;left:8px;
+  .dish.zconf::before{content:"IN CONFLICT";position:absolute;z-index:6;top:8px;left:8px;
     font-size:8.5px;font-weight:700;letter-spacing:.06em;color:#fff;background:#a83226;
     padding:3px 7px;border-radius:5px;pointer-events:none}
   /* ================= PHASE 13 — persistent "+" (thumb-reachable, survives scroll) ================= */
@@ -1025,7 +1025,7 @@
   .galpha{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--gold-deep);padding:14px 4px 6px;border-bottom:1px solid var(--line);margin-bottom:2px;position:sticky;top:0;background:var(--cream);z-index:1}
 
   /* ---------- CLASS C — hierarchy / legibility ---------- */
-  /* C2 section title: respira pero no domina */
+  /* C2 section title: breathes without dominating */
   .sectitle{font-size:26px;margin:4px 0 16px}
   /* refined, brand-integrated section title (warmer than near-black + gold accent) */
   .sectitle{color:#3a2c20;letter-spacing:-.012em;font-style:italic;position:relative}
@@ -1525,16 +1525,249 @@
       <div class="lg-mark"><svg viewBox="0 0 48 48" fill="none" stroke="#16161A" stroke-width="1.5"><circle cx="24" cy="24" r="20"/><ellipse cx="24" cy="24" rx="8" ry="20"/><line x1="4" y1="24" x2="44" y2="24"/></svg></div>
       <div class="lg-word">Zapheria</div>
       <div class="lg-venue">KNOW WHAT YOU SERVE</div>
-      <div class="lg-field lg-who"><div class="lg-label">¿Quién eres?</div>
-        <div class="lg-who-list" id="lgWhoList"></div>
-        <div class="lg-who-note">Se usa para firmar lo que edites. No es una contraseña ni protege nada: cualquiera con este teléfono puede elegir cualquier nombre.</div>
-        <div class="lg-gate" id="lgGate">Elige quién eres para continuar.</div>
+      <div class="lg-field lg-who"><div class="lg-label">Who are you?</div>
+        <div class="lg-who-list" id="lgWhoList"><button type="button" class="lg-who-b" data-zpick="Dani">Dani</button><button type="button" class="lg-who-b" data-zpick="Sindi">Sindi</button></div>
+        <div class="lg-who-note">Used to sign what you edit. It is not a password and protects nothing: anyone with this phone can pick any name.</div>
+        <div class="lg-gate" id="lgGate">Pick who you are to continue.</div>
       </div>
       <button class="lg-btn" data-signin>Sign in</button>
     </div>
     <div class="lg-foot">The knowledge engine for fine dining</div>
   </div>
 </div>
+<script>
+/* PHASE 18 - login picker early-bind. ATTRIBUTION, NOT AUTHENTICATION: this
+   adds no password and no gate of its own. The identity module (PHASE 7) is
+   the LAST script in this ~15.9 MB document; until it runs, the login screen
+   above had an empty person list and no click handler (measured dead window:
+   ~1.0s on desktop, ~5.9s at 6x CPU throttle). The buttons are now in the
+   static markup and this binds them right away.
+
+   It NEVER decides who the active person is. It records an EXPLICIT tap and
+   hands it to PHASE 7 when PHASE 7 arrives, so a returning user who taps
+   nothing keeps the person stored in IndexedDB. */
+(function(){
+  var LIST='lgWhoList', PENDING=null, DEADLINE=0, iv=null, mo=null;
+
+  function loginGone(){
+    var lg=document.getElementById('login');
+    if(!lg)return true;
+    return lg.style.display==='none'||lg.classList.contains('gone');
+  }
+  /* immediate visual feedback, using the same .on class PHASE 7 paints */
+  function mark(name){
+    try{
+      var host=document.getElementById(LIST); if(!host)return;
+      var bs=host.getElementsByTagName('button');
+      for(var i=0;i<bs.length;i++)
+        bs[i].className=(bs[i].getAttribute('data-zpick')===name)?'lg-who-b on':'lg-who-b';
+      var g=document.getElementById('lgGate');
+      if(g)g.classList.remove('on','shake');
+    }catch(e){}
+  }
+  function stop(){
+    if(iv){clearInterval(iv);iv=null;}
+    if(mo){try{mo.disconnect();}catch(e){}mo=null;}
+  }
+  /* PHASE 7's load() assigns _active from IndexedDB unconditionally and can
+     land AFTER our handover, so re-assert until it sticks, then stop. */
+  function reconcile(){
+    /* VISUAL half: PHASE 7's first paint() rewrites this list with _active
+       still null, erasing the .on we just set. childList only -- our own
+       className writes are attribute mutations and cannot retrigger this. */
+    if(!mo){
+      try{
+        var host=document.getElementById(LIST);
+        if(host&&window.MutationObserver){
+          mo=new MutationObserver(function(){
+            if(!PENDING)return;
+            var cur=host.querySelector('.lg-who-b.on');
+            if(!cur||cur.getAttribute('data-zpick')!==PENDING)mark(PENDING);
+          });
+          mo.observe(host,{childList:true});
+        }
+      }catch(e){}
+    }
+    /* STATE half: re-assert the tap until PHASE 7 agrees, then stop. */
+    if(iv)return;
+    iv=setInterval(function(){
+      if(!PENDING||Date.now()>DEADLINE||loginGone()){stop();return;}
+      if(typeof window.__zSetActive!=='function')return;
+      var cur=null;
+      try{cur=window.__zActive?window.__zActive():null;}catch(e){}
+      if(cur===PENDING){stop();return;}
+      try{window.__zSetActive(PENDING);}catch(e){}
+    },50);
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target; if(!t||!t.closest)return;
+    var host=document.getElementById(LIST); if(!host)return;
+    var b=t.closest('[data-zpick]');
+    if(!b||!host.contains(b))return;          /* login list only; the person panel is PHASE 7's */
+    var name=b.getAttribute('data-zpick'); if(!name)return;
+    e.preventDefault();
+    PENDING=name; DEADLINE=Date.now()+3000;
+    mark(name);
+    /* If PHASE 7 is already live it also sees this click (both listeners are
+       document-capture) and calls __zSetActive itself; that call is idempotent
+       (_active===n short-circuits), so a duplicate is harmless. */
+    if(typeof window.__zSetActive==='function'){
+      try{window.__zSetActive(name);}catch(err){}
+    }
+    reconcile();
+  },true);
+
+  /* read-only introspection for harnesses; not part of the public identity API */
+  window.__zPendingPick=function(){return PENDING;};
+})();
+</script>
+
+<script>
+/* PHASE 19 - sign-in early-bind + idempotent transition.
+   The login markup ships at ~3.6% of this document; the delegated click handler
+   that used to implement sign-in ships at ~93.2%. This shim runs with the markup
+   so the button is live from the first frame, and it owns the transition so that
+   N invocations - early listener, late delegated handler, impatient repeat taps -
+   produce exactly one welcome animation and exactly one login dismissal. */
+(function(){
+  var FIRED=false;   /* the transition latch: at most one sign-in per page load */
+  var WAITING=false; /* at most one deferred resolution in flight */
+  var iv=null, civ=null, CNAME=null, SEEN=0;
+
+  function el(id){return document.getElementById(id);}
+
+  /* The transition, lifted verbatim from the late delegated handler (same
+     elements, same class names, same 200/650/1000/3100/3650 timeline) and
+     wrapped in a one-shot latch. Safe as a per-page-load latch because this app
+     has no sign-out path and #login is never re-shown without a reload. */
+  window.__zSignIn=function(){
+    if(FIRED)return true;
+    var _lg=el('login');
+    if(!_lg)return false;
+    FIRED=true;
+    var _w=el('lgWelcome');
+    if(_w){_w.style.display='';_w.classList.add('on');}
+    setTimeout(function(){_lg.classList.add('gone');},200);
+    setTimeout(function(){_lg.style.display='none';},650);
+    setTimeout(function(){if(_w)_w.classList.add('ready');},1000);
+    setTimeout(function(){if(_w)_w.classList.add('bye');},3100);
+    setTimeout(function(){if(_w){_w.classList.remove('on','ready','bye');_w.style.display='none';}},3650);
+    return true;
+  };
+
+  /* Unchanged gate feedback: not latched, because restarting the shake is the
+     intended per-tap response. */
+  function gate(){
+    var _g=el('lgGate');
+    if(_g){_g.classList.remove('shake');void _g.offsetWidth;_g.classList.add('on','shake');}
+  }
+
+  /* The person tapped on the login list before the identity module existed.
+     PHASE 18 records it; absent PHASE 18 this is simply always null. */
+  function pending(){
+    try{if(typeof window.__zPendingPick==='function')return window.__zPendingPick()||null;}catch(e){}
+    return null;
+  }
+
+  /* undefined -> the identity module has not settled yet; we cannot tell
+     ''        -> settled, nobody chosen
+     'Name'    -> that person is chosen
+
+     __zActive appears as soon as the identity module is parsed, but its
+     IndexedDB read lands one or more turns later, so "returns nothing" is not
+     the same as "nobody is signed in" for a short, bounded moment after the
+     module first appears. SEEN is stamped by a watcher that runs from this
+     script onward, not from the tap, so a normal late tap still gates
+     instantly. */
+  function stored(){
+    if(typeof window.__zActive!=='function')return undefined;
+    if(!SEEN)SEEN=Date.now();
+    var a='';
+    try{a=window.__zActive()||'';}catch(e){return undefined;}
+    if(a)return a;
+    if(Date.now()-SEEN<2500)return undefined;
+    return '';
+  }
+
+  (function watch(){
+    if(typeof window.__zActive==='function'){SEEN=Date.now();return;}
+    var t0=Date.now();
+    var w=setInterval(function(){
+      if(typeof window.__zActive==='function'){SEEN=Date.now();clearInterval(w);return;}
+      if(Date.now()-t0>25000)clearInterval(w);
+    },50);
+  })();
+
+  /* Make the tapped person stick. PHASE 7's load() assigns _active from
+     IndexedDB unconditionally and lands minutes-of-CPU later on a throttled
+     phone, so the pick has to be re-asserted until the identity module agrees.
+     Bounded, self-cancelling, and a no-op once it agrees. */
+  function commit(name){
+    if(!name)return;
+    CNAME=name;
+    if(civ)return;
+    var deadline=Date.now()+20000;
+    civ=setInterval(function(){
+      if(Date.now()>deadline){clearInterval(civ);civ=null;return;}
+      if(typeof window.__zSetActive!=='function')return;
+      var cur=null;
+      try{cur=window.__zActive?window.__zActive():null;}catch(e){}
+      if(cur===CNAME){clearInterval(civ);civ=null;return;}
+      try{window.__zSetActive(CNAME);}catch(e){}
+    },50);
+    /* and try immediately, so the common case costs no extra tick */
+    if(typeof window.__zSetActive==='function'){try{window.__zSetActive(name);}catch(e){}}
+  }
+
+  function stop(){if(iv){clearInterval(iv);iv=null;}WAITING=false;}
+
+  /* Resolve a tap once identity is knowable. Returns true when it resolved. */
+  function resolve(){
+    var p=pending();
+    if(p){stop();commit(p);window.__zSignIn();return true;}
+    var a=stored();
+    if(a===undefined)return false;
+    stop();
+    if(a)window.__zSignIn();else gate();
+    return true;
+  }
+
+  /* Defer only while identity is genuinely unknown - i.e. exactly the window
+     this phase makes tappable. Bounded; on expiry it falls back to the
+     pre-phase-19 behaviour (proceed) so the button can never become
+     permanently dead. */
+  function defer(){
+    if(WAITING||FIRED)return;
+    WAITING=true;
+    var deadline=Date.now()+15000;
+    iv=setInterval(function(){
+      if(FIRED){stop();return;}
+      if(resolve())return;
+      if(Date.now()>deadline){stop();window.__zSignIn();}
+    },50);
+  }
+
+  /* Single entry point. Both the capture listener below and the late delegated
+     handler call this. The event stamp keeps one tap to one decision; the latch
+     inside __zSignIn makes any residual double-fire a no-op. */
+  window.__zSignInTap=function(ev){
+    if(ev){if(ev.__zsi19)return;try{ev.__zsi19=1;}catch(e){}}
+    if(FIRED)return;
+    if(resolve())return;
+    defer();
+  };
+
+  document.addEventListener('click',function(e){
+    var t=e.target;if(!t||!t.closest)return;
+    if(!t.closest('[data-signin]'))return;
+    window.__zSignInTap(e);
+  },true);
+
+  /* read-only introspection for harnesses; not part of the public identity API */
+  window.__zSignInState=function(){return {fired:FIRED,waiting:WAITING,committing:!!civ,name:CNAME};};
+})();
+</script>
 
 <div id="lgWelcome"><div class="lgw-inner">
   <div class="lgw-spin"></div>
@@ -1565,9 +1798,9 @@
 
 <!-- ============ FOOD ============ -->
 <div class="view hidden" id="view-food">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="food" type="button">＋ Añadir</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="food" type="button">＋ Add</button></div>
   <div class="secwrap">
-  <button class="p13-fab" data-p13add type="button" aria-label="Añadir al menú"><span class="p13-fab-ic">＋</span></button>
+  <button class="p13-fab" data-p13add type="button" aria-label="Add to the menu"><span class="p13-fab-ic">＋</span></button>
     <h1 class="sectitle">Food Menu</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="foodSearch" type="text" placeholder="Search dishes or ingredients…" autocomplete="off"></div>
@@ -1583,9 +1816,9 @@
 
 <!-- ============ BEVERAGES ============ -->
 <div class="view hidden" id="view-bev">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="bev" type="button">＋ Añadir</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="bev" type="button">＋ Add</button></div>
   <div class="secwrap">
-  <button class="p13-fab" data-p13add type="button" aria-label="Añadir al menú"><span class="p13-fab-ic">＋</span></button>
+  <button class="p13-fab" data-p13add type="button" aria-label="Add to the menu"><span class="p13-fab-ic">＋</span></button>
     <h1 class="sectitle">Beverages</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="bevSearch" type="text" placeholder="Search drinks or ingredients…" autocomplete="off"></div>
@@ -1601,9 +1834,9 @@
 
 <!-- ============ WINE ============ -->
 <div class="view hidden" id="view-wine">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="wine" type="button">＋ Añadir</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="wine" type="button">＋ Add</button></div>
   <div class="secwrap">
-  <button class="p13-fab" data-p13add type="button" aria-label="Añadir al menú"><span class="p13-fab-ic">＋</span></button>
+  <button class="p13-fab" data-p13add type="button" aria-label="Add to the menu"><span class="p13-fab-ic">＋</span></button>
     <h1 class="sectitle">Wine Catalog</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="wineSearch" type="text" placeholder="Search wines, producers, appellations…" autocomplete="off"></div>
@@ -1617,9 +1850,9 @@
 
 <!-- ============ SPIRITS ============ -->
 <div class="view hidden" id="view-spirits">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="spirit" type="button">＋ Añadir</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="spirit" type="button">＋ Add</button></div>
   <div class="secwrap">
-  <button class="p13-fab" data-p13add type="button" aria-label="Añadir al menú"><span class="p13-fab-ic">＋</span></button>
+  <button class="p13-fab" data-p13add type="button" aria-label="Add to the menu"><span class="p13-fab-ic">＋</span></button>
     <h1 class="sectitle">Spirits Catalog</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="spiritSearch" type="text" placeholder="Search spirits, distilleries, origins…" autocomplete="off"></div>
@@ -1906,7 +2139,7 @@
   <span class="tab-ind" id="tabInd"></span>
   <button class="on" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg>Home</button>
   <button aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</button>
-  <button id="tabAjustes" type="button" aria-label="Ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="mis-badge" id="misBadge" style="display:none">0</span>Ajustes</button>
+  <button id="tabAjustes" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="mis-badge" id="misBadge" style="display:none">0</span>Settings</button>
 </nav>
 <div class="menupop" id="menuPop" aria-hidden="true">
   <div class="menupop-title">Menu &amp; Knowledge</div>
@@ -1988,7 +2221,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
         <div class="pls-hchips"><span>📣 Reviews</span><span>🥗 Seaweed Salad</span><span>🥃 Bourbon &amp; Rye</span><span>🍷 Selling Techniques</span><span>⚠ Citrus</span></div>
         <div class="pls-hgo"><span>9 points this week</span><span>Open the issue ›</span></div>
       </div></div></div></div>
-    <div class="section" id="hoySection">${head('MILĀ PULSE')}<button class="hoy-edit" id="hoyEditBtn" type="button">✎ Editar</button>
+    <div class="section" id="hoySection">${head('MILĀ PULSE')}<button class="hoy-edit" id="hoyEditBtn" type="button">✎ Edit</button>
       <div class="pulse-mod"><div id="hoyBody"></div></div></div>
     <div class="foot">Powered by <span class="zmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/></svg></span> <b>Zapheria</b></div>`;
 
@@ -2853,7 +3086,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
   function chipsList(arr,o={}){return arr.map((t,i)=>chip(t,{gar:o.gar,link:!!o.link})).join("");}
   function ingProse(arr){return arr.map(t=>{const rk=window.GXRESOLVE?window.GXRESOLVE(t):null;const cls='ingx'+(rk?' link':'');const xa=rk?` data-xlink="${window.__escA(t)}"`:'';const e2=em(t);return `<span class="${cls}"${xa}>${e2?e2+' ':''}${window.__esc(t)}</span>`;}).join(', ');}
   function alpill(d){const a=window.__esc(d.allerg.slice(0,3).join(" · "));const extra=(d.allerg.length>3||d.allergExtra)?(" +"+((d.allergExtra||0)+(d.allerg.length-3))):"";return `⚠ ${a}${extra}`;}
-  const _alkBaked=(id,a)=>{if(typeof ALINK_BY_ID==='undefined'||!id)return null;var m=ALINK_BY_ID[id];if(!m)return null;if(m[a])return m[a];var k=Object.keys(m).find(x=>x.toLowerCase()===String(a).toLowerCase());return k?m[k]:null;};const alkSt=(item,a)=>{var res=null;try{if(window.__alkResolve)res=window.__alkResolve(item);}catch(_){}if(!res)res={id:item,ok:!!item};if(!res.ok)return 'unresolved';var e=null;try{if(window.__overlayLink)e=window.__overlayLink(item,a);}catch(_){}if(e&&e.__unlinked)return 'pending';if(!e)e=_alkBaked(res.id,a);if(!e)return 'pending';if(e.verifiedBy){if(e.removable==='yes')return 'removable';if(e.removable==='no')return 'inherent';}return 'pending';};const ALKW={inherent:'Inherent',removable:'Removable',pending:'Pending',unresolved:'Sin resolver'};const achips=(arr,item)=>arr.map(a=>{var st=alkSt(item,a);return `<span class="achip alk st-${st}" data-alki="${item?encodeURIComponent(item):''}" data-alk="${window.__escA(a)}">${EM[a]||'⚠'} ${window.__esc(a)}<span class="alk-st">${ALKW[st]}</span><span class="alk-i">ⓘ</span></span>`;}).join("");
+  const _alkBaked=(id,a)=>{if(typeof ALINK_BY_ID==='undefined'||!id)return null;var m=ALINK_BY_ID[id];if(!m)return null;if(m[a])return m[a];var k=Object.keys(m).find(x=>x.toLowerCase()===String(a).toLowerCase());return k?m[k]:null;};const alkSt=(item,a)=>{var res=null;try{if(window.__alkResolve)res=window.__alkResolve(item);}catch(_){}if(!res)res={id:item,ok:!!item};if(!res.ok)return 'unresolved';var e=null;try{if(window.__overlayLink)e=window.__overlayLink(item,a);}catch(_){}if(e&&e.__unlinked)return 'pending';if(!e)e=_alkBaked(res.id,a);if(!e)return 'pending';if(e.verifiedBy){if(e.removable==='yes')return 'removable';if(e.removable==='no')return 'inherent';}return 'pending';};const ALKW={inherent:'Inherent',removable:'Removable',pending:'Pending',unresolved:'Unresolved'};const achips=(arr,item)=>arr.map(a=>{var st=alkSt(item,a);return `<span class="achip alk st-${st}" data-alki="${item?encodeURIComponent(item):''}" data-alk="${window.__escA(a)}">${EM[a]||'⚠'} ${window.__esc(a)}<span class="alk-st">${ALKW[st]}</span><span class="alk-i">ⓘ</span></span>`;}).join("");
   function brow(label,content){return content?`<div class="brow"><span class="blabel">${label}</span><div class="bcontent">${content}</div></div>`:"";}
 
   function dishKey(name){return (''+name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
@@ -2884,7 +3117,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     return document.querySelector(scope+' .dish[data-key="'+q+'"]');
   };
   window.__linkFail=function(key){
-    try{if(window.__toast)window.__toast('Enlace roto: no se encontró “'+key+'”');
+    try{if(window.__toast)window.__toast('Broken link: “'+key+'” was not found');
         else console.warn('[link] unresolved',key);}catch(e){}
   };
   function foodCard(d){d=(window.__mergeOv?window.__mergeOv(d):d);
@@ -2913,7 +3146,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
         <div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Key</b><span><i class="i"></i>Inherent</span><span><i class="r"></i>Removable</span><span><i class="p"></i>Pending</span><span class="lgt">Tap ⓘ for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}${d.allergExtra?`<span class="achip">+${d.allergExtra} more</span>`:''}</div></div>
         ${d.prep?brow('🥢 Preparation',`<span class="bval">${d.prep}</span>`):''}
         ${provNote}
-      </div><div class="backfoot"><button class="flipback" data-unflip>↩ flip back</button><button class="editbtn" data-edit="${d.id||''}" type="button">✎ Editar</button></div></div>
+      </div><div class="backfoot"><button class="flipback" data-unflip>↩ flip back</button><button class="editbtn" data-edit="${d.id||''}" type="button">✎ Edit</button></div></div>
     </div></div>`;
   }
   function bevCard(d){
@@ -2981,7 +3214,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
         <span class="catpill b">${d.sense}</span>
         <div class="fgrad">${fgrad}</div>
       </div>
-      <div class="face back"><div class="backscroll">${back}</div><div class="backfoot"><button class="flipback" data-unflip>↩ flip back</button><button class="editbtn" data-edit="${d.id||''}" type="button">✎ Editar</button></div></div>
+      <div class="face back"><div class="backscroll">${back}</div><div class="backfoot"><button class="flipback" data-unflip>↩ flip back</button><button class="editbtn" data-edit="${d.id||''}" type="button">✎ Edit</button></div></div>
     </div></div>`;
   }
   function _bevPhotoFront(d, phKey){
@@ -3007,7 +3240,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
   function wineBack(d){
     const badge = d.stub ? '<span class="sp-needsreview">NEEDS REVIEW</span>'
       : (d.identPending ? '<span class="sp-identpending">SHEET PENDING</span>'
-      : (d.unverified ? '<span class="sp-unverified">SIN VERIFICAR</span>' : ''));
+      : (d.unverified ? '<span class="sp-unverified">NOT VERIFIED</span>' : ''));
     if(d.stub){
       return `<div class="bname">${window.__esc(d.name)}${badge}</div><div class="bdiv"></div>
         <div class="bts" style="font-style:italic;color:var(--muted)">No verified catalog source for this selection yet — flagged for review. Name and price are from the printed menu only.</div>
@@ -3037,7 +3270,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       ${d.cuvee?brow('Cuvée',`<span class="bval" style="color:var(--gold-deep);font-weight:700">${d.cuvee}</span>`):''}
       ${vaf?brow('Vintage · Appellation · Format',`<span class="bval">${vaf}</span>`):''}
       ${d.region?brow('Region',`<span class="bval">${d.region}</span>`):''}
-      ${d.aiLayer?`<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Sin verificar · no citar al huésped</span></div>`:''}
+      ${d.aiLayer?`<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>`:''}
       ${d.grapes&&d.grapes.length?brow('Grapes',`<div class="chips2">${d.grapes.map(function(g){return chip(g);}).join('')}</div>`):''}
       ${d.body?brow('Body',`<span class="bval">${d.body}</span>`):''}
       ${svc}
@@ -3071,9 +3304,9 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       var who=v.verifiedBy?window.__esc(String(v.verifiedBy)):'';
       var when=_verifShortDate(v.verifiedAt);
       var meta=(who||when)?('<span class="itm-verif-by"> — '+who+(who&&when?' · ':'')+when+'</span>'):'';
-      return '<span class="itm-verif on" data-verif="'+id+'" data-verif-state="on" role="button">✓ Verificado'+meta+'</span>';
+      return '<span class="itm-verif on" data-verif="'+id+'" data-verif-state="on" role="button">✓ Verified'+meta+'</span>';
     }
-    return '<span class="itm-verif off" data-verif="'+id+'" data-verif-state="off" role="button">Sin verificar</span>';
+    return '<span class="itm-verif off" data-verif="'+id+'" data-verif-state="off" role="button">Not verified</span>';
   }
   function _verifBadgeCompact(m){
     var id=(m&&m.id)?m.id:'';
@@ -3087,7 +3320,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     var id=(m&&m.id)?m.id:'';
     var v=m.contentVerification||{};
     var src=v.source?window.__escA(String(v.source)):'';
-    return '<div class="itm-verif-src"><input class="ed-inp itm-verif-src-inp" data-verifsrc="'+id+'" placeholder="Fuente (opcional)" value="'+src+'"></div>';
+    return '<div class="itm-verif-src"><input class="ed-inp itm-verif-src-inp" data-verifsrc="'+id+'" placeholder="Source (optional)" value="'+src+'"></div>';
   }
   function beerCard(d){
     const front=_bevPhotoFront(d,'tumbler');
@@ -3124,7 +3357,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
   const foodChipNames=["✨ Specials","🍽 All","🥢 Amuse","🥗 Tapas","🐟 Raw Bar","🥬 Salads","⭐ Signatures","💧 Water","🌿 Earth","🥦 Vegetables","🍣 Sushi","🍮 Pastry"];
   const bevCats=[{e:"🔍",l:"All",n:53},{e:"👇",l:"Smell",n:4},{e:"👁",l:"Sight",n:4},{e:"✋",l:"Touch",n:4},{e:"🍸",l:"Signature",n:4},{e:"🌿",l:"Zero-Proof",n:3},{e:"🥂",l:"Sparkling",n:1},{e:"🍾",l:"Champagne",n:2},{e:"🌸",l:"Champagne Rosé",n:1},{e:"🥂",l:"Prestige",n:1},{e:"🥂",l:"White",n:6},{e:"🌸",l:"Rosé",n:2},{e:"🍇",l:"Red",n:10},{e:"🍷",l:"Port",n:1},{e:"🍯",l:"Dessert Wine",n:1},{e:"🍯",l:"Sauternes",n:2},{e:"🍶",l:"Sake",n:4},{e:"🍺",l:"Beer",n:3}];
   document.getElementById('foodChips').innerHTML=foodChipNames.map(c=>`<button class="fchip${c.includes('All')?' on':''}">${c}</button>`).join("");
-  document.getElementById('bevChips').innerHTML=bevCats.map((c,i)=>`<button class="fchip${i===0?' on':''}" data-bev="${c.l}">${c.e} ${c.l} <span class="fcount">${c.n}</span></button>`).join("")+'<button class="fchip vf-toggle" id="bevVfChip" type="button">🔎 Sin verificar <span class="fcount">0</span></button>';
+  document.getElementById('bevChips').innerHTML=bevCats.map((c,i)=>`<button class="fchip${i===0?' on':''}" data-bev="${c.l}">${c.e} ${c.l} <span class="fcount">${c.n}</span></button>`).join("")+'<button class="fchip vf-toggle" id="bevVfChip" type="button">🔎 Unverified <span class="fcount">0</span></button>';
   /* ---- FOOD: dynamic render with real search + category + free-from ---- */
   const SPECIAL={id:"special.dry-aged-wagyu-sliders",
     name:"Dry Aged Wagyu Sliders", cat:"SPECIAL", special:true,
@@ -3234,7 +3467,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     for(var j=0;j<list.length;j++){if(!_ffStateResolves(m,list[j]))return true;}
     return false;
   }
-  var FFND_MARKER='<div class="ffnd-row"><span class="ffnd-inline">Sin datos de alérgenos</span></div>';
+  var FFND_MARKER='<div class="ffnd-row"><span class="ffnd-inline">No allergen data</span></div>';
   /* ONE marker injector for BOTH menus. String.replace with a string pattern
      hits the first occurrence only (the FRONT face, so it is legible without
      flipping) and the replacement contains no '$', so it is inserted literally. */
@@ -3332,7 +3565,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     var feed=document.getElementById('foodFeed');feed.innerHTML=html;
     // count line
     var n=list.length;
-    var label=foodState.freeFrom.length?(n+" verified free-from "+foodState.freeFrom.join(" + ")+(nod.length?" · "+nod.length+" sin datos de alérgenos":"")) :
+    var label=foodState.freeFrom.length?(n+" verified free-from "+foodState.freeFrom.join(" + ")+(nod.length?" · "+nod.length+" with no allergen data":"")) :
               foodState.q?(n+" result"+(n!==1?"s":"")+" for “"+foodState.q+"”") :
               (n+" of "+(window.__avCount?window.__avCount(FOOD):FOOD.length)+" dishes");
     document.getElementById('foodShowing').textContent=(showSpecial?"1 active special · ":"")+label;
@@ -3396,7 +3629,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       return _ffNoData(d,_ff)?_ffMark(c):c;
     }).join(""):'<div class="emptystate">No drinks in this category.</div>';
     document.getElementById('bevFeed').innerHTML=html+`<div class="feed-note">The full on-menu beverage list — cocktails by sense, plus wines, sake &amp; more.</div>`;
-    var bs=document.getElementById('bevShowing');if(bs)bs.textContent=list.length+" drink"+(list.length!==1?"s":"")+(bevState.cat!=="All"?" · "+bevState.cat:"")+(nod.length?" · "+nod.length+" sin datos de alérgenos":"");
+    var bs=document.getElementById('bevShowing');if(bs)bs.textContent=list.length+" drink"+(list.length!==1?"s":"")+(bevState.cat!=="All"?" · "+bevState.cat:"")+(nod.length?" · "+nod.length+" with no allergen data":"");
     var vc=document.getElementById('bevVfChip');if(vc){var n=_bevUnverifCount();var fc=vc.querySelector('.fcount');if(fc)fc.textContent=n;vc.classList.toggle('on',!!bevState.onlyUnverified);}
     window.__bevNoDataCount=nod.length;
     window.__bevMatchCount=list.length;
@@ -3510,7 +3743,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     return `<div class="lrow" data-sid="${id}"><div class="lmain"><div class="lname">${s.name}${_verifBadgeCompact(s)}</div><div class="lprod">${s.dist}</div></div>${price}</div>`;}
   var spiritChips=[["all","🥃 All"],["vodka","🍸 Vodka"],["gin","🌿 Gin"],["rum","🍹 Rum"],["tequila","🌵 Tequila"],["mezcal","🔥 Mezcal"],["whiskey","🥃 Whiskey"],["cognac","🍇 Cognac"],["other","✨ Other"]];
   var spiritSectOrder=[["vodka","Vodka"],["gin","Gin"],["rum","Rum"],["tequila","Tequila"],["mezcal","Mezcal"],["whiskey","Whiskey"],["cognac","Cognac"],["other","Other"]];
-  document.getElementById('spiritChips').innerHTML=spiritChips.map(function(c,i){return '<button class="fchip'+(i===0?' on':'')+'" data-sf="'+c[0]+'">'+c[1]+'</button>';}).join("")+'<button class="fchip vf-toggle" id="spiritVfChip" type="button">🔎 Sin verificar <span class="fcount">0</span></button>';
+  document.getElementById('spiritChips').innerHTML=spiritChips.map(function(c,i){return '<button class="fchip'+(i===0?' on':'')+'" data-sf="'+c[0]+'">'+c[1]+'</button>';}).join("")+'<button class="fchip vf-toggle" id="spiritVfChip" type="button">🔎 Unverified <span class="fcount">0</span></button>';
   var spiritFilter='all';
   var spiritQ="";
   var spiritUnverifOnly=false;
@@ -3709,7 +3942,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     var pairs=(r.pairs&&r.pairs.length)?'<div class="sh-sec">MILA pairings</div><div class="sh-p" style="font-size:10.5px;color:var(--muted-soft);margin:0 0 8px;font-style:italic">From the MILA catalog · pending sommelier verification</div><div class="pairs">'+r.pairs.map(function(p){return '<span class="pchip gold">🍽 '+p+'</span>';}).join('')+'</div>':'';
     var _pnKey=(typeof WINE_PN_BYID!=='undefined'&&WINE_PN_BYID[r.id])?WINE_PN_BYID[r.id]:r.name;
     var nav=(typeof PAIRNAV!=='undefined'&&PAIRNAV[_pnKey])?'<button class="pn-open" data-pn="'+String(_pnKey).replace(/"/g,'&quot;')+'">Explore all MILĀ pairings ↗</button>':'';
-    return '<div class="sh-top"><div><div class="sh-name">'+r.name+'</div><div class="sh-sub">'+r.prod+(r.vint?' · '+r.vint:'')+'</div><div class="sh-prices">'+price+'</div></div></div>'+(r.aiLayer?'<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Sin verificar · no citar al huésped</span></div>':'')+tags+box+(r.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+r.desc+'</div>':'')+notes+genp+pairs+nav;
+    return '<div class="sh-top"><div><div class="sh-name">'+r.name+'</div><div class="sh-sub">'+r.prod+(r.vint?' · '+r.vint:'')+'</div><div class="sh-prices">'+price+'</div></div></div>'+(r.aiLayer?'<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>':'')+tags+box+(r.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+r.desc+'</div>':'')+notes+genp+pairs+nav;
   }
   function mateoDetail(){return `
     <div class="sh-top"><img class="sh-bottle" src="${MATEO}" alt="Mateo Pinot Noir">
@@ -3793,7 +4026,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     const dish=e.target.closest('[data-dish]'); if(dish){goToDish(dish.getAttribute('data-dish'));return;}
     const nav=e.target.closest('[data-nav]'); if(nav){go(nav.getAttribute('data-nav'));return;}
     if(e.target.closest('[data-back]')){goBack();return;}
-    if(e.target.closest('[data-signin]')){if(window.__zActive&&!window.__zActive()){var _g=document.getElementById('lgGate');if(_g){_g.classList.remove('shake');void _g.offsetWidth;_g.classList.add('on','shake');}return;}var _lg=document.getElementById('login');var _w=document.getElementById('lgWelcome');if(_w){_w.style.display='';_w.classList.add('on');}setTimeout(function(){_lg.classList.add('gone');},200);setTimeout(function(){_lg.style.display='none';},650);setTimeout(function(){if(_w)_w.classList.add('ready');},1000);setTimeout(function(){if(_w)_w.classList.add('bye');},3100);setTimeout(function(){if(_w){_w.classList.remove('on','ready','bye');_w.style.display='none';}},3650);return;}
+    if(e.target.closest('[data-signin]')){if(typeof window.__zSignInTap==='function')window.__zSignInTap(e);return;}
     const fc=e.target.closest('.fchip'); if(fc){[...fc.parentElement.children].forEach(c=>c.classList.remove('on'));fc.classList.add('on');return;}
     const uc=e.target.closest('.uchip'); if(uc){uc.classList.toggle('on');return;}
     if(e.target.closest('[data-ffopen]')){ffOpen();return;}
@@ -3845,7 +4078,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     function openPop(p){closeAll();if(p){p.classList.add('open');p.setAttribute('aria-hidden','false');}}
     bar.querySelectorAll('button').forEach(function(btn){
       var lbl=btn.getAttribute('aria-label')||'';
-      if(lbl==='Ajustes'){btn.addEventListener('click',function(e){e.stopPropagation();closeAll();if(window.__openGear)window.__openGear();});return;}
+      if(lbl==='Settings'){btn.addEventListener('click',function(e){e.stopPropagation();closeAll();if(window.__openGear)window.__openGear();});return;}
       if(lbl==='Menu'){btn.addEventListener('click',function(e){e.stopPropagation();if(menuPop.classList.contains('open'))closeAll();else openPop(menuPop);});return;}
       var target=directMap[lbl];if(!target)return;
       btn.addEventListener('click',function(){closeAll();go(target);setActive(target);});
@@ -4051,7 +4284,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   var EMX=(typeof EM!=='undefined')?EM:{};
   /* (A6/A9) every link lookup goes through the ID resolver. `ref` may be an item id
      (canonical) or a legacy name; an unresolvable / ambiguous ref returns null and the
-     caller must say "no se pudo resolver el link", never "sin link". */
+     caller must say "the link could not be resolved", never "no link". */
   function alkRes(ref){
     if(window.__alkResolve)return window.__alkResolve(ref);
     return {id:ref,ok:!!ref,reason:'preboot'};
@@ -4093,11 +4326,11 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var _r=alkRes(item);
     var m=_r.ok?alkGet(item,alg):null;var emo=EMX[alg]||'⚠';
     var st=_r.ok?'pending':'unresolved';if(m&&m.verifiedBy){if(m.removable==='yes')st='removable';else if(m.removable==='no')st='inherent';}
-    var stw={inherent:'Inherent \u00b7 can\u2019t remove',removable:'Verified removable',pending:'Pending kitchen check',unresolved:'Link sin resolver'}[st];
+    var stw={inherent:'Inherent \u00b7 can\u2019t remove',removable:'Verified removable',pending:'Pending kitchen check',unresolved:'Link not resolved'}[st];
     var h='<div class="ap-term">'+emo+' '+esc(alg)+'</div><div class="ap-tag st-'+(st==='unresolved'?'pending':st)+'">'+stw+'</div>';
     if(!_r.ok){
-      /* (A6) NEVER assert "sin link" for a reference we could not resolve. */
-      h+='<div class="ap-empty">No se pudo resolver el link de este \u00edtem'+(_r.reason==='ambiguous'?' (nombre ambiguo)':'')+'.</div>';
+      /* (A6) NEVER assert "no link" for a reference we could not resolve. */
+      h+='<div class="ap-empty">This item\u2019s link could not be resolved'+(_r.reason==='ambiguous'?' (ambiguous name)':'')+'.</div>';
     }else if(!m){
       h+='<div class="ap-empty">This allergen hasn\u2019t been linked to a specific ingredient yet.</div>';
       h+='<button class="ap-link" data-aplink="'+encodeURIComponent(item)+'|'+encodeURIComponent(alg)+'">Link it \u2192</button>';
@@ -4153,10 +4386,10 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     /* NOTE: o is the MERGED item (itemObj resolves by id), so o.name is the current name. */
     var _unres=!alkRes(o.id).ok;
     o.allerg.forEach(function(a){
-      var m=_unres?null:alkGet(o.id,a);var cls=m?(m.verifiedBy?'done':'part'):'none';var lbl=m?(m.verifiedBy?'VERIFIED':'PENDING'):(_unres?'SIN RESOLVER':'UNLINKED');
+      var m=_unres?null:alkGet(o.id,a);var cls=m?(m.verifiedBy?'done':'part'):'none';var lbl=m?(m.verifiedBy?'VERIFIED':'PENDING'):(_unres?'UNRESOLVED':'UNLINKED');
       var det='';
       if(m){det='<div class="afd">'+secBadge(resolveSec(o.id,m))+' <b>'+esc(m.component)+'</b>'+(m.removable==='yes'?' \u00b7 Removable: Yes':m.removable==='no'?' \u00b7 Removable: No':' \u00b7 Removability pending')+'</div>';}
-      else if(_unres)det='<div class="afd">No se pudo resolver el link de este \u00edtem.</div>';
+      else if(_unres)det='<div class="afd">This item\u2019s link could not be resolved.</div>';
       else det='<div class="afd">No source linked yet \u2014 tap to link.</div>';
       h+='<div class="al-flag" data-alflag="'+window.__escA(a)+'"><div class="afh"><span>'+(EMX[a]||'\u26a0')+'</span><span class="afn">'+esc(a)+'</span><span class="afs '+cls+'">'+lbl+'</span></div>'+det+'</div>';
     });
@@ -4221,7 +4454,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   });
   /* expose for the dish editor integration */
   window.__linkState=function(item,alg){var r=alkRes(item);if(!r.ok)return 'unresolved';var m=alkGet(item,alg);if(m&&m.verifiedBy){if(m.removable==='yes')return 'removable';if(m.removable==='no')return 'inherent';}return 'pending';};
-  window.__linkLabel=function(st){return ({inherent:'Inherent',removable:'Removable',pending:'Pending',unresolved:'No se pudo resolver el link'})[st]||'Pending';};
+  window.__linkLabel=function(st){return ({inherent:'Inherent',removable:'Removable',pending:'Pending',unresolved:'Link not resolved'})[st]||'Pending';};
   window.__openLinkEditor=function(item,alg){openEditor(item,alg);};
   window.__renderAlink=renderAlink;
   /* (C5) the "N flags still need a source link" number, surfaced on the nav row itself */
@@ -4490,11 +4723,11 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var c=cfg(), h='', tiles='';
     /* CURRENT AMUSE tile */
     var a=merged(byId(c.amuseId));
-    if(a&&window.__avUnavail&&window.__avUnavail(a)){tiles+=pfTile('CURRENT AMUSE · NO DISPONIBLE','🥢',a.name,((window.__av86&&window.__av86(a))?'86':'Fuera de carta')+' · sin sustituto automático',keyOf(a.name),'gold');a=null;}
+    if(a&&window.__avUnavail&&window.__avUnavail(a)){tiles+=pfTile('CURRENT AMUSE · UNAVAILABLE','🥢',a.name,((window.__av86&&window.__av86(a))?'86':'Off-menu')+' · no automatic substitute',keyOf(a.name),'gold');a=null;}
     if(a){var asub=(a.currentAmuse&&a.currentAmuse.served)||a.sub||a.tableside||'';tiles+=pfTile('CURRENT AMUSE','🥢',a.name,asub,keyOf(a.name),'gold');}
     /* always-active tiles (oysters) */
     (c.activos||[]).forEach(function(id){
-      var d=merged(byId(id)); if(!d)return; if(window.__avUnavail&&window.__avUnavail(d)){tiles+=pfTile('CURRENT · NO DISPONIBLE','🍽️',d.name,((window.__av86&&window.__av86(d))?'86':'Fuera de carta')+' · sin sustituto automático',keyOf(d.name),'gold');return;}
+      var d=merged(byId(id)); if(!d)return; if(window.__avUnavail&&window.__avUnavail(d)){tiles+=pfTile('CURRENT · UNAVAILABLE','🍽️',d.name,((window.__av86&&window.__av86(d))?'86':'Off-menu')+' · no automatic substitute',keyOf(d.name),'gold');return;}
       var isOy=!!d.currentOyster||/oyster/i.test(d.name||'');
       var tag=isOy?'CURRENT OYSTERS':'CURRENT';
       var emo=isOy?'🦪':'🍽️';
@@ -4507,11 +4740,11 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     }
     /* ACTIVE SPECIAL full-width row */
     var sp=merged(byId(c.special));
-    if(sp&&window.__avUnavail&&window.__avUnavail(sp)){h+='<div class="pfd-row pf-card" data-dish="'+keyOf(sp.name)+'"><span class="pfd-pin-emo">✨</span>'+'<div class="pfd-pin-m"><span class="pf-tag t-spec">ACTIVE SPECIAL · NO DISPONIBLE</span>'+'<div class="pfd-pin-t" style="margin-top:3px">'+esc(sp.name)+'</div></div>'+'<div class="pfd-side"><span class="pf-left thru">SIN SUSTITUTO</span></div></div>';sp=null;}
+    if(sp&&window.__avUnavail&&window.__avUnavail(sp)){h+='<div class="pfd-row pf-card" data-dish="'+keyOf(sp.name)+'"><span class="pfd-pin-emo">✨</span>'+'<div class="pfd-pin-m"><span class="pf-tag t-spec">ACTIVE SPECIAL · UNAVAILABLE</span>'+'<div class="pfd-pin-t" style="margin-top:3px">'+esc(sp.name)+'</div></div>'+'<div class="pfd-side"><span class="pf-left thru">NO SUBSTITUTE</span></div></div>';sp=null;}
     if(sp){
       var thru=((sp.dates||'').replace(/●\s*/,'').replace('Every ','')
         .replace(/Friday/g,'Fri').replace(/Saturday/g,'Sat').replace(/Sunday/g,'Sun')
-        .replace(/Monday/g,'Mon').replace(/Tuesday/g,'Tue').replace(/Wednesday/g,'Wed').replace(/Thursday/g,'Thu')).trim().toUpperCase()||'ACTIVO';
+        .replace(/Monday/g,'Mon').replace(/Tuesday/g,'Tue').replace(/Wednesday/g,'Wed').replace(/Thursday/g,'Thu')).trim().toUpperCase()||'ACTIVE';
       h+='<div class="pfd-row pf-card" data-dish="'+keyOf(sp.name)+'"><span class="pfd-pin-emo">✨</span>'
         +'<div class="pfd-pin-m"><span class="pf-tag t-spec">ACTIVE SPECIAL</span>'
         +'<div class="pfd-pin-t" style="margin-top:3px">'+esc(sp.name)+'</div></div>'
@@ -4557,7 +4790,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   function alAdd(l){var k=String(l==null?'':l).toLowerCase().trim();return ALADD.hasOwnProperty(k)?ALADD[k]:[];}
   window.__aladd=Object.freeze(JSON.parse(JSON.stringify(ALADD)));
   window.__alAdd=alAdd;
-  /* (A3) minimum length of a typed verification source before “Sin ✓” unlocks */
+  /* (A3) minimum length of a typed verification source before “Verified free ✓” unlocks */
   var SRCMIN=4;
   function normAllerg(l){var k=String(l||'').toLowerCase().trim();if(ALMAP.hasOwnProperty(k))return ALMAP[k];for(var i=0;i<CANON.length;i++)if(CANON[i].toLowerCase()===k)return CANON[i];return null;}
   window.__normAllerg=normAllerg;
@@ -4583,7 +4816,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
      buildId + exportedAt, so an import can tell a Zapheria backup from a random JSON and
      one restaurant's backup from another's. An export carrying NONE of the three is a
      LEGACY export (pre-2026-07-26): still ACCEPTED, then migrated in on save. */
-  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-07-28-p14';
+  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-07-28-p15';
   window.__buildId=BUILD_ID;   /* PHASE 12: cross-scope read of the build id that stamps a verification record */
   /* (B5) sticky marker: IndexedDB has held real data on this device at least once. */
   var IDB_SEEN='mila_overlay_idb_seen_v1';
@@ -4614,7 +4847,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
 
   /* ---------- (B2) persistence HEALTH ----------
      IndexedDB can open cleanly on devices where it can never commit (private mode,
-     evicted quota, blocked storage). The app used to toast "Cambios guardados" on every
+     evicted quota, blocked storage). The app used to toast "Changes saved" on every
      save regardless. Nothing may claim a save until a write has been proven to round-trip. */
   var _psBanner=null;
   function markPersist(ok,why){
@@ -4626,14 +4859,14 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   function renderPersistBanner(){
     if(_persistOk!==false){if(_psBanner&&_psBanner.parentNode)_psBanner.parentNode.removeChild(_psBanner);_psBanner=null;return;}
     if(!_psBanner){_psBanner=document.createElement('div');_psBanner.className='ps-banner';_psBanner.id='psBanner';document.body.appendChild(_psBanner);}
-    _psBanner.innerHTML='<div class="ps-banner-txt"><b>Tus cambios NO se están guardando en este dispositivo.</b>'
-      +(_persistWhy?(' ('+esc(_persistWhy)+')'):'')+' Todo lo que edites se perderá al cerrar la app. Exporta ahora para conservarlo.</div>'
-      +'<button class="ps-banner-btn" id="psBannerExport" type="button">⬇ Exportar</button>';
+    _psBanner.innerHTML='<div class="ps-banner-txt"><b>Your changes are NOT being saved on this device.</b>'
+      +(_persistWhy?(' ('+esc(_persistWhy)+')'):'')+' Anything you edit will be lost when you close the app. Export now to keep it.</div>'
+      +'<button class="ps-banner-btn" id="psBannerExport" type="button">⬇ Export</button>';
     var b=document.getElementById('psBannerExport');if(b)b.onclick=function(){doExport();};
   }
   /* (B2) a toast may only claim a save when persistence is not known-broken. */
   function toastSave(msg){
-    if(_persistOk===false){toast('⚠ NO se guardó — este dispositivo no permite guardar. Exporta tus cambios.');return false;}
+    if(_persistOk===false){toast('⚠ NOT saved — this device will not allow saving. Export your changes.');return false;}
     toast(msg);return true;
   }
   function persist(){
@@ -4642,7 +4875,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     _pendingWrites++;
     idbPut(_overlay,function(err){
       _pendingWrites=Math.max(0,_pendingWrites-1);
-      if(err){markPersist(false,'error de escritura');toast('No se pudo guardar en el dispositivo');}
+      if(err){markPersist(false,'write error');toast('Could not save to the device');}
       else{_dirty=false;markPersist(true,'');}
     });
   }
@@ -4655,7 +4888,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
       if(_dirty||_pendingWrites){
         _pendingWrites++;
         idbPut(_overlay,function(err){_pendingWrites=Math.max(0,_pendingWrites-1);
-          if(err){markPersist(false,'error de escritura');}else{_dirty=false;markPersist(true,'');}});
+          if(err){markPersist(false,'write error');}else{_dirty=false;markPersist(true,'');}});
       }
     }catch(e){}
   }
@@ -4725,7 +4958,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     try{var items=(o&&o.items)||{};Object.keys(items).forEach(function(k){_sweep(items[k]);});}catch(e){}
     try{var cre=(o&&o.created)||{};Object.keys(cre).forEach(function(k){_sweep(cre[k]);});}catch(e){}
     window.__lastImportStripped=n;
-    if(n)toast(n+' verificación'+(n!==1?'es':'')+' sin procedencia descartada'+(n!==1?'s':''));
+    if(n)toast(n+' verification'+(n!==1?'s':'')+' without provenance discarded');
     return o;
   }
   /* ---------- (B1) IMPORT: validate -> preview -> confirm -> write ----------
@@ -4734,26 +4967,26 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
      and IDENTITY, writes NOTHING on its own, and hands a preview to the user. */
   function validateImport(json){
     var o;
-    if(typeof json==='string'){try{o=JSON.parse(json);}catch(e){return {ok:false,reason:'El archivo no es JSON válido.'};}}
+    if(typeof json==='string'){try{o=JSON.parse(json);}catch(e){return {ok:false,reason:'The file is not valid JSON.'};}}
     else o=json;
-    if(Array.isArray(o))return {ok:false,reason:'El archivo es una lista JSON, no un respaldo de Zapheria (falta el objeto con "items").'};
-    if(!isPlainObj(o))return {ok:false,reason:'El archivo no contiene un objeto de respaldo (se recibió '+(o===null?'null':typeof o)+').'};
-    if(!isPlainObj(o.items))return {ok:false,reason:'El archivo no tiene un mapa "items" — no es un respaldo de Zapheria.'};
+    if(Array.isArray(o))return {ok:false,reason:'The file is a JSON list, not a Zapheria backup (the object with "items" is missing).'};
+    if(!isPlainObj(o))return {ok:false,reason:'The file does not contain a backup object (got '+(o===null?'null':typeof o)+').'};
+    if(!isPlainObj(o.items))return {ok:false,reason:'The file has no "items" map — it is not a Zapheria backup.'};
     var bad=null;
     Object.keys(o.items).some(function(k){if(!isPlainObj(o.items[k])){bad=k;return true;}return false;});
-    if(bad!==null)return {ok:false,reason:'Respaldo corrupto: items["'+bad+'"] no es un objeto de edición.'};
-    if(o.links!=null&&!isPlainObj(o.links))return {ok:false,reason:'Respaldo corrupto: "links" no es un objeto.'};
-    if(o.created!=null&&!isPlainObj(o.created))return {ok:false,reason:'Respaldo corrupto: "created" no es un objeto.'};
-    if(o.people!=null&&!Array.isArray(o.people))return {ok:false,reason:'Respaldo corrupto: "people" no es una lista de nombres.'};
+    if(bad!==null)return {ok:false,reason:'Corrupt backup: items["'+bad+'"] is not an edit object.'};
+    if(o.links!=null&&!isPlainObj(o.links))return {ok:false,reason:'Corrupt backup: "links" is not an object.'};
+    if(o.created!=null&&!isPlainObj(o.created))return {ok:false,reason:'Corrupt backup: "created" is not an object.'};
+    if(o.people!=null&&!Array.isArray(o.people))return {ok:false,reason:'Corrupt backup: "people" is not a list of names.'};
     var badc=null;
     try{Object.keys(o.created||{}).some(function(k){
       var v=o.created[k];
       if(!isPlainObj(v)||v._created!==true||!v._type||v.id!==k){badc=k;return true;}
       return false;});}catch(e){badc='?';}
-    if(badc!==null)return {ok:false,reason:'Respaldo corrupto: created["'+badc+'"] no es un ítem creado válido.'};
-    if(o.hoy!=null&&!isPlainObj(o.hoy))return {ok:false,reason:'Respaldo corrupto: "hoy" no es un objeto.'};
+    if(badc!==null)return {ok:false,reason:'Corrupt backup: created["'+badc+'"] is not a valid created item.'};
+    if(o.hoy!=null&&!isPlainObj(o.hoy))return {ok:false,reason:'Corrupt backup: "hoy" is not an object.'};
     if(o.restaurant!=null&&String(o.restaurant)!==RESTAURANT)
-      return {ok:false,reason:'Este respaldo es de otro restaurante ("'+String(o.restaurant)+'"), no de "'+RESTAURANT+'". No se importó nada.'};
+      return {ok:false,reason:'This backup is from another restaurant ("'+String(o.restaurant)+'"), not "'+RESTAURANT+'". Nothing was imported.'};
     /* legacy = pre-envelope export. Accepted and migrated, never rejected. */
     var legacy=(o.schemaVersion==null&&o.restaurant==null&&o.buildId==null);
     return {ok:true,legacy:legacy,data:o};
@@ -4838,13 +5071,13 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
            silently revert the user to an ancient state. Nothing persists either way. */
         var seen=false;try{seen=localStorage.getItem(IDB_SEEN)==='1';}catch(e){}
         if(!seen){try{var s=localStorage.getItem(LSKEY);if(s){var lo=JSON.parse(s);if(isPlainObj(lo))_overlay=normalize(lo);}}catch(e){}}
-        _idbReady=false;markPersist(false,'IndexedDB no disponible');finish();return;
+        _idbReady=false;markPersist(false,'IndexedDB unavailable');finish();return;
       }
       _idbReady=true;
       idbGet(function(e2,val){
         if(e2){
           /* (B5) a READ error must NEVER resurrect legacy localStorage as canonical. */
-          markPersist(false,'error de lectura de IndexedDB');finish();return;
+          markPersist(false,'IndexedDB read error');finish();return;
         }
         if(isPlainObj(val)){_overlay=normalize(val);try{localStorage.setItem(IDB_SEEN,'1');localStorage.removeItem(LSKEY);}catch(e){}verifyPersist(finish);return;}
         /* store empty: one-time migration of the legacy localStorage overlay */
@@ -4852,13 +5085,13 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
         try{var s2=localStorage.getItem(LSKEY);if(s2){var o2=JSON.parse(s2);if(isPlainObj(o2)){_overlay=normalize(o2);migrated=true;}}}catch(e){}
         if(!migrated){verifyPersist(finish);return;}
         idbPut(_overlay,function(werr){
-          if(werr){markPersist(false,'error de escritura');finish();return;}
+          if(werr){markPersist(false,'write error');finish();return;}
           /* (B5) only delete the legacy copy once the migration is PROVEN to have landed */
           idbGet(function(rerr,rv){
             if(!rerr&&isPlainObj(rv)&&isPlainObj(rv.items)){
               try{localStorage.setItem(IDB_SEEN,'1');localStorage.removeItem(LSKEY);}catch(e){}
               markPersist(true,'');
-            }else{markPersist(false,'la migración no se pudo verificar');}
+            }else{markPersist(false,'the migration could not be verified');}
             finish();
           });
         });
@@ -4869,9 +5102,9 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   function verifyPersist(done){
     var pk=OKEY+'__probe', probe={t:Date.now(),r:String(Math.random())};
     idbPutAt(pk,probe,function(werr){
-      if(werr){markPersist(false,'error de escritura');done();return;}
+      if(werr){markPersist(false,'write error');done();return;}
       idbGetAt(pk,function(rerr,rv){
-        if(rerr||!isPlainObj(rv)||rv.t!==probe.t||rv.r!==probe.r){markPersist(false,'la escritura no se pudo verificar');done();return;}
+        if(rerr||!isPlainObj(rv)||rv.t!==probe.t||rv.r!==probe.r){markPersist(false,'the write could not be verified');done();return;}
         markPersist(true,'');idbDelAt(pk,null);done();
       });
     });
@@ -4951,7 +5184,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   /* ---------- merge at render ---------- */
   /* (B3) DEFENSIVE PER FIELD. `(it.X||[]).slice()` threw on any non-array field; rerender
      swallowed the throw with a bare catch, so ALL edits vanished from the screen while the
-     badge kept counting them — which is exactly what lures the user into "Volver a la versión base".
+     badge kept counting them — which is exactly what lures the user into "Back to the base version".
      Now a malformed field falls back to the BASELINE value for that field only and is
      logged; every other field of the item, and every other item, still merges.
      Also: array fields are ALWAYS copied, including un-patched baseline arrays, so a caller
@@ -4962,7 +5195,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   function _warnField(id,f,v){
     var k=id+'.'+f;if(_mergeWarn[k])return;
     _mergeWarn[k]={id:id,field:f,got:(v===null?'null':(Array.isArray(v)?'array':typeof v))};
-    try{console.warn('[overlay] campo inválido — se usa el original:',id,f,v);}catch(e){}
+    try{console.warn('[overlay] invalid field — falling back to the original:',id,f,v);}catch(e){}
   }
   window.__mergeOv=function(d){
     if(!d||!d.id)return d;
@@ -5029,7 +5262,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     });
     if(!groups.length)return '';
     return groups.map(function(g){
-      return '<div class="alk-absent">✓ Verificado SIN: '+esc(g.al.join(', '))
+      return '<div class="alk-absent">✓ Verified FREE OF: '+esc(g.al.join(', '))
         +' <span class="alk-absent-by">— '+esc(g.by)+' · '+esc(g.date)+' · '+esc(g.source)+'</span></div>';
     }).join('');
   };
@@ -5045,25 +5278,25 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   }
   /* (B3) rerender used to swallow every render throw with a bare catch: the menu went
      EMPTY while the badge still counted the edits. A failed render is now stated on
-     screen, with export offered and an explicit "do not press Volver a la versión base". */
+     screen, with export offered and an explicit "do not press Back to the base version". */
   var _rerrEl=null,_lastRenderErrors=[];
   function renderRenderError(errs){
     _lastRenderErrors=errs||[];
     if(!_lastRenderErrors.length){if(_rerrEl&&_rerrEl.parentNode)_rerrEl.parentNode.removeChild(_rerrEl);_rerrEl=null;return;}
     if(!_rerrEl){_rerrEl=document.createElement('div');_rerrEl.className='ps-banner err';_rerrEl.id='rerrBanner';document.body.appendChild(_rerrEl);}
     _rerrEl.innerHTML='<div class="ps-banner-txt"><b>No se pudo dibujar: '+esc(_lastRenderErrors.join(' · '))+'.</b> '
-      +'Tus cambios SIGUEN guardados — <b>no pulses “Volver a la versión base”</b>. Exporta y recarga la app.</div>'
-      +'<button class="ps-banner-btn" id="rerrExport" type="button">⬇ Exportar</button>';
+      +'Your changes are STILL saved — <b>do not press “Back to the base version”</b>. Export and reload the app.</div>'
+      +'<button class="ps-banner-btn" id="rerrExport" type="button">⬇ Export</button>';
     var b=document.getElementById('rerrExport');if(b)b.onclick=function(){doExport();};
   }
   window.__renderErrors=function(){return _lastRenderErrors.slice();};
   function rerender(){
     var errs=[];
-    try{if(typeof renderFood==='function')renderFood();}catch(e){errs.push('menú de comida');try{console.error('[render] renderFood',e);}catch(_e){}}
-    try{if(typeof renderBev==='function')renderBev();}catch(e){errs.push('carta de bebidas');try{console.error('[render] renderBev',e);}catch(_e){}}
-    try{if(window.__renderHoy)window.__renderHoy();}catch(e){errs.push('“Hoy”');try{console.error('[render] renderHoy',e);}catch(_e){}}
-    try{if(window.__renderWineList)window.__renderWineList();}catch(e){errs.push('carta de vinos');try{console.error('[render] renderWineList',e);}catch(_e){}}
-    try{if(window.__renderSpiritList)window.__renderSpiritList();}catch(e){errs.push('carta de destilados');try{console.error('[render] renderSpiritList',e);}catch(_e){}}
+    try{if(typeof renderFood==='function')renderFood();}catch(e){errs.push('food menu');try{console.error('[render] renderFood',e);}catch(_e){}}
+    try{if(typeof renderBev==='function')renderBev();}catch(e){errs.push('drinks list');try{console.error('[render] renderBev',e);}catch(_e){}}
+    try{if(window.__renderHoy)window.__renderHoy();}catch(e){errs.push('“Today”');try{console.error('[render] renderHoy',e);}catch(_e){}}
+    try{if(window.__renderWineList)window.__renderWineList();}catch(e){errs.push('wine list');try{console.error('[render] renderWineList',e);}catch(_e){}}
+    try{if(window.__renderSpiritList)window.__renderSpiritList();}catch(e){errs.push('spirits list');try{console.error('[render] renderSpiritList',e);}catch(_e){}}
     try{if(window.__ffRebuild)window.__ffRebuild();}catch(_e){}
     try{if(window.__foodChipsRebuild)window.__foodChipsRebuild();}catch(_e){}
     try{if(window.__bevChipsRebuild)window.__bevChipsRebuild();}catch(_e){}
@@ -5078,11 +5311,11 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   var host=document.createElement('div');host.id='ph4-host';document.body.appendChild(host);
   host.innerHTML=
     '<div class="ed-dim" id="edDim"></div>'+
-    '<div class="ed-sheet" id="edSheet" role="dialog" aria-label="Editar ítem"><div class="ed-drag"><div class="ed-grab"></div></div><div class="sh-head"><button class="sh-back" data-sh="back" type="button" aria-label="Atrás">‹</button><div class="sh-title"></div><button class="sh-x" data-sh="close" type="button" aria-label="Cerrar">✕</button></div><div class="sh-scroll"><div id="edBody"></div></div></div>'+
+    '<div class="ed-sheet" id="edSheet" role="dialog" aria-label="Edit item"><div class="ed-drag"><div class="ed-grab"></div></div><div class="sh-head"><button class="sh-back" data-sh="back" type="button" aria-label="Back">‹</button><div class="sh-title"></div><button class="sh-x" data-sh="close" type="button" aria-label="Close">✕</button></div><div class="sh-scroll"><div id="edBody"></div></div></div>'+
     '<div class="ed-dim" id="panelDim"></div>'+
-    '<div class="ed-sheet" id="panelSheet" role="dialog" aria-label="Mis cambios"><div class="ed-drag"><div class="ed-grab"></div></div><div class="sh-head"><button class="sh-back" data-sh="back" type="button" aria-label="Atrás">‹</button><div class="sh-title"></div><button class="sh-x" data-sh="close" type="button" aria-label="Cerrar">✕</button></div><div class="sh-scroll"><div id="panelBody"></div></div></div>'+
+    '<div class="ed-sheet" id="panelSheet" role="dialog" aria-label="My changes"><div class="ed-drag"><div class="ed-grab"></div></div><div class="sh-head"><button class="sh-back" data-sh="back" type="button" aria-label="Back">‹</button><div class="sh-title"></div><button class="sh-x" data-sh="close" type="button" aria-label="Close">✕</button></div><div class="sh-scroll"><div id="panelBody"></div></div></div>'+
     '<div class="ed-dim" id="hoyDim"></div>'+
-    '<div class="ed-sheet" id="hoySheet" role="dialog" aria-label="Editar Hoy"><div class="ed-drag"><div class="ed-grab"></div></div><div class="sh-head"><button class="sh-back" data-sh="back" type="button" aria-label="Atrás">‹</button><div class="sh-title"></div><button class="sh-x" data-sh="close" type="button" aria-label="Cerrar">✕</button></div><div class="sh-scroll"><div id="hoyPickBody"></div></div></div>';
+    '<div class="ed-sheet" id="hoySheet" role="dialog" aria-label="Edit Today"><div class="ed-drag"><div class="ed-grab"></div></div><div class="sh-head"><button class="sh-back" data-sh="back" type="button" aria-label="Back">‹</button><div class="sh-title"></div><button class="sh-x" data-sh="close" type="button" aria-label="Close">✕</button></div><div class="sh-scroll"><div id="hoyPickBody"></div></div></div>';
   function openS(d,s){document.getElementById(d).classList.add('open');document.getElementById(s).classList.add('open');try{_p5hist();}catch(e){}}
   function closeS(d,s){document.getElementById(d).classList.remove('open');document.getElementById(s).classList.remove('open');
     if(s==='panelSheet'){_pstack=[];_cf=null;}
@@ -5111,7 +5344,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   /* ---------- EDITOR ---------- */
   var ed=null;
   function openEditor(id){
-    var base=baseItem(id);if(!base){toast('Ítem no encontrado');return;}
+    var base=baseItem(id);if(!base){toast('Item not found');return;}
     var cur=window.__mergeOv(base);
     var st={};CANON.forEach(function(c){st[c]='unknown';});
     (cur.allerg||[]).forEach(function(l){var c=normAllerg(l);if(c)st[c]='present';});
@@ -5149,13 +5382,13 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   }
   function listSec(label,key,arr){
     var rows=(arr||[]).map(function(v,i){
-      return '<div class="ed-lirow"><input class="ed-inp" data-list="'+key+'" value="'+escAttr(v)+'" placeholder="'+esc(label)+'…"><button class="ed-lidel" data-del="'+key+'" data-idx="'+i+'" type="button" aria-label="Quitar">−</button></div>';
+      return '<div class="ed-lirow"><input class="ed-inp" data-list="'+key+'" value="'+escAttr(v)+'" placeholder="'+esc(label)+'…"><button class="ed-lidel" data-del="'+key+'" data-idx="'+i+'" type="button" aria-label="Remove">−</button></div>';
     }).join('');
     return '<label class="ed-lbl">'+label+'</label><div class="ed-list">'+rows+'</div>'
-      +'<button class="ed-liadd" data-add="'+key+'" type="button">＋ Añadir</button>';
+      +'<button class="ed-liadd" data-add="'+key+'" type="button">＋ Add</button>';
   }
   function renderEditor(){
-    /* (A3) the “Sin ✓” (absent_verified) control is HARD-GATED behind a typed source of
+    /* (A3) the “Verified free ✓” (absent_verified) control is HARD-GATED behind a typed source of
        >= 4 characters. absent_verified is a human act; it needs verifiedBy + date + source. */
     var _srcOk=String(ed.source||'').trim().length>=SRCMIN;
     var _phSafe=window.__safeImg(ed.photo);
@@ -5163,62 +5396,62 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var al=CANON.map(function(c){
       var s=ed.st[c];
       return '<div class="ed-alrow"><span class="ed-alname">'+(ALABEL[c]||c)+'</span><div class="ed-tri">'
-        +'<button class="ed-tb p'+(s==='present'?' on':'')+'" data-al="'+c+'" data-alst="present" type="button">Presente</button>'
-        +'<button class="ed-tb u'+(s==='unknown'?' on':'')+'" data-al="'+c+'" data-alst="unknown" type="button">No sé</button>'
-        +'<button class="ed-tb a'+(s==='absent'?' on':'')+'" data-al="'+c+'" data-alst="absent" type="button"'+(_srcOk?'':' disabled')+'>Sin ✓</button>'
+        +'<button class="ed-tb p'+(s==='present'?' on':'')+'" data-al="'+c+'" data-alst="present" type="button">Present</button>'
+        +'<button class="ed-tb u'+(s==='unknown'?' on':'')+'" data-al="'+c+'" data-alst="unknown" type="button">Not sure</button>'
+        +'<button class="ed-tb a'+(s==='absent'?' on':'')+'" data-al="'+c+'" data-alst="absent" type="button"'+(_srcOk?'':' disabled')+'>Verified free ✓</button>'
         +'</div></div>';
     }).join('');
     /* the source block is ALWAYS rendered (it is the gate, not a consequence of the gate) */
-    var prov='<div class="ed-prov"><label class="ed-lbl">Fuente de la verificación (requerida para “Sin ✓”)</label>'
-        +'<input class="ed-inp" data-f="source" value="'+escAttr(ed.source)+'" placeholder="¿Quién/qué confirmó la ausencia?">'
+    var prov='<div class="ed-prov"><label class="ed-lbl">Verification source (required for “Verified free ✓”)</label>'
+        +'<input class="ed-inp" data-f="source" value="'+escAttr(ed.source)+'" placeholder="Who or what confirmed the absence?">'
         +'<div class="ed-provmeta" data-provmeta>'+(_srcOk
-            ?('Se sellará en los alérgenos que cambies a “Sin ✓”: verificado por <b>'+esc(_zsig())+'</b> · '+today())
-            :('Escribe la fuente ('+SRCMIN+' caracteres mínimo) para habilitar “Sin ✓”.'))
+            ?('Will be stamped on every allergen you switch to “Verified free ✓”: verified by <b>'+esc(_zsig())+'</b> · '+today())
+            :('Enter the source ('+SRCMIN+' characters minimum) to enable “Verified free ✓”.'))
         +'</div></div>';
-    var extra=ed.extra.length?('<div class="ed-extra">Otros alérgenos conservados: '+esc(ed.extra.join(', '))+'</div>'):'';
-    var lists=ed.isBottle?'':(listSec('Ingredientes','ings',ed.ings)
-      +(ed.isDrink?'':listSec('Salsas','sauces',ed.sauces))
-      +listSec('Guarnición','garnish',ed.garnish));
+    var extra=ed.extra.length?('<div class="ed-extra">Other allergens kept: '+esc(ed.extra.join(', '))+'</div>'):'';
+    var lists=ed.isBottle?'':(listSec('Ingredients','ings',ed.ings)
+      +(ed.isDrink?'':listSec('Sauces','sauces',ed.sauces))
+      +listSec('Garnish','garnish',ed.garnish));
     /* allergen-source LINK classification per present allergen (Inherent/Removable/Pending) */
     var links='';
     if(ed.presentLabels&&ed.presentLabels.length&&window.__linkState){
-      links='<label class="ed-lbl">Fuentes de alérgenos · clasificación</label><div class="ed-links">'
+      links='<label class="ed-lbl">Allergen sources · classification</label><div class="ed-links">'
         +ed.presentLabels.map(function(a){
           var s=window.__linkState(ed.id,a);var lbl=window.__linkLabel?window.__linkLabel(s):s;   /* (A6) id, not name */
           return '<div class="ed-linkrow"><span class="ed-linkname">'+(EM_(a)+' ')+esc(a)+'</span>'
             +'<span class="ed-linkst st-'+s+'">'+lbl+'</span>'
-            +'<button class="ed-linkbtn" data-linkedit="'+escAttr(a)+'" type="button">Link / Editar fuente</button></div>';
+            +'<button class="ed-linkbtn" data-linkedit="'+escAttr(a)+'" type="button">Link / edit source</button></div>';
         }).join('')+'</div>';
     }
-    /* PHASE C — disponibilidad: Activo / 86 / Fuera de carta. Nunca borra el ítem. */
+    /* PHASE C — availability: Active / 86 / Off-menu. The item is never deleted. */
     var _av=ed.avail||'active';
-    var _avnote=(_av==='86')?'Sigue en la carta pero hoy no hay. Se muestra atenuado con el sello “86”, se puede seguir estudiando y buscando.'
-      :(_av==='off-menu'?'Ya no se sirve. Se oculta del menú, de los conteos, de la búsqueda y de los maridajes. <b>No se borra</b>: se restaura desde ⚙ → “Fuera de carta”.'
-      :'Se sirve normalmente.');
-    var avsec='<div class="ed-avsec"><label class="ed-lbl">Disponibilidad</label><div class="ed-avtri">'
-      +'<button class="ed-avb a'+(_av==='active'?' on':'')+'" data-av="active" type="button">Activo</button>'
+    var _avnote=(_av==='86')?'Still on the menu but out today. It shows dimmed with the “86” stamp, and stays searchable and studiable.'
+      :(_av==='off-menu'?'No longer served. Hidden from the menu, the counts, search and pairings. <b>Nothing is deleted</b>: restore it from ⚙ → “Off-menu”.'
+      :'Served as normal.');
+    var avsec='<div class="ed-avsec"><label class="ed-lbl">Availability</label><div class="ed-avtri">'
+      +'<button class="ed-avb a'+(_av==='active'?' on':'')+'" data-av="active" type="button">Active</button>'
       +'<button class="ed-avb e'+(_av==='86'?' on':'')+'" data-av="86" type="button">86</button>'
-      +'<button class="ed-avb o'+(_av==='off-menu'?' on':'')+'" data-av="off-menu" type="button">Fuera de carta</button>'
+      +'<button class="ed-avb o'+(_av==='off-menu'?' on':'')+'" data-av="off-menu" type="button">Off-menu</button>'
       +'</div><div class="ed-avnote">'+_avnote+'</div></div>';
     document.getElementById('edBody').innerHTML=
-      '<div class="ed-title">Editar ítem</div><div class="ed-sub">'+esc(ed.id)+'</div>'
-      +'<label class="ed-lbl">Nombre</label><input class="ed-inp" data-f="name" value="'+escAttr(ed.name)+'">'
+      '<div class="ed-title">Edit item</div><div class="ed-sub">'+esc(ed.id)+'</div>'
+      +'<label class="ed-lbl">Name</label><input class="ed-inp" data-f="name" value="'+escAttr(ed.name)+'">'
       +'<div class="ed-err" id="edNameErr">'+(ed.nameErr?esc(ed.nameErr):'')+'</div>'
-      +'<label class="ed-lbl">Descripción</label><textarea class="ed-inp" data-f="desc">'+esc(ed.desc)+'</textarea>'
+      +'<label class="ed-lbl">Description</label><textarea class="ed-inp" data-f="desc">'+esc(ed.desc)+'</textarea>'
       +lists
-      +'<label class="ed-lbl">Alérgenos</label><div class="ed-algrid">'+al+'</div>'+prov+extra
+      +'<label class="ed-lbl">Allergens</label><div class="ed-algrid">'+al+'</div>'+prov+extra
       +links
-      +'<label class="ed-lbl">Imagen</label>'+img
-      +'<div class="ed-imgrow"><label class="ed-btn ghost small" for="edFile">Reemplazar imagen</label>'
-      +'<button class="ed-btn ghost small" data-edact="quitar" type="button">Quitar imagen</button></div>'
+      +'<label class="ed-lbl">Photo</label>'+img
+      +'<div class="ed-imgrow"><label class="ed-btn ghost small" for="edFile">Replace photo</label>'
+      +'<button class="ed-btn ghost small" data-edact="quitar" type="button">Remove photo</button></div>'
       +'<input type="file" id="edFile" accept="image/*" style="display:none">'
       +avsec
-      +'<button class="ed-btn" data-edact="save" type="button">Guardar</button>'
-      +'<button class="ed-btn ghost" data-edact="cancel" type="button">Cancelar</button>'
-      +'<div id="edRevWrap"><button class="ed-btn ghost" data-edact="revert" type="button">Revertir a original</button></div>';
+      +'<button class="ed-btn" data-edact="save" type="button">Save</button>'
+      +'<button class="ed-btn ghost" data-edact="cancel" type="button">Cancel</button>'
+      +'<div id="edRevWrap"><button class="ed-btn ghost" data-edact="revert" type="button">Revert to original</button></div>';
     var f=document.getElementById('edFile');
     if(f)f.addEventListener('change',function(){var file=this.files&&this.files[0];if(!file)return;downscale(file,function(dataURL){syncInputs();ed.photo=dataURL;ed.photoTouched=true;ed.needsImage=false;renderEditor();});});
-    /* (A3) toggle the “Sin ✓” gate live, in place — no re-render, so focus/caret survive */
+    /* (A3) toggle the “Verified free ✓” gate live, in place — no re-render, so focus/caret survive */
     var si=document.querySelector('#edBody [data-f="source"]');
     if(si)si.addEventListener('input',function(){
       ed.source=this.value;
@@ -5227,8 +5460,8 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
         if(ok)b.removeAttribute('disabled');else b.setAttribute('disabled','');
       });
       var m=document.querySelector('#edBody [data-provmeta]');
-      if(m)m.innerHTML=ok?('Se sellará en los alérgenos que cambies a “Sin ✓”: verificado por <b>'+esc(_zsig())+'</b> · '+today())
-                        :('Escribe la fuente ('+SRCMIN+' caracteres mínimo) para habilitar “Sin ✓”.');
+      if(m)m.innerHTML=ok?('Will be stamped on every allergen you switch to “Verified free ✓”: verified by <b>'+esc(_zsig())+'</b> · '+today())
+                        :('Enter the source ('+SRCMIN+' characters minimum) to enable “Verified free ✓”.');
     });
   }
   /* (C7) declared type must be an image, the bytes must agree with it, and the file
@@ -5245,20 +5478,20 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   }
   window.__photoLimits={maxBytes:PH_MAX,mime:Object.keys(PH_MIME)};
   function downscale(file,cb){
-    if(!file){toast('No se seleccionó ningún archivo');return;}
+    if(!file){toast('No file selected');return;}
     var kind=PH_MIME[String(file.type||'').toLowerCase()];
-    if(!kind){toast('Formato no admitido: usa PNG, JPEG, WebP o GIF — no se guardó nada');return;}
+    if(!kind){toast('Unsupported format: use PNG, JPEG, WebP or GIF — nothing was saved');return;}
     if(file.size>PH_MAX){
-      toast('Imagen demasiado grande ('+(Math.round(file.size/104857.6)/10)+' MB). Máximo '+(PH_MAX/1048576)+' MB — no se guardó nada');
+      toast('Photo too large ('+(Math.round(file.size/104857.6)/10)+' MB). Maximum '+(PH_MAX/1048576)+' MB — nothing was saved');
       return;
     }
     var hr=new FileReader();
-    hr.onerror=function(){toast('No se pudo leer el archivo — no se guardó nada');};
+    hr.onerror=function(){toast('Could not read the file — nothing was saved');};
     hr.onload=function(){
       var head;try{head=new Uint8Array(hr.result);}catch(e){head=null;}
-      if(!_magicOk(head,kind)){toast('El archivo no es una imagen válida — no se guardó nada');return;}
+      if(!_magicOk(head,kind)){toast('The file is not a valid image — nothing was saved');return;}
       var r=new FileReader();
-      r.onerror=function(){toast('No se pudo leer la imagen — no se guardó nada');};
+      r.onerror=function(){toast('Could not read the image — nothing was saved');};
       r.onload=function(){
         var im=new Image();
         im.onload=function(){
@@ -5268,7 +5501,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
           catch(e){cb(r.result);}                     /* canvas blocked: keep the VALIDATED original */
         };
         /* (C7) a decode failure used to commit r.result — the raw non-image — as the photo. */
-        im.onerror=function(){toast('No se pudo decodificar la imagen — no se guardó nada');};
+        im.onerror=function(){toast('Could not decode the image — nothing was saved');};
         im.src=r.result;
       };
       r.readAsDataURL(file);
@@ -5294,7 +5527,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var _nm=String(ed.name||'').trim();
     var _errEl=document.getElementById('edNameErr');
     if(!_nm){
-      ed.nameErr='El nombre no puede estar vacío.';
+      ed.nameErr='The name cannot be empty.';
       if(_errEl)_errEl.textContent=ed.nameErr; else renderEditor();
       var _ni=document.querySelector('#edBody [data-f="name"]');
       if(_ni){try{_ni.focus();}catch(e){}}
@@ -5304,7 +5537,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     ed.name=_nm;
     /* a duplicate is legal (two venues really can share a name) but never silent. */
     var _dup=dupName(ed.id,_nm);
-    window.__lastDupWarn=_dup?(' · aviso: ya existe otro ítem llamado “'+_dup+'”'):'';
+    window.__lastDupWarn=_dup?(' · warning: another item is already called “'+_dup+'”'):'';
     function clean(a){return (a||[]).map(function(s){return String(s).trim();}).filter(Boolean);}
     var patch={name:ed.name,description:ed.desc,ingredients:clean(ed.ings),sauces:clean(ed.sauces),garnish:clean(ed.garnish)};
     /* (A5) did this session actually touch the allergen block? A photo swap, a rename, an
@@ -5313,9 +5546,9 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
       ||(ed.extra.join('')!==(ed.extra0||[]).join(''));
     if(allergTouched){
       var present=[],absent=[],prov={},stateMap={},t=today(),srcRaw=String(ed.source||'').trim();
-      /* only allergens newly moved to “Sin ✓” need a freshly typed source */
+      /* only allergens newly moved to “Verified free ✓” need a freshly typed source */
       var newAbs=CANON.filter(function(c){return ed.st[c]==='absent'&&ed.st0[c]!=='absent';});
-      if(newAbs.length&&srcRaw.length<SRCMIN){toast('Indica la fuente para los alérgenos “Sin ✓”');return;}
+      if(newAbs.length&&srcRaw.length<SRCMIN){toast('Give the source for the “Verified free ✓” allergens');return;}
       var dropped=[];
       CANON.forEach(function(c){
         if(ed.st[c]==='present'){present.push(c);stateMap[c]='present';return;}
@@ -5332,7 +5565,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
       });
       present=present.concat(ed.extra);
       patch.allergens=present;patch.absentVerified=absent;patch.allergenState=stateMap;patch.allergenProvenance=prov;
-      if(dropped.length)toast('Sin procedencia completa: '+dropped.join(', ')+' vuelve a “No sé”');
+      if(dropped.length)toast('Incomplete provenance: '+dropped.join(', ')+' reverts to “Not sure”');
     }
     if(ed.photoTouched){if(ed.photo){patch.photo=ed.photo;patch.needsImage=false;}else{patch.photo='';patch.needsImage=true;}}
     patch.availability=(ed.avail==='86'||ed.avail==='off-menu')?ed.avail:'active';
@@ -5341,11 +5574,11 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
          separately at validation time would be overwritten by this one ~1ms later and
          the user would never see it — a silent duplicate is exactly what C4 forbids. */
       var _dupW=window.__lastDupWarn||'';window.__lastDupWarn='';
-      toastSave((patch.availability==='off-menu'?'Fuera de carta — recuperable en ⚙':(patch.availability==='86'?'Marcado 86 — hoy no hay':'Cambios guardados'))+_dupW);}
+      toastSave((patch.availability==='off-menu'?'Off-menu — recoverable in ⚙':(patch.availability==='86'?'Marked 86 — none today':'Changes saved'))+_dupW);}
   }
   document.getElementById('edSheet').addEventListener('click',function(e){
     var tb=e.target.closest('[data-al]');
-    if(tb){if(tb.hasAttribute('disabled'))return;   /* (A3) the “Sin ✓” gate */
+    if(tb){if(tb.hasAttribute('disabled'))return;   /* (A3) the “Verified free ✓” gate */
       syncInputs();ed.st[tb.getAttribute('data-al')]=tb.getAttribute('data-alst');renderEditor();return;}
     var add=e.target.closest('[data-add]');
     if(add){syncInputs();var ka=add.getAttribute('data-add');ed[ka]=ed[ka]||[];ed[ka].push('');renderEditor();
@@ -5362,18 +5595,18 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     else if(a==='save'){saveEditor();}
     else if(a==='cancel'){closeS('edDim','edSheet');}
     else if(a==='revert'){syncInputs();askRevert();}
-    else if(a==='revert-yes'){clearItem(ed.id);closeS('edDim','edSheet');rerender();toastSave('Restablecido al original');}
+    else if(a==='revert-yes'){clearItem(ed.id);closeS('edDim','edSheet');rerender();toastSave('Reset to original');}
     else if(a==='revert-no'){renderEditor();}
   });
   /* ---------- (B6) "Revertir" confirmation ----------
      Revert threw away every stored edit AND the replacement photo with a single tap and
      no confirmation. It now names exactly what is lost, in page (never window.confirm —
      native modals are banned in this build). */
-  var _REVLBL={name:'nombre',description:'descripción',ingredients:'ingredientes',sauces:'salsas',
-               garnish:'guarnición',allergens:'alérgenos',absentVerified:'verificaciones “Sin ✓”',
-               allergenState:'estado de alérgenos',allergenProvenance:'procedencia de alérgenos',
-               availability:'disponibilidad',contentVerified:'verificación de contenido',
-               contentVerification:'procedencia de verificación'};
+  var _REVLBL={name:'name',description:'description',ingredients:'ingredients',sauces:'sauces',
+               garnish:'garnish',allergens:'allergens',absentVerified:'“Verified free ✓” verifications',
+               allergenState:'allergen state',allergenProvenance:'allergen provenance',
+               availability:'availability',contentVerified:'content verification',
+               contentVerification:'verification provenance'};
   function revertLoss(id){
     var o=getOverlay(),it=(o.items||{})[id]||{};
     var keys=Object.keys(_REVLBL).filter(function(k){return it[k]!=null;});
@@ -5384,17 +5617,17 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   }
   function lossText(id){
     var l=revertLoss(id),parts=[];
-    parts.push(l.n+' cambio'+(l.n!==1?'s':'')+(l.labels.length?(' ('+l.labels.join(', ')+')'):''));
-    if(l.photo)parts.push('la foto');
-    if(l.links)parts.push(l.links+' link'+(l.links!==1?'s':'')+' de alérgeno');
-    return 'Se perderán '+parts.join(' y ')+'. No se puede deshacer.';
+    parts.push(l.n+' change'+(l.n!==1?'s':'')+(l.labels.length?(' ('+l.labels.join(', ')+')'):''));
+    if(l.photo)parts.push('the photo');
+    if(l.links)parts.push(l.links+' allergen link'+(l.links!==1?'s':''));
+    return 'You will lose '+parts.join(' and ')+'. This cannot be undone.';
   }
   window.__lossText=lossText;
   function askRevert(){
     var w=document.getElementById('edRevWrap');if(!w)return;
-    w.innerHTML='<div class="ed-sub" id="edRevMsg" style="margin:10px 0 6px">¿Revertir a original? '+esc(lossText(ed.id))+'</div>'
-      +'<div class="ed-imgrow"><button class="ed-btn danger small" data-edact="revert-yes" type="button">Sí, revertir</button>'
-      +'<button class="ed-btn ghost small" data-edact="revert-no" type="button">Cancelar</button></div>';
+    w.innerHTML='<div class="ed-sub" id="edRevMsg" style="margin:10px 0 6px">Revert to original? '+esc(lossText(ed.id))+'</div>'
+      +'<div class="ed-imgrow"><button class="ed-btn danger small" data-edact="revert-yes" type="button">Yes, revert</button>'
+      +'<button class="ed-btn ghost small" data-edact="revert-no" type="button">Cancel</button></div>';
     try{w.scrollIntoView({block:'center'});}catch(e){}
   }
   /* refresh the dish editor's link states after a link is saved/unlinked in the AL sheet */
@@ -5402,30 +5635,30 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   /* verification handles (read/drive only — nothing here can write a verified absence) */
   window.__rerender=rerender;window.__openEditor=openEditor;
 
-  /* ---------- MIS CAMBIOS panel ---------- */
+  /* ---------- MY CHANGES panel ---------- */
 
   /* ---------- (B1) import PREVIEW: what is coming in, and what it REPLACES ---------- */
   function renderImportPreview(){
     if(!_pendingImport)return;
     var d=_pendingImport.data,inc=ovCounts(d),cur=ovCounts(getOverlay());
     var src=_pendingImport.legacy
-      ? 'Respaldo <b>antiguo</b> (sin versión de esquema ni restaurante). Se acepta y se migra a la versión '+SCHEMA_VERSION+'.'
-      : ('Respaldo v'+esc(String(d.schemaVersion==null?'?':d.schemaVersion))+' · '+esc(String(d.restaurant||RESTAURANT))
+      ? '<b>Old</b> backup (no schema version and no restaurant). It is accepted and migrated to version '+SCHEMA_VERSION+'.'
+      : ('Backup v'+esc(String(d.schemaVersion==null?'?':d.schemaVersion))+' · '+esc(String(d.restaurant||RESTAURANT))
          +' · build '+esc(String(d.buildId||'?'))+(d.exportedAt?(' · '+esc(String(d.exportedAt).slice(0,10))):''));
-    var h='<div class="ed-title">Importar cambios</div><div class="ed-sub" id="impSrc">'+src+'</div>'
+    var h='<div class="ed-title">Import changes</div><div class="ed-sub" id="impSrc">'+src+'</div>'
       +'<div class="imp-prev" id="impPrev">'
-      +'<div class="imp-row"><span>Ítems editados</span><b id="impItems">'+inc.items+'</b></div>'
-      +'<div class="imp-row"><span>Links de alérgeno</span><b id="impLinks">'+inc.links+'</b></div>'
-      +'<div class="imp-row"><span>Ítems creados</span><b id="impCreated">'+inc.created+'</b></div>'
-      +'<div class="imp-row"><span>Configuración “Hoy”</span><b id="impHoy">'+(inc.hoy?'sí':'no')+'</b></div>'
-      +'<div class="imp-warn" id="impWarn">Esto se <b>COMBINA</b> con lo que ya tienes (<b>'+cur.items+'</b> ítem'+(cur.items!==1?'s':'')
-      +' editado'+(cur.items!==1?'s':'')+' y <b>'+cur.links+'</b> link'+(cur.links!==1?'s':'')+' de alérgeno). '
-      +'<b>No se borra nada tuyo.</b> Lo que solo esté en el archivo se añade; lo que sea igual se deja como está; '
-      +'y si algo cambió en los dos lados se queda <b>lo tuyo</b> y el conflicto se marca para que tú elijas.</div>'
+      +'<div class="imp-row"><span>Edited items</span><b id="impItems">'+inc.items+'</b></div>'
+      +'<div class="imp-row"><span>Allergen links</span><b id="impLinks">'+inc.links+'</b></div>'
+      +'<div class="imp-row"><span>Created items</span><b id="impCreated">'+inc.created+'</b></div>'
+      +'<div class="imp-row"><span>“Today” settings</span><b id="impHoy">'+(inc.hoy?'yes':'no')+'</b></div>'
+      +'<div class="imp-warn" id="impWarn">This <b>MERGES</b> with what you already have (<b>'+cur.items+'</b> item'+(cur.items!==1?'s':'')
+      +' edited and <b>'+cur.links+'</b> allergen link'+(cur.links!==1?'s':'')+'). '
+      +'<b>Nothing of yours is deleted.</b> Anything only in the file is added; anything identical is left alone; '
+      +'and if something changed on both sides <b>yours</b> stays active and the conflict is flagged for you to decide.</div>'
       +'</div>'
-      +'<button class="ed-btn ghost" data-mc="imp-export" type="button">⬇ Exportar lo actual primero</button>'
-      +'<button class="ed-btn" data-mc="imp-yes" type="button">Combinar con mis cambios</button>'
-      +'<button class="ed-btn ghost" data-mc="imp-no" type="button">Cancelar</button>';
+      +'<button class="ed-btn ghost" data-mc="imp-export" type="button">⬇ Export what you have first</button>'
+      +'<button class="ed-btn" data-mc="imp-yes" type="button">Merge with my changes</button>'
+      +'<button class="ed-btn ghost" data-mc="imp-no" type="button">Cancel</button>';
     document.getElementById('panelBody').innerHTML=h;
   }
   function openImportPreview(){
@@ -5433,7 +5666,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     if(!document.getElementById('panelSheet').classList.contains('open')){_pstack=['root'];openS('panelDim','panelSheet');}
     if(panelCur()!=='import')panelGo('import'); else panelRender();
   }
-  /* ---------- (B7) "Volver a la versión base" names ALL casualties, and offers export first ---------- */
+  /* ---------- (B7) "Back to the base version" names ALL casualties, and offers export first ---------- */
   function askClearAll(){
     if(!document.getElementById('panelSheet').classList.contains('open')){_pstack=['root'];openS('panelDim','panelSheet');}
     if(panelCur()!=='reset')panelGo('reset'); else panelRender();
@@ -5442,18 +5675,18 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var wrap={};
     var c=ovCounts(getOverlay());
     wrap.innerHTML='<div class="ed-sub" id="mcResetMsg" style="margin:8px 0 6px">'
-      +'Se quitan los cambios guardados <b>en este dispositivo</b> desde la versión base: '
-      +'<b>'+c.items+'</b> ítem'+(c.items!==1?'s':'')+' editado'+(c.items!==1?'s':'')
-      +', <b>'+c.links+'</b> link'+(c.links!==1?'s':'')+' de alérgeno'
-      +' y la configuración de <b>hoy</b>'+(c.hoy?'':' (actualmente la predeterminada)')+'.'
+      +'This removes the changes saved <b>on this device</b> since the base version: '
+      +'<b>'+c.items+'</b> edited item'+(c.items!==1?'s':'')
+      +', <b>'+c.links+'</b> allergen link'+(c.links!==1?'s':'')
+      +' and the <b>today</b> settings'+(c.hoy?'':' (currently the default)')+'.'
       +'</div>'
       +'<div class="ed-sub" style="margin:0 0 10px">'
-      +'La app vuelve a la versión base del 2026-07-28 (<b>37</b> ítems verificados y <b>35</b> links de alérgeno ya incluidos). '
-      +'El menú no se borra. Esta acción no se puede deshacer.'
+      +'The app returns to the base version of 2026-07-28 (<b>37</b> verified items and <b>35</b> allergen links already included). '
+      +'The menu is not deleted. This cannot be undone.'
       +'</div>'
-      +'<button class="ed-btn danger" data-mc="reset-export" type="button">⬇ Exportar y borrar todo</button>'
-      +'<div class="ed-imgrow"><button class="ed-btn danger small" data-mc="reset-yes" type="button">Borrar sin exportar</button>'
-      +'<button class="ed-btn ghost small" data-mc="reset-no" type="button">Cancelar</button></div>';
+      +'<button class="ed-btn danger" data-mc="reset-export" type="button">⬇ Export and delete all</button>'
+      +'<div class="ed-imgrow"><button class="ed-btn danger small" data-mc="reset-yes" type="button">Delete without exporting</button>'
+      +'<button class="ed-btn ghost small" data-mc="reset-no" type="button">Cancel</button></div>';
     return '<div id="mcResetWrap">'+wrap.innerHTML+'</div>';
   }
   window.__askClearAll=askClearAll;
@@ -5463,36 +5696,36 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
       var blob=new Blob([exportOverlay()],{type:'application/json'});
       var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='mila-overlay.json';document.body.appendChild(a);a.click();
       setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},400);
-      toast('Exportado: mila-overlay.json');
-    }catch(e){toast('No se pudo exportar');}
+      toast('Exported: mila-overlay.json');
+    }catch(e){toast('Could not export');}
   }
   document.getElementById('panelSheet').addEventListener('click',function(e){
     var rs=e.target.closest('[data-restore]');
-    if(rs){setItemOverride(rs.getAttribute('data-restore'),{availability:'active'});panelRender();rerender();toastSave('Restaurado a la carta');return;}
+    if(rs){setItemOverride(rs.getAttribute('data-restore'),{availability:'active'});panelRender();rerender();toastSave('Restored to the menu');return;}
     /* (B6) the per-item "Revertir" in the panel confirms too, naming the loss in place */
     var rv=e.target.closest('[data-mcrev]');
     if(rv){
       var rid=rv.getAttribute('data-mcrev'),row=rv.closest('.mc-row');
       if(row){row.classList.add('confirming');
         row.innerHTML='<div class="mc-conf"><div class="ed-sub" style="margin:0 0 6px">'+esc(lossText(rid))+'</div>'
-          +'<div class="ed-imgrow"><button class="ed-btn danger small" data-mcrevyes="'+esc(rid)+'" type="button">Sí, revertir</button>'
-          +'<button class="ed-btn ghost small" data-mc="rev-no" type="button">Cancelar</button></div></div>';}
+          +'<div class="ed-imgrow"><button class="ed-btn danger small" data-mcrevyes="'+esc(rid)+'" type="button">Yes, revert</button>'
+          +'<button class="ed-btn ghost small" data-mc="rev-no" type="button">Cancel</button></div></div>';}
       return;
     }
     var rvy=e.target.closest('[data-mcrevyes]');
-    if(rvy){clearItem(rvy.getAttribute('data-mcrevyes'));panelRender();rerender();toastSave('Revertido');return;}
+    if(rvy){clearItem(rvy.getAttribute('data-mcrevyes'));panelRender();rerender();toastSave('Reverted');return;}
     var mc=e.target.closest('[data-mc]');if(!mc)return;
     var a=mc.getAttribute('data-mc');
     if(a==='export'){doExport();}
     else if(a==='close'){closeS('panelDim','panelSheet');}
     else if(a==='rev-no'){panelRender();}
     else if(a==='reset'){askClearAll();}
-    else if(a==='reset-yes'){if(clearAll({confirmed:true})){panelReset(['root']);rerender();toastSave('Todo restablecido');}}
-    else if(a==='reset-export'){doExport();setTimeout(function(){if(clearAll({confirmed:true})){panelReset(['root']);rerender();toastSave('Exportado y restablecido');}},400);}
+    else if(a==='reset-yes'){if(clearAll({confirmed:true})){panelReset(['root']);rerender();toastSave('Everything reset');}}
+    else if(a==='reset-export'){doExport();setTimeout(function(){if(clearAll({confirmed:true})){panelReset(['root']);rerender();toastSave('Exported and reset');}},400);}
     else if(a==='reset-no'){panelBack();}
     else if(a==='imp-export'){doExport();}
-    else if(a==='imp-yes'){if(importApply()){rerender();panelReset(['root','merged']);toastSave('Cambios combinados');}else{panelReset(['root']);}}
-    else if(a==='imp-no'){importCancel();panelBack();toast('Importación cancelada');}
+    else if(a==='imp-yes'){if(importApply()){rerender();panelReset(['root','merged']);toastSave('Changes merged');}else{panelReset(['root']);}}
+    else if(a==='imp-no'){importCancel();panelBack();toast('Import cancelled');}
   });
 
   /* ---------- HOY picker ---------- */
@@ -5502,31 +5735,31 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var foods=((typeof FOOD!=='undefined')?FOOD:[]).filter(function(d){return !(window.__avUnavail&&window.__avUnavail(d));});var eff=hoyEff();
     /* (C6) the configured amuse is ALWAYS the selected option, even when it is 86 or
        off-menu (the availability filter above removes it from the list). Without this the
-       browser selects option 0 and Guardar silently substitutes a different dish. */
+       browser selects option 0 and Save silently substitutes a different dish. */
     var _has=foods.some(function(d){return d.id===eff.amuseId;});
     var _curNm='';
     try{var _all=(typeof FOOD!=='undefined')?FOOD:[];for(var _i=0;_i<_all.length;_i++){if(_all[_i].id===eff.amuseId){_curNm=(window.__mergeOv?window.__mergeOv(_all[_i]):_all[_i]).name;break;}}}catch(_e){}
-    var opt=(_has?'':'<option value="'+esc(eff.amuseId)+'" selected>'+esc(_curNm||eff.amuseId)+' — no disponible (sin cambio)</option>')
+    var opt=(_has?'':'<option value="'+esc(eff.amuseId)+'" selected>'+esc(_curNm||eff.amuseId)+' — unavailable (no change)</option>')
       +foods.map(function(d){var nm=(window.__mergeOv?window.__mergeOv(d):d).name;return '<option value="'+esc(d.id)+'"'+((_has&&d.id===eff.amuseId)?' selected':'')+'>'+esc(nm)+'</option>';}).join('');
     /* (C6) the active special is now a real control instead of a value copied back onto itself. */
     var _specs=[];
     try{if(typeof SPECIAL!=='undefined'&&SPECIAL&&SPECIAL.id)_specs.push(SPECIAL);}catch(_e){}
     try{((typeof FOOD!=='undefined')?FOOD:[]).forEach(function(d){if(d&&d.special&&d.id)_specs.push(d);});}catch(_e){}
-    var sopt='<option value="none"'+((eff.special==='none'||!eff.special)?' selected':'')+'>— sin special —</option>'
+    var sopt='<option value="none"'+((eff.special==='none'||!eff.special)?' selected':'')+'>— no special —</option>'
       +_specs.map(function(d){var nm=(window.__mergeOv?window.__mergeOv(d):d).name;return '<option value="'+esc(d.id)+'"'+(d.id===eff.special?' selected':'')+'>'+esc(nm)+'</option>';}).join('');
     var _actMiss=(eff.activos||[]).filter(function(id){return !foods.some(function(d){return d.id===id;});});
     var _actMissRows=_actMiss.map(function(id){
       var nm=id;try{var _a=(typeof FOOD!=='undefined')?FOOD:[];for(var _j=0;_j<_a.length;_j++){if(_a[_j].id===id){nm=(window.__mergeOv?window.__mergeOv(_a[_j]):_a[_j]).name;break;}}}catch(_e){}
-      return '<label class="hoy-pick-row"><input type="checkbox" value="'+esc(id)+'" checked><span>'+esc(nm)+' — no disponible (sin cambio)</span></label>';}).join('');
+      return '<label class="hoy-pick-row"><input type="checkbox" value="'+esc(id)+'" checked><span>'+esc(nm)+' — unavailable (no change)</span></label>';}).join('');
     var rows=_actMissRows+foods.map(function(d){var nm=(window.__mergeOv?window.__mergeOv(d):d).name;var on=eff.activos.indexOf(d.id)>=0;return '<label class="hoy-pick-row"><input type="checkbox" value="'+esc(d.id)+'"'+(on?' checked':'')+'><span>'+esc(nm)+'</span></label>';}).join('');
     document.getElementById('hoyPickBody').innerHTML=
-      '<div class="ed-title">Editar “Hoy”</div><div class="ed-sub">Elige el amuse y los activos del día.</div>'
+      '<div class="ed-title">Edit “Today”</div><div class="ed-sub">Pick the amuse and today\u2019s actives.</div>'
       +'<label class="ed-lbl">Amuse</label><select class="ed-inp" id="hoyAmuse">'+opt+'</select>'
-      +'<label class="ed-lbl">Activos del día</label><div class="hoy-pick-list" id="hoyActList">'+rows+'</div>'
-      +'<label class="ed-lbl">Special activo</label><select class="ed-inp" id="hoySpecial">'+sopt+'</select>'
-      +'<button class="ed-btn" data-hoy="save" type="button">Guardar</button>'
-      +'<button class="ed-btn ghost" data-hoy="cancel" type="button">Cancelar</button>'
-      +'<button class="ed-btn ghost" data-hoy="reset" type="button">Volver al predeterminado</button>';
+      +'<label class="ed-lbl">Today\u2019s actives</label><div class="hoy-pick-list" id="hoyActList">'+rows+'</div>'
+      +'<label class="ed-lbl">Active special</label><select class="ed-inp" id="hoySpecial">'+sopt+'</select>'
+      +'<button class="ed-btn" data-hoy="save" type="button">Save</button>'
+      +'<button class="ed-btn ghost" data-hoy="cancel" type="button">Cancel</button>'
+      +'<button class="ed-btn ghost" data-hoy="reset" type="button">Back to default</button>';
   }
   document.getElementById('hoySheet').addEventListener('click',function(e){
     var b=e.target.closest('[data-hoy]');if(!b)return;
@@ -5535,9 +5768,9 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
       var am=document.getElementById('hoyAmuse').value;
       var acts=[].slice.call(document.querySelectorAll('#hoyActList input:checked')).map(function(x){return x.value;});
       var _spEl=document.getElementById('hoySpecial');
-      setHoy({amuseId:am,activos:acts,special:_spEl?_spEl.value:hoyEff().special});if(window.__renderHoy)window.__renderHoy();closeS('hoyDim','hoySheet');updateCount();toastSave('“Hoy” actualizado');
+      setHoy({amuseId:am,activos:acts,special:_spEl?_spEl.value:hoyEff().special});if(window.__renderHoy)window.__renderHoy();closeS('hoyDim','hoySheet');updateCount();toastSave('“Today” updated');
     }else if(a==='cancel'){closeS('hoyDim','hoySheet');}
-    else if(a==='reset'){setHoy(null);if(window.__renderHoy)window.__renderHoy();closeS('hoyDim','hoySheet');toastSave('“Hoy” restablecido');}
+    else if(a==='reset'){setHoy(null);if(window.__renderHoy)window.__renderHoy();closeS('hoyDim','hoySheet');toastSave('“Today” reset');}
   });
 
   /* ================= PHASE 4 — creation of new items =================
@@ -5678,34 +5911,34 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   window.__createItem=function(spec){
     spec=spec||{};
     var type=_p4s(spec.type).toLowerCase();
-    if(!_P4T[type])return {ok:false,error:'Tipo desconocido: "'+type+'". Usa food, bev, wine o spirit.'};
+    if(!_P4T[type])return {ok:false,error:'Unknown type: "'+type+'". Use food, bev, wine or spirit.'};
     var tax=window.__taxonomy();
     function enumErr(v,list,label){
       if(list.indexOf(v)>=0)return null;
-      return 'La categoría “'+v+'” no existe en '+label+'. Esa categoría no existe — valores permitidos: '+list.join(', ')+'.';
+      return 'Category “'+v+'” does not exist in '+label+'. That category does not exist — allowed values: '+list.join(', ')+'.';
     }
     var name=_p4s(spec.name),desc=_p4s(spec.description),photo=(typeof spec.photo==='string'?spec.photo:'');
     var producer=_p4s(spec.producer),cuvee=_p4s(spec.cuvee),vintage=_p4s(spec.vintage),
         region=_p4s(spec.region),format=_p4s(spec.format);
     var idBase=null,err=null;
     if(type==='wine'){
-      if(!producer&&!cuvee)return {ok:false,error:'Indica al menos el productor o la cuvée.'};
+      if(!producer&&!cuvee)return {ok:false,error:'Give at least the producer or the cuvée.'};
       if(!name)name=[producer,cuvee].filter(Boolean).join(' · ');
-      err=enumErr(_p4s(spec.sect),tax.wine.sect,'la carta de vinos (sect)');if(err)return {ok:false,error:err};
+      err=enumErr(_p4s(spec.sect),tax.wine.sect,'the wine list (sect)');if(err)return {ok:false,error:err};
       idBase='wine.'+window.__slug([producer,cuvee,vintage,_p4fmt(format)].filter(Boolean).join(' '));
     }else{
-      if(!name)return {ok:false,error:'El nombre no puede estar vacío.'};
-      if(type==='food'){err=enumErr(_p4s(spec.cat),tax.food.cat,'el menú de comida (cat)');}
-      else if(type==='bev'){err=enumErr(_p4s(spec.sense),tax.bev.sense,'la carta de bebidas (sense)')
-        ||enumErr(_p4s(spec.kind),tax.bev.kind,'la carta de bebidas (kind)');}
-      else{err=enumErr(_p4s(spec.cat),tax.spirit.cat,'la carta de destilados (cat)');}
+      if(!name)return {ok:false,error:'The name cannot be empty.'};
+      if(type==='food'){err=enumErr(_p4s(spec.cat),tax.food.cat,'the food menu (cat)');}
+      else if(type==='bev'){err=enumErr(_p4s(spec.sense),tax.bev.sense,'the drinks list (sense)')
+        ||enumErr(_p4s(spec.kind),tax.bev.kind,'the drinks list (kind)');}
+      else{err=enumErr(_p4s(spec.cat),tax.spirit.cat,'the spirits list (cat)');}
       if(err)return {ok:false,error:err};
       idBase=(type==='food'?'dish.':(type==='bev'?'drink.':'spirit.'))+window.__slug(name);
     }
     var tail=idBase.slice(idBase.indexOf('.')+1);
-    if(!/[a-z0-9]/.test(tail))return {ok:false,error:'Ese nombre no produce un identificador utilizable. Usa al menos una letra o un número.'};
+    if(!/[a-z0-9]/.test(tail))return {ok:false,error:'That name does not produce a usable identifier. Use at least one letter or number.'};
     var id=_p4uniq(idBase);
-    if(!id)return {ok:false,error:'No se pudo asignar un identificador único.'};
+    if(!id)return {ok:false,error:'Could not assign a unique identifier.'};
     /* ZERO pre-verified allergens: everything the owner does not declare present stays
        'unknown'. absentVerified is born empty and no form can populate it. */
     var present=_p4a(spec.allergens),stateMap={};
@@ -5739,7 +5972,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     }
     var warn=_p4dup(null,name);
     var o=getOverlay();o.created[id]=obj;saveOverlay(o);
-    return {ok:true,id:id,dupWarn:warn?('Ya existe otro ítem llamado “'+warn+'”'):null};
+    return {ok:true,id:id,dupWarn:warn?('Another item is already called “'+warn+'”'):null};
   };
 
   /* ---------- (4.4) chips derived from the MERGED data, labels AND counts ----------
@@ -5804,14 +6037,14 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
         +esc(x.e+' '+x.l)+' <span class="fcount">'+x.n+'</span></button>';
     }).join('');
     /* PHASE 12: this function just replaced #bevChips wholesale — re-append the
-       "Sin verificar" toggle chip or it is silently lost on the next edit. */
+       "Unverified" toggle chip or it is silently lost on the next edit. */
     try{
       var vfN=window.__bevUnverifCount?window.__bevUnverifCount():0;
       var vfOn=window.__bevOnlyUnverified?window.__bevOnlyUnverified():false;
       var vfBtn=document.createElement('button');
       vfBtn.type='button';vfBtn.id='bevVfChip';
       vfBtn.className='fchip vf-toggle'+(vfOn?' on':'');
-      vfBtn.innerHTML='🔎 Sin verificar <span class="fcount">'+vfN+'</span>';
+      vfBtn.innerHTML='🔎 Unverified <span class="fcount">'+vfN+'</span>';
       w.appendChild(vfBtn);
     }catch(e){}
   };
@@ -5832,24 +6065,24 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
      Same sheet, same CSS vocabulary as the editor (ed-lbl / ed-inp / ed-algrid / ed-tri /
      ed-tb / ed-btn / ed-err / ed-imgprev / ed-imgrow). No new visual language. */
   var _cf=null;
-  var _P4LABEL={food:'Nuevo plato',bev:'Nueva bebida / coctel',wine:'Nuevo vino',spirit:'Nuevo destilado'};
+  var _P4LABEL={food:'New dish',bev:'New drink / cocktail',wine:'New wine',spirit:'New spirit'};
   function p4PanelSection(o){
     var ids=window.__createdIds();
     var h='<div class="om-sec p5-bare">'
-      +'<div class="ed-sub">Cada ítem nuevo nace <b>needsReview</b> y con <b>todos los alérgenos en “No sé”</b>. '
-      +'Una ausencia verificada solo la declara una persona, con procedencia.</div>'
-      +'<div class="ed-imgrow"><button class="ed-btn ghost small" data-p4new="food" type="button">＋ Plato</button>'
-      +'<button class="ed-btn ghost small" data-p4new="bev" type="button">＋ Bebida</button></div>'
-      +'<div class="ed-imgrow"><button class="ed-btn ghost small" data-p4new="wine" type="button">＋ Vino</button>'
-      +'<button class="ed-btn ghost small" data-p4new="spirit" type="button">＋ Destilado</button></div>';
+      +'<div class="ed-sub">Every new item starts as <b>needsReview</b> with <b>every allergen set to “Not sure”</b>. '
+      +'Only a person declares a verified absence, with provenance.</div>'
+      +'<div class="ed-imgrow"><button class="ed-btn ghost small" data-p4new="food" type="button">＋ Dish</button>'
+      +'<button class="ed-btn ghost small" data-p4new="bev" type="button">＋ Drink</button></div>'
+      +'<div class="ed-imgrow"><button class="ed-btn ghost small" data-p4new="wine" type="button">＋ Wine</button>'
+      +'<button class="ed-btn ghost small" data-p4new="spirit" type="button">＋ Spirit</button></div>';
     if(ids.length){
-      h+='<div class="ed-sub" style="margin-top:10px"><b>'+ids.length+'</b> ítem'+(ids.length!==1?'s':'')+' creado'+(ids.length!==1?'s':'')+'</div><div class="om-list">'
+      h+='<div class="ed-sub" style="margin-top:10px"><b>'+ids.length+'</b> item'+(ids.length!==1?'s':'')+' created</div><div class="om-list">'
         +ids.map(function(id){
           var it=(o.created||{})[id]||{},nm=(o.items[id]&&o.items[id].name)||it.name||id;
           return '<div class="om-row"><div class="om-name">'+esc(nm)+'<span class="om-kind">'+esc(String(it._type||'').toUpperCase())+' · NEEDS REVIEW</span></div>'
-            +'<button class="om-rest" data-p4edit="'+escAttr(id)+'" type="button">Editar</button></div>';
+            +'<button class="om-rest" data-p4edit="'+escAttr(id)+'" type="button">Edit</button></div>';
         }).join('')+'</div>'
-        +'<div class="ed-provmeta">Para retirar uno del menú usa <b>Editar → Disponibilidad → Fuera de carta</b>. Nada se borra.</div>';
+        +'<div class="ed-provmeta">To pull one from the menu use <b>Edit → Availability → Off-menu</b>. Nothing is deleted.</div>';
     }
     h+='</div>';
     return h;
@@ -5871,60 +6104,60 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     try{rows=CANON.map(function(c){
       var on=_cf.allerg.indexOf(c)>=0;
       return '<div class="ed-alrow"><span class="ed-alname">'+(ALABEL[c]||c)+'</span><div class="ed-tri">'
-        +'<button class="ed-tb p'+(on?' on':'')+'" data-cfal="'+escAttr(c)+'" data-cfalst="present" type="button">Presente</button>'
-        +'<button class="ed-tb u'+(on?'':' on')+'" data-cfal="'+escAttr(c)+'" data-cfalst="unknown" type="button">No sé</button>'
+        +'<button class="ed-tb p'+(on?' on':'')+'" data-cfal="'+escAttr(c)+'" data-cfalst="present" type="button">Present</button>'
+        +'<button class="ed-tb u'+(on?'':' on')+'" data-cfal="'+escAttr(c)+'" data-cfalst="unknown" type="button">Not sure</button>'
         +'</div></div>';
     }).join('');}catch(e){}
-    return '<label class="ed-lbl">Alérgenos</label>'
-      +'<div class="ed-provmeta">Solo <b>Presente</b> o <b>No sé</b>. Una ausencia verificada (“Sin ✓”) no se puede declarar al crear: es un acto humano y necesita procedencia.</div>'
+    return '<label class="ed-lbl">Allergens</label>'
+      +'<div class="ed-provmeta">Only <b>Present</b> or <b>Not sure</b>. A verified absence (“Verified free ✓”) cannot be declared at creation: it is a human act and needs provenance.</div>'
       +'<div class="ed-algrid">'+rows+'</div>';
   }
   function renderCreate(){
     var t=_cf.type,tax=window.__taxonomy(),h='';
-    h+='<div class="ed-title">'+esc(_P4LABEL[t]||'Nuevo ítem')+'</div>'
-      +'<div class="ed-sub">Se guarda en este dispositivo, marcado <b>needsReview</b>. Después se edita y se retira con el editor normal.</div>';
+    h+='<div class="ed-title">'+esc(_P4LABEL[t]||'New item')+'</div>'
+      +'<div class="ed-sub">Saved on this device, flagged <b>needsReview</b>. You then edit it and pull it from the menu with the normal editor.</div>';
     if(t==='wine'){
       h+=_cfInp('Productor','producer','Ej. Domaine …')
         +_cfInp('Cuvée','cuvee','')
-        +_cfInp('Añada','vintage','2021 / NV')
-        +_cfInp('Región','region','')
+        +_cfInp('Vintage','vintage','2021 / NV')
+        +_cfInp('Region','region','')
         +_cfInp('Formato','format','750ml / 1.5L')
-        +_cfSel('Sección de la carta','sect',tax.wine.sect,'Taxonomía cerrada: si tu sección no está en la lista, no existe en esta carta.')
-        +_cfInp('Uvas','grapes','')+_cfInp('Cuerpo','body','')+_cfInp('Temperatura de servicio','temp','')
-        +_cfInp('Precio por copa','btg','')+_cfInp('Precio por botella','btl','')
-        +_cfTa('Descripción','desc','')
-        +_cfInp('Aroma','aroma','')+_cfInp('Paladar','palate','')+_cfInp('Final','finish','');
+        +_cfSel('List section','sect',tax.wine.sect,'Closed taxonomy: if your section is not in the list, it does not exist on this list.')
+        +_cfInp('Uvas','grapes','')+_cfInp('Cuerpo','body','')+_cfInp('Serving temperature','temp','')
+        +_cfInp('Price by the glass','btg','')+_cfInp('Price by the bottle','btl','')
+        +_cfTa('Description','desc','')
+        +_cfInp('Aroma','aroma','')+_cfInp('Palate','palate','')+_cfInp('Finish','finish','');
     }else if(t==='spirit'){
-      h+=_cfInp('Nombre','name','')
-        +_cfSel('Categoría','cat',tax.spirit.cat,'Taxonomía cerrada: si tu categoría no está en la lista, no existe en esta carta.')
-        +_cfInp('Destilería','dist','')+_cfInp('Origen','origin','')
-        +_cfInp('Precio por onza','oz','')+_cfInp('Precio por botella','btl','')
-        +_cfTa('Descripción','desc','')+_cfTa('Producción','production','')
-        +_cfInp('Servicio','serve','')
-        +_cfInp('Aroma','aroma','')+_cfInp('Paladar','palate','')+_cfInp('Final','finish','');
+      h+=_cfInp('Name','name','')
+        +_cfSel('Category','cat',tax.spirit.cat,'Closed taxonomy: if your category is not in the list, it does not exist on this list.')
+        +_cfInp('Distillery','dist','')+_cfInp('Origin','origin','')
+        +_cfInp('Price per ounce','oz','')+_cfInp('Price by the bottle','btl','')
+        +_cfTa('Description','desc','')+_cfTa('Production','production','')
+        +_cfInp('Service','serve','')
+        +_cfInp('Aroma','aroma','')+_cfInp('Palate','palate','')+_cfInp('Finish','finish','');
     }else if(t==='bev'){
-      h+=_cfInp('Nombre','name','')
-        +_cfSel('Sentido (sense)','sense',tax.bev.sense,'Taxonomía cerrada: si tu categoría no está en la lista, no existe en esta carta.')
-        +_cfSel('Tipo (kind)','kind',tax.bev.kind,'')
-        +_cfTa('Descripción','desc','')
-        +_cfTa('Ingredientes','ings','Uno por línea');
+      h+=_cfInp('Name','name','')
+        +_cfSel('Sense','sense',tax.bev.sense,'Closed taxonomy: if your category is not in the list, it does not exist on this list.')
+        +_cfSel('Type','kind',tax.bev.kind,'')
+        +_cfTa('Description','desc','')
+        +_cfTa('Ingredients','ings','One per line');
     }else{
-      h+=_cfInp('Nombre','name','')
-        +_cfSel('Categoría','cat',tax.food.cat,'Taxonomía cerrada: si tu categoría no está en la lista, no existe en este menú.')
-        +_cfTa('Descripción','desc','')
-        +_cfTa('Ingredientes','ings','Uno por línea')
-        +_cfTa('Salsas','sauces','Uno por línea')
-        +_cfTa('Guarnición','garnish','Uno por línea');
+      h+=_cfInp('Name','name','')
+        +_cfSel('Category','cat',tax.food.cat,'Closed taxonomy: if your category is not in the list, it does not exist on this menu.')
+        +_cfTa('Description','desc','')
+        +_cfTa('Ingredients','ings','One per line')
+        +_cfTa('Sauces','sauces','One per line')
+        +_cfTa('Garnish','garnish','One per line');
     }
     h+=_cfAllerg();
     var img=_cf.photo?('<div class="ed-imgprev" style="background-image:url(\''+_cf.photo+'\')"></div>'):'<div class="ed-imgprev">MILĀ</div>';
-    h+='<label class="ed-lbl">Imagen</label>'+img
-      +'<div class="ed-imgrow"><label class="ed-btn ghost small" for="cfFile">Añadir imagen</label>'
-      +(_cf.photo?'<button class="ed-btn ghost small" data-p4="nophoto" type="button">Quitar imagen</button>':'')+'</div>'
+    h+='<label class="ed-lbl">Photo</label>'+img
+      +'<div class="ed-imgrow"><label class="ed-btn ghost small" for="cfFile">Add photo</label>'
+      +(_cf.photo?'<button class="ed-btn ghost small" data-p4="nophoto" type="button">Remove photo</button>':'')+'</div>'
       +'<input type="file" id="cfFile" accept="image/*" style="display:none">'
       +'<div class="ed-err" id="cfErr">'+(_cf.err?esc(_cf.err):'')+'</div>'
-      +'<button class="ed-btn" data-p4="save" type="button">Crear</button>'
-      +'<button class="ed-btn ghost" data-p4="cancel" type="button">Cancelar</button>';
+      +'<button class="ed-btn" data-p4="save" type="button">Create</button>'
+      +'<button class="ed-btn ghost" data-p4="cancel" type="button">Cancel</button>';
     document.getElementById('panelBody').innerHTML=h;
     var f=document.getElementById('cfFile');
     if(f)f.addEventListener('change',function(){
@@ -5958,8 +6191,8 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var t=_cf.type;
     /* (C4, Phase 3) an empty / whitespace-only name is refused INLINE; nothing is written. */
     if(t==='wine'){
-      if(!_p4s(_cf.producer)&&!_p4s(_cf.cuvee)){_cfErr('Indica al menos el productor o la cuvée.');return;}
-    }else if(!_p4s(_cf.name)){_cfErr('El nombre no puede estar vacío.');return;}
+      if(!_p4s(_cf.producer)&&!_p4s(_cf.cuvee)){_cfErr('Give at least the producer or the cuvée.');return;}
+    }else if(!_p4s(_cf.name)){_cfErr('The name cannot be empty.');return;}
     var spec={type:t,name:_cf.name,description:_cf.desc,photo:_cf.photo,allergens:_cf.allerg.slice()};
     if(t==='food'){spec.cat=_cf.cat;spec.ingredients=_cf.ings;spec.sauces=_cf.sauces;spec.garnish=_cf.garnish;}
     else if(t==='bev'){spec.sense=_cf.sense;spec.kind=_cf.kind;spec.ingredients=_cf.ings;}
@@ -5977,7 +6210,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var id=r.id;_cf=null;
     rerender();panelReset(['root']);
     /* a duplicate name is legal but never silent */
-    toastSave('Creado'+(r.dupWarn?(' · aviso: '+r.dupWarn):''));
+    toastSave('Created'+(r.dupWarn?(' · warning: '+r.dupWarn):''));
     try{openEditor(id);}catch(e){}
   }
   function _cfErr(m){
@@ -6017,7 +6250,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
      UI only. Every branch below delegates to the Phase 1-4 functions for anything
      that touches data (setItemOverride / clearItem / clearAll / importApply /
      __createItem). Nothing here can write a verified allergen absence: the only
-     allergen UI it reaches is _cfAllerg(), which offers Presente / No sé only. */
+     allergen UI it reaches is _cfAllerg(), which offers Present / Not sure only. */
 
   /* ---- sheet chrome helpers ---- */
   function shSync(sheetId,title,showBack){
@@ -6038,13 +6271,13 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   function panelGo(view,opts){_pstack.push(view);_popts=opts||null;panelRender();p5Top();}
   function panelBack(){if(_pstack.length>1){_pstack.pop();_popts=null;panelRender();p5Top();}}
   function panelReset(st){_pstack=(st&&st.length)?st.slice():['root'];_popts=null;panelRender();p5Top();}
-  var _P5TITLE={root:'Mis cambios',edits:'Ítems editados',off:'Fuera de carta',
-                data:'Datos y respaldo',newpick:'Añadir al menú',import:'Importar cambios',
-                reset:'Volver a la versión base',person:'Quién eres',people:'Gestionar personas',
-                conflicts:'En conflicto',merged:'Resultado de la combinación'};
+  var _P5TITLE={root:'My changes',edits:'Edited items',off:'Off-menu',
+                data:'Data and backup',newpick:'Add to the menu',import:'Import changes',
+                reset:'Back to the base version',person:'Who you are',people:'Manage people',
+                conflicts:'In conflict',merged:'Merge result'};
   function panelTitleFor(v){
-    if(v==='newform')return (_cf&&_P4LABEL[_cf.type])||'Nuevo ítem';
-    return _P5TITLE[v]||'Mis cambios';
+    if(v==='newform')return (_cf&&_P4LABEL[_cf.type])||'New item';
+    return _P5TITLE[v]||'My changes';
   }
   function panelRender(){
     if(!_pstack.length)_pstack=['root'];
@@ -6096,36 +6329,36 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var n86=p5Count86();
     var created=0;try{created=window.__createdIds().length;}catch(e){}
     var h='<button class="p5-add" data-p5go="newpick" type="button">'
-        +'<span class="p5-plus">＋</span><span>Añadir al menú</span></button>'
-      +'<div class="ed-sub p5-sub"><b>'+n+'</b> ítem'+(n!==1?'s':'')+' editado'+(n!==1?'s':'')+' · guardado en este dispositivo</div>'
+        +'<span class="p5-plus">＋</span><span>Add to the menu</span></button>'
+      +'<div class="ed-sub p5-sub"><b>'+n+'</b> item'+(n!==1?'s':'')+' edited · saved on this device</div>'
       +'<div class="p5-rows">'
-      +p5Row('edits','Ítems editados',
-             n?('Renombrados, alérgenos, fotos'+(created?(' · '+created+' creado'+(created!==1?'s':'')):'')):'Todavía no has editado nada',
+      +p5Row('edits','Edited items',
+             n?('Renames, allergens, photos'+(created?(' · '+created+' created'):'')):'You have not edited anything yet',
              n?n:0)
-      +p5Row('off','Fuera de carta',
-             '<b>'+offs.length+'</b> ítem'+(offs.length!==1?'s':'')+' oculto'+(offs.length!==1?'s':'')+' del menú'
-             +(n86?(' · <b>'+n86+'</b> marcado'+(n86!==1?'s':'')+' 86 hoy'):''),
+      +p5Row('off','Off-menu',
+             '<b>'+offs.length+'</b> item'+(offs.length!==1?'s':'')+' hidden from the menu'
+             +(n86?(' · <b>'+n86+'</b> marked 86 today'):''),
              offs.length?offs.length:0)
-      +p5Row('data','Datos y respaldo','Exportar, importar o restablecer',0)
-      +(_zc?p5Row('conflicts','En conflicto',
-                  '<b>'+_zc+'</b> ítem'+(_zc!==1?'s':'')+' con dos versiones distintas — elige tú',_zc):'')
-      +p5Row('person','Quién eres','Firmas como <b>'+esc(_zsig())+'</b>',0)
+      +p5Row('data','Data and backup','Export, import or reset',0)
+      +(_zc?p5Row('conflicts','In conflict',
+                  '<b>'+_zc+'</b> item'+(_zc!==1?'s':'')+' with two different versions — you choose',_zc):'')
+      +p5Row('person','Who you are','Signing as <b>'+esc(_zsig())+'</b>',0)
       +'</div>'
-      +'<div class="p5-foot">Todo vive en este dispositivo. Exporta si vas a cambiar de teléfono.</div>';
+      +'<div class="p5-foot">Everything lives on this device. Export before you switch phones.</div>';
     document.getElementById('panelBody').innerHTML=h;
   }
 
   /* ---- view: edits (the per-item revert list, unchanged mechanics) ---- */
   function renderPanelEdits(o){
     var ids=editedIds(),n=ids.length,h='';
-    h+='<div class="ed-sub p5-sub"><b>'+n+'</b> ítem'+(n!==1?'s':'')+' editado'+(n!==1?'s':'')+' · guardado en este dispositivo</div>';
+    h+='<div class="ed-sub p5-sub"><b>'+n+'</b> item'+(n!==1?'s':'')+' edited · saved on this device</div>';
     if(n){
       h+='<div class="mc-list p5-tall">'+ids.map(function(id){
         var b=baseItem(id);var nm=(o.items[id]&&o.items[id].name)||(b&&b.name)||id;
-        return '<div class="mc-row"><span>'+esc(nm)+'</span><button class="mc-revert" data-mcrev="'+escAttr(id)+'" type="button">Revertir</button></div>';
+        return '<div class="mc-row"><span>'+esc(nm)+'</span><button class="mc-revert" data-mcrev="'+escAttr(id)+'" type="button">Revert</button></div>';
       }).join('')+'</div>';
     }else{
-      h+=p5Empty('Ningún ítem editado todavía. Abre un plato y toca <b>Editar</b>.');
+      h+=p5Empty('No items edited yet. Open a dish and tap <b>Edit</b>.');
     }
     document.getElementById('panelBody').innerHTML=h;
   }
@@ -6134,33 +6367,33 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   function renderPanelOff(o){
     var offs=(window.__avOffList?window.__avOffList():[]);
     var n86=p5Count86();
-    var h='<div class="ed-sub p5-sub"><b>'+offs.length+'</b> ítem'+(offs.length!==1?'s':'')+' oculto'+(offs.length!==1?'s':'')+' del menú'
-      +(n86?(' · <b>'+n86+'</b> marcado'+(n86!==1?'s':'')+' 86 hoy'):'')+'</div>';
+    var h='<div class="ed-sub p5-sub"><b>'+offs.length+'</b> item'+(offs.length!==1?'s':'')+' hidden from the menu'
+      +(n86?(' · <b>'+n86+'</b> marked 86 today'):'')+'</div>';
     if(offs.length){
       h+='<div class="om-list p5-tall">'+offs.map(function(d){
         var nm=(o.items[d.id]&&o.items[d.id].name)||d.name||d.id;
         var kd=d.kind?String(d.kind).toUpperCase():(d.cat||d.sense||'');
         return '<div class="om-row"><div class="om-name">'+esc(nm)+'<span class="om-kind">'+esc(kd)+'</span></div>'
-          +'<button class="om-rest" data-restore="'+escAttr(d.id)+'" type="button">Restaurar</button></div>';
+          +'<button class="om-rest" data-restore="'+escAttr(d.id)+'" type="button">Restore</button></div>';
       }).join('')+'</div>';
     }else{
-      h+=p5Empty('Ningún ítem está fuera de carta. Todo el menú está activo.');
+      h+=p5Empty('No items are off-menu. The whole menu is active.');
     }
     document.getElementById('panelBody').innerHTML=h;
   }
 
   /* ---- view: data & backup (export / import / reset) ---- */
   function renderPanelData(o){
-    var h='<div class="ed-sub p5-sub">Un respaldo es un archivo <b>.json</b> con todos tus cambios. Impórtalo en otro dispositivo para llevártelos.</div>'
-      +'<button class="ed-btn" data-mc="export" type="button">⬇ Exportar cambios</button>'
-      +'<label class="ed-btn ghost" for="mcImport">⬆ Importar cambios</label>'
+    var h='<div class="ed-sub p5-sub">A backup is a <b>.json</b> file with all your changes. Import it on another device to take them with you.</div>'
+      +'<button class="ed-btn" data-mc="export" type="button">⬇ Export changes</button>'
+      +'<label class="ed-btn ghost" for="mcImport">⬆ Import changes</label>'
       +'<input type="file" id="mcImport" accept="application/json,.json" style="display:none">'
-      +'<div class="p5-danger"><div class="ed-sub" style="margin:0 0 8px">Zona de riesgo</div>'
-      +'<button class="ed-btn danger" data-mc="reset" type="button">↩ Volver a la versión base</button></div>';
+      +'<div class="p5-danger"><div class="ed-sub" style="margin:0 0 8px">Danger zone</div>'
+      +'<button class="ed-btn danger" data-mc="reset" type="button">↩ Back to the base version</button></div>';
     document.getElementById('panelBody').innerHTML=h;
     var imp=document.getElementById('mcImport');
     /* (B1) the file only opens the PREVIEW — importOverlay writes nothing by itself. */
-    if(imp)imp.addEventListener('change',function(){var file=this.files&&this.files[0];if(!file)return;var r=new FileReader();r.onload=function(){importOverlay(r.result);};r.onerror=function(){toast('No se pudo leer el archivo');};r.readAsText(file);});
+    if(imp)imp.addEventListener('change',function(){var file=this.files&&this.files[0];if(!file)return;var r=new FileReader();r.onload=function(){importOverlay(r.result);};r.onerror=function(){toast('Could not read the file');};r.readAsText(file);});
   }
 
   /* ---- view: newpick (the four creation entry points) ---- */
@@ -6171,10 +6404,10 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   /* ---- editor / hoy sheets get their titles from their own state ---- */
   var _p5RE=renderEditor;
   renderEditor=function(){var r=_p5RE.apply(this,arguments);
-    try{shSync('edSheet',(ed&&ed.name)?ed.name:'Editar ítem',false);}catch(e){}return r;};
+    try{shSync('edSheet',(ed&&ed.name)?ed.name:'Edit item',false);}catch(e){}return r;};
   var _p5RH=renderHoyPick;
   renderHoyPick=function(){var r=_p5RH.apply(this,arguments);
-    try{shSync('hoySheet','Editar “Hoy”',false);}catch(e){}return r;};
+    try{shSync('hoySheet','Edit “Today”',false);}catch(e){}return r;};
 
   /* ---- header + row clicks ---- */
   document.getElementById('ph4-host').addEventListener('click',function(e){
@@ -6187,7 +6420,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     closeS(dim,id);
   });
 
-  /* ---- (5.E) the secbar "＋ Añadir" shortcut ---- */
+  /* ---- (5.E) the secbar "＋ Add" shortcut ---- */
   window.__p5Add=function(t){openCreate(t);};
   document.addEventListener('click',function(e){
     var b=e.target.closest('[data-p5add]');
@@ -6195,7 +6428,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   },true);
 
   /* ---- PHASE 13 — persistent "+": opens the SAME newpick step the gear's
-     own "Añadir al menú" row opens (panelReset, not panelGo — see block
+     own "Add to the menu" row opens (panelReset, not panelGo — see block
      comment above for why). No kind hint: newpick has none to accept. ---- */
   window.__p13OpenAdd=function(){openS('panelDim','panelSheet');panelReset(['root','newpick']);};
   document.addEventListener('click',function(e){
@@ -6258,7 +6491,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   /* ================= PHASE 7 — WHO IS WRITING ================= */
   /* the active person, resolved at CALL time (the identity module lives in its
      own script; if it is missing, writes are still signed, just anonymously). */
-  function _zsig(){try{return (window.__zSigner?window.__zSigner():'Sin identificar');}catch(e){return 'Sin identificar';}}
+  function _zsig(){try{return (window.__zSigner?window.__zSigner():'Unidentified');}catch(e){return 'Unidentified';}}
   var _lastMerge=null;
 
   /* ---- canonical compare: key-order independent, and it ignores the two
@@ -6303,11 +6536,11 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   };
 
   /* ---- conflict rendering helpers ---- */
-  var _ZLBL={name:'nombre',description:'descripción',tableside:'texto de mesa',desc:'descripción',
-             ingredients:'ingredientes',sauces:'salsas',garnish:'guarnición',allergens:'alérgenos',
-             absentVerified:'verificaciones “Sin ✓”',allergenState:'estado de alérgenos',
-             allergenProvenance:'procedencia de alérgenos',photo:'foto',needsImage:'foto pendiente',
-             availability:'disponibilidad',price:'precio'};
+  var _ZLBL={name:'name',description:'description',tableside:'tableside text',desc:'description',
+             ingredients:'ingredients',sauces:'sauces',garnish:'garnish',allergens:'allergens',
+             absentVerified:'“Verified free ✓” verifications',allergenState:'allergen state',
+             allergenProvenance:'allergen provenance',photo:'photo',needsImage:'photo pending',
+             availability:'availability',price:'price'};
   function zLbl(k){return _ZLBL[k]||k;}
   function zDiffKeys(a,b){
     var seen={},out=[];
@@ -6321,107 +6554,107 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   }
   function zShow(o,k){
     var v=o?o[k]:undefined;
-    if(v===undefined)return '<i>sin valor</i>';
-    if(k==='photo')return String(v||'').length?('foto · '+Math.round(String(v).length/1024)+' KB'):'<i>sin foto</i>';
-    if(Array.isArray(v))return v.length?esc(v.join(', ')):'<i>vacío</i>';
+    if(v===undefined)return '<i>no value</i>';
+    if(k==='photo')return String(v||'').length?('photo · '+Math.round(String(v).length/1024)+' KB'):'<i>no photo</i>';
+    if(Array.isArray(v))return v.length?esc(v.join(', ')):'<i>empty</i>';
     if(v&&typeof v==='object')return esc(JSON.stringify(v).slice(0,180));
-    return String(v).length?esc(String(v).slice(0,220)):'<i>vacío</i>';
+    return String(v).length?esc(String(v).slice(0,220)):'<i>empty</i>';
   }
   function zWhen(o){
-    if(!o)return 'sin firma';
+    if(!o)return 'not signed';
     var who=o.updatedBy||o.createdBy||'', when=o.updatedAt||o.createdAt||'';
-    if(!who&&!when)return 'sin firma';
-    return esc(who||'sin firma')+(when?(' · '+esc(String(when).slice(0,10))):'');
+    if(!who&&!when)return 'not signed';
+    return esc(who||'not signed')+(when?(' · '+esc(String(when).slice(0,10))):'');
   }
   function zName(c){
     var b=null;try{b=baseItem(c.id);}catch(e){}
     return (c.local&&c.local.name)||(c.incoming&&c.incoming.name)||(b&&b.name)||c.id;
   }
 
-  /* ---- view: quién eres ---- */
+  /* ---- view: who you are ---- */
   function renderPanelPerson(o){
     var act='',ppl=[];
     try{act=window.__zActive?(window.__zActive()||''):'';}catch(e){}
     try{ppl=window.__zPeople?window.__zPeople():[];}catch(e){}
     var admin=false;try{admin=!!(window.__zIsAdmin&&window.__zIsAdmin());}catch(e){}
-    var h='<div class="ed-sub p5-sub">Firmas como <b>'+esc(act||'—')+'</b>. Todo lo que edites a partir de ahora se guarda con ese nombre.</div>'
+    var h='<div class="ed-sub p5-sub">Signing as <b>'+esc(act||'—')+'</b>. Everything you edit from now on is saved under that name.</div>'
       +'<div class="zp-list">'+ppl.map(function(p){
           return '<button type="button" class="zp-pick'+(p===act?' on':'')+'" data-zpick="'+escAttr(p)+'">'
             +'<span class="zp-nm">'+esc(p)+'</span>'
             +(p===act?'<span class="zp-tick">✓</span>':'')+'</button>';
         }).join('')+'</div>'
-      +'<div class="ed-sub" style="margin:12px 0 0">Cambiar de persona <b>no borra nada</b>: tus ítems editados, fotos y links siguen en este dispositivo.</div>'
+      +'<div class="ed-sub" style="margin:12px 0 0">Switching person <b>deletes nothing</b>: your edited items, photos and links stay on this device.</div>'
       +(admin?('<div class="p5-rows" style="margin-top:14px">'
-               +p5Row('people','Gestionar personas','Añadir o renombrar personas',0)+'</div>'):'')
-      +'<div class="p5-foot">Esto no es un inicio de sesión y no hay contraseña. Sirve para saber <b>quién escribió cada cosa</b>; '
-      +'cualquiera con este teléfono puede elegir cualquier nombre.</div>';
+               +p5Row('people','Manage people','Add or rename people',0)+'</div>'):'')
+      +'<div class="p5-foot">This is not a login and there is no password. It exists to record <b>who wrote what</b>; '
+      +'anyone with this phone can pick any name.</div>';
     document.getElementById('panelBody').innerHTML=h;
   }
 
-  /* ---- view: gestionar personas (shown only while the active person is Dani) ---- */
+  /* ---- view: manage people (shown only while the active person is Dani) ---- */
   function renderPanelPeople(o){
     var ppl=[];try{ppl=window.__zPeople?window.__zPeople():[];}catch(e){}
     var act='';try{act=window.__zActive?(window.__zActive()||''):'';}catch(e){}
-    var h='<div class="ed-sub p5-sub">Personas que pueden firmar en este dispositivo.</div>'
+    var h='<div class="ed-sub p5-sub">People who can sign on this device.</div>'
       +'<div class="zp-list">'+ppl.map(function(p){
           return '<div class="zp-erow"><input class="ed-inp zp-ren" data-zren="'+escAttr(p)+'" value="'+escAttr(p)+'">'
-            +'<button class="ed-btn ghost small" data-zrensave="'+escAttr(p)+'" type="button">Renombrar</button></div>';
+            +'<button class="ed-btn ghost small" data-zrensave="'+escAttr(p)+'" type="button">Rename</button></div>';
         }).join('')+'</div>'
-      +'<div class="zp-addrow"><input class="ed-inp" id="zpNew" placeholder="Nombre de la persona nueva">'
-      +'<button class="ed-btn small" data-zadd="1" type="button">Añadir</button></div>'
+      +'<div class="zp-addrow"><input class="ed-inp" id="zpNew" placeholder="New person\u2019s name">'
+      +'<button class="ed-btn small" data-zadd="1" type="button">Add</button></div>'
       +'<div class="zp-msg" id="zpMsg"></div>'
-      +'<div class="p5-foot">Renombrar solo cambia la lista: <b>lo ya firmado conserva el nombre con el que se guardó</b>. '
-      +'Las personas viajan en el respaldo y se <b>suman</b> a las del otro teléfono, nunca lo reemplazan.<br>'
-      +'Esta pantalla está <b>oculta</b> cuando la persona activa no es “Dani”. Está oculta, no protegida: '
-      +'cualquiera puede elegir “Dani” al entrar.</div>';
+      +'<div class="p5-foot">Renaming only changes the list: <b>anything already signed keeps the name it was saved with</b>. '
+      +'People travel in the backup and are <b>added</b> to the other phone&#39;s list, never replacing it.<br>'
+      +'This screen is <b>hidden</b> when the active person is not “Dani”. Hidden, not protected: '
+      +'anyone can pick “Dani” on the way in.</div>';
     document.getElementById('panelBody').innerHTML=h;
   }
 
-  /* ---- view: conflictos ---- */
+  /* ---- view: conflicts ---- */
   function renderPanelConflicts(o){
     var c=zConf(),keys=Object.keys(c).sort();
-    var h='<div class="ed-sub p5-sub"><b>'+keys.length+'</b> ítem'+(keys.length!==1?'s':'')
-      +' llegó con dos versiones distintas. Mientras no elijas, <b>sigue activo lo tuyo</b> y nada se borra.</div>';
+    var h='<div class="ed-sub p5-sub"><b>'+keys.length+'</b> item'+(keys.length!==1?'s':'')
+      +' arrived with two different versions. Until you choose, <b>yours stays active</b> and nothing is deleted.</div>';
     if(!keys.length){
-      h+=p5Empty('No hay conflictos. Todo lo importado encajó con lo que ya tenías.');
+      h+=p5Empty('No conflicts. Everything imported fitted what you already had.');
       document.getElementById('panelBody').innerHTML=h;return;
     }
     h+='<div class="zc-list">'+keys.map(function(k){
       var it=c[k],dk=zDiffKeys(it.local,it.incoming);
       var rows=dk.slice(0,8).map(function(f){
         return '<div class="zc-f"><div class="zc-fk">'+esc(zLbl(f))+'</div>'
-          +'<div class="zc-fv"><span class="zc-side">Aquí</span>'+zShow(it.local,f)+'</div>'
-          +'<div class="zc-fv inc"><span class="zc-side">Del archivo</span>'+zShow(it.incoming,f)+'</div></div>';
+          +'<div class="zc-fv"><span class="zc-side">Current</span>'+zShow(it.local,f)+'</div>'
+          +'<div class="zc-fv inc"><span class="zc-side">From file</span>'+zShow(it.incoming,f)+'</div></div>';
       }).join('');
-      if(dk.length>8)rows+='<div class="zc-more">y '+(dk.length-8)+' campo'+((dk.length-8)!==1?'s':'')+' más</div>';
+      if(dk.length>8)rows+='<div class="zc-more">and '+(dk.length-8)+' more field'+((dk.length-8)!==1?'s':'')+'</div>';
       return '<div class="zc-item"><div class="zc-h">'+esc(zName(it))+'</div>'
-        +'<div class="zc-meta"><span>Aquí: '+zWhen(it.local)+'</span><span>Archivo: '+zWhen(it.incoming)+'</span></div>'
+        +'<div class="zc-meta"><span>Current: '+zWhen(it.local)+'</span><span>From file: '+zWhen(it.incoming)+'</span></div>'
         +rows
-        +'<div class="ed-imgrow"><button class="ed-btn small" data-zres="'+escAttr(k)+'" data-zside="local" type="button">Quedarme con lo mío</button>'
-        +'<button class="ed-btn ghost small" data-zres="'+escAttr(k)+'" data-zside="incoming" type="button">Usar lo del archivo</button></div></div>';
+        +'<div class="ed-imgrow"><button class="ed-btn small" data-zres="'+escAttr(k)+'" data-zside="local" type="button">Keep current</button>'
+        +'<button class="ed-btn ghost small" data-zres="'+escAttr(k)+'" data-zside="incoming" type="button">Use from file</button></div></div>';
     }).join('')+'</div>'
-    +'<div class="p5-foot">Elijas lo que elijas, <b>la foto nunca se pierde</b>: si la versión que eliges no trae foto, se conserva la que había.</div>';
+    +'<div class="p5-foot">Whichever you pick, <b>the photo is never lost</b>: if the version you choose has no photo, the existing one is kept.</div>';
     document.getElementById('panelBody').innerHTML=h;
   }
 
-  /* ---- view: resultado de la combinación ---- */
+  /* ---- view: merge result ---- */
   function renderPanelMerged(o){
     var r=_lastMerge||{items:0,same:0,conflicts:0,links:0,created:0,createdSame:0,people:0,hoy:false};
-    var h='<div class="ed-sub p5-sub">Se combinó el archivo con lo que ya tenías. <b>No se borró nada.</b></div>'
+    var h='<div class="ed-sub p5-sub">The file was merged with what you already had. <b>Nothing was deleted.</b></div>'
       +'<div class="imp-prev">'
-      +'<div class="imp-row"><span>Ítems nuevos que entraron</span><b id="mgNew">'+r.items+'</b></div>'
-      +'<div class="imp-row"><span>Ítems idénticos (sin cambio)</span><b id="mgSame">'+r.same+'</b></div>'
-      +'<div class="imp-row"><span>Ítems en conflicto</span><b id="mgConf">'+r.conflicts+'</b></div>'
-      +'<div class="imp-row"><span>Ítems creados que entraron</span><b id="mgCreated">'+r.created+'</b></div>'
-      +'<div class="imp-row"><span>Links de alérgeno nuevos</span><b id="mgLinks">'+r.links+'</b></div>'
-      +'<div class="imp-row"><span>Personas nuevas</span><b id="mgPeople">'+r.people+'</b></div>'
+      +'<div class="imp-row"><span>New items that came in</span><b id="mgNew">'+r.items+'</b></div>'
+      +'<div class="imp-row"><span>Identical items (no change)</span><b id="mgSame">'+r.same+'</b></div>'
+      +'<div class="imp-row"><span>Items in conflict</span><b id="mgConf">'+r.conflicts+'</b></div>'
+      +'<div class="imp-row"><span>Created items that came in</span><b id="mgCreated">'+r.created+'</b></div>'
+      +'<div class="imp-row"><span>New allergen links</span><b id="mgLinks">'+r.links+'</b></div>'
+      +'<div class="imp-row"><span>New people</span><b id="mgPeople">'+r.people+'</b></div>'
       +'</div>';
     if(r.conflicts){
-      h+='<div class="ed-sub" style="margin:12px 0 8px">Hay <b>'+r.conflicts+'</b> ítem'+(r.conflicts!==1?'s':'')
-        +' que cambió en los dos teléfonos. Sigue activo <b>lo tuyo</b> hasta que decidas.</div>'
-        +'<button class="ed-btn" data-p5go="conflicts" type="button">Revisar conflictos</button>';
+      h+='<div class="ed-sub" style="margin:12px 0 8px"><b>'+r.conflicts+'</b> item'+(r.conflicts!==1?'s':'')
+        +' changed on both phones. <b>Yours</b> stays active until you decide.</div>'
+        +'<button class="ed-btn" data-p5go="conflicts" type="button">Review conflicts</button>';
     }
-    h+='<button class="ed-btn ghost" data-mc="close" type="button">Cerrar</button>';
+    h+='<button class="ed-btn ghost" data-mc="close" type="button">Close</button>';
     document.getElementById('panelBody').innerHTML=h;
   }
 
@@ -6436,23 +6669,23 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var ad=e.target.closest('[data-zadd]');
     if(ad){
       var inp=document.getElementById('zpNew'),v=inp?inp.value:'';
-      var r=(window.__zAddPerson?window.__zAddPerson(v):{ok:false,error:'No disponible'});
-      if(r&&r.ok){panelRender();toastSave('Persona añadida: '+r.name);}else msg((r&&r.error)||'No se pudo añadir',true);
+      var r=(window.__zAddPerson?window.__zAddPerson(v):{ok:false,error:'Unavailable'});
+      if(r&&r.ok){panelRender();toastSave('Person added: '+r.name);}else msg((r&&r.error)||'Could not add',true);
       return;
     }
     var rs=e.target.closest('[data-zrensave]');
     if(rs){
       var oldn=rs.getAttribute('data-zrensave');
       var fld=document.querySelector('#panelBody [data-zren="'+oldn.replace(/"/g,'\\"')+'"]');
-      var r2=(window.__zRenamePerson?window.__zRenamePerson(oldn,fld?fld.value:''):{ok:false,error:'No disponible'});
-      if(r2&&r2.ok){panelRender();toastSave('Renombrada a '+r2.name);}else msg((r2&&r2.error)||'No se pudo renombrar',true);
+      var r2=(window.__zRenamePerson?window.__zRenamePerson(oldn,fld?fld.value:''):{ok:false,error:'Unavailable'});
+      if(r2&&r2.ok){panelRender();toastSave('Renamed to '+r2.name);}else msg((r2&&r2.error)||'Could not rename',true);
       return;
     }
     var rv=e.target.closest('[data-zres]');
     if(rv){
       var k=rv.getAttribute('data-zres'),side=rv.getAttribute('data-zside');
       if(window.__resolveConflict(k,side)){panelRender();rerender();
-        toastSave(side==='incoming'?'Se usó la versión del archivo':'Se conservó tu versión');}
+        toastSave(side==='incoming'?'Used the file\'s version':'Kept your version');}
       return;
     }
   });
@@ -6517,7 +6750,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   /* ---- painting. Every write is guarded by a difference check: the
      MutationObserver below re-paints on DOM changes, so an unconditional
      innerHTML write would feed itself forever. ---- */
-  function chipHTML(){return '<span class="zp-dot"></span><span class="zp-nm">'+_e(_active||'¿Quién eres?')+'</span>';}
+  function chipHTML(){return '<span class="zp-dot"></span><span class="zp-nm">'+_e(_active||'Who are you?')+'</span>';}
   function setHTML(el,h){if(el&&el.innerHTML!==h)el.innerHTML=h;}
   function setTXT(el,t){if(el&&el.textContent!==t)el.textContent=t;}
   function paint(){
@@ -6536,7 +6769,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   function mkChip(){
     var b=document.createElement('button');
     b.type='button';b.className='zp-chip';
-    b.setAttribute('data-zwho','1');b.setAttribute('aria-label','Quién eres');
+    b.setAttribute('data-zwho','1');b.setAttribute('aria-label','Who you are');
     b.innerHTML=chipHTML();return b;
   }
   function mount(){
@@ -6564,7 +6797,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   /* ---- public API ---- */
   window.__zPeople=function(){return _people.slice();};
   window.__zActive=function(){return _active;};
-  window.__zSigner=function(){return _active||'Sin identificar';};
+  window.__zSigner=function(){return _active||'Unidentified';};
   window.__zIsAdmin=function(){return _active===ADMIN;};
   window.__zSetActive=function(n){
     n=String(n==null?'':n).trim();
@@ -6577,20 +6810,20 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
   window.__pickPerson=window.__zSetActive;
   window.__zAddPerson=function(n){
     n=String(n==null?'':n).trim();
-    if(!n)return {ok:false,error:'Escribe un nombre.'};
-    if(n.length>40)return {ok:false,error:'Ese nombre es demasiado largo (máximo 40).'};
-    if(!addLocal(n))return {ok:false,error:'Ya hay una persona con ese nombre.'};
+    if(!n)return {ok:false,error:'Enter a name.'};
+    if(n.length>40)return {ok:false,error:'That name is too long (40 maximum).'};
+    if(!addLocal(n))return {ok:false,error:'There is already a person with that name.'};
     save();paint();return {ok:true,name:n};
   };
   window.__zRenamePerson=function(o,n){
     o=String(o==null?'':o).trim();n=String(n==null?'':n).trim();
     var ix=_people.indexOf(o);
-    if(ix<0)return {ok:false,error:'Esa persona ya no está en la lista.'};
-    if(!n)return {ok:false,error:'El nombre no puede quedar vacío.'};
-    if(n.length>40)return {ok:false,error:'Ese nombre es demasiado largo (máximo 40).'};
+    if(ix<0)return {ok:false,error:'That person is no longer in the list.'};
+    if(!n)return {ok:false,error:'The name cannot be left empty.'};
+    if(n.length>40)return {ok:false,error:'That name is too long (40 maximum).'};
     if(n===o)return {ok:true,name:n};
     for(var i=0;i<_people.length;i++)
-      if(i!==ix&&_people[i].toLowerCase()===n.toLowerCase())return {ok:false,error:'Ya hay una persona con ese nombre.'};
+      if(i!==ix&&_people[i].toLowerCase()===n.toLowerCase())return {ok:false,error:'There is already a person with that name.'};
     _people[ix]=n;
     if(_active===o)_active=n;   /* the pointer moves; what is already SIGNED keeps the old name */
     save();paint();return {ok:true,name:n};
@@ -6644,14 +6877,14 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
       var who=window.__zActive?window.__zActive():'';
       if(!who){
         try{if(window.__zOpenPerson)window.__zOpenPerson();}catch(e){}
-        try{if(window.__toast)window.__toast('Elige quién eres para verificar');}catch(e){}
+        try{if(window.__toast)window.__toast('Pick who you are to verify');}catch(e){}
         return;
       }
       var prevSrc='';try{prevSrc=(cur.contentVerification&&cur.contentVerification.source)||'';}catch(e){}
       window.setItemOverride&&window.setItemOverride(id,{contentVerified:true,contentVerification:{
         verifiedBy:who,verifiedAt:_p12Now(),source:prevSrc,appBuild:(window.__buildId||'')
       }});
-      try{if(window.__toast)window.__toast('Verificado');}catch(e){}
+      try{if(window.__toast)window.__toast('Verified');}catch(e){}
     }
     try{if(window.__rerender)window.__rerender();}catch(e){}
   };
