@@ -4199,6 +4199,14 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
   let WID=0; const WMAP={};
   function wineRow(r){
     if(r&&r._created&&window.__p4Disp)r=window.__p4Disp(r);
+    /* p31: baked wines were the ONLY list surface that never read the
+       overlay, so an edit saved through the editor was invisible.  The
+       merged record goes into WMAP, which is what openWine -> basicWine
+       reads, so the row and the sheet are fixed by this one line.
+       `else if`, not spiritRow's order: __p4Disp already merges, and
+       merging AFTER it would overwrite its escaping with raw overlay
+       text on _created records. */
+    else if(r&&r.id&&window.__mergeOv)r=window.__mergeOv(r);
     const id='w'+(WID++); WMAP[id]=r; if(r&&r.id&&window.__P4WORD)window.__P4WORD[id]=r.id;
     const price=r.btg?`<div class="lprice">BTG ${r.btg}${r.btl?` · <span class="btl">${r.btl}/btl</span>`:''}</div>`:(r.btgPending?`<div class="lprice"><span class="sp-needsreview">BTG PRICE PENDING</span>${r.btl?` <span class="btl">· ${r.btl}/btl</span>`:''}</div>`:(r.btl?`<div class="lprice"><span class="btl">${r.btl}/btl</span></div>`:''));
     /* p30: `prod` is absent on the 484 printed-list rows - render only the
