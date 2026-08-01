@@ -2262,7 +2262,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
         <div class="pls-ht">Weekly Points</div>
         <div class="pls-hd">Jul 27 – Aug 2 · published Monday</div>
         <div class="pls-hchips"><span>📣 Reviews</span><span>🥗 Seaweed Salad</span><span>🥃 Bourbon &amp; Rye</span><span>🍷 Selling Techniques</span><span>⚠ Citrus</span></div>
-        <div class="pls-hgo"><span>9 points this week</span><span>Open the issue ›</span></div>
+        <div class="pls-hgo"><span>${(function(){var el=document.getElementById('view-weekly');if(!el)return '9 points this week';var spans=el.querySelectorAll('.divh .n');var n=0;spans.forEach(function(s){var t=String(s.textContent||'');var parts=t.split('\u00b7').map(function(x){return x.trim();}).filter(function(x){return x.length>0;});n+=(parts.length||1);});return n+' points this week';})()}</span><span>Open the issue ›</span></div>
       </div></div></div></div>
     <div class="section" id="hoySection">${head('MILĀ PULSE')}<button class="hoy-edit" id="hoyEditBtn" type="button">✎ Edit</button>
       <div class="pulse-mod"><div id="hoyBody"></div></div></div>
@@ -3662,13 +3662,12 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
   }
   /* every Beverages filter EXCEPT free-from — identical body to the original
      bevMatches, minus the free-from guard. */
-  function bevMatchesBase(d){d=window.__mrgItem(d);if(bevState.cat!=="All"&&String(d.sense||"").toUpperCase()!==bevState.cat.toUpperCase())return false;if(bevState.q&&bevText(d).indexOf(bevState.q)<0)return false;if(bevState.onlyUnverified&&(d.kind==='wine'||d.contentVerified))return false;return true;}
+  function bevMatchesBase(d){d=window.__mrgItem(d);if(bevState.cat!=="All"&&String(d.sense||"").toUpperCase()!==bevState.cat.toUpperCase())return false;if(bevState.q&&bevText(d).indexOf(bevState.q)<0)return false;if(bevState.onlyUnverified&&d.contentVerified)return false;return true;}
   function bevMatches(d){return bevMatchesBase(d)&&bevMatchesFreeFrom(d);}
   /* PHASE 12: live count of unverified, verifiable (non-wine, non-off-menu) drinks — never hardcoded */
   function _bevUnverifCount(){
     var n=0;(typeof BEV!=='undefined'?BEV:[]).forEach(function(d){
       if(window.__avOff&&window.__avOff(d))return;
-      if(d.kind==='wine')return;
       var m=window.__mrgItem(d);
       if(!m.contentVerified)n++;
     });
@@ -4344,7 +4343,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       if(body)html+='<div class="lgroup">'+window.__esc((window.WINE_SECT_LABEL||{})[sc]||sc)+'</div>'+body;
     });
     document.getElementById('wineList').innerHTML=html||'<div class="showing">No wines in this filter.</div>';
-    var _p35pw=winePending?' · pending verification only':'';document.getElementById('wineShowing').textContent='Showing '+rows.length+' of '+WINE.length+' selections'+_p35pw;
+    var _p37live=WINE.filter(function(w){return !(window.__avOff&&window.__avOff(w));}).length;var _p37ax=[];if(wineFilter!=='all'){var _p37c=wineChips.filter(function(c){return c[0]===wineFilter;})[0];if(_p37c)_p37ax.push(_p37c[1].replace(/^\S+\s*/,''));}if(winePending)_p37ax.push('Pending');if(wineQ)_p37ax.push('"'+wineQ+'"');var _p37tail=_p37ax.length?(' · '+_p37ax.join(' · ')):'';document.getElementById('wineShowing').textContent='Showing '+rows.length+' of '+_p37live+' selections'+_p37tail;
   }
   window.__setWineQ=function(v){wineQ=v;renderWineList();};
   document.getElementById('wineChips').addEventListener('click',function(e){var b=e.target.closest('.fchip');if(!b)return;/* (p35) handled BEFORE the radio deselect: without this branch the
@@ -4912,7 +4911,36 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
     try{if(window.__zPending)_pend=window.__zPending(g);}catch(_e){_pend=(g.needsReview===true);}
     const nr=_pend?`<span class="gnr" title="generic definition, not yet verified">△</span>`:'';
     const _gx=(window.__escA?window.__escA(g.id||''):String(g.id||''));
-    return `<div class="grow" data-gid="${id}" data-gxid="${_gx}"><span class="gic">${g.ic}</span><div class="gmain"><div class="ghead"><span class="gname">${g.name}</span>${nr}${tag}</div><div class="gdef">${g.def}</div>${g.used?`<div class="gused">${g.used}</div>`:''}</div></div>`;}
+    /* (p38-C) `used` stays exactly as authored in the data — we never
+       mutate GLOSS. Only records whose `used` ASSERTS A COUNT (a digit)
+       get the derived treatment; hand-written prose with no digit is
+       left byte-for-byte untouched. The count itself is never invented:
+       it is recomputed here, at render time, from the live FOOD/BEV
+       data, using the same component keys and resolver the rest of the
+       app uses (window.GXRESOLVE against d.ingredients/d.sauces/d.garnish),
+       OR'd with a case-insensitive match against the dish's own name, and
+       counted only for live dishes (window.__avOff filters off-menu). */
+    const _usedLine=(function(){
+      if(!/[0-9]/.test(g.used||''))return g.used?`<div class="gused">${g.used}</div>`:'';
+      var _key=(g.name||'').toLowerCase().trim();
+      var _nameL=(g.name||'').toLowerCase();
+      var _n=0;
+      [FOOD,BEV].forEach(function(_arr){(_arr||[]).forEach(function(d){
+        if(window.__avOff(d))return;
+        var _hit=false;
+        ['ingredients','sauces','garnish'].forEach(function(_k){
+          if(_hit)return;
+          (d[_k]||[]).forEach(function(_s){
+            if(_hit)return;
+            if(window.GXRESOLVE&&window.GXRESOLVE(_s)===_key)_hit=true;
+          });
+        });
+        if(!_hit&&d.name&&d.name.toLowerCase().indexOf(_nameL)>=0)_hit=true;
+        if(_hit)_n++;
+      });});
+      return _n>0?`<div class="gused">Used in ${_n} dish${_n!==1?'es':''}</div>`:'';
+    })();
+    return `<div class="grow" data-gid="${id}" data-gxid="${_gx}"><span class="gic">${g.ic}</span><div class="gmain"><div class="ghead"><span class="gname">${g.name}</span>${nr}${tag}</div><div class="gdef">${g.def}</div>${_usedLine}</div></div>`;}
   // single working category axis that matches the content
   /* (p28-B) the axis is DERIVED from the data, never hand-listed again: a
      hardcoded list silently hid 29 of 71 terms, and would have hidden 300
@@ -4927,17 +4955,25 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
     +`<button class="fchip gqpend" type="button" title="only entries still waiting for a human check">△ Pending</button>`;
   // remove the old second filter row (domain) — one axis only
   var gt=document.getElementById('glossType'); if(gt) gt.remove();
+  /* (p38-C) THE alphabetical normalization — ONE definition, used by
+     BOTH the sort comparator and the bucket header below. Written twice
+     they would drift apart and the index would silently desynchronize
+     from its own headers again. Strips the LEADING non-letter run only:
+     its first character equals that of a fully stripped name for every
+     input, so bucket letters are unchanged, while as a sort key it moves
+     only the names that actually begin with a non-letter. */
+  function _gAlphaKey(n){return (''+(n||'')).replace(/^[^A-Za-z]+/,'');}
   function renderGloss(){
     var list=GLOSS.filter(function(g){
       if(glossState.cat!=="All" && g.cat!==glossState.cat) return false;
       if(glossState.pending){var _p=(g.needsReview===true);try{if(window.__zPending)_p=window.__zPending(g);}catch(_e){_p=(g.needsReview===true);}if(!_p)return false;}
       if(glossState.q){var h=(g.name+" "+g.def+" "+g.cat).toLowerCase();if(h.indexOf(glossState.q.toLowerCase())<0)return false;}
       return true;
-    }).sort(function(a,b){return a.name.localeCompare(b.name);});
+    }).sort(function(a,b){return _gAlphaKey(a.name).localeCompare(_gAlphaKey(b.name))||a.name.localeCompare(b.name);});
     // alphabetical grouping
     var html="", letter="";
     list.forEach(function(g){
-      var L=g.name.replace(/[^A-Za-z]/,'').charAt(0).toUpperCase();
+      var L=_gAlphaKey(g.name).charAt(0).toUpperCase();
       if(L!==letter){letter=L;html+=`<div class="galpha">${L}</div>`;}
       html+=glossRow(g);
     });
@@ -4946,11 +4982,16 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
     /* (p33-H) the count line must never claim the full glossary while a
        filter is on, and must say WHICH filter is on. */
     var _p33p=glossState.pending?' · pending check only':'';
-    document.getElementById('glossShowing').textContent=(
-      glossState.q?`${list.length} result${list.length!==1?'s':''} for “${glossState.q}”`:
-      glossState.cat!=="All"?`${list.length} ${glossState.cat.toLowerCase()} terms`:
-      glossState.pending?`${list.length} term${list.length!==1?'s':''}`:
-      `${GLOSS.length} terms`)+_p33p;
+    document.getElementById('glossShowing').textContent=(function(){
+      /* (p38-C) compose the suffix from EVERY active axis instead of a
+         ternary chain that stops at the first true condition: a search
+         term used to silently hide an active category chip. */
+      var _word=glossState.q?'result':'term';
+      var _plural=list.length!==1?'s':'';
+      var _catPrefix=glossState.cat!=="All"?(glossState.cat.toLowerCase()+' '):'';
+      var _forSuffix=glossState.q?` for “${glossState.q}”`:'';
+      return `${list.length} ${_catPrefix}${_word}${_plural}${_forSuffix}`;
+    })()+_p33p;
   }
   window.__zRenderGloss=function(){try{renderGloss();}catch(e){}};
   renderGloss();
@@ -7461,7 +7502,7 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var cur=String((window.foodState&&window.foodState.cat)||'All');
     w.innerHTML=names.map(function(x){
       var lbl=String(x).replace(/[^A-Za-z\s]/g,'').trim();
-      var n=(lbl==='All')?c.total:(lbl==='Specials'?c.specials:(c.byCat[lbl.toUpperCase()]||0));
+      var n=(lbl==='All')?(c.total+c.specials):(lbl==='Specials'?c.specials:(c.byCat[lbl.toUpperCase()]||0));
       return '<button class="fchip'+(lbl===cur?' on':'')+'">'+esc(x)+' <span class="fcount">'+n+'</span></button>';
     }).join('');
   };
@@ -7892,8 +7933,8 @@ var WP37_CITRUS="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     var list=[];try{list=window.__zPendingList?window.__zPendingList():[];}catch(e){list=[];}
     var offN=0;try{offN=(window.__avOffList?window.__avOffList().length:0);}catch(e){offN=0;}
     var h='<div class="ed-sub p5-sub"><b>'+list.length+'</b> item'+(list.length!==1?'s':'')
-      +' still waiting to be verified. Off-menu items are left out of this list \u2014 there '
-      +(offN===1?'is':'are')+' currently <b>'+offN+'</b> of those.</div>';
+      +' still waiting to be verified. Off-menu items are left out of this list \u2014 '
+      +'<b>'+offN+'</b> off-menu item'+(offN!==1?'s':'')+' '+(offN===1?'is':'are')+' currently excluded.</div>';
     if(!list.length){
       h+=p5Empty('Nothing is waiting. Everything has been verified.');
       document.getElementById('panelBody').innerHTML=h;
