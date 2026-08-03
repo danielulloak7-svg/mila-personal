@@ -248,6 +248,10 @@
   .milabox .pn-item:first-of-type{border-top:1px dashed var(--line);margin-top:8px}
   .pn-verified{display:inline-block;font-size:8.5px;font-weight:800;letter-spacing:.06em;color:var(--success);background:rgba(78,124,90,.1);border:1px solid rgba(78,124,90,.32);border-radius:9px;padding:2px 7px;margin-left:8px;vertical-align:middle}
   .pn-ainote{font-size:10px;line-height:1.45;color:#b2600d;background:rgba(214,120,20,.09);border:1px solid rgba(214,120,20,.28);border-radius:9px;padding:6px 8px;margin:7px 0 2px;font-style:italic}
+  /* p52 #12 — the source-hole note. Same color pair as .pn-ainote, which is
+     already live on the ai pairing panel, so legibility is inherited rather
+     than newly asserted. */
+  .unv-note{font-size:10px;line-height:1.45;color:#b2600d;background:rgba(214,120,20,.09);border:1px solid rgba(214,120,20,.28);border-radius:9px;padding:6px 8px;margin:7px 0 2px;font-style:italic}
 
   /* PHASE 12 — content verification badge (reuses the .sp-unverified / .alk-absent color vocabulary) */
   .itm-verif{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:5px;margin-left:9px;vertical-align:middle;cursor:pointer;border:1px solid transparent}
@@ -3165,7 +3169,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
      aroma:"Delicate floral notes, white peach, subtle melon with a hint of rice sweetness",palate:"Crisp and clean with gentle acidity, silky texture, refined mineral character",finish:"Dry, elegant, with lingering citrus and a whisper of almond",producerNotes:"Amabuki is a historic sake brewery based in Saga Prefecture, known for meticulous attention to detail and modern precision in traditional sake-making. Their Himawari line represents their commitment to creating accessible yet sophisticated expressions of Junmai Ginjo.",story:"Amabuki Himawari is an exquisitely refined Junmai Ginjo that exemplifies clarity and elegance, with delicate florals and pristine minerality that beautifully complements the finest seafood preparations.",
      glassware:"Sake Cup (Ochoko)",pairs:["Oysters","Hamachi Crudo","Lobster Tempura"],pn:"Amabuki · Himawari Ginjo",unverified:true,srcVerified:"2026-07-28",srcGap:true,aiLayer:true},
     {id:"drink.manotsuru-bulzai-ginjo",kind:"wine",name:"Manotsuru \"Bulzai\" Ginjo",sense:"SAKE",sub:"Sake",price:"$22",photo:"",needsImage:true,
-     allerg:[],stub:true,glassware:"Sake Cup (Ochoko)",unverified:true,unverifiedReason:"Sin línea en la carta impresa",aiLayer:true,allergenState:{"Gluten": "unknown", "Dairy": "unknown", "Egg": "unknown", "Fish": "unknown", "Shellfish": "unknown", "Soy": "unknown", "Sesame": "unknown", "Nuts": "unknown", "Peanut": "unknown", "Allium": "unknown", "Citrus": "unknown", "Spice": "unknown", "Mustard": "unknown", "Alcohol": "unknown", "Caffeine": "unknown", "Mushroom": "unknown", "Seafood": "unknown", "Garlic": "unknown", "Onion": "unknown", "Coriander": "unknown"}},
+     allerg:[],stub:true,glassware:"Sake Cup (Ochoko)",unverified:true,unverifiedReason:"No line for this product on the printed drinks menu",aiLayer:true,allergenState:{"Gluten": "unknown", "Dairy": "unknown", "Egg": "unknown", "Fish": "unknown", "Shellfish": "unknown", "Soy": "unknown", "Sesame": "unknown", "Nuts": "unknown", "Peanut": "unknown", "Allium": "unknown", "Citrus": "unknown", "Spice": "unknown", "Mustard": "unknown", "Alcohol": "unknown", "Caffeine": "unknown", "Mushroom": "unknown", "Seafood": "unknown", "Garlic": "unknown", "Onion": "unknown", "Coriander": "unknown"}},
     {id:"drink.wakatake-onikoroshi",kind:"wine",name:"Wakatake Onikoroshi",sense:"SAKE",sub:"",price:"$24",bottlePrice:"$170",photo:"",needsImage:true,
      allerg:[],
      producer:"Wakatake",cuvee:"Onikoroshi",vintage:"NV",appellation:"",format:"750ml",
@@ -3185,7 +3189,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     {id:"drink.coedo-marihana",kind:"beer",name:"Coedo Marihana",sense:"BEER",sub:"Session IPA (Ale) · 4.5%",price:"$15",photo:"",needsImage:true,
      origin:"Japan",tableside:"A Japanese Session IPA with citrus aroma and golden hue — brewed with 6 hop varieties.",allerg:[]},
     {id:"drink.stella-artois-zero-proof",kind:"beer",name:"Stella Artois zero-proof",sense:"BEER",sub:"",price:"",photo:"",needsImage:true,
-     origin:"",tableside:"",allerg:[],needsReview:true},
+     origin:"",tableside:"",allerg:[],needsReview:true,unverified:true,unverifiedReason:"No line for this product anywhere in the printed drinks menu — all 64 pages were searched and the beer section lists exactly three beers, none of them this one. The row exists only because the product was reported as served under this name; nothing about it is source-documented."},
   ];
 
   const EM={"Hamachi":"🐟","Coconut Avocado Coulis":"🥑","Cilantro Oil":"🌿","Lime Caviar":"🟢","Rakkyo Onion":"🧅","Dill":"🌿","Serrano":"🌶️","Espelette":"🌶️","Bacardi 8":"🥃","E11even Vodka":"🥃","Cognac":"🍷","Falernum":"🌿","Pandan Liqueur":"🌿","Pistachio-pandan Orgeat":"🥜","Pineapple Juice":"🍍","Lime":"🟢","Hoba Leaf":"🌿","Flowers":"🌸","Dried Lime":"🟢","Bamboo Straw":"🥢","onion":"🧅","Spice":"🌶️","Garlic":"🧄","seafood":"🦐","Citrus":"🍋","Nuts":"🥜","Gluten":"🌾","Sesame":"🫘","Soy":"🫛","Alcohol":"🍶","Dairy":"🥛","Egg":"🥚","Shellfish":"🦐","allium":"🧅","Sulfites":"🍷","Edamame":"🫛","Shichimi Pepper":"🌶️","Chicken":"🍗","Salmon":"🐟","Yellowfin Tuna":"🐟","Eggplant":"🍆","Zucchini":"🥒","Spinach":"🥬","Duxelle Mushroom":"🍄","Wagyu Skirt Steak":"🥩","Maine Lobster":"🦞","Whiskey Pepper Jus":"🥃","Basil Gremolata":"🌿","Ginger-Chives Relish":"🫚","Shiso Bouquet Garni":"🌿","Korean Mint":"🌿","Lemon":"🍋","Maldon Salt":"🧂","Allium":"🧅","Chili":"🌶️","Fish":"🐟","Bluefin Toro":"🐟","Caviar":"⚫","Crispy Nori Chips":"🍘","Kimchee Lime":"🟢","Cucumber Ribbon":"🥒","Rosemary Sprig":"🌿","Anise":"✴️","Allspice Berries":"🟤","Avocado":"🥑","Escabeche Onions":"🧅","Scallions":"🧅","Tenkasu":"🍤","Yuzu Aioli":"🥚","Serrano Pepper":"🌶️","Sweet & Sour Glaze":"🍯","Pickled Cauliflower":"🥦","Pickled Napa Cabbage":"🥬","Pickled Red Cabbage":"🥬","Ginger-Chive Relish":"🫚","Spaghetti":"🍝","White Wine Truffle Cream":"🍄","Truffle Cream":"🍄","Shaved Truffle":"🍄","Parmesan":"🧀","Wagyu Gyoza":"🥟","Mushroom":"🍄","Shichimi Ponzu":"🌶️","Rock Chives":"🌿","Seasonal Sashimi":"🐟","Wasabi":"🟢","Daikon":"🥬","Shiso":"🌿","Pickled Ginger":"🫚","Wagyu Beef Tartare":"🥩","Pickled Mustard Seeds":"🌿","Egg Yolk":"🥚","Beef Tartare Sauce":"🥩","Bone Marrow Mayo":"🥚","Green Shiso":"🌿","Borage Flower":"🌸","Garlic Chips":"🧄","Crispy Capers":"🌿","Pommes Gaufrette":"🥔","Grilled Sweet Corn":"🌽","Shiro Butter":"🧈","Izak Spice":"🌶️","Spicy Feta Sauce":"🧀","Dill Oil":"🌿","Micro Shiso":"🌿","Swiss Meringue":"🧁","Vanilla Whipped Ganache":"🍮","Mango-Passionfruit Jam":"🥭","Passionfruit Cremeux":"🟡","Mango-Passionfruit Sorbet":"🍧","Coconut Espuma":"🥥","Purple Shiso":"🌿","Lemon Zest":"🍋","Madagascar Wild Peppercorn":"🌶️","Whole Branzino":"🐟","Kalamata Olives":"🫒","Herb Salad":"🥗","Charred Lemon":"🍋","EVOO":"🫒","Crispy Sushi Rice":"🍚","Shallot":"🧅","Rayu Oil":"🌶️","Chives":"🌿","Mayo":"🥚","Marinated Ikura":"🟠","Wild Fungi Dumplings":"🥟","Red Veined Sorrel":"🌿","Nasturtium":"🌸","Grilled Octopus":"🐙","Octopus":"🐙","Romesco Sauce":"🫑","Shiso Chimichurri":"🌿","Fresno Pepper":"🌶️","Red Fresno Pepper":"🌶️","Hennessy VS":"🥃","Calvados":"🥃","Beefeater Gin":"🥃","Maestro Dobel Diamante":"🥃","Del Maguey VIDA":"🥃","Hornitos Plata":"🥃","Tanqueray No.10":"🥃","Belvedere Vodka":"🥃","Chica Chida":"🥃","Banana du Brésil Liqueur":"🍌","Kota Pandan Liqueur":"🌿","Elderflower Liqueur":"🌸","Cointreau":"🍊","Gala Apples":"🍎","Mace":"🌿","Cinnamon":"🌿","Nutmeg":"🌿","Clove":"🌿","Star Anise":"🌿","Walnut Bitters":"🥜","Apple Bitters":"🍎","Sapporo Lager":"🍺","House Orgeat":"🥜","Lime Juice":"🟢","Cucumber Tonic":"🥒","Grapefruit Syrup (peels, sugar, white miso, beets)":"🍊","Club Soda":"💧","Passionfruit":"🟡","Filtered Pineapple":"🍍","Toasted Black Sesame Seeds":"🫘","Coriander Seeds":"🌿","Sesame Praline":"🫘","Genmaicha Green Tea":"🍵","Oat Milk Clarification":"🥛","White Chocolate":"🍫","Dulce de Leche":"🍮","Dehydrated Apple Chip":"🍎","Cucumber Ribbon":"🥒","Rosemary Sprig":"🌿","Anise":"🌿","Allspice Berries":"🌿","Hawaiian Black Sea Salt":"🧂","Charred Grapefruit Wedge":"🍊","Green Herb Salt Rim":"🧂","Dehydrated Lime":"🟢","Verde Pearls":"🟢","Micro Cilantro":"🌿","Dulce de Leche Peanut":"🥜","Edible Flowers":"🌸","Dried Lime Wheel":"🟢","Palo Santo":"🌿","Dry Aged Wagyu Patty":"🥩","Manchego Cheese":"🧀","Caramelized Onion":"🧅","Secret MILA Burger Sauce":"🍔","Charcoal Bun":"🍞","French Fries":"🍟","Micro Salad":"🥗","Sherry Vinegar Dressing":"🫗","Micro Arugula":"🌿","Meat":"🥩","Shucked Oysters":"🦪","Tozasu":"🧂","Apple Serrano Salsa":"🍎","Japanese Mignonette":"🧅","400 Conejos":"🥃","Artichoke Puree":"🥬","Bachelor Button":"🌸","Belvedere":"🥃","Branzino":"🐟","Breakfast Radish":"🌱","Bubu Arare":"🍘","Bubu-arare":"🍘","CO2":"💨","Clarified Celery":"🥬","Cocoa Crisp":"🍫","Crispy Sunchokes":"🥔","Furikake":"🍘","Ginger Syrup":"🫚","Green Leather Fruit Dot":"🟢","Jalapeño Dressing":"🌶️","Micro Greens":"🌿","Mushroom Stock":"🍄","Muyu Chinotto Nero":"🍷","Negi":"🧅","Okinawa Brown Sugar":"🟤","Oysters":"🦪","Raspberry Caviar":"🔴","Relish":"🫙","Santa Teresa":"🥃","Scallop":"🐚","Served with Hot Stone":"🔥","Served with Sauces Tableside":"🫙","Shrimp":"🦐","Simple Syrup":"🍯","Sweet and Sour Glaze":"🍯","Tamari":"🫛","Tanqueray No. 10":"🥃","Tuna Sashimi":"🐟","Wagyu":"🥩","Cured Salmon":"🐟","Yuzu-Avocado-Jalapeño Dressing":"🌶️","Wasabi Crème Fraîche":"🟢"};
@@ -3347,6 +3351,18 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     return '<div class="milabox"><div class="mptitle">✦ MILA Pairings</div><div class="mpsub">Wines that pair with this dish — tap to open</div>'+(_anyAi?'<div class="pn-ainote">✦ Some pairings below were authored from the appellation and style of the wine — <b>not</b> sommelier-verified. Do not quote to guests as verified.</div>':'')
       +rows+(chips?'<div class="chips2" style="margin-top:8px">'+chips+'</div>':'')+'</div>';
   }
+  /* (p52 #5) the wine sheet renders the SAME panel as the drink sheet.
+     milaPairPanel reads exactly one field of its argument (d.pn), so the
+     wine sheet calls it with a {pn:<key>} shim: no pairing markup is
+     duplicated and the two surfaces cannot drift apart. */
+  window.__milaPairPanel=function(d){return milaPairPanel(d);};
+  /* (p52 #12) unverifiedReason had no renderer anywhere in the app: two
+     records carried one and showed nothing. This is that renderer. */
+  function __unverifNote(d){
+    if(!d||!d.unverifiedReason)return '';
+    return '<div class="unv-note"><b>Source note</b> \u00b7 '+window.__esc(String(d.unverifiedReason))+'</div>';
+  }
+  window.__unverifNote=__unverifNote;
   /* wine -> dishes. Priority: PAIRNAV (verified) > curated pairs[] / catalog pairings[] chips. */
   function milaPairPanel(d){
     var w=(typeof PAIRNAV!=='undefined'&&d.pn)?PAIRNAV[d.pn]:null;
@@ -3416,6 +3432,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
          button anywhere in the UI. */
       return `<div class="bname">${window.__esc(d.name)}${badge}</div><div class="bdiv"></div>
         <div class="bts" style="font-style:italic;color:var(--muted)">No verified catalog source for this selection yet — flagged for review. Name and price are from the printed menu only.</div>
+        ${window.__unverifNote?window.__unverifNote(d):''}
         ${milaPairPanel(d)}
         ${_allergBox(d)}`;
     }
@@ -3454,6 +3471,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       ${d.story?`<div class="wstory">${d.story}</div>`:''}
       ${d.tip?brow('Tip',`<span class="bval" style="font-style:italic">${d.tip}</span>`):''}
       ${priceRow?brow('Price',priceRow):''}
+      ${window.__unverifNote?window.__unverifNote(d):''}
       ${milaPairPanel(d)}
       ${_allergBox(d)}`;
   }
@@ -3507,6 +3525,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       ${d.tableside?brow('Tableside',`<div class="bts">${window.__esc(d.tableside)}</div>`):''}
       ${(d.ingredients&&d.ingredients.length)?brow('🌿 Ingredients',`<div class="chips2">${chipsList(d.ingredients,{link:true})}</div>`):''}
       ${(d.glass||(d.garnish&&d.garnish.length))?`<div class="service-block">${d.glass?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${d.glass}</div></div>`:''}${d.garnish&&d.garnish.length?`<div class="svc-item" style="flex-basis:100%"><div class="svc-k">Garnish</div><div class="chips2" style="margin-top:4px">${chipsList(d.garnish,{gar:true,link:true})}</div></div>`:''}</div>`:''}
+      ${window.__unverifNote?window.__unverifNote(d):''}
       ${_verifSourceInput(d)}
       ${_allergBox(d)}`;
     return _bevWrap(d, front, fgrad, back);
@@ -3817,6 +3836,51 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
      r.name (i.e. would otherwise collide with a distinct PAIRNAV_LITE
      fallback of the same shorter name) need an entry here. */
   const WINE_PN_BYID={"wine.et-file-2022-750": "Et Fille · Pinot Noir"};
+  /* (p52) bottle-id -> GLASS-id. The glass already carries the PAIRNAV key
+     in its own `pn` field, so the key is read off the record at runtime and
+     never transcribed here: no apostrophe or accent can be mistyped, and the
+     map reads in the language of the data ("same wine as this glass").
+     Explicit only, by decision: a wine with no entry renders no panel. It can
+     never render the WRONG wine's panel, which a normalized-name fallback
+     could do in silence. */
+  const WINE_PN_BYGLASS={
+    "wine.moet-chandon-imperial-epernay-champagne-nv-magnum":"drink.moet-and-chandon-imperial",
+    "wine.moet-chandon-imperial-epernay-non-vintage-brut-nv-750":"drink.moet-and-chandon-imperial",
+    "wine.moet-chandon-imperial-epernay-non-vintage-brut-nv-magnum":"drink.moet-and-chandon-imperial",
+    "wine.perrier-jouet-blason-rose-epernay-non-vintage-brut-rose-nv-750":"drink.perrier-jouet-rose",
+    "wine.domaine-pichot-vouvray-loire-valley-other-white-wines-2023-750":"drink.vouvray-domaine-pichot",
+    "wine.duca-di-salaparuta-lavico-etna-bianco-italy-2024-750":"drink.duca-di-salaparuta-lavico-etna-bianco",
+    "wine.george-noel-vieilles-vignes-burgundy-chablis-2025-750":"drink.georges-noel-chablis-vieille-vignes",
+    "wine.jean-marc-et-mathieu-crochet-loire-valley-sancerre-2024-750":"drink.jean-marc-crochet-sancerre",
+    "wine.paul-hobbs-russian-river-valley-chardonnay-2022-750":"drink.paul-hobbs-chardonnay",
+    "wine.domaine-des-feraud-prestige-cotes-de-provence-rose-wine-2017-750":"drink.feraud-provence",
+    "wine.chateau-sainte-marguerite-fantastique-cotes-de-provence-rose-wine-2015-750":"drink.ste-marguerite-les-fantastique-provence",
+    "wine.yves-cuilleron-vignes-d-a-cote-syrah-chavanay-rhone-north-2023-750":"drink.yves-cuilleron-les-vignes-da-cote",
+    "wine.miner-family-vineyards-emily-s-napa-valley-cabernet-sauvignon-and-bordeaux-blends-2021-750":"drink.miner-family-vineyards-emilys",
+    "wine.chateau-la-grave-figeac-bordeaux-saint-emilion-2020-750":"drink.chateau-la-grave-figeac",
+    "wine.romuald-valot-burgundy-nuits-saint-georges-2022-750":"drink.valot-nuits-saint-georges",
+    "wine.sea-smoke-ten-sta-rita-hills-pinot-noir-2023-750":"drink.sea-smoke-ten-pinot-noir",
+    "wine.domaine-harmand-geoffroy-vieilles-vignes-burgundy-gevrey-chambertin-2021-750":"drink.harmand-geoffroy-gevrey-chambertin",
+    "wine.chateau-palmer-alter-ego-bordeaux-margaux-2019-750":"drink.palmer-alter-ego-margaux",
+    "wine.chateau-lynch-bages-bordeaux-pauillac-2009-750":"drink.lynch-bages-pauillac",
+    "wine.florio-semisecco-superior-riserva-marsala-dessert-wine-2015-750":"drink.florio-marsala-riserva-2015",
+    "wine.taylor-fladgate-20yr-tawny-porto-dessert-wine-nv-750":"drink.taylor-fladgate-20y-tawny",
+    "wine.chateau-suduiraut-sauternes-dessert-wine-2011-375ml":"drink.chateau-suduiraut",
+    "wine.amabuki-himawari-junmai-ginjo-nv-750":"drink.amabuki-himawarai-ginjo",
+    "wine.wakatake-onikoroshi-junmai-daiginjo-nv-750":"drink.wakatake-onikoroshi",
+    "wine.nanbu-bijin-shinpaku-southern-beauty-junmai-daiginjo-nv-750":"drink.nanbu-bijin-southern-beauty-daiginjo",
+  };
+  /* the single place a WINE record's PAIRNAV key is decided. */
+  function __pnKeyFor(r){
+    if(!r)return '';
+    if(typeof WINE_PN_BYID!=='undefined'&&WINE_PN_BYID[r.id])return WINE_PN_BYID[r.id];
+    var g=(typeof WINE_PN_BYGLASS!=='undefined')?WINE_PN_BYGLASS[r.id]:null;
+    if(g&&typeof BEV!=='undefined'){
+      for(var i=0;i<BEV.length;i++){if(BEV[i].id===g)return BEV[i].pn||r.name;}
+    }
+    return r.name;
+  }
+  window.__pnKeyFor=__pnKeyFor;
   /* ---- WINE ---- */
   const WINE=[
     {id:"wine.billecart-salmon-louis-salmon-2013-750",subsect:"7|vintage brut",subsectLabel:"Vintage Brut",vint:"2013",name:"Billecart Salmon · Louis Salmon",prod:"Mareuil-Sur-Aÿ",btg:"",btl:"$600",sect:"sparkling",sectLabel:"Sparkling & Champagne",grapes:"Chardonnay, Pinot Noir, Pinot Meunier",body:"Medium",temp:"6-8°C",aroma:"Brioche, white flowers, citrus zest, and subtle stone fruit",palate:"Elegant and refined with fine bubbles, creamy texture balanced by crisp acidity, notes of green apple and toasted almond",finish:"Long and persistent with mineral complexity",desc:"This prestigious vintage Champagne from Billecart-Salmon offers sublime elegance with brioche and citrus notes, perfect for celebrating life's finest moments.",producer:"Billecart Salmon",cuvee:"Louis Salmon",fmt:"750ml",pairs:["Oysters","Hamachi Crudo","Lobster Tempura"],genPairs:["🦪 Oysters","🍤 Fried & tempura","🧀 Soft cheese","🍣 Sushi"],aiLayer:true},
@@ -5286,7 +5350,7 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
        panel already carries would be the second printing of the same dish.  The
        chip is dropped, never the dish: a chip the panel does NOT carry survives
        and the block renames itself so the runner knows these are the extras. */
-    var _p51k=(typeof WINE_PN_BYID!=='undefined'&&WINE_PN_BYID[r.id])?WINE_PN_BYID[r.id]:r.name;
+    var _p51k=(window.__pnKeyFor?window.__pnKeyFor(r):r.name);
     var _p51nav=(typeof PAIRNAV!=='undefined')?PAIRNAV[_p51k]:null;
     var _p51n=function(s){return String(s||'').replace(/[^a-z0-9]+/gi,'').toLowerCase();};
     var _p51list=(r.pairs&&r.pairs.length)?r.pairs:[];
@@ -5294,11 +5358,20 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
     if(_p51nav&&_p51list.length){
       var _p51have=[].concat(_p51nav.top||[],_p51nav.more||[]).map(function(x){return _p51n(x&&x.name);});
       var _p51keep=_p51list.filter(function(p){var q=_p51n(p);return !_p51have.some(function(n){return !!n&&!!q&&n===q;});});
-      if(_p51keep.length!==_p51list.length){_p51list=_p51keep;_p51lab='Additional catalog pairings';}
+      if(_p51keep.length!==_p51list.length){_p51list=_p51keep;}
+      /* (p52 #5) the panel is now printed ABOVE these chips, so a chip that
+         survives the de-duplication is by definition an extra, whether or not
+         anything was dropped. */
+      if(_p51list.length)_p51lab='Additional catalog pairings';
     }
     var pairs=_p51list.length?'<div class="sh-sec">'+_p51lab+'</div><div class="sh-p" style="font-size:10.5px;color:var(--muted-soft);margin:0 0 8px;font-style:italic">From the MILA catalog · pending sommelier verification</div><div class="pairs">'+_p51list.map(function(p){return '<span class="pchip gold">🍽 '+p+'</span>';}).join('')+'</div>':'';
-    var _pnKey=(typeof WINE_PN_BYID!=='undefined'&&WINE_PN_BYID[r.id])?WINE_PN_BYID[r.id]:r.name;
-    var nav=(typeof PAIRNAV!=='undefined'&&PAIRNAV[_pnKey])?'<button class="pn-open" data-pn="'+String(_pnKey).replace(/"/g,'&quot;')+'">Explore all MILĀ pairings ↗</button>':'';
+    var _pnKey=_p51k;
+    /* (p52 #5) the wine sheet used to hide the top pairings behind this
+       button. It now renders the same panel the drink sheet renders — which
+       carries its own VERIFIED / NOT VERIFIED badge, its own class note and
+       its own "Explore all" button, so nothing is lost and nothing is
+       promoted: an ai entry still says NOT VERIFIED here. */
+    var nav=(_p51nav&&window.__milaPairPanel)?window.__milaPairPanel({pn:_pnKey}):'';
     /* (p35) THE WINE PARITY VERIFY BUTTON.  r is already merged with the
        overlay by wineRow (openWine never receives a raw baseline record
        for a real wine), so r.contentVerified / r.contentVerification are
@@ -5320,7 +5393,7 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
         _wverbtn='<button class="gp-revbtn" type="button" data-wxrev="'+_wid+'" title="Records who verified this entry, and when">Verify</button>';
       }
     }
-    return '<div class="sh-top"><div><div class="sh-name">'+r.name+(r.needsReview?'<span class="sp-needsreview"> NEEDS REVIEW</span>':'')+'</div>'+_shSubDiv+'<div class="sh-prices">'+price+'</div></div></div>'+(r.aiLayer?'<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>':'')+tags+box+(r.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+r.desc+'</div>':'')+notes+genp+pairs+nav+_wverbtn;
+    return '<div class="sh-top"><div><div class="sh-name">'+r.name+(r.needsReview?'<span class="sp-needsreview"> NEEDS REVIEW</span>':'')+'</div>'+_shSubDiv+'<div class="sh-prices">'+price+'</div></div></div>'+(r.aiLayer?'<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>':'')+tags+box+(r.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+r.desc+'</div>':'')+notes+genp+nav+pairs+_wverbtn;
   }
   /* (p35) sheet-refresh: repaint the OPEN wine sheet in place after a
      verify toggle, exactly like p33's __zGlossRefreshSheet.  __toggleContentVerify
