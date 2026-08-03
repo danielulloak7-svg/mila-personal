@@ -3430,7 +3430,9 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
         ${_allergBox(d)}`;
     }
     const idline=[d.producer,d.cuvee].filter(Boolean).join(' · ');
-    const vaf=[d.vintage,d.appellation,d.format].filter(Boolean).join(' · ');
+    const _vafParts=[['Vintage',d.vintage],['Appellation',d.appellation],['Format',(d.format&&String(d.format).trim()!=='750ml')?d.format:null]].filter(function(p){return !!p[1];});
+    const vafLabel=_vafParts.map(function(p){return p[0];}).join(' \u00b7 ');
+    const vaf=_vafParts.map(function(p){return p[1];}).join(' \u00b7 ');
     const svc = (d.temp||d.decant!==null||d.glassware) ? `<div class="service-block">
         ${d.temp?`<div class="svc-item"><div class="svc-k">Serve at</div><div class="svc-v">${d.temp}</div></div>`:''}
         ${d.decant!==null?`<div class="svc-item"><div class="svc-k">Decant</div><div class="svc-v">${d.decant?'Yes':'No'}</div></div>`:''}
@@ -3440,7 +3442,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     return `<div class="bname">${window.__esc(d.name)}${badge}</div><div class="bdiv"></div>
       ${d.producer?brow('Producer',`<span class="bval" style="color:var(--gold-deep);font-weight:700">${d.producer}</span>`):''}
       ${d.cuvee?brow('Cuvée',`<span class="bval" style="color:var(--gold-deep);font-weight:700">${d.cuvee}</span>`):''}
-      ${vaf?brow('Vintage · Appellation · Format',`<span class="bval">${vaf}</span>`):''}
+      ${vaf?brow(vafLabel,`<span class="bval">${vaf}</span>`):''}
       ${d.region?brow('Region',`<span class="bval">${d.region}</span>`):''}
       ${d.aiLayer?`<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>`:''}
       ${d.grapes&&d.grapes.length?brow('Grapes',`<div class="chips2">${d.grapes.map(function(g){return chip(g);}).join('')}</div>`):''}
