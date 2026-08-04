@@ -9468,6 +9468,10 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +'<button class="ed-btn" data-mc="export" type="button">⬇ Export changes</button>'
       +'<label class="ed-btn ghost" for="mcImport">⬆ Import changes</label>'
       +'<input type="file" id="mcImport" accept="application/json,.json" style="display:none">'
+      +'<div class="ed-sub p5-sub" style="margin-top:16px">Two people, two devices. Each person exports only what they signed, and the person merging decides row by row what lands.</div>'
+      +'<button class="ed-btn" data-zm="export" type="button">&#x2B07; Export only what I signed</button>'
+      +'<label class="ed-btn ghost" for="zmFile">&#x2B06; Merge changes from someone else</label>'
+      +'<input type="file" id="zmFile" accept="application/json,.json" style="display:none">'
       +'<div class="p5-danger"><div class="ed-sub" style="margin:0 0 8px">Danger zone</div>'
       +'<button class="ed-btn danger" data-mc="reset" type="button">↩ Back to the base version</button></div>';
     document.getElementById('panelBody').innerHTML=h;
@@ -10118,7 +10122,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
 
     var st={verified:false,by:null,at:null,source:null};
     try{if(window.__zVerifyGet)st=window.__zVerifyGet(id);}catch(_e){}
-    var patch={def:v};
+    var patch={def:v,defBy:who,defAt:_now()};
     if(st.verified){
       if(st.by&&st.by===who){
         /* your own text: the signature stands, its date moves */
@@ -10161,5 +10165,654 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     mp.classList.remove('open');
     mp.setAttribute('aria-hidden','true');
   },true);
+})();
+</script>
+
+<style>
+/* ---- p64 merge sheet.  Own namespace; nothing here restyles an existing
+   surface.  Contrast measured on #FBFAF7: text #2E2A24 = 12.4:1,
+   #4A4291 = 8.11:1, #3C6248 = 6.63:1, #8A322B = 7.82:1. ---- */
+.zm-dim{position:fixed;inset:0;background:rgba(24,21,17,.42);opacity:0;pointer-events:none;
+  transition:opacity .18s ease;z-index:1400}
+.zm-dim.open{opacity:1;pointer-events:auto}
+.zm-sheet{position:fixed;left:0;right:0;bottom:0;max-height:90vh;background:#FBFAF7;
+  border-radius:18px 18px 0 0;box-shadow:0 -10px 44px rgba(0,0,0,.20);
+  transform:translateY(103%);transition:transform .22s ease;z-index:1401;
+  display:flex;flex-direction:column}
+.zm-sheet.open{transform:none}
+.zm-head{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid #EEE8DD}
+.zm-ttl{font-weight:650;font-size:16px;color:#2E2A24;flex:1}
+.zm-x{border:0;background:transparent;font-size:18px;line-height:1;color:#6B6459;padding:4px 6px;cursor:pointer}
+.zm-scroll{overflow:auto;padding:12px 16px 4px;-webkit-overflow-scrolling:touch}
+.zm-foot{padding:10px 16px 16px;border-top:1px solid #EEE8DD;display:flex;flex-direction:column;gap:8px}
+.zm-from{font-size:13px;color:#6B6459;margin:0 0 10px}
+.zm-from b{color:#2E2A24}
+.zm-warn{font-size:12.5px;color:#8A322B;background:#F7EDEB;border:1px solid #E3CFCB;
+  border-radius:10px;padding:8px 10px;margin:0 0 10px}
+.zm-sec{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#6B6459;
+  margin:14px 0 6px;font-weight:600}
+.zm-row{border:1px solid #EEE8DD;border-radius:12px;padding:10px 12px;margin:0 0 8px;background:#fff}
+.zm-row .zm-k{font-weight:600;font-size:14px;color:#2E2A24}
+.zm-row .zm-w{font-size:12.5px;color:#4A4291;margin:2px 0 0}
+.zm-row .zm-v{font-size:13px;color:#3A362F;margin:6px 0 0;white-space:pre-wrap;word-break:break-word}
+.zm-row .zm-side{font-size:12px;color:#6B6459;margin:6px 0 0}
+.zm-pick{display:flex;gap:8px;margin:8px 0 0}
+.zm-pick button{flex:1;border:1px solid #DDD5C8;background:#fff;border-radius:9px;
+  padding:7px 8px;font-size:12.5px;color:#3A362F;cursor:pointer}
+.zm-pick button[aria-pressed="true"]{border-color:#4A4291;background:#E9E8ED;color:#4A4291;font-weight:600}
+.zm-chk{display:flex;align-items:flex-start;gap:9px;cursor:pointer}
+.zm-chk input{margin:3px 0 0;flex:0 0 auto}
+.zm-btn{border:1px solid #DDD5C8;background:#fff;border-radius:11px;padding:11px 12px;
+  font-size:14px;color:#2E2A24;cursor:pointer;width:100%}
+.zm-btn.go{background:#4A4291;border-color:#4A4291;color:#fff;font-weight:600}
+.zm-btn[disabled]{opacity:.5;cursor:default}
+.zm-none{font-size:13.5px;color:#6B6459;padding:8px 0 14px}
+.zm-drop{font-size:12.5px;color:#8A322B;margin:4px 0 0}
+</style>
+<div class="zm-dim" id="zmDim"></div>
+<div class="zm-sheet" id="zmSheet" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="zm-head"><div class="zm-ttl" id="zmTtl">Merge changes</div>
+    <button class="zm-x" id="zmClose" type="button" aria-label="Close">&#x2715;</button></div>
+  <div class="zm-scroll" id="zmBody"></div>
+  <div class="zm-foot" id="zmFoot"></div>
+</div>
+<script>
+/* ================= p64 - signed export + gated merge =====================
+   ATTRIBUTION, NOT AUTHENTICATION (PHASE 7's sentence, and it still holds).
+   Nothing in this file writes through saveOverlay.  The only write path is
+   setItemOverride, one patch per key, and only for rows a human ticked. */
+(function(){
+  function ISO(){return new Date().toISOString();}
+  function isObj(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
+  function isArr(v){return Object.prototype.toString.call(v)==='[object Array]';}
+  function J(v){try{return JSON.stringify(v);}catch(e){return String(v);}}
+  function esc(s){
+    try{if(window.__esc)return window.__esc(s);}catch(e){}
+    return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function me(){try{return window.__zActive?(window.__zActive()||''):'';}catch(e){return '';}}
+  function toast(m){try{window.__toast&&window.__toast(m);}catch(e){}}
+
+  /* The shipped envelope is BOTH the metadata source and the overlay snapshot.
+     Reusing exportOverlay() means schemaVersion / restaurant / buildId can
+     never drift from the store's own idea of them. */
+  function snap(){try{return JSON.parse(window.exportOverlay());}catch(e){return null;}}
+  function localItems(){var s=snap();return (s&&isObj(s.items))?s.items:{};}
+
+  /* ---------------- A. the field map ---------------- */
+  var GROUPS=[
+    {id:'verify',  label:'Verification',           rec:'contentVerification',   sig:'verifiedBy',  fields:['contentVerified','contentVerification']},
+    {id:'withdraw',label:'Verification withdrawn', rec:'verificationWithdrawn', sig:'withdrawnBy', fields:['contentVerified','verificationWithdrawn']},
+    {id:'reject',  label:'Pairing rejected',       rec:'pairRejection',         sig:'by',          fields:['pairVerdict','pairRejection']},
+    {id:'unreject',label:'Rejection undone',       rec:'pairReinstated',        sig:'by',          fields:['pairVerdict','pairReinstated']},
+    {id:'propose', label:'Pairing proposed',       rec:'pairProposal',          sig:'by',          fields:['pairProposal']},
+    {id:'reword',  label:'Reason rewritten',       rec:'pairWhy',               sig:'by',          fields:['pairWhy']},
+    {id:'define',  label:'Definition edited',      rec:null,                    sig:'defBy',       fields:['def','defBy','defAt']}
+  ];
+  var CLAIMED={};
+  GROUPS.forEach(function(g){g.fields.forEach(function(f){CLAIMED[f]=1;});});
+  ['allergenProvenance','absentVerified','allergenState','updatedAt','updatedBy','mergeLog']
+    .forEach(function(f){CLAIMED[f]=1;});
+
+  function signerOf(it,g){
+    if(!isObj(it))return '';
+    if(g.rec){var r=it[g.rec];return (isObj(r)&&r[g.sig])?String(r[g.sig]):'';}
+    return it[g.sig]?String(it[g.sig]):'';
+  }
+  function hasGroup(it,g){
+    if(!isObj(it))return false;
+    if(g.rec)return isObj(it[g.rec]);
+    return it[g.sig]!=null&&it[g.sig]!=='';
+  }
+  /* an absence is only a fact when all three provenance parts are present */
+  function provOK(p){return !!(isObj(p)&&p.verifiedBy&&p.date&&p.source);}
+
+  /* ---------------- B. human labels ---------------- */
+  function _find(id){
+    var arrs=[];
+    try{if(typeof FOOD!=='undefined')arrs.push(FOOD);}catch(e){}
+    try{if(typeof BEV!=='undefined')arrs.push(BEV);}catch(e){}
+    try{if(typeof GLOSS!=='undefined')arrs.push(GLOSS);}catch(e){}
+    for(var i=0;i<arrs.length;i++){var a=arrs[i]||[];
+      for(var j=0;j<a.length;j++)if(a[j]&&a[j].id===id)return a[j];}
+    return null;
+  }
+  function keyLabel(k){
+    k=String(k==null?'':k);
+    if(k.indexOf('pair.')===0){
+      var p=k.slice(5).split('~'),w=p[0]||'',d=p[1]||'';
+      var wn=(_find(w)||{}).name||w,dn='';
+      try{if(window.__pairDishInfo)dn=(window.__pairDishInfo(d)||{}).name||'';}catch(e){}
+      if(!dn)dn=(_find(d)||{}).name||d;
+      return wn+'  ·  '+dn;
+    }
+    var r=_find(k);
+    return (r&&r.name)?r.name:k;
+  }
+  /* one short, readable line per value - never raw JSON when it can be helped */
+  function summarize(kind,payload){
+    if(kind==='allergen'){
+      if(!payload)return 'not verified here';
+      var p=payload.prov||{};
+      return 'absence verified by '+(p.verifiedBy||'?')+' on '+(p.date||'?')
+        +' — source: '+(p.source||'?');
+    }
+    var f=payload||{};
+    if(f.pairProposal)return 'proposed by '+(f.pairProposal.by||'?')+': '+(f.pairProposal.why||'');
+    if(f.pairWhy)return 'reason: '+(f.pairWhy.text||'');
+    if(f.pairRejection)return 'rejected by '+(f.pairRejection.by||'?')+': '+(f.pairRejection.reason||'');
+    if(f.pairReinstated)return 'rejection undone by '+(f.pairReinstated.by||'?');
+    if(f.verificationWithdrawn)return (f.verificationWithdrawn.priorBy||'?')
+      +"'s verification withdrawn by "+(f.verificationWithdrawn.withdrawnBy||'?')
+      +' — '+(f.verificationWithdrawn.reason||'');
+    if(f.contentVerification)return 'certified by '+(f.contentVerification.verifiedBy||'?')
+      +' on '+String(f.contentVerification.verifiedAt||'').slice(0,10);
+    if('def' in f)return String(f.def||'');
+    var ks=Object.keys(f).filter(function(x){return x!=='updatedAt'&&x!=='updatedBy';});
+    if(!ks.length)return '(nothing)';
+    return ks.map(function(x){var v=f[x];
+      return x+': '+(typeof v==='string'?v:J(v));}).join(' · ');
+  }
+
+  /* ---------------- C. the signed export ----------------
+     FIELD-LEVEL, not item-level.  An overlay item is a stack of patches from
+     possibly several people, so "his items" is not a well-defined set.
+     NOT CARRIED: links[id][alg].  Those stamps have their own signer
+     (linkedBy) but a link merge needs a per-algorithm rule this module does
+     not define.  Named debt, not an oversight - a sommelier does no link
+     work, so nothing he signs is lost by leaving them out. */
+  function pick(it,who){
+    if(!isObj(it)||!who)return null;
+    var out={},got=false;
+    GROUPS.forEach(function(g){
+      if(!hasGroup(it,g))return;
+      if(signerOf(it,g)!==who)return;
+      g.fields.forEach(function(f){if(f in it){out[f]=it[f];got=true;}});
+    });
+    var prov=isObj(it.allergenProvenance)?it.allergenProvenance:null;
+    if(prov){
+      var av=isArr(it.absentVerified)?it.absentVerified:[];
+      var stt=isObj(it.allergenState)?it.allergenState:{};
+      Object.keys(prov).forEach(function(a){
+        var p=prov[a];
+        if(!isObj(p)||String(p.verifiedBy||'')!==who)return;
+        out.allergenProvenance=out.allergenProvenance||{};
+        out.allergenProvenance[a]=p;
+        if(av.indexOf(a)>=0){
+          out.absentVerified=out.absentVerified||[];
+          if(out.absentVerified.indexOf(a)<0)out.absentVerified.push(a);
+        }
+        if(a in stt){out.allergenState=out.allergenState||{};out.allergenState[a]=stt[a];}
+        got=true;
+      });
+    }
+    /* item-level fallback: unsigned content edits have no other attribution */
+    if(String(it.updatedBy||'')===who){
+      Object.keys(it).forEach(function(f){
+        if(CLAIMED[f])return;
+        out[f]=it[f];got=true;
+      });
+    }
+    if(!got)return null;
+    if(it.updatedAt!=null)out.updatedAt=it.updatedAt;
+    if(it.updatedBy!=null)out.updatedBy=it.updatedBy;
+    return out;
+  }
+
+  function exportSigned(who){
+    who=String(who||me()||'');
+    if(!who)return null;
+    var s=snap();if(!s)return null;
+    var items=isObj(s.items)?s.items:{},out={};
+    Object.keys(items).forEach(function(k){
+      var p=pick(items[k],who);if(p)out[k]=p;
+    });
+    var people=[];try{people=window.__zPeople?window.__zPeople():[];}catch(e){}
+    return {schemaVersion:s.schemaVersion,restaurant:s.restaurant,buildId:s.buildId,
+            signedExport:true,signedBy:who,exportedAt:ISO(),people:people,items:out};
+  }
+  window.__zExportSigned=function(who){
+    var o=exportSigned(who);return o?JSON.stringify(o,null,2):null;
+  };
+
+  /* PAIRED INVARIANT for "the export never re-signs anything": re-read the
+     produced JSON and prove every signer string is byte-identical to the
+     overlay it came from. */
+  window.__zExportSignedReport=function(who){
+    who=String(who||me()||'');
+    if(!who)return {ok:false,error:'nobody is signed in'};
+    var json=window.__zExportSigned(who);
+    if(!json)return {ok:false,error:'no overlay'};
+    var back=JSON.parse(json),live=localItems();
+    var keys=Object.keys(back.items||{}),bad=[],groups={},allerg=0,plain=0;
+    keys.forEach(function(k){
+      var src=isObj(live[k])?live[k]:{},cp=back.items[k];
+      GROUPS.forEach(function(g){
+        if(!hasGroup(cp,g))return;
+        var a=signerOf(cp,g),b=signerOf(src,g);
+        if(a!==b||a!==who)bad.push(k+' / '+g.id+': '+J(a)+' vs '+J(b));
+        groups[g.id]=(groups[g.id]||0)+1;
+      });
+      if(isObj(cp.allergenProvenance))Object.keys(cp.allergenProvenance).forEach(function(a){
+        var x=cp.allergenProvenance[a],y=(isObj(src.allergenProvenance)?src.allergenProvenance:{})[a];
+        if(!y||J(x)!==J(y))bad.push(k+' / allergen '+a+': not byte-identical');
+        if(String(x.verifiedBy||'')!==who)bad.push(k+' / allergen '+a+': foreign signer');
+        allerg++;
+      });
+      var un=Object.keys(cp).filter(function(f){return !CLAIMED[f];});
+      if(un.length){
+        plain++;
+        un.forEach(function(f){if(J(cp[f])!==J(src[f]))bad.push(k+' / '+f+': value drift');});
+      }
+    });
+    return {ok:bad.length===0,signedBy:who,items:keys.length,groups:groups,
+            allergens:allerg,itemsWithPlainFields:plain,bytes:json.length,problems:bad};
+  };
+
+  /* ---------------- D. the plan (pure - writes nothing) ---------------- */
+
+  /* Re-implemented rather than reused: the shipped validateImport and
+     stripUnprovenancedAbsences are closures inside the store.  Named debt. */
+  function validate(o){
+    if(isArr(o))return 'that file is a list, not a changes file';
+    if(!isObj(o))return 'that is not a changes file';
+    if(!isObj(o.items))return 'that file carries no changes';
+    var s=snap()||{};
+    if(o.restaurant!=null&&s.restaurant!=null&&o.restaurant!==s.restaurant)
+      return 'that file belongs to another restaurant ('+o.restaurant+')';
+    var k=Object.keys(o.items),i;
+    for(i=0;i<k.length;i++)if(!isObj(o.items[k[i]]))return 'entry "'+k[i]+'" is malformed';
+    return null;
+  }
+
+  function stampAt(it,g){
+    if(!g.rec)return String(it.defAt||it.updatedAt||'');
+    var r=isObj(it[g.rec])?it[g.rec]:{};
+    return String(r.verifiedAt||r.withdrawnAt||r.at||'');
+  }
+  /* contentVerified belongs to verify AND withdraw; pairVerdict to reject AND
+     unreject.  The later stamp owns the shared field; the other keeps only its
+     own record, so one row can never quietly undo the other. */
+  function unitsOf(cp){
+    var u=[];
+    GROUPS.forEach(function(g){
+      if(!hasGroup(cp,g))return;
+      var fs=g.fields.filter(function(f){return f in cp;});
+      if(!fs.length)return;
+      u.push({kind:'group',uid:'g:'+g.id,label:g.label,fields:fs,g:g});
+    });
+    var owner={};
+    u.forEach(function(x){
+      x.fields.forEach(function(f){
+        var at=stampAt(cp,x.g);
+        if(!owner[f]||at>owner[f].at)owner[f]={u:x,at:at};
+      });
+    });
+    u.forEach(function(x){
+      x.fields=x.fields.filter(function(f){return owner[f].u===x;});
+    });
+    u=u.filter(function(x){return x.fields.length;});
+    if(isObj(cp.allergenProvenance))Object.keys(cp.allergenProvenance).forEach(function(a){
+      u.push({kind:'allergen',uid:'a:'+a,label:'Allergen - '+a,allergen:a});
+    });
+    Object.keys(cp).forEach(function(f){
+      if(CLAIMED[f])return;
+      u.push({kind:'plain',uid:'f:'+f,label:f,fields:[f]});
+    });
+    return u;
+  }
+
+  function valOf(u,it){
+    if(!isObj(it))return null;
+    if(u.kind==='allergen'){
+      var a=u.allergen,p=(isObj(it.allergenProvenance)?it.allergenProvenance:{})[a];
+      if(!isObj(p))return null;
+      return {prov:p,
+              absent:!!(isArr(it.absentVerified)&&it.absentVerified.indexOf(a)>=0),
+              state:(isObj(it.allergenState)?it.allergenState:{})[a]};
+    }
+    var o={},any=false;
+    u.fields.forEach(function(f){if(f in it){o[f]=it[f];any=true;}});
+    return any?o:null;
+  }
+  function byOf(u,it,fb){
+    if(!isObj(it))return fb||'';
+    if(u.kind==='allergen'){
+      var p=(isObj(it.allergenProvenance)?it.allergenProvenance:{})[u.allergen]||{};
+      return String(p.verifiedBy||'')||String(it.updatedBy||'')||fb||'';
+    }
+    if(u.kind==='group')return signerOf(it,u.g)||String(it.updatedBy||'')||fb||'';
+    return String(it.updatedBy||'')||fb||'';
+  }
+  function atOf(u,it){
+    if(!isObj(it))return '';
+    if(u.kind==='allergen'){
+      var p=(isObj(it.allergenProvenance)?it.allergenProvenance:{})[u.allergen]||{};
+      return String(p.date||it.updatedAt||'');
+    }
+    if(u.kind==='group')return stampAt(it,u.g)||String(it.updatedAt||'');
+    return String(it.updatedAt||'');
+  }
+
+  function mergePlan(json){
+    var o;
+    if(typeof json==='string'){
+      try{o=JSON.parse(json);}catch(e){return {ok:false,error:'that file is not valid JSON'};}
+    }else o=json;
+    var err=validate(o);
+    if(err)return {ok:false,error:err};
+    var who=String(o.signedBy||(isObj(o._meta)&&o._meta.updatedBy)||'')||'(unnamed)';
+    var live=localItems(),rows=[],same=0,dropped=[];
+    Object.keys(o.items).forEach(function(k){
+      var cp=o.items[k];
+      var mine=isObj(live[k])?live[k]:{};
+      unitsOf(cp).forEach(function(u){
+        var inc=valOf(u,cp);
+        if(inc==null)return;
+        /* PROHIBITION: no unsigned absence lands.  Dropped at PLAN time, and
+           listed - never silently discarded. */
+        if(u.kind==='allergen'&&inc.absent&&!provOK(inc.prov)){
+          dropped.push({key:k,label:keyLabel(k),allergen:u.allergen,
+                        why:'absence with no verifiedBy + date + source'});
+          return;
+        }
+        var cur=valOf(u,mine);
+        var incS=J(inc),curS=(cur==null?null:J(cur));
+        if(curS===incS){same++;return;}
+        var kind=(u.kind==='allergen')?'allergen':'field';
+        rows.push({
+          id:k+'|'+u.uid,key:k,uid:u.uid,kind:u.kind,label:u.label,
+          item:keyLabel(k),conflict:(curS!=null),
+          incoming:inc,current:cur,
+          incomingText:summarize(kind,inc),
+          currentText:(cur==null?'(nothing here yet)':summarize(kind,cur)),
+          incomingBy:byOf(u,cp,who),currentBy:byOf(u,mine,''),
+          incomingAt:atOf(u,cp),currentAt:atOf(u,mine)
+        });
+      });
+    });
+    return {ok:true,signedBy:who,exportedAt:String(o.exportedAt||''),
+            buildId:String(o.buildId||''),people:(isArr(o.people)?o.people:[]),
+            rows:rows,same:same,dropped:dropped};
+  }
+  window.__zMergePlan=mergePlan;
+
+  /* ---------------- the apply, and its proof ---------------- */
+  var _lastPlan=null,_lastDec=null,_lastBefore=null,_lastTouched=null;
+
+  function verify(plan,dec,before,touched){
+    var after=localItems(),probs=[],took=0,kept=0;
+    plan.rows.forEach(function(r){
+      var it=isObj(after[r.key])?after[r.key]:{};
+      var u=(r.kind==='allergen')?{kind:'allergen',allergen:r.uid.slice(2)}
+                                 :{kind:r.kind,fields:Object.keys(r.incoming)};
+      var now=valOf(u,it);
+      if(dec[r.id]===true){
+        took++;
+        if(J(now)!==J(r.incoming))
+          probs.push('accepted but not stored: '+r.key+' / '+r.uid);
+      }else{
+        kept++;
+        if(J(now)!==J(r.current))
+          probs.push('declined but changed: '+r.key+' / '+r.uid);
+      }
+    });
+    Object.keys(before).forEach(function(k){
+      if(touched[k])return;
+      if(J(after[k])!==before[k])probs.push('untouched item changed: '+k);
+    });
+    return {ok:probs.length===0,accepted:took,declined:kept,
+            untouchedItems:Object.keys(before).length-Object.keys(touched).length,
+            problems:probs};
+  }
+  window.__zMergeVerify=function(){
+    if(!_lastPlan)return {ok:false,error:'no merge has run in this session'};
+    return verify(_lastPlan,_lastDec,_lastBefore,_lastTouched);
+  };
+
+  function mergeApply(plan,dec){
+    if(!plan||!plan.ok)return {ok:false,error:'no plan'};
+    dec=dec||{};
+    var before=localItems(),beforeSnap={};
+    Object.keys(before).forEach(function(k){beforeSnap[k]=J(before[k]);});
+    var take=plan.rows.filter(function(r){return dec[r.id]===true;});
+    var byKey={};
+    take.forEach(function(r){(byKey[r.key]=byKey[r.key]||[]).push(r);});
+    var keys=Object.keys(byKey),fails=[],touched={};
+    keys.forEach(function(k){
+      var rs=byKey[k],mine=isObj(before[k])?before[k]:{},patch={},fieldList=[];
+      /* allergens merge as a per-allergen UNION with what is already stored.
+         A plain field replace here would drop the receiving side's OTHER
+         verified absences - a silent allergen removal, which is forbidden. */
+      var prov=Object.assign({},isObj(mine.allergenProvenance)?mine.allergenProvenance:{});
+      var stt=Object.assign({},isObj(mine.allergenState)?mine.allergenState:{});
+      var av=(isArr(mine.absentVerified)?mine.absentVerified:[]).slice();
+      var hitAllergen=false;
+      rs.forEach(function(r){
+        if(r.kind==='allergen'){
+          hitAllergen=true;
+          var a=r.uid.slice(2);
+          prov[a]=r.incoming.prov;
+          if(r.incoming.state!==undefined)stt[a]=r.incoming.state;
+          if(r.incoming.absent&&av.indexOf(a)<0)av.push(a);
+          fieldList.push('allergen:'+a);
+        }else{
+          Object.keys(r.incoming).forEach(function(f){
+            patch[f]=r.incoming[f];fieldList.push(f);
+          });
+        }
+      });
+      if(hitAllergen){
+        patch.allergenProvenance=prov;patch.allergenState=stt;patch.absentVerified=av;
+      }
+      var log=(isArr(mine.mergeLog)?mine.mergeLog:[]).slice();
+      log.push({from:plan.signedBy,mergedBy:me(),at:ISO(),
+                exportedAt:plan.exportedAt||'',fields:fieldList});
+      patch.mergeLog=log;
+      try{
+        if(!window.setItemOverride)throw new Error('no write path');
+        window.setItemOverride(k,patch);
+        touched[k]=1;
+      }catch(e){fails.push(k+': '+((e&&e.message)||e));}
+    });
+    /* PROHIBITION: an import must never shrink the people list.
+       __zMergePeople is a union by construction. */
+    var added=[];
+    try{
+      if(plan.people&&plan.people.length&&window.__zMergePeople){
+        var b4=(window.__zPeople?window.__zPeople():[]).slice();
+        window.__zMergePeople(plan.people);
+        var af=(window.__zPeople?window.__zPeople():[]);
+        added=af.filter(function(n){return b4.indexOf(n)<0;});
+      }
+    }catch(e){}
+    _lastPlan=plan;_lastDec=dec;_lastBefore=beforeSnap;_lastTouched=touched;
+    var v=verify(plan,dec,beforeSnap,touched);
+    return {ok:(v.ok&&!fails.length),keys:keys.length,rows:take.length,
+            declined:plan.rows.length-take.length,peopleAdded:added,
+            dropped:plan.dropped.length,failures:fails,verify:v};
+  }
+  window.__zMergeApply=mergeApply;
+
+  /* ---------------- E. the sheet (service copy / legibility) ----------------
+     ACCEPTANCE, in this discipline's own terms: every conflict row names WHAT
+     changed, WHO signed each side, and WHEN - before any decision is offered.
+     New rows arrive ticked; conflict rows default to "Keep mine", so an
+     inattentive tap can only ever preserve what is already here. */
+  var _plan=null,_dec={};
+
+  function up(t,sel){
+    if(!t)return null;
+    if(t.closest)return t.closest(sel);
+    while(t&&t.nodeType===1){
+      if(t.matches&&t.matches(sel))return t;
+      t=t.parentNode;
+    }
+    return null;
+  }
+  function show(on){
+    var d=document.getElementById('zmDim'),s=document.getElementById('zmSheet');
+    if(!d||!s)return;
+    if(on){d.classList.add('open');s.classList.add('open');s.setAttribute('aria-hidden','false');}
+    else{d.classList.remove('open');s.classList.remove('open');s.setAttribute('aria-hidden','true');}
+  }
+  function day(x){x=String(x||'');return x?x.slice(0,10):'';}
+  function sig(by,at){
+    return '<div class="zm-side">signed by '+esc(by||'(unsigned)')
+      +(day(at)?' &#183; '+esc(day(at)):'')+'</div>';
+  }
+  function rowHTML(r){
+    var head='<div class="zm-k">'+esc(r.item)+'</div>'
+            +'<div class="zm-w">'+esc(r.label)+'</div>';
+    if(!r.conflict){
+      return '<div class="zm-row" data-zmrow="'+esc(r.id)+'">'
+        +'<div class="zm-chk">'
+        +'<input type="checkbox" data-zmck="'+esc(r.id)+'"'+(_dec[r.id]?' checked':'')+'>'
+        +'<div>'+head+'<div class="zm-v">'+esc(r.incomingText)+'</div>'
+        +sig(r.incomingBy,r.incomingAt)+'</div></div></div>';
+    }
+    return '<div class="zm-row">'+head
+      +'<div class="zm-v"><b>Theirs:</b> '+esc(r.incomingText)+'</div>'+sig(r.incomingBy,r.incomingAt)
+      +'<div class="zm-v"><b>Mine:</b> '+esc(r.currentText)+'</div>'+sig(r.currentBy,r.currentAt)
+      +'<div class="zm-pick">'
+      +'<button type="button" data-zmpick="'+esc(r.id)+'" data-zmval="0" aria-pressed="'
+        +(_dec[r.id]?'false':'true')+'">Keep mine</button>'
+      +'<button type="button" data-zmpick="'+esc(r.id)+'" data-zmval="1" aria-pressed="'
+        +(_dec[r.id]?'true':'false')+'">Take theirs</button>'
+      +'</div></div>';
+  }
+  function foot(){
+    var f=document.getElementById('zmFoot');
+    if(!f||!_plan)return;
+    var n=0;_plan.rows.forEach(function(r){if(_dec[r.id])n++;});
+    f.innerHTML='<button class="zm-btn go" id="zmApply" type="button"'+(n?'':' disabled')+'>'
+      +'Apply '+n+' change'+(n===1?'':'s')+'</button>'
+      +'<button class="zm-btn" id="zmCancel" type="button">Cancel &#8212; write nothing</button>';
+  }
+  function render(){
+    var b=document.getElementById('zmBody');
+    if(!b||!_plan)return;
+    var p=_plan;
+    var news=p.rows.filter(function(r){return !r.conflict;});
+    var cons=p.rows.filter(function(r){return r.conflict;});
+    var h='<div class="zm-from">From <b>'+esc(p.signedBy)+'</b>'
+      +(day(p.exportedAt)?', exported '+esc(day(p.exportedAt)):'')
+      +'. Nothing is written until you tap Apply.</div>';
+    var mine='';try{mine=String(window.__buildId||'');}catch(e){}
+    if(p.buildId&&mine&&p.buildId!==mine)
+      h+='<div class="zm-warn">That file was made on a different app build ('
+        +esc(p.buildId)+'). Read the values before accepting them.</div>';
+    if(p.dropped.length)
+      h+='<div class="zm-warn">'+p.dropped.length+' verified-absence record'
+        +(p.dropped.length===1?'':'s')+' dropped: no verifiedBy + date + source. '
+        +'An absence without provenance never lands.<div class="zm-drop">'
+        +p.dropped.map(function(d){return esc(d.label+' &#8212; '+d.allergen);}).join('<br>')
+        +'</div></div>';
+    if(cons.length)h+='<div class="zm-sec">Both sides changed &#8212; '+cons.length+'</div>'
+      +cons.map(rowHTML).join('');
+    if(news.length)h+='<div class="zm-sec">New here &#8212; '+news.length+'</div>'
+      +news.map(rowHTML).join('');
+    if(!p.rows.length)
+      h+='<div class="zm-none">Nothing to merge. Everything in that file is already '
+        +'here, exactly as it is there.</div>';
+    if(p.same)h+='<div class="zm-none">'+p.same+' value'+(p.same===1?'':'s')
+      +' already identical on both devices.</div>';
+    b.innerHTML=h;
+    foot();
+  }
+  function done(res){
+    var b=document.getElementById('zmBody'),f=document.getElementById('zmFoot');
+    if(!b||!f)return;
+    var v=res.verify||{},probs=(res.failures||[]).concat(v.problems||[]);
+    var h='<div class="zm-sec">'+(res.ok?'Merged':'Merged &#8212; with problems')+'</div>'
+      +'<div class="zm-from">'+res.rows+' change'+(res.rows===1?'':'s')+' across '+res.keys
+      +' item'+(res.keys===1?'':'s')+'. '+res.declined+' declined and left exactly as '
+      +'they were.</div>';
+    if(res.peopleAdded&&res.peopleAdded.length)
+      h+='<div class="zm-from">Added to the people list: <b>'
+        +esc(res.peopleAdded.join(', '))+'</b></div>';
+    h+=res.ok
+      ? '<div class="zm-from">Re-read from storage and checked: every accepted value is '
+        +'stored, every declined value is untouched, and '+(v.untouchedItems||0)
+        +' item'+((v.untouchedItems||0)===1?'':'s')+' nobody voted on are byte-identical.</div>'
+      : '<div class="zm-warn">'+esc(probs.join('  |  '))+'</div>';
+    b.innerHTML=h;
+    f.innerHTML='<button class="zm-btn" id="zmDone" type="button">Close</button>';
+  }
+  function openMerge(json){
+    var p=mergePlan(json);
+    if(!p.ok){toast(p.error||'That file could not be read.');return p;}
+    _plan=p;_dec={};
+    p.rows.forEach(function(r){_dec[r.id]=!r.conflict;});
+    render();show(true);
+    return p;
+  }
+  window.__zOpenMerge=openMerge;
+  window.__zMergeState=function(){return {plan:_plan,decisions:_dec};};
+  window.__zMergeDecide=function(id,v){
+    if(!_plan)return false;
+    _dec[id]=(v===true);render();return true;
+  };
+  window.__zMergeConfirm=function(){
+    if(!_plan)return {ok:false,error:'nothing open'};
+    var res=mergeApply(_plan,_dec);done(res);return res;
+  };
+
+  function doExport(){
+    var who=me();
+    if(!who){
+      try{window.__zOpenPerson&&window.__zOpenPerson();}catch(e){}
+      toast('Pick who you are first');return;
+    }
+    var json=window.__zExportSigned(who);
+    if(!json){toast('Nothing to export');return;}
+    var n=0;try{n=Object.keys(JSON.parse(json).items||{}).length;}catch(e){}
+    if(!n){toast('You have not signed anything yet');return;}
+    var nm='zapheria-'+String(who).toLowerCase().replace(/[^a-z0-9]+/g,'-')
+      +'-'+ISO().slice(0,10)+'.json';
+    try{
+      var u=URL.createObjectURL(new Blob([json],{type:'application/json'}));
+      var a=document.createElement('a');
+      a.href=u;a.download=nm;a.style.display='none';
+      document.body.appendChild(a);a.click();
+      setTimeout(function(){try{URL.revokeObjectURL(u);a.parentNode.removeChild(a);}catch(e){}},600);
+      toast(n+' item'+(n===1?'':'s')+' you signed');
+    }catch(e){toast('Export failed');}
+  }
+
+  document.addEventListener('click',function(ev){
+    var t=ev.target;if(!t)return;
+    var pk=up(t,'[data-zmpick]');
+    if(pk){_dec[pk.getAttribute('data-zmpick')]=(pk.getAttribute('data-zmval')==='1');
+      render();return;}
+    var ck=up(t,'[data-zmck]');
+    if(ck){_dec[ck.getAttribute('data-zmck')]=!!ck.checked;foot();return;}
+    var rw=up(t,'[data-zmrow]');
+    if(rw){
+      var id=rw.getAttribute('data-zmrow');
+      _dec[id]=!_dec[id];
+      var inp=rw.querySelector('input[data-zmck]');
+      if(inp)inp.checked=!!_dec[id];
+      foot();return;
+    }
+    if(up(t,'#zmApply')){window.__zMergeConfirm();return;}
+    if(up(t,'#zmCancel')||up(t,'#zmClose')||up(t,'#zmDim')||up(t,'#zmDone')){
+      show(false);_plan=null;_dec={};return;
+    }
+    if(up(t,'[data-zm="export"]')){doExport();return;}
+  },false);
+
+  document.addEventListener('change',function(ev){
+    var t=ev.target;
+    if(!t||t.id!=='zmFile')return;
+    var f=t.files&&t.files[0];
+    t.value='';
+    if(!f)return;
+    var rd=new FileReader();
+    rd.onload=function(){openMerge(String(rd.result||''));};
+    rd.onerror=function(){toast('Could not read that file');};
+    rd.readAsText(f);
+  },false);
 })();
 </script>
