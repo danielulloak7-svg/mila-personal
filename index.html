@@ -271,6 +271,28 @@
   .pn-revbtn{appearance:none;-webkit-appearance:none;font-family:inherit;font-size:10.5px;font-weight:700;letter-spacing:.02em;padding:6px 12px;border-radius:9px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink)}
   .pn-revbtn.on{border-color:rgba(60,98,72,.55);background:rgba(60,98,72,.10);color:#3C6248}
   .pn-revhint{font-size:9.5px;line-height:1.35;color:var(--muted);flex:1 1 100%}
+  /* (p62) authorship: a pairing a person added, or a reason a person rewrote.
+     #4A4291 measures 8.11:1 on the card, 7.52:1 on the sheet body and 6.95:1
+     on its own tint - AA everywhere, AAA on two of the three. */
+  .pn-prop{font-size:10px;font-weight:700;letter-spacing:.02em;color:#4A4291;margin-top:4px}
+  .pn-wy{font-size:10px;font-weight:700;letter-spacing:.02em;color:#4A4291;margin-top:4px;opacity:.92}
+  .pn-badge.prop{color:#4A4291;background:rgba(74,66,145,.10);border:1px solid rgba(74,66,145,.38)}
+  .pn-propnote{font-size:10px;line-height:1.45;color:#4A4291;background:rgba(74,66,145,.08);border:1px solid rgba(74,66,145,.26);border-radius:9px;padding:6px 8px;margin:7px 0 2px}
+  .pn-vb.prop{border:1px solid rgba(74,66,145,.55);background:rgba(74,66,145,.10);color:#4A4291}
+  .pn-wybox{margin-top:6px}
+  .pn-wybox[hidden]{display:none}
+  .pn-wyta{width:100%;box-sizing:border-box;font-family:inherit;font-size:12.5px;line-height:1.5;color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:9px;padding:8px 9px;resize:vertical}
+  .pn-wyta:focus{outline:2px solid rgba(74,66,145,.5);outline-offset:1px}
+  .pn-wyorig{font-size:10px;line-height:1.45;color:var(--muted);background:rgba(0,0,0,.03);border-left:2px solid var(--line);border-radius:0 7px 7px 0;padding:5px 8px;margin:6px 0 0}
+  .pn-propbtn{appearance:none;-webkit-appearance:none;font-family:inherit;font-size:10.5px;font-weight:700;letter-spacing:.02em;padding:6px 12px;border-radius:9px;cursor:pointer;border:1px solid rgba(74,66,145,.55);background:rgba(74,66,145,.10);color:#4A4291}
+  .pn-propbtn[hidden]{display:none}
+  .pn-propbox{margin:9px 0 2px;padding:10px 11px;border:1px solid rgba(74,66,145,.30);border-radius:11px;background:rgba(74,66,145,.05)}
+  .pn-propbox[hidden]{display:none}
+  .pn-plab{display:block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 5px}
+  .pn-psel{width:100%;box-sizing:border-box;font-family:inherit;font-size:12.5px;line-height:1.4;color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:9px;padding:8px 9px;margin-bottom:9px}
+  .pn-psel:focus{outline:2px solid rgba(74,66,145,.5);outline-offset:1px}
+  .pn-pact{display:flex;gap:7px;justify-content:flex-end;margin-top:8px}
+  .pn-perr{font-size:10px;line-height:1.4;color:#8A322B;margin-top:6px;min-height:0}
   /* p52 #12 — the source-hole note. Same color pair as .pn-ainote, which is
      already live on the ai pairing panel, so legibility is inherited rather
      than newly asserted. */
@@ -2303,7 +2325,8 @@
 <div class="pn-dim" id="pnDim"></div>
 <div class="pn-sheet" id="pnSheet" role="dialog" aria-label="Wine pairings">
   <div class="pn-head"><div class="pn-grab"></div><button class="pn-close" id="pnClose">✕</button><div class="pn-name" id="pnName"></div><div class="pn-sub" id="pnSub"></div><div class="pn-note" id="pnNote">✦ <b>Top 4 verified for service.</b> Extended matches are sommelier suggestions — pending verification. Always confirm allergens on the dish card.</div></div>
-  <div class="pn-rev"><button class="pn-revbtn" id="pnRev" type="button" aria-pressed="false">Review mode</button><span class="pn-revhint" id="pnRevHint"></span></div>
+  <div class="pn-rev"><button class="pn-revbtn" id="pnRev" type="button" aria-pressed="false">Review mode</button><button class="pn-propbtn" id="pnPropBtn" type="button" hidden>✎ Propose a pairing</button><span class="pn-revhint" id="pnRevHint"></span></div>
+<div class="pn-propbox" id="pnPropBox" hidden><label class="pn-plab" for="pnPropDish">Dish</label><select class="pn-psel" id="pnPropDish"></select><label class="pn-plab" for="pnPropWhy">Why this pairing works · in your words</label><textarea class="pn-wyta" id="pnPropWhy" rows="3" placeholder="Say why, the way you would say it to a guest."></textarea><div class="pn-propnote" id="pnPropNote">✎ The app never writes this sentence for you. It is stored with your name and shows on the wine and on the dish as <b>proposed, not certified</b> until someone certifies it.</div><div class="pn-perr" id="pnPropErr"></div><div class="pn-pact"><button class="pn-vb ghost" type="button" data-pnpcancel>Cancel</button><button class="pn-vb prop" type="button" data-pnpsave>Save proposal</button></div></div>
   <div class="pn-chips" id="pnChips"></div>
   <div class="pn-body" id="pnBody"></div>
 </div>
@@ -3730,12 +3753,273 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       return out;
     };
   })();
+  /* (p62) THE AUTHORING STORE.
+     Two facts, on the SAME canonical edge id p60 mints:
+
+       pairProposal : {by,at,why,replaces,appBuild} - a relation a PERSON
+                      added.  It does not exist in PAIRNAV or DISHPAIR and is
+                      never written into them; __pairIndex() and therefore
+                      __pairReconcile() are untouched, so the 457/246/211
+                      census keeps meaning "what the BUILD ships".
+       pairWhy      : {text,by,at,prior,baked,appBuild} - a sentence a PERSON
+                      rewrote.  `baked` is the text the build shipped and is
+                      written once and never rewritten; `prior` accumulates
+                      every superseded text.  Nothing is lost.
+
+     Both keys are outside _P33BOOK, so _p33IsEdit() counts them honestly as
+     real content edits in ovCounts().edits - an authored pairing shows up in
+     the export exactly like any other edit, through the transport that already
+     exists.  No new storage, no new transport, no backend. */
+  (function(){
+    function _now(){return new Date().toISOString();}
+    function _me(){try{return (window.__zActive?window.__zActive():'')||'';}catch(e){return '';}}
+    function _toast(m){try{window.__toast&&window.__toast(m);}catch(e){}}
+    function _needSigner(m){
+      try{if(window.__zOpenPerson)window.__zOpenPerson();}catch(e){}
+      _toast(m);
+    }
+    function _item(eid){
+      try{var o=window.getOverlay?window.getOverlay():null;
+        return (o&&o.items)?(o.items[eid]||null):null;}catch(e){return null;}
+    }
+
+    /* ---- READ.  Fixed shapes, never throw, unknown edge -> null. ---- */
+    window.__pairProposal=function(eid){
+      if(!eid)return null;
+      var it=_item(eid),p=it&&it.pairProposal;
+      if(!p||typeof p.why!=='string')return null;
+      return {by:p.by||'',at:p.at||'',why:p.why,replaces:p.replaces||''};
+    };
+    window.__pairWhyRec=function(eid){
+      if(!eid)return null;
+      var it=_item(eid),w=it&&it.pairWhy;
+      if(!w||typeof w.text!=='string')return null;
+      return {text:w.text,by:w.by||'',at:w.at||'',
+        baked:(typeof w.baked==='string'?w.baked:''),
+        prior:(w.prior&&w.prior.length?w.prior:[])};
+    };
+    window.__pairWhyOrig=function(eid){var w=window.__pairWhyRec(eid);return w?w.baked:'';};
+
+    /* ---- THE MARKS.  One line each, on the two SERVICE surfaces.
+       PROHIBITION: never colour alone - each mark carries its own glyph and
+       says in words what it means. ---- */
+    window.__pairPropMark=function(eid){
+      var p=window.__pairProposal(eid);
+      if(!p)return '';
+      /* once certified, p61's mark is the stronger and truer statement */
+      if(window.__pairVerdict(eid).certified)return '';
+      return '<div class="pn-prop">✎ Proposed by '
+        +(p.by?window.__esc(p.by):'a person')+' · not certified</div>';
+    };
+    window.__pairWhyMark=function(eid){
+      var w=window.__pairWhyRec(eid);
+      if(!w||w.text===w.baked)return '';
+      return '<div class="pn-wy">✎ Reason rewritten by '
+        +(w.by?window.__esc(w.by):'a person')+'</div>';
+    };
+    /* The ONE mark the renderers call.  With no proposal and no reword its
+       output is byte-identical to __pairCertMark's - which is what makes the
+       swap at the three call sites invisible on an untouched build. */
+    window.__pairEdgeMark=function(eid){
+      if(!eid)return '';
+      return window.__pairCertMark(eid)+window.__pairPropMark(eid)+window.__pairWhyMark(eid);
+    };
+
+    /* ---- THE DISH LIST.  The picker cannot reach FOOD from the sheet's own
+       script block, so the store exposes it.  Off-menu dishes are dropped for
+       the same reason _pnAvail drops them: you cannot offer what is not on.
+       SPECIAL is declared after this point - read guarded, cached only when
+       BOTH reads succeeded. ---- */
+    var _DL=null;
+    function _buildDL(){
+      var rows=[],ok=true;
+      function push(rec){
+        if(!rec||!rec.id)return;
+        var m=rec;
+        try{if(window.__mergeOv)m=window.__mergeOv(rec)||rec;}catch(e){}
+        try{if(window.__avOff&&window.__avOff(m))return;}catch(e){}
+        /* the slug is minted off the BAKED name, because __dishByKey scans the
+           BAKED name - the p59 lesson, not repeated here. */
+        rows.push({id:rec.id,name:(m.name||rec.name||''),k:dishKey(rec.name||'')});
+      }
+      try{(typeof FOOD!=='undefined'?FOOD:[]).forEach(push);}catch(e){ok=false;}
+      try{push(SPECIAL);}catch(e){ok=false;}
+      rows.sort(function(a,b){return a.name<b.name?-1:(a.name>b.name?1:0);});
+      return {rows:rows,ok:ok};
+    }
+    window.__pairDishList=function(){
+      if(_DL)return _DL.slice();
+      var r=_buildDL();
+      if(r.ok)_DL=r.rows;
+      return r.rows.slice();
+    };
+    window.__pairDishInfo=function(id){
+      if(!id)return null;
+      var l=window.__pairDishList();
+      for(var i=0;i<l.length;i++)if(l[i].id===id)return l[i];
+      return null;
+    };
+
+    /* ---- WRITE: propose. ---- */
+    window.__pairPropose=function(wineId,dishId,why,replaces){
+      if(!wineId||!dishId)return {ok:false,error:'ids'};
+      var who=_me();
+      if(!who){_needSigner('Pick who you are to propose a pairing');return {ok:false,error:'unsigned'};}
+      /* THE APP NEVER WRITES THIS SENTENCE.  Empty in, nothing stored. */
+      var t=String(why==null?'':why).replace(/\s+$/,'');
+      if(!t.trim())return {ok:false,error:'why'};
+      var eid=window.__pairEdgeId(wineId,dishId);
+      if(!eid)return {ok:false,error:'ids'};
+      try{if(window.__pairIndex().e[eid])return {ok:false,error:'exists'};}catch(e){}
+      if(window.__pairProposal(eid))return {ok:false,error:'dup'};
+      try{
+        if(!window.setItemOverride)return {ok:false,error:'no write path'};
+        window.setItemOverride(eid,{pairProposal:{by:who,at:_now(),why:t,
+          replaces:String(replaces||''),appBuild:(window.__buildId||'')}});
+      }catch(e){return {ok:false,error:'write'};}
+      _toast('Proposed · shown as not certified');
+      return {ok:true,eid:eid};
+    };
+
+    /* ---- WRITE: rewrite a reason.  ATOMIC - see the module docstring for why
+       this deviates from p61's single-owner rule.  The certification
+       consequence rides in the SAME patch as the text. ---- */
+    window.__pairSetWhy=function(eid,text,baked){
+      if(!eid)return {ok:false,error:'no edge'};
+      var who=_me();
+      if(!who){_needSigner('Pick who you are to rewrite a pairing reason');return {ok:false,error:'unsigned'};}
+      var t=String(text==null?'':text).replace(/\s+$/,'');
+      if(!t.trim())return {ok:false,error:'why'};
+      var prev=window.__pairWhyRec(eid);
+      /* `baked` is captured ONCE, on the first rewrite, and is never rewritten */
+      var base=(prev&&typeof prev.baked==='string')?prev.baked:String(baked==null?'':baked);
+      var cur=prev?prev.text:base;
+      if(cur===t)return {ok:true,already:true};
+      var hist=(prev&&prev.prior)?prev.prior.slice(0,24):[];
+      hist.unshift({text:cur,by:(prev?prev.by:''),at:(prev?prev.at:'')});
+      var patch={pairWhy:{text:t,by:who,at:_now(),prior:hist,
+        baked:base,appBuild:(window.__buildId||'')}};
+      var v=window.__pairVerdict(eid),cleared=false;
+      if(v.certified){
+        if(v.by===who){
+          /* your own stamp survives and its date refreshes - the source it was
+             signed against is carried, never re-derived */
+          var src='';
+          try{src=((_item(eid)||{}).contentVerification||{}).source||'';}catch(e){}
+          patch.contentVerified=true;
+          patch.contentVerification={verifiedBy:who,verifiedAt:_now(),source:src};
+        }else{
+          patch.contentVerified=false;
+          patch.verificationWithdrawn={withdrawnBy:who,withdrawnAt:_now(),
+            priorBy:(v.by||''),priorAt:(v.at||''),reason:'pairing reason rewritten'};
+          cleared=true;
+        }
+      }
+      try{
+        if(!window.setItemOverride)return {ok:false,error:'no write path'};
+        window.setItemOverride(eid,patch);
+      }catch(e){return {ok:false,error:'write'};}
+      _toast(cleared?'Reason rewritten · the earlier certification was cleared'
+                    :'Reason rewritten');
+      return {ok:true,cleared:cleared};
+    };
+
+    /* Restore.  Same write, same signature rule - restoring is an edit too. */
+    window.__pairResetWhy=function(eid,baked){
+      var w=window.__pairWhyRec(eid);
+      var b=(w&&w.baked)?w.baked:String(baked==null?'':baked);
+      if(!b)return {ok:false,error:'no original'};
+      return window.__pairSetWhy(eid,b,b);
+    };
+
+    /* ---- PROPOSAL DISCOVERY.  Scans the overlay, not the index. ---- */
+    function _scan(fn){
+      var out=[];
+      try{
+        var ov=window.getOverlay?window.getOverlay():null,it=(ov&&ov.items)||{};
+        Object.keys(it).forEach(function(k){
+          if(k.indexOf('pair.')!==0)return;
+          var p=window.__pairProposal(k);
+          if(!p)return;
+          var s=k.slice(5),i=s.indexOf('~');
+          if(i<1||i===s.length-1)return;
+          fn(out,k,s.slice(0,i),s.slice(i+1),p);
+        });
+      }catch(e){}
+      out.sort(function(a,b){return (a._at<b._at)?-1:((a._at>b._at)?1:0);});
+      return out;
+    }
+    window.__pairProposalsForWine=function(wid){
+      if(!wid)return [];
+      return _scan(function(out,eid,w,d,p){
+        if(w!==wid)return;
+        var info=window.__pairDishInfo(d);
+        if(!info)return;      /* off the menu: not offered, exactly like _pnAvail */
+        out.push({name:info.name,k:info.k,why:p.why,tier:'prop',sec:'',
+          _eid:eid,_did:d,_prop:true,_at:p.at||''});
+      });
+    };
+    window.__pairProposalsForDish=function(did){
+      if(!did)return [];
+      return _scan(function(out,eid,w,d,p){
+        if(d!==did)return;
+        out.push({d:w,why:p.why,ai:false,_eid:eid,_prop:true,_at:p.at||''});
+      });
+    };
+
+    /* ---- THE ACCESSOR WRAPS.  p60's code is NOT edited: its two accessors are
+       captured and re-exposed with proposals appended and rewritten `why` text
+       applied.  _bwhy carries the text the row arrived with, so the editor can
+       always offer "Restore original" against the right string. ---- */
+    var _oW=window.__pairEdgesForWine,_oD=window.__pairEdgesForDish;
+    function _ap(l){
+      return (l||[]).map(function(it){
+        var o={},p;for(p in it)if(Object.prototype.hasOwnProperty.call(it,p))o[p]=it[p];
+        o._bwhy=o.why;
+        var w=window.__pairWhyRec(o._eid);
+        if(w&&w.text)o.why=w.text;
+        return o;
+      });
+    }
+    window.__pairEdgesForWine=function(k){
+      var w=_oW(k);
+      if(!w)return w;
+      w.top=_ap(w.top).concat(_ap(window.__pairProposalsForWine(w._wid)));
+      w.more=_ap(w.more);
+      return w;
+    };
+    window.__pairEdgesForDish=function(id){
+      return _ap(_oD(id)).concat(_ap(window.__pairProposalsForDish(id)));
+    };
+
+    /* ---- THE AUDIT TABLE.  Not rendered anywhere - the counterpart of p60's
+       __pairReconcile and p61's __pairVerdictReport. ---- */
+    window.__pairAuthorReport=function(){
+      var out={proposals:0,rewords:0,unsigned:[],rows:[]};
+      try{
+        var ov=window.getOverlay?window.getOverlay():null,it=(ov&&ov.items)||{};
+        Object.keys(it).forEach(function(k){
+          if(k.indexOf('pair.')!==0)return;
+          var p=window.__pairProposal(k),w=window.__pairWhyRec(k);
+          var rw=!!(w&&w.text!==w.baked);
+          if(!p&&!rw)return;
+          if(p){out.proposals++;if(!p.by)out.unsigned.push(k);}
+          if(rw){out.rewords++;if(!w.by)out.unsigned.push(k);}
+          var v=window.__pairVerdict(k);
+          out.rows.push({eid:k,proposed:!!p,proposedBy:(p?p.by:''),
+            reworded:rw,rewordedBy:(rw?w.by:''),priors:(w&&w.prior?w.prior.length:0),
+            certified:!!v.certified,rejected:!!v.rejected});
+        });
+      }catch(e){out.error=String(e&&e.message||e);}
+      return out;
+    };
+  })();
   /* dish -> wines. VERIFIED PAIRNAV first (carries the same `why` text as the wine side),
      then dishes.json's own usedByDrinks as a plain chip fallback. */
   function dishWinePairChips(d){
     var idx=_bevIndex();
     var rich=d.id?window.__pairEdgesForDish(d.id):[];
-    var _nEm=0,_anyAi=false,_cEm=0,_tEm=0,_rEm=0;   /* p25/D4: badge on the FIRST EMITTED row only; ainote when any emitted row is authored.  (p61) _cEm/_tEm count the rows that survive to the screen, so the note can name them; _rEm counts the ones review removed. */
+    var _nEm=0,_anyAi=false,_cEm=0,_tEm=0,_rEm=0,_pEm=0;   /* p25/D4: badge on the FIRST EMITTED row only; ainote when any emitted row is authored.  (p61) _cEm/_tEm count the rows that survive to the screen, so the note can name them; _rEm counts the ones review removed. */
     var rows=rich.map(function(p){
       var b=idx[p.d]; if(!b) return '';
       if(window.__avOff&&window.__avOff(b)) return '';                       /* off-menu: drop, no dangling ref */
@@ -3746,9 +4030,9 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       var _dv=(function(){try{return window.__pairVerdict(p._eid);}catch(e){}
         return {certified:false,rejected:false};})();
       if(_dv.rejected){_rEm++;return '';}
-      _tEm++;if(_dv.certified)_cEm++;
+      _tEm++;if(_dv.certified)_cEm++;else if(p._prop)_pEm++;
       if(p.ai&&!_dv.certified)_anyAi=true;   /* p25: counted AFTER the off-menu drop */
-      return '<div class="pn-item"><div class="pn-main"><div class="pn-dish" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</div><div class="pn-why">'+window.__esc(p.why)+'</div>'+window.__pairCertMark(p._eid)+'</div>'+(_nEm++===0?'<span class="pn-badge top">✦ TOP</span>':'')+'</div>';
+      return '<div class="pn-item"><div class="pn-main"><div class="pn-dish" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</div><div class="pn-why">'+window.__esc(p.why)+'</div>'+window.__pairEdgeMark(p._eid)+'</div>'+(p._prop?'<span class="pn-badge prop">✎ PROPOSED</span>':(_nEm++===0?'<span class="pn-badge top">✦ TOP</span>':''))+'</div>';
     }).filter(Boolean).join('');
     var done={}; rich.forEach(function(p){done[p.d]=1;});
     var chips=(d.pairWines||[]).map(function(id){var b=idx[id];if(!b||done[id]||b.kind!=='wine')return '';if(window.__avOff&&window.__avOff(b))return '';var m=(window.__av86&&window.__av86(b))?' <span class="av86-inline">86</span>':'';return '<span class="chip2 pair-chip" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</span>';}).filter(Boolean).join('');
@@ -3761,11 +4045,16 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
     return '<div class="milabox"><div class="mptitle">✦ MILA Pairings</div><div class="mpsub">Wines that pair with this dish — tap to open</div>'+(function(){
         /* (p61) the note names what is on screen.  Zero certifications ->
            the shipped sentence, character for character. */
+        var _pNote=_pEm?'<div class="pn-propnote">✎ '+_pEm+' pairing'+(_pEm>1?'s':'')+' below '+(_pEm>1?'were':'was')+' proposed by a person and '+(_pEm>1?'are':'is')+' not yet certified.</div>':'';
+        var _pA='Some pairings below were authored from the appellation and style of the wine';
+        var _pR='The rest were authored from the appellation and style of the wine';
+        if(_pEm){_pA+=', or proposed by a person and not yet certified';
+                 _pR+=', or proposed by a person and not yet certified';}
         if(_tEm&&_cEm===_tEm)return '<div class="pn-certnote">\u2713 Every pairing below has been certified by a sommelier.</div>';
-        if(_anyAi&&!_cEm)return '<div class="pn-ainote">\u2726 Some pairings below were authored from the appellation and style of the wine \u2014 <b>not</b> sommelier-verified. Do not quote to guests as verified.</div>';
-        if(_anyAi)return '<div class="pn-ainote">\u2726 '+_cEm+' of '+_tEm+' pairings below are sommelier-certified and marked. The rest were authored from the appellation and style of the wine \u2014 <b>not</b> sommelier-verified. Do not quote those to guests as verified.</div>';
-        if(_cEm)return '<div class="pn-certnote">\u2713 '+_cEm+' of '+_tEm+' pairings below are sommelier-certified and marked.</div>';
-        return '';
+        if(_anyAi&&!_cEm)return '<div class="pn-ainote">\u2726 '+_pA+' \u2014 <b>not</b> sommelier-verified. Do not quote to guests as verified.</div>';
+        if(_anyAi)return '<div class="pn-ainote">\u2726 '+_cEm+' of '+_tEm+' pairings below are sommelier-certified and marked. '+_pR+' \u2014 <b>not</b> sommelier-verified. Do not quote those to guests as verified.</div>';
+        if(_cEm)return _pNote+'<div class="pn-certnote">\u2713 '+_cEm+' of '+_tEm+' pairings below are sommelier-certified and marked.</div>';
+        return _pNote;
       })()
       +rows+(chips?'<div class="chips2" style="margin-top:8px">'+chips+'</div>':'')+'</div>';
   }
@@ -3803,25 +4092,37 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
          actually paints (w.top), and only those may be counted by a sentence
          that says "below": this panel renders the top rows and a link to the
          rest, so "1 of 15 below" would name a screen that does not exist. */
-      var _pnCertV=0,_pnTotV=0;
-      _topL.forEach(function(x){_pnTotV++;if(_pnV(x).certified)_pnCertV++;});
+      var _pnCertV=0,_pnTotV=0,_pnPropV=0,_pnPropA=0;
+      _topL.forEach(function(x){_pnTotV++;if(_pnV(x).certified)_pnCertV++;else if(x&&x._prop)_pnPropV++;});
+      _topL.concat(_moreL).forEach(function(x){if(x&&x._prop&&!_pnV(x).certified)_pnPropA++;});
+      /* (p62) the two authored-copy sentences.  PROHIBITION: the disclaimer
+         may not call a person's sentence app-authored.  PAIRED INVARIANT:
+         with zero proposals on screen both strings are byte-identical to the
+         ones p61 shipped, so the census cannot move. */
+      var _pnAuthAll='Pairings authored from the appellation and style of this wine';
+      var _pnAuthRest='The rest were authored from the appellation and style of this wine';
+      if(_pnPropV){_pnAuthAll+=', or proposed by a person and not yet certified';
+                   _pnAuthRest+=', or proposed by a person and not yet certified';}
       /* the badge and the note describe THIS panel's real state - four
          cases, one sentence each.  Nothing certified -> the two strings
          below are the ones that shipped, character for character. */
-      var _pnBadge=(_allC||!w.ai)?'<span class="pn-verified">VERIFIED</span>'
+      var _pnBadge=((_allC||!w.ai)&&!_pnPropA)?'<span class="pn-verified">VERIFIED</span>'
         :'<span class="sp-unverified">NOT VERIFIED</span>';
       var _pnNote='';
       if(_allC)_pnNote='<div class="pn-certnote">\u2713 Every pairing for this wine has been certified by a sommelier.</div>';
       else if(_pnTotV&&_pnCertV===_pnTotV)_pnNote='<div class="pn-certnote">\u2713 Every pairing shown here is sommelier-certified. The '+_moreL.length+' more in the full list are not \u2014 open the sheet below.</div>';
-      else if(w.ai&&!_pnCertV)_pnNote='<div class="pn-ainote">\u2726 Pairings authored from the appellation and style of this wine \u2014 <b>not</b> sommelier-verified. Do not quote to guests as verified.</div>';
-      else if(w.ai)_pnNote='<div class="pn-ainote">\u2726 '+_pnCertV+' of '+_pnTotV+' pairings below are sommelier-certified and marked. The rest were authored from the appellation and style of this wine \u2014 <b>not</b> sommelier-verified. Do not quote those to guests as verified.</div>';
+      else if(w.ai&&!_pnCertV)_pnNote='<div class="pn-ainote">\u2726 '+_pnAuthAll+' \u2014 <b>not</b> sommelier-verified. Do not quote to guests as verified.</div>';
+      else if(w.ai)_pnNote='<div class="pn-ainote">\u2726 '+_pnCertV+' of '+_pnTotV+' pairings below are sommelier-certified and marked. '+_pnAuthRest+' \u2014 <b>not</b> sommelier-verified. Do not quote those to guests as verified.</div>';
       else if(_pnCertV)_pnNote='<div class="pn-certnote">\u2713 '+_pnCertV+' of '+_pnTotV+' pairings below are sommelier-certified and marked.</div>';
+      /* (p62) when the wine has no app-authored disclaimer at all, the
+         proposals still need one of their own. */
+      if(_pnPropV&&!w.ai)_pnNote+='<div class="pn-propnote">✎ Some pairings below were proposed by a person and are not yet certified.</div>';
       /* an empty box would read as "no pairings exist", which is false. */
       if(!_pnTot&&_pnRej)_pnNote+='<div class="pn-none">Every pairing for this wine has been rejected in review. Open the sheet below to read why.</div>';
       var top=_topL.map(function(it){
         var a=it.k?(' data-dish="'+it.k+'"'):'';
         var m=(it.k&&window.__dishByKey&&window.__av86&&window.__av86(window.__dishByKey(it.k)))?' <span class="av86-inline">86</span>':'';
-        return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+m+'</div><div class="pn-why">'+window.__esc(it.why)+'</div>'+window.__pairCertMark(it._eid)+'</div><span class="pn-badge top">✦ TOP</span></div>';
+        return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+m+'</div><div class="pn-why">'+window.__esc(it.why)+'</div>'+window.__pairEdgeMark(it._eid)+'</div>'+(it._prop?'<span class="pn-badge prop">✎ PROPOSED</span>':'<span class="pn-badge top">✦ TOP</span>')+'</div>';
       }).join('');
       var more=_moreL.length;
       return '<div class="milabox"><div class="mptitle">✦ MILA Pairings '+_pnBadge+'</div><div class="pn-sub">'+(w.sub||'')+'</div>'+_pnNote
@@ -6317,8 +6618,8 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   function close(){dim.classList.remove('open');sheet.classList.remove('open');}
   dim.addEventListener('click',close);
   document.getElementById('pnClose').addEventListener('click',close);
-  function badge(t){if(t==='top')return '<span class="pn-badge top">✦ TOP</span>';if(t==='exc')return '<span class="pn-badge exc">EXCELLENT</span>';if(t==='catalog')return '<span class="pn-badge top">✦ CATALOG</span>';if(t==='style')return '<span class="pn-badge good">STYLE</span>';return '<span class="pn-badge good">GOOD</span>';}
-  function item(it,t){var a=it.k?(' data-dish="'+it.k+'"'):'';var _86=(it.k&&window.__dishByKey&&window.__av86&&window.__av86(window.__dishByKey(it.k)))?' <span class="av86-inline">86</span>':'';return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+_86+'</div>'+(it.why?'<div class="pn-why">'+window.__esc(it.why)+'</div>':'')+_vrow(it)+'</div>'+badge(t||it.tier)+'</div>';}
+  function badge(t){if(t==='prop')return '<span class="pn-badge prop">✎ PROPOSED</span>';if(t==='top')return '<span class="pn-badge top">✦ TOP</span>';if(t==='exc')return '<span class="pn-badge exc">EXCELLENT</span>';if(t==='catalog')return '<span class="pn-badge top">✦ CATALOG</span>';if(t==='style')return '<span class="pn-badge good">STYLE</span>';return '<span class="pn-badge good">GOOD</span>';}
+  function item(it,t){var a=it.k?(' data-dish="'+it.k+'"'):'';var _86=(it.k&&window.__dishByKey&&window.__av86&&window.__av86(window.__dishByKey(it.k)))?' <span class="av86-inline">86</span>':'';return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+_86+'</div>'+(it.why?'<div class="pn-why">'+window.__esc(it.why)+'</div>':'')+_vrow(it)+'</div>'+badge((it&&it._prop)?'prop':(t||it.tier))+'</div>';}
   function secHead(t,n){return '<div class="pn-sec">'+t+(n?' <span class="cnt">· '+n+'</span>':'')+'</div>';}
   function render(cat){
     var w=cur;if(!w)return;
@@ -6335,8 +6636,14 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     document.getElementById('pnChips').innerHTML=chips.map(function(c){return '<button class="fchip'+(c===cat?' on':'')+'" data-pnc="'+c+'">'+c+'</button>';}).join('');
     var html='';
     function _av(l){return (l||[]).filter(function(x){if(!x.k||!window.__dishByKey||!window.__avOff)return true;var dd=window.__dishByKey(x.k);return !(dd&&window.__avOff(dd));});}
-    var _top=_av(w.top);
-    if(cat==='All'||cat===topLabel){html+=secHead(lite?'✦ MILA catalog · pending verification':(w.ai?'✦ Top 4 · authored · NOT verified':'✦ Top 4 · verified'),_top.length)+_top.map(function(it){return item(it,lite?'catalog':'top');}).join('');}
+    /* (p62) PROHIBITION: a person's proposal may not be counted inside a
+       heading that says "authored" or "verified".  PAIRED INVARIANT: it is
+       split out into its own section, and with zero proposals _topP is empty
+       and the Top-4 heading counts exactly what it counted in p61. */
+    var _all=_av(w.top),_top=[],_topP=[];
+    _all.forEach(function(it){if(it&&it._prop)_topP.push(it);else _top.push(it);});
+    if(cat==='All'||cat===topLabel){html+=secHead(lite?'✦ MILA catalog · pending verification':(w.ai?'✦ Top 4 · authored · NOT verified':'✦ Top 4 · verified'),_top.length)+_top.map(function(it){return item(it,lite?'catalog':'top');}).join('');
+      if(_topP.length)html+=secHead('✎ Proposed by a person · not certified',_topP.length)+_topP.map(function(it){return item(it,'prop');}).join('');}
     if(cat!==topLabel){w.secs.forEach(function(s){if(cat!=='All'&&cat!==s)return;var items=_av(w.more.filter(function(m){return m.sec===s;}));if(!items.length)return;html+=secHead(s+(lite?' · suggested by style':(w.ai?' · suggested · not verified':' · suggested')),items.length)+items.map(function(m){return item(m,lite?'style':undefined);}).join('');});}
     var body=document.getElementById('pnBody');body.innerHTML=html;body.scrollTop=0;
   }
@@ -6360,25 +6667,32 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     if(rev)b.classList.add('on');else b.classList.remove('on');
     b.textContent=rev?'Reviewing':'Review mode';
     var hn=document.getElementById('pnRevHint');
-    if(hn)hn.textContent=rev?'Certify a pairing you stand behind, or reject it and say why. Both are signed with your name.':'';
+    if(hn)hn.textContent=rev?'Certify a pairing you stand behind, reject it and say why, propose one that is missing, or rewrite the reason in your own words. Every one is signed with your name.':'';
+    var pb=document.getElementById('pnPropBtn');
+    if(pb){if(rev)pb.removeAttribute('hidden');else pb.setAttribute('hidden','');}
+    if(!rev)_closeProp();
   }
   /* the per-row verdict block.  Outside review mode it is a MARK only, so the
      sheet always agrees with what the service panels show; inside review mode
      it is the mark plus the controls. */
   function _vrow(it){
     var eid=(it&&it._eid)?it._eid:'',v=_pvd(eid),E=window.__esc;
+    /* (p62) authorship marks.  With nothing proposed and nothing rewritten
+       both helpers return '', so this row is byte-identical to p61. */
+    function _amk(){try{return window.__pairPropMark(eid)+window.__pairWhyMark(eid);}catch(_e){return '';}}
     if(!rev){
       if(v.rejected)return '<div class="pn-rej">\u2715 Rejected'+(v.by?' \u00b7 '+E(v.by):'')+'</div>'
-        +(v.reason?'<div class="pn-rejwhy">'+E(v.reason)+'</div>':'');
-      if(v.certified)return '<div class="pn-cert">\u2713 Certified'+(v.by?' \u00b7 '+E(v.by):'')+'</div>';
-      return '';
+        +(v.reason?'<div class="pn-rejwhy">'+E(v.reason)+'</div>':'')+_amk();
+      if(v.certified)return '<div class="pn-cert">\u2713 Certified'+(v.by?' \u00b7 '+E(v.by):'')+'</div>'+_amk();
+      return _amk();
     }
     if(!eid)return '<div class="pn-vnote">This dish could not be resolved to an id, so it cannot carry a verdict yet.</div>';
     var head;
     if(v.rejected){
       head='<div class="pn-rej">\u2715 Rejected'+(v.by?' \u00b7 '+E(v.by):'')+(v.at?' \u00b7 '+E(_pdate(v.at)):'')+'</div>'
         +'<div class="pn-rejwhy">'+E(v.reason||'')+'</div>'
-        +'<button class="pn-vb ghost" type="button" data-pnundo>Undo rejection</button>';
+        +'<button class="pn-vb ghost" type="button" data-pnundo>Undo rejection</button>'
+        +'<button class="pn-vb prop" type="button" data-pnpropfor>✎ Propose a replacement</button>';
     }else if(v.certified){
       head='<div class="pn-cert">\u2713 Certified'+(v.by?' \u00b7 '+E(v.by):'')+(v.at?' \u00b7 '+E(_pdate(v.at)):'')+'</div>'
         +'<button class="pn-vb ghost" type="button" data-pnuncert>Undo</button>';
@@ -6386,17 +6700,116 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       head='<button class="pn-vb cert" type="button" data-pncert>\u2713 Certify</button>'
         +'<button class="pn-vb rej" type="button" data-pnrejopen>\u2715 Reject</button>';
     }
-    return '<div class="pn-vact" data-eid="'+E(eid)+'">'+head
+    /* (p62) THE REASON BOX.  PROHIBITION: the app never composes this
+       sentence, not even as a starting draft.  PAIRED INVARIANT: the box
+       opens with the sentence that is on screen right now, the ORIGINAL is
+       printed underneath and kept in history, and an empty save refuses. */
+    var _wr=null;try{_wr=window.__pairWhyRec(eid);}catch(_e){}
+    var _bk=(_wr&&typeof _wr.baked==='string')?_wr.baked:((it&&typeof it._bwhy==='string')?it._bwhy:((it&&it.why)||''));
+    var _cw=(it&&it.why)||'';
+    var _wy='<div class="pn-wybox" hidden><label class="pn-rjlab">Why does this pairing work? Say it in your own words.</label>'
+      +'<textarea class="pn-wyta" rows="3" spellcheck="true">'+E(_cw)+'</textarea>'
+      +((_cw!==_bk)?'<div class="pn-wyorig"><b>Original:</b> '+E(_bk)+'</div>':'')
+      +'<div class="pn-rjact"><button class="pn-vb ghost" type="button" data-pnwycancel>Cancel</button>'
+      +((_cw!==_bk)?'<button class="pn-vb ghost" type="button" data-pnwyreset>Restore original</button>':'')
+      +'<button class="pn-vb cert" type="button" data-pnwysave>Save reason</button></div></div>';
+    return _amk()+'<div class="pn-vact" data-eid="'+E(eid)+'" data-pdish="'+E((it&&it._did)||'')+'" data-baked="'+E(_bk)+'">'+head
+      +'<button class="pn-vb ghost" type="button" data-pnwhyopen>✎ Reason</button>'
       +'<div class="pn-rjbox" hidden><label class="pn-rjlab">Why is this pairing wrong?</label>'
       +'<textarea class="pn-rjta" rows="3" spellcheck="true"></textarea>'
       +'<div class="pn-rjact"><button class="pn-vb ghost" type="button" data-pnrjcancel>Cancel</button>'
-      +'<button class="pn-vb rej" type="button" data-pnrjsave>Save rejection</button></div></div></div>';
+      +'<button class="pn-vb rej" type="button" data-pnrjsave>Save rejection</button></div></div>'
+      +_wy+'</div>';
   }
   /* the sheet's own header note.  Returns '' when nothing has been certified,
      so with zero verdicts the existing sentence is printed unchanged. */
+  /* (p62) THE PROPOSAL BOX.  It lives OUTSIDE #pnBody, so it carries its own
+     listener; and it is never re-rendered, so a half-typed sentence cannot be
+     destroyed by a repaint of the rows behind it.
+     PROHIBITION: no render() call opens or closes a box.
+     PAIRED INVARIANT: render() runs exactly once per COMPLETED write, after
+     the overlay already holds the new state and after cur was refreshed. */
+  var _propFor='';
+  function _refresh(){
+    try{
+      var n=document.getElementById('pnName');
+      var w=n?window.__pairEdgesForWine(n.textContent):null;
+      if(w)cur=w;
+    }catch(e){}
+  }
+  function _propEls(){
+    return {box:document.getElementById('pnPropBox'),
+            sel:document.getElementById('pnPropDish'),
+            ta:document.getElementById('pnPropWhy'),
+            err:document.getElementById('pnPropErr')};
+  }
+  function _closeProp(){
+    var E=_propEls();
+    if(E.box)E.box.setAttribute('hidden','');
+    if(E.ta)E.ta.value='';
+    if(E.err)E.err.textContent='';
+    _propFor='';
+  }
+  function _openProp(replaces,preDish){
+    var E=_propEls();
+    if(!E.box||!E.sel)return;
+    _propFor=replaces||'';
+    /* a dish this wine is already paired with is not offered again: one
+       relation, one edge id, one row. */
+    var taken={};
+    try{['top','more'].forEach(function(L){((cur&&cur[L])||[]).forEach(function(x){
+      if(x&&x._did)taken[x._did]=1;});});}catch(e){}
+    if(preDish)delete taken[preDish];
+    var all=[],list=[];
+    try{all=window.__pairDishList()||[];}catch(e){}
+    all.forEach(function(d){if(!taken[d.id])list.push(d);});
+    E.sel.innerHTML='<option value="">Choose a dish…</option>'
+      +list.map(function(d){return '<option value="'+window.__esc(d.id)+'">'+window.__esc(d.name)+'</option>';}).join('');
+    if(preDish){try{E.sel.value=preDish;}catch(e){}}
+    if(E.ta)E.ta.value='';
+    if(E.err)E.err.textContent='';
+    E.box.removeAttribute('hidden');
+    try{E.sel.focus();}catch(e){}
+  }
+  (function(){
+    var btn=document.getElementById('pnPropBtn');
+    if(btn)btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var b=document.getElementById('pnPropBox');
+      if(b&&!b.hasAttribute('hidden')){_closeProp();return;}
+      _openProp('','');
+    });
+    var box=document.getElementById('pnPropBox');
+    if(!box)return;
+    box.addEventListener('click',function(e){
+      var t=e.target&&e.target.closest?e.target.closest('[data-pnpcancel],[data-pnpsave]'):null;
+      if(!t)return;
+      e.preventDefault();e.stopPropagation();
+      if(t.hasAttribute('data-pnpcancel')){_closeProp();return;}
+      var E=_propEls();
+      var did=E.sel?E.sel.value:'';
+      var wid=(cur&&cur._wid)?cur._wid:'';
+      if(!did){if(E.err)E.err.textContent='Choose a dish first.';return;}
+      if(!wid){if(E.err)E.err.textContent='This wine has no record id, so it cannot carry a proposal yet.';return;}
+      var r=window.__pairPropose(wid,did,E.ta?E.ta.value:'',_propFor);
+      if(!r||r.ok===false){
+        var m={why:'Say why this pairing works — the app will not write that sentence for you.',
+               exists:'That pairing already exists on this wine. Open its row to certify, reject or rewrite it.',
+               dup:'Somebody already proposed that pairing on this wine.',
+               unsigned:'Pick who you are before proposing a pairing.',
+               ids:'That dish could not be resolved to an id.'};
+        if(E.err)E.err.textContent=m[(r&&r.error)||'']||'That proposal could not be saved.';
+        return;
+      }
+      _closeProp();
+      _refresh();
+      render(curCat);
+      try{if(window.__rerender)window.__rerender();}catch(_e){}
+    });
+  })();
   function _sheetNote(w){
     if(!w)return '';
-    var n=0,c=0;
+    var n=0,c=0,p=0;
     /* the same availability filter render() applies, so the sentence counts the
        rows that are actually on screen and not the ones the feed dropped. */
     function _shown(x){
@@ -6405,11 +6818,16 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     }
     function scan(l){(l||[]).forEach(function(x){
       if(!_shown(x))return;
-      var v=_pvd(x&&x._eid);if(v.rejected)return;n++;if(v.certified)c++;});}
+      var v=_pvd(x&&x._eid);if(v.rejected)return;n++;if(v.certified)c++;else if(x&&x._prop)p++;});}
     scan(w.top);scan(w.more);
-    if(!c)return '';
-    if(c===n)return '\u2713 <b>Every pairing here is sommelier-certified.</b> Always confirm allergens on the dish card.';
-    return '\u2713 <b>'+c+' of '+n+' pairings here are sommelier-certified</b> and marked below. The rest are authored from the appellation and style of this wine \u2014 not sommelier-verified. Do not quote those to guests as verified.';
+    /* (p62) PROHIBITION: the header may not describe a person's sentence as
+       authored from appellation and style.  PAIRED INVARIANT: with p===0 every
+       branch below is the p61 string, character for character. */
+    var ps=p?'<div class="pn-propnote">✎ '+p+' of them '+(p>1?'were':'was')+' proposed by a person and '+(p>1?'are':'is')+' not yet certified.</div>':'';
+    if(!c&&!p)return '';
+    if(!c)return (_baseNote||'')+ps;
+    if(c===n)return '\u2713 <b>Every pairing here is sommelier-certified.</b> Always confirm allergens on the dish card.'+ps;
+    return '\u2713 <b>'+c+' of '+n+' pairings here are sommelier-certified</b> and marked below. The rest are authored from the appellation and style of this wine'+(p?', except the ones marked as proposed,':'')+' \u2014 not sommelier-verified. Do not quote those to guests as verified.'+ps;
   }
   (function(){
     var b=document.getElementById('pnRev');
@@ -6418,12 +6836,27 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     if(!body)return;
     body.addEventListener('click',function(e){
       var t=e.target&&e.target.closest?e.target.closest(
-        '[data-pncert],[data-pnrejopen],[data-pnrjcancel],[data-pnrjsave],[data-pnundo],[data-pnuncert]'):null;
+        '[data-pncert],[data-pnrejopen],[data-pnrjcancel],[data-pnrjsave],[data-pnundo],[data-pnuncert],'
+        +'[data-pnwhyopen],[data-pnwycancel],[data-pnwysave],[data-pnwyreset],[data-pnpropfor]'):null;
       if(!t)return;
       e.preventDefault();e.stopPropagation();
       var box=t.closest('.pn-vact');if(!box)return;
       var eid=box.getAttribute('data-eid')||'';
       var rj=box.querySelector('.pn-rjbox'),ta=box.querySelector('.pn-rjta');
+      var wy=box.querySelector('.pn-wybox'),wt=box.querySelector('.pn-wyta');
+      var _bk=box.getAttribute('data-baked')||'';
+      if(t.hasAttribute('data-pnwhyopen')){
+        if(wy){wy.removeAttribute('hidden');try{wt&&wt.focus();}catch(_e){}}
+        return;                                  /* no render: nothing was written */
+      }
+      if(t.hasAttribute('data-pnwycancel')){
+        if(wy)wy.setAttribute('hidden','');
+        return;                                  /* no render: nothing was written */
+      }
+      if(t.hasAttribute('data-pnpropfor')){
+        _openProp(eid,box.getAttribute('data-pdish')||'');
+        return;                                  /* no render: nothing was written */
+      }
       if(t.hasAttribute('data-pnrejopen')){
         if(rj){rj.removeAttribute('hidden');try{ta&&ta.focus();}catch(_e){}}
         return;                                  /* no render: nothing was written */
@@ -6437,12 +6870,20 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       else if(t.hasAttribute('data-pnuncert')) r=window.__pairUncertify(eid);
       else if(t.hasAttribute('data-pnundo'))   r=window.__pairUnreject(eid);
       else if(t.hasAttribute('data-pnrjsave')) r=window.__pairReject(eid,ta?ta.value:'');
+      else if(t.hasAttribute('data-pnwysave')) r=window.__pairSetWhy(eid,wt?wt.value:'',_bk);
+      else if(t.hasAttribute('data-pnwyreset'))r=window.__pairResetWhy(eid,_bk);
       if(r&&r.ok===false&&r.error==='reason'){
         try{window.__toast&&window.__toast('Say why before rejecting this pairing');}catch(_e){}
         try{ta&&ta.focus();}catch(_e){}
         return;                                  /* the reason is mandatory */
       }
+      if(r&&r.ok===false&&r.error==='why'){
+        try{window.__toast&&window.__toast('Type the reason before saving — the app will not write it for you');}catch(_e){}
+        try{wt&&wt.focus();}catch(_e){}
+        return;                                  /* the app never authors a why */
+      }
       if(!r||r.ok===false)return;                /* refused: leave the row alone */
+      _refresh();                                /* cur is a snapshot: re-read it */
       render(curCat);
       try{if(window.__rerender)window.__rerender();}catch(_e){}
     });
