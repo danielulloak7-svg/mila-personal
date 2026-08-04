@@ -3465,7 +3465,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^data:image\/(png|jp
       var top=_pnAvail(w.top).map(function(it){
         var a=it.k?(' data-dish="'+it.k+'"'):'';
         var m=(it.k&&window.__dishByKey&&window.__av86&&window.__av86(window.__dishByKey(it.k)))?' <span class="av86-inline">86</span>':'';
-        return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+it.name+m+'</div><div class="pn-why">'+it.why+'</div></div><span class="pn-badge top">✦ TOP</span></div>';
+        return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+m+'</div><div class="pn-why">'+window.__esc(it.why)+'</div></div><span class="pn-badge top">✦ TOP</span></div>';
       }).join('');
       var more=_pnAvail(w.more).length;
       return '<div class="milabox"><div class="mptitle">✦ MILA Pairings '+(w.ai?'<span class="sp-unverified">NOT VERIFIED</span>':'<span class="pn-verified">VERIFIED</span>')+'</div><div class="pn-sub">'+(w.sub||'')+'</div>'+(w.ai?'<div class="pn-ainote">✦ Pairings authored from the appellation and style of this wine — <b>not</b> sommelier-verified. Do not quote to guests as verified.</div>':'')
@@ -4819,8 +4819,8 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
     var price=(s.oz?s.oz+'/oz':'')+(s.btl?(s.oz?' ':'')+'<span class="btl">'+(s.oz?'· ':'')+s.btl+'/btl</span>':'');
     var tags='<div class="sh-tags"><span class="sh-tag">'+s.catLabel+'</span></div>';
     var box=(s.origin||s.serve)?'<div class="sh-box">'+(s.origin?'<div><div class="k">Origin</div><div class="vv">'+s.origin+'</div></div>':'')+(s.serve?'<div><div class="k">Serve</div><div class="vv">'+s.serve+'</div></div>':'')+'</div>':'';
-    var notes=(s.aroma||s.palate||s.finish)?'<div class="sh-sec">Tasting notes</div>'+(s.aroma?'<div class="sh-note"><b>Aroma</b>'+s.aroma+'</div>':'')+(s.palate?'<div class="sh-note"><b>Palate</b>'+s.palate+'</div>':'')+(s.finish?'<div class="sh-note"><b>Finish</b>'+s.finish+'</div>':''):'';
-    return '<div class="sh-top"><div><div class="sh-name">'+s.name+_verifBadge(s)+'</div><div class="sh-sub">'+s.dist+'</div><div class="sh-prices">'+price+'</div></div></div>'+tags+box+(s.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+s.desc+'</div>':'')+(s.production?'<div class="sh-sec">Production</div><div class="sh-p">'+s.production+'</div>':'')+notes+_verifSourceInput(s);
+    var notes=(s.aroma||s.palate||s.finish)?'<div class="sh-sec">Tasting notes</div>'+(s.aroma?'<div class="sh-note"><b>Aroma</b>'+s.aroma+'</div>':'')+(s.palate?'<div class="sh-note"><b>Palate</b>'+s.palate+'</div>':'')+(s.finish?'<div class="sh-note"><b>Finish</b>'+window.__esc(s.finish)+'</div>':''):'';
+    return '<div class="sh-top"><div><div class="sh-name">'+window.__esc(s.name)+_verifBadge(s)+'</div><div class="sh-sub">'+window.__esc(s.dist)+'</div><div class="sh-prices">'+price+'</div></div></div>'+tags+box+(s.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+window.__esc(s.desc)+'</div>':'')+(s.production?'<div class="sh-sec">Production</div><div class="sh-p">'+window.__esc(s.production)+'</div>':'')+notes+_verifSourceInput(s);
   }
   function belugaDetail(){return `
     <div class="sh-top"><div><div class="sh-name">Beluga Gold Line</div><div class="sh-sub">Russia, Mariinsk, Siberia</div>
@@ -5589,7 +5589,7 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
         _wverbtn='<button class="gp-revbtn" type="button" data-wxrev="'+_wid+'" title="Records who verified this entry, and when">Verify</button>';
       }
     }
-    return '<div class="sh-top"><div><div class="sh-name">'+r.name+(r.needsReview?'<span class="sp-needsreview"> NEEDS REVIEW</span>':'')+'</div>'+_shSubDiv+'<div class="sh-prices">'+price+'</div></div></div>'+(r.aiLayer?'<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>':'')+tags+box+(r.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+r.desc+'</div>':'')+notes+genp+_wstyle+nav+pairs+_wverbtn;
+    return '<div class="sh-top"><div><div class="sh-name">'+window.__esc(r.name)+(r.needsReview?'<span class="sp-needsreview"> NEEDS REVIEW</span>':'')+'</div>'+_shSubDiv+'<div class="sh-prices">'+price+'</div></div></div>'+(r.aiLayer?'<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>':'')+tags+box+(r.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+window.__esc(r.desc)+'</div>':'')+notes+genp+_wstyle+nav+pairs+_wverbtn;
   }
   /* (p35) sheet-refresh: repaint the OPEN wine sheet in place after a
      verify toggle, exactly like p33's __zGlossRefreshSheet.  __toggleContentVerify
@@ -5927,7 +5927,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   dim.addEventListener('click',close);
   document.getElementById('pnClose').addEventListener('click',close);
   function badge(t){if(t==='top')return '<span class="pn-badge top">✦ TOP</span>';if(t==='exc')return '<span class="pn-badge exc">EXCELLENT</span>';if(t==='catalog')return '<span class="pn-badge top">✦ CATALOG</span>';if(t==='style')return '<span class="pn-badge good">STYLE</span>';return '<span class="pn-badge good">GOOD</span>';}
-  function item(it,t){var a=it.k?(' data-dish="'+it.k+'"'):'';var _86=(it.k&&window.__dishByKey&&window.__av86&&window.__av86(window.__dishByKey(it.k)))?' <span class="av86-inline">86</span>':'';return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+it.name+_86+'</div>'+(it.why?'<div class="pn-why">'+it.why+'</div>':'')+'</div>'+badge(t||it.tier)+'</div>';}
+  function item(it,t){var a=it.k?(' data-dish="'+it.k+'"'):'';var _86=(it.k&&window.__dishByKey&&window.__av86&&window.__av86(window.__dishByKey(it.k)))?' <span class="av86-inline">86</span>':'';return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+_86+'</div>'+(it.why?'<div class="pn-why">'+window.__esc(it.why)+'</div>':'')+'</div>'+badge(t||it.tier)+'</div>';}
   function secHead(t,n){return '<div class="pn-sec">'+t+(n?' <span class="cnt">· '+n+'</span>':'')+'</div>';}
   function render(cat){
     var w=cur;if(!w)return;
