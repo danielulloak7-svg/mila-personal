@@ -11128,3 +11128,55 @@ function p69Idle(){
 window.__p69WarmState=function(){return {warmed:p69Warmed,finished:p69Finished,done:p69Done,total:p69Total,cancelled:p69Cancelled,urls:p69Urls()};};
 })();
 </script>
+
+<script>/* p72-sw-register */
+(function(){
+  if(!('serviceWorker' in navigator))return;            /* no worker: app unchanged */
+  if(location.protocol!=='https:'&&location.hostname!=='localhost')return;
+  var reg=null;
+  function boot(){
+    try{
+      navigator.serviceWorker.register('sw.js').then(function(r){
+        reg=r;
+        /* deferred: never compete with first paint */
+        var kick=function(){
+          try{
+            var c=navigator.serviceWorker.controller;
+            if(c)c.postMessage({type:'precache'});
+            else navigator.serviceWorker.ready.then(function(rr){
+              if(rr.active)rr.active.postMessage({type:'precache'});
+            });
+          }catch(e){}
+        };
+        if(window.requestIdleCallback)requestIdleCallback(kick,{timeout:8000});
+        else setTimeout(kick,4000);
+      }).catch(function(){});
+    }catch(e){}
+  }
+  if(document.readyState==='complete')setTimeout(boot,1200);
+  else window.addEventListener('load',function(){setTimeout(boot,1200);});
+
+  /* escape hatch -- reachable from the console with no tooling */
+  window.__swNuke=function(){
+    return Promise.all([
+      navigator.serviceWorker.getRegistrations().then(function(rs){
+        return Promise.all(rs.map(function(r){return r.unregister();}));
+      }),
+      (window.caches?caches.keys().then(function(ks){
+        return Promise.all(ks.map(function(k){return caches.delete(k);}));
+      }):Promise.resolve())
+    ]).then(function(){return 'service worker removed, caches cleared -- reload';});
+  };
+  window.__swState=function(){
+    return new Promise(function(res){
+      var c=navigator.serviceWorker.controller;
+      if(!c){res({controller:false});return;}
+      var ch=function(e){if(e.data&&e.data.type==='stat'){
+        navigator.serviceWorker.removeEventListener('message',ch);res(e.data);}};
+      navigator.serviceWorker.addEventListener('message',ch);
+      c.postMessage({type:'stat'});
+      setTimeout(function(){res({controller:true,timeout:true});},3000);
+    });
+  };
+})();
+</script>
