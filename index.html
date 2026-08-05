@@ -10247,6 +10247,16 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
 .zm-none{font-size:13.5px;color:#6B6459;padding:8px 0 14px}
 .zm-drop{font-size:12.5px;color:#8A322B;margin:4px 0 0}
 </style>
+<style>/* p71-secbar-composite */
+/* #view-weekly is the only long view without a .fbox, so canCollapse()
+   never fires for it and its sticky .secbar would otherwise keep a live
+   backdrop-filter over the tallest static subtree in the app. Opaque
+   background, no filter: same bar, no continuous backdrop re-sampling.
+   Value reused verbatim from the shipped prefers-reduced-transparency
+   fallback -- this is not a new colour decision. */
+#view-weekly .secbar{background:rgba(243,240,233,.96);backdrop-filter:none;-webkit-backdrop-filter:none;}
+</style>
+
 <div class="zm-dim" id="zmDim"></div>
 <div class="zm-sheet" id="zmSheet" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="zm-head"><div class="zm-ttl" id="zmTtl">Merge changes</div>
