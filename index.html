@@ -2390,6 +2390,9 @@
       <button class="gp-edsave" type="button" data-gxedsave>Save</button>
     </div>
   </div>
+  <div class="gp-ednote" id="gpProvLine" style="display:none"></div>
+  <button class="gp-editbtn" type="button" id="gpHistBtn" data-gxhist style="display:none" aria-expanded="false">History</button>
+  <div class="gp-edit" id="gpHistBox" hidden></div>
 </div>
 
 <!-- ============ FAB + ASK ============ -->
@@ -3731,13 +3734,30 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       if(!r.trim())return {ok:false,error:'reason'};
       var v=window.__pairVerdict(eid);
       if(v.certified){try{if(window.__toggleContentVerify)window.__toggleContentVerify(eid);}catch(e){}}
+      /* (p74) PROHIBITION: no code path may shorten, reorder, truncate or
+         de-duplicate prior[].  PAIRED INVARIANT: an item that ALREADY carries
+         a pairRejection record has that OUTGOING record pushed onto prior[] -
+         append-only, oldest-first - before the new one replaces it.  First-
+         ever rejection on an item: _priorRej stays [], so `prior` is always
+         present and empty rather than sometimes-absent - a fixed shape, never
+         a conditional one. */
+      var _priorRej=[];
+      try{
+        var _ov74=window.getOverlay?window.getOverlay():null;
+        var _it74=(_ov74&&_ov74.items)?_ov74.items[eid]:null;
+        var _out74=_it74&&_it74.pairRejection;
+        if(_out74&&typeof _out74.reason==='string'){
+          _priorRej=(_out74.prior&&_out74.prior.length)?_out74.prior.slice():[];
+          _priorRej.push({by:_out74.by||'',at:_out74.at||'',reason:_out74.reason||''});
+        }
+      }catch(e){}
       try{
         if(!window.setItemOverride)return {ok:false,error:'no write path'};
         window.setItemOverride(eid,{
           pairVerdict:'rejected',
           pairRejection:{by:who,at:_now(),reason:r,
             priorVerifiedBy:(v.by||''),priorVerifiedAt:(v.at||''),
-            appBuild:(window.__buildId||'')}
+            appBuild:(window.__buildId||''),prior:_priorRej}
         });
       }catch(e){return {ok:false,error:'write'};}
       _toast('Rejected \u00b7 the reason is on the record');
@@ -3816,13 +3836,34 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       if(!p||typeof p.why!=='string')return null;
       return {by:p.by||'',at:p.at||'',why:p.why,replaces:p.replaces||''};
     };
+    /* (p75) THE SHARED CHRONOLOGY HELPER - installed ONCE, reused by
+       __pairWhyRec below (A) and by __provTrail's new `rewrites` field
+       (C).  Stable ascending sort by entry[key]; an entry with a
+       missing/empty date keeps its existing relative position at the
+       FRONT (a blank date means it predates the field being stamped -
+       it IS the oldest).  Pure permutation: never invents, merges,
+       drops or rewrites an entry.  Tie-broken by original index, not
+       left to engine sort-stability assumptions. */
+    window.__p75Chrono=function(arr,key){
+      var a=(arr&&arr.length)?arr:[];
+      var idx=a.map(function(x,i){return {x:x,i:i};});
+      var nodate=idx.filter(function(o){return !(o.x&&o.x[key]);});
+      var dated=idx.filter(function(o){return !!(o.x&&o.x[key]);});
+      dated.sort(function(p,q){
+        var dp=p.x[key],dq=q.x[key];
+        if(dp<dq)return -1;
+        if(dp>dq)return 1;
+        return p.i-q.i;
+      });
+      return nodate.map(function(o){return o.x;}).concat(dated.map(function(o){return o.x;}));
+    };
     window.__pairWhyRec=function(eid){
       if(!eid)return null;
       var it=_item(eid),w=it&&it.pairWhy;
       if(!w||typeof w.text!=='string')return null;
       return {text:w.text,by:w.by||'',at:w.at||'',
         baked:(typeof w.baked==='string'?w.baked:''),
-        prior:(w.prior&&w.prior.length?w.prior:[])};
+        prior:window.__p75Chrono(w.prior,'at')};
     };
     window.__pairWhyOrig=function(eid){var w=window.__pairWhyRec(eid);return w?w.baked:'';};
 
@@ -3921,8 +3962,14 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       var base=(prev&&typeof prev.baked==='string')?prev.baked:String(baked==null?'':baked);
       var cur=prev?prev.text:base;
       if(cur===t)return {ok:true,already:true};
-      var hist=(prev&&prev.prior)?prev.prior.slice(0,24):[];
-      hist.unshift({text:cur,by:(prev?prev.by:''),at:(prev?prev.at:'')});
+      /* (p75) UNCAPPED, CHRONOLOGICAL: the WHOLE prior[] array,
+         normalized ascending by `at`, then the just-superseded entry
+         pushed onto the END - oldest-first, matching pairRejection.
+         prior[] and verificationWithdrawn.prior[] (p74), which were
+         already built this way.  A record written before this module
+         reads correctly on its very next read - see A2. */
+      var hist=(prev&&prev.prior)?window.__p75Chrono(prev.prior,'at'):[];
+      hist.push({text:cur,by:(prev?prev.by:''),at:(prev?prev.at:'')});
       var patch={pairWhy:{text:t,by:who,at:_now(),prior:hist,
         baked:base,appBuild:(window.__buildId||'')}};
       var v=window.__pairVerdict(eid),cleared=false;
@@ -4038,6 +4085,77 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
         });
       }catch(e){out.error=String(e&&e.message||e);}
       return out;
+    };
+  })();
+  (function(){
+    /* (p74) THE PROVENANCE TRAIL.  Read-only, shared by the pairing review
+       sheet and the glossary panel: both are plain overlay items keyed by an
+       id, and both can carry pairRejection.prior[], pairReinstated and/or
+       verificationWithdrawn.  Fixed shape, never throws, unknown id -> has:false. */
+    window.__provTrail=function(id){
+      var out={has:false,reasons:[],withdrawals:[],reinstated:null,rewrites:[]};
+      if(!id)return out;
+      try{
+        var ov=window.getOverlay?window.getOverlay():null;
+        var it=(ov&&ov.items)?ov.items[id]:null;
+        if(!it)return out;
+        var rj=it.pairRejection;
+        if(rj&&typeof rj.reason==='string'){
+          var hist=(rj.prior&&rj.prior.length)?rj.prior.slice():[];
+          out.reasons=hist.map(function(p){return {by:p.by||'',at:p.at||'',reason:p.reason||''};});
+          out.reasons.push({by:rj.by||'',at:rj.at||'',reason:rj.reason||''});
+        }
+        var wd=it.verificationWithdrawn;
+        if(wd&&typeof wd.withdrawnBy==='string'&&wd.withdrawnBy){
+          /* (p74) EVERY withdrawal, oldest-first: prior[] then the current
+             one.  A withdrawal a person actually caused is never dropped
+             from this list - the reader mirrors the writer exactly. */
+          var wh=(wd.prior&&wd.prior.length)?wd.prior.slice():[];
+          out.withdrawals=wh.map(function(p){
+            return {by:p.withdrawnBy||'',at:p.withdrawnAt||'',
+              priorBy:p.priorBy||'',priorAt:p.priorAt||'',reason:p.reason||''};});
+          out.withdrawals.push({by:wd.withdrawnBy||'',at:wd.withdrawnAt||'',
+            priorBy:wd.priorBy||'',priorAt:wd.priorAt||'',reason:wd.reason||''});
+        }
+        var pw=it.pairWhy;
+        if(pw&&typeof pw.text==='string'){
+          /* (p75) EVERY rewrite, oldest-first: prior[] (normalized
+             ascending - a pre-p75 record may still be newest-first/
+             capped) then the current text.  Mirrors the withdrawal
+             block directly above. */
+          var ph=window.__p75Chrono(pw.prior,'at');
+          out.rewrites=ph.map(function(p){return {by:p.by||'',at:p.at||'',text:p.text||''};});
+          out.rewrites.push({by:pw.by||'',at:pw.at||'',text:pw.text||''});
+        }
+        var ri=it.pairReinstated;
+        if(ri&&typeof ri.by==='string'&&ri.by){
+          out.reinstated={by:ri.by||'',at:ri.at||'',priorReason:ri.priorReason||'',priorBy:ri.priorBy||''};
+        }
+        /* the disclosure is worth showing only when there is more than the
+           single current record the row already prints on its own. */
+        out.has=(out.reasons.length>1)||(out.withdrawals.length>0)||!!out.reinstated||(out.rewrites.length>1);
+      }catch(e){}
+      return out;
+    };
+    /* the ONE always-visible line.  Plain language, names the person, names
+       the act.  Already escaped - callers may drop this straight into
+       innerHTML. */
+    window.__provLine=function(id){
+      var t=window.__provTrail(id);
+      if(!t.has)return '';
+      var E=window.__esc||function(s){return s;};
+      var parts=[];
+      if(t.reasons.length>1)parts.push('Rejected '+t.reasons.length+'x \u2014 '+t.reasons.length+' reasons on record');
+      if(t.reinstated)parts.push('Reinstated by '+E(t.reinstated.by||'someone'));
+      var nw=t.withdrawals.length;
+      if(nw===1)parts.push('Verification withdrawn by '+E(t.withdrawals[0].by||'someone'));
+      else if(nw>1)parts.push('Verification withdrawn '+nw+'x \u2014 most recently by '
+        +E(t.withdrawals[nw-1].by||'someone'));
+      /* (p75) same plain-language register as the withdrawal clause above. */
+      var nr=t.rewrites.length;
+      if(nr>1)parts.push('Reason rewritten '+nr+'x \u2014 most recently by '
+        +E(t.rewrites[nr-1].by||'someone'));
+      return parts.join(' \u00b7 ');
     };
   })();
   /* dish -> wines. VERIFIED PAIRNAV first (carries the same `why` text as the wine side),
@@ -6215,6 +6333,42 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
           nt.textContent='Verified by '+(st.by||'someone else')+'. Saving withdraws that verification.';}
       }
     })();
+    /* (p74) PROVENANCE TRAIL, glossary side.  A term is just another
+       overlay item keyed by g.id - same __provTrail/__provLine the pairing
+       sheet uses.  Data-driven show/hide uses .style.display, matching the
+       already-proven pattern this exact panel uses for .gp-editbtn and
+       .gp-revbtn (both set `display` in their own class rule, which beats
+       the `hidden` attribute's UA default regardless of specificity). */
+    (function(){
+      var pl=gpanel.querySelector('#gpProvLine'),hb=gpanel.querySelector('#gpHistBtn'),
+          hx=gpanel.querySelector('#gpHistBox');
+      if(!pl||!hb||!hx)return;
+      hx.setAttribute('hidden','');hb.setAttribute('aria-expanded','false');
+      var line='';try{line=g.id?window.__provLine(g.id):'';}catch(_e){}
+      if(!line){pl.style.display='none';pl.textContent='';hb.style.display='none';hx.innerHTML='';return;}
+      pl.style.display='block';pl.textContent=line;
+      hb.style.display='inline-flex';
+      var t74={has:false,reasons:[],withdrawals:[],reinstated:null};
+      try{t74=window.__provTrail(g.id);}catch(_e){}
+      var rows74=t74.reasons.map(function(r){
+        return '<div class="gp-ednote"><b>'+window.__esc(r.by||'someone')+'</b>'
+          +(r.at?' \u00b7 '+window.__esc(_p33Day(r.at)):'')+': '+window.__esc(r.reason)+'</div>';
+      }).join('');
+      rows74+=t74.withdrawals.map(function(w){
+        return '<div class="gp-ednote"><b>'+window.__esc(w.by||'someone')+'</b>'
+          +(w.at?' \u00b7 '+window.__esc(_p33Day(w.at)):'')+': withdrew '
+          +window.__esc(w.priorBy||'a prior signer')+'\u2019s verification'
+          +(w.reason?' \u2014 '+window.__esc(w.reason):'')+'</div>';
+      }).join('');
+      /* (p75) EVERY rewrite gets its own row, oldest-first. */
+      rows74+=t74.rewrites.map(function(r){
+        return '<div class="gp-ednote"><b>'+window.__esc(r.by||'someone')+'</b>'
+          +(r.at?' \u00b7 '+window.__esc(_p33Day(r.at)):'')+': '+window.__esc(r.text)+'</div>';
+      }).join('');
+      if(t74.reinstated)rows74+='<div class="gp-ednote"><b>'+window.__esc(t74.reinstated.by||'someone')+'</b>'
+        +(t74.reinstated.at?' \u00b7 '+window.__esc(_p33Day(t74.reinstated.at)):'')+': reinstated this record</div>';
+      hx.innerHTML=rows74;
+    })();
     gpanel.classList.add('open');gdim.classList.add('open');
   }
   function closeGloss(){gpanel.classList.remove('open');gdim.classList.remove('open');}
@@ -6701,16 +6855,59 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   /* the per-row verdict block.  Outside review mode it is a MARK only, so the
      sheet always agrees with what the service panels show; inside review mode
      it is the mark plus the controls. */
+  /* (p74) THE PROVENANCE TRAIL, rendered.  PROHIBITION: no new colour, no
+     new component - .pn-rej, .pn-rejwhy, .pn-vb.prop and .pn-rjbox are all
+     reused unchanged.  The disclosure box shares .pn-rjbox's CSS (including
+     its existing [hidden]{display:none} rule) but is found by a
+     data-attribute, never by the class, so it can never collide with the
+     REJECT reason box that also carries .pn-rjbox on the same row. */
+  function _trailLine(eid){
+    var s='';try{s=window.__provLine(eid);}catch(e){}
+    return s?'<div class="pn-rej">'+s+'</div>':'';
+  }
+  function _trailBox(eid){
+    var t={has:false,reasons:[],withdrawals:[],reinstated:null};
+    try{t=window.__provTrail(eid);}catch(e){}
+    if(!t.has)return '';
+    var E=window.__esc;
+    var n=t.reasons.length+t.withdrawals.length+(t.reinstated?1:0)+t.rewrites.length;
+    var rows=t.reasons.map(function(r){
+      return '<div class="pn-rejwhy"><b>'+E(r.by||'someone')+'</b>'
+        +(r.at?' \u00b7 '+E(_pdate(r.at)):'')+': '+E(r.reason)+'</div>';
+    }).join('');
+    /* (p74) EVERY withdrawal gets its own row, oldest-first, each with its
+       own signer and date - the visible line names only the latest, so the
+       disclosure is where the full record lives. */
+    rows+=t.withdrawals.map(function(w){
+      return '<div class="pn-rejwhy"><b>'+E(w.by||'someone')+'</b>'
+        +(w.at?' \u00b7 '+E(_pdate(w.at)):'')+': withdrew '
+        +E(w.priorBy||'a prior signer')+'\u2019s verification'
+        +(w.reason?' \u2014 '+E(w.reason):'')+'</div>';
+    }).join('');
+    /* (p75) EVERY rewrite gets its own row, oldest-first - the superseded
+       text is the whole point of the row. */
+    rows+=t.rewrites.map(function(r){
+      return '<div class="pn-rejwhy"><b>'+E(r.by||'someone')+'</b>'
+        +(r.at?' \u00b7 '+E(_pdate(r.at)):'')+': '+E(r.text)+'</div>';
+    }).join('');
+    if(t.reinstated)rows+='<div class="pn-rejwhy"><b>'+E(t.reinstated.by||'someone')+'</b>'
+      +(t.reinstated.at?' \u00b7 '+E(_pdate(t.reinstated.at)):'')+': reinstated this pairing</div>';
+    return '<button class="pn-vb prop" type="button" data-pnhist aria-expanded="false">History ('+n+')</button>'
+      +'<div class="pn-rjbox" data-pnhbox hidden>'+rows+'</div>';
+  }
   function _vrow(it){
     var eid=(it&&it._eid)?it._eid:'',v=_pvd(eid),E=window.__esc;
     /* (p62) authorship marks.  With nothing proposed and nothing rewritten
        both helpers return '', so this row is byte-identical to p61. */
     function _amk(){try{return window.__pairPropMark(eid)+window.__pairWhyMark(eid);}catch(_e){return '';}}
+    /* (p74) computed once, used by both branches below. */
+    var _tl74=_trailLine(eid),_tb74=_trailBox(eid);
+    var _tw74=_tb74?('<div class="pn-vact" data-eid="'+E(eid)+'">'+_tb74+'</div>'):'';
     if(!rev){
       if(v.rejected)return '<div class="pn-rej">\u2715 Rejected'+(v.by?' \u00b7 '+E(v.by):'')+'</div>'
-        +(v.reason?'<div class="pn-rejwhy">'+E(v.reason)+'</div>':'')+_amk();
-      if(v.certified)return '<div class="pn-cert">\u2713 Certified'+(v.by?' \u00b7 '+E(v.by):'')+'</div>'+_amk();
-      return _amk();
+        +(v.reason?'<div class="pn-rejwhy">'+E(v.reason)+'</div>':'')+_amk()+_tl74+_tw74;
+      if(v.certified)return '<div class="pn-cert">\u2713 Certified'+(v.by?' \u00b7 '+E(v.by):'')+'</div>'+_amk()+_tl74+_tw74;
+      return _amk()+_tl74+_tw74;
     }
     if(!eid)return '<div class="pn-vnote">This dish could not be resolved to an id, so it cannot carry a verdict yet.</div>';
     var head;
@@ -6745,7 +6942,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +'<textarea class="pn-rjta" rows="3" spellcheck="true"></textarea>'
       +'<div class="pn-rjact"><button class="pn-vb ghost" type="button" data-pnrjcancel>Cancel</button>'
       +'<button class="pn-vb rej" type="button" data-pnrjsave>Save rejection</button></div></div>'
-      +_wy+'</div>';
+      +_wy+_tl74+_tb74+'</div>';
   }
   /* the sheet's own header note.  Returns '' when nothing has been certified,
      so with zero verdicts the existing sentence is printed unchanged. */
@@ -6863,7 +7060,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     body.addEventListener('click',function(e){
       var t=e.target&&e.target.closest?e.target.closest(
         '[data-pncert],[data-pnrejopen],[data-pnrjcancel],[data-pnrjsave],[data-pnundo],[data-pnuncert],'
-        +'[data-pnwhyopen],[data-pnwycancel],[data-pnwysave],[data-pnwyreset],[data-pnpropfor]'):null;
+        +'[data-pnwhyopen],[data-pnwycancel],[data-pnwysave],[data-pnwyreset],[data-pnpropfor],[data-pnhist]'):null;
       if(!t)return;
       e.preventDefault();e.stopPropagation();
       var box=t.closest('.pn-vact');if(!box)return;
@@ -6881,6 +7078,17 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       }
       if(t.hasAttribute('data-pnpropfor')){
         _openProp(eid,box.getAttribute('data-pdish')||'');
+        return;                                  /* no render: nothing was written */
+      }
+      if(t.hasAttribute('data-pnhist')){
+        /* (p74) PROHIBITION: a re-render may never happen while somebody is
+           typing a rejection reason.  PAIRED INVARIANT: this toggles `hidden`
+           only - no render() call anywhere in this branch. */
+        var hb74=box.querySelector('[data-pnhbox]');
+        if(hb74){
+          if(hb74.hasAttribute('hidden')){hb74.removeAttribute('hidden');t.setAttribute('aria-expanded','true');}
+          else{hb74.setAttribute('hidden','');t.setAttribute('aria-expanded','false');}
+        }
         return;                                  /* no render: nothing was written */
       }
       if(t.hasAttribute('data-pnrejopen')){
@@ -7937,6 +8145,75 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var loc=normalize(getOverlay());
     var rep={items:0,same:0,conflicts:0,links:0,created:0,createdSame:0,people:0,hoy:false};
     var at=new Date().toISOString(), fromBuild=(inc.buildId==null?null:String(inc.buildId));
+    /* (p75) THREE APPEND-ONLY PROVENANCE RECORDS an overlay item can
+       carry: pairRejection, verificationWithdrawn, pairWhy.  Merging
+       their prior[] arrays is a pure SET UNION - no judgement needed,
+       unlike deciding which CURRENT tip is live, which stays a human
+       decision inside mergeMap below, unchanged from before this
+       module. */
+    var _P75K={
+      pairRejection:{arr:'prior',date:'at',
+        id:function(e){return JSON.stringify([e.by||'',e.at||'',e.reason||'']);},
+        tip:function(r){return {by:r.by||'',at:r.at||'',reason:r.reason||''};}},
+      verificationWithdrawn:{arr:'prior',date:'withdrawnAt',
+        id:function(e){return JSON.stringify([e.withdrawnBy||'',e.withdrawnAt||'',e.priorBy||'',e.priorAt||'',e.reason||'']);},
+        tip:function(r){return {withdrawnBy:r.withdrawnBy||'',withdrawnAt:r.withdrawnAt||'',
+          priorBy:r.priorBy||'',priorAt:r.priorAt||'',reason:r.reason||''};}},
+      pairWhy:{arr:'prior',date:'at',
+        id:function(e){return JSON.stringify([e.by||'',e.at||'',e.text||'']);},
+        tip:function(r){return {text:r.text||'',by:r.by||'',at:r.at||''};}}
+    };
+    function _p75DedupChrono(entries,spec){
+      var seen={},out=[];
+      entries.forEach(function(e){
+        var k=spec.id(e);
+        if(Object.prototype.hasOwnProperty.call(seen,k))return;
+        seen[k]=true;out.push(e);
+      });
+      return window.__p75Chrono(out,spec.date);
+    }
+    /* PROHIBITION: an import must never decide which version is
+       current.  PAIRED INVARIANT: only the `prior` array is ever
+       replaced below - the CURRENT tip fields of the LOCAL record (`la`)
+       are copied through verbatim and never overwritten by anything
+       incoming.  A record present on only ONE side is left untouched -
+       see the module docstring's named judgement call. */
+    function _p75MergeItem(aItem,bItem){
+      var merged={},k;
+      for(k in aItem)if(Object.prototype.hasOwnProperty.call(aItem,k))merged[k]=aItem[k];
+      Object.keys(_P75K).forEach(function(key){
+        var spec=_P75K[key],la=aItem&&aItem[key],lb=bItem&&bItem[key];
+        if(!la||!lb)return;
+        var localPrior=(la[spec.arr]&&la[spec.arr].length)?la[spec.arr].slice():[];
+        var incPrior=(lb[spec.arr]&&lb[spec.arr].length)?lb[spec.arr].slice():[];
+        /* (p75.1) the incoming TIP normally becomes a history row, because
+           locally it is no longer current.  PROHIBITION: never append a row
+           that merely restates the row already shown live.  PAIRED
+           INVARIANT: the skip fires ONLY on a full identity match of the
+           record's whole identity tuple (spec.id) - any difference in
+           signer, timestamp or text and the entry is kept. */
+        var union=localPrior.concat(incPrior);
+        var _incTip=spec.tip(lb);
+        if(spec.id(_incTip)!==spec.id(spec.tip(la)))union=union.concat([_incTip]);
+        var mergedArr=_p75DedupChrono(union,spec);
+        var nr={},kk;for(kk in la)if(Object.prototype.hasOwnProperty.call(la,kk))nr[kk]=la[kk];
+        nr[spec.arr]=mergedArr;
+        merged[key]=nr;
+      });
+      return merged;
+    }
+    /* current-state-only view (three prior[] arrays blanked), so two
+       items that differ ONLY in history compare equal. */
+    function _p75Strip(item){
+      var out={},k;for(k in item)if(Object.prototype.hasOwnProperty.call(item,k))out[k]=item[k];
+      Object.keys(_P75K).forEach(function(key){
+        if(!out[key])return;
+        var r={},kk;for(kk in out[key])if(Object.prototype.hasOwnProperty.call(out[key],kk))r[kk]=out[key][kk];
+        r[_P75K[key].arr]=[];
+        out[key]=r;
+      });
+      return out;
+    }
     function mergeMap(dim){
       var a=loc[dim]||{}, b=inc[dim]||{};
       Object.keys(b).forEach(function(id){
@@ -7946,6 +8223,14 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
           if(dim==='items')rep.items++;else rep.created++;return;
         }
         if(zEq(a[id],b[id])){if(dim==='items')rep.same++;else rep.createdSame++;return;}
+        /* (p75) merge the append-only history BEFORE deciding whether
+           this is still a conflict - see the module docstring, Part B. */
+        a[id]=_p75MergeItem(a[id],b[id]);
+        if(zEq(_p75Strip(a[id]),_p75Strip(b[id]))){
+          /* history was the ONLY thing that differed - not a conflict,
+             and the merged (history-enriched) record is already live. */
+          if(dim==='items')rep.same++;else rep.createdSame++;return;
+        }
         loc._conflicts=isPlainObj(loc._conflicts)?loc._conflicts:{};
         loc._conflicts[dim+':'+id]={dim:dim,id:id,local:a[id],incoming:b[id],at:at,buildId:fromBuild};
         rep.conflicts++;                     /* LOCAL stays live until a human decides */
@@ -7974,6 +8259,42 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   window.__importPending=function(){return !!_pendingImport;};
   function setHoy(h){var o=getOverlay();if(h===null){delete o.hoy;}else{o.hoy=h;}return saveOverlay(o);}
   window.getOverlay=getOverlay;window.setItemOverride=setItemOverride;window.clearItem=clearItem;window.clearAll=clearAll;window.exportOverlay=exportOverlay;window.importOverlay=importOverlay;
+  (function(){
+    /* (p74) WITHDRAWAL HISTORY, at the choke point.  Every writer of
+       verificationWithdrawn goes through window.setItemOverride; this
+       wrapper pushes the OUTGOING withdrawal onto the incoming record's
+       prior[] before the write lands, so a second withdrawal can no longer
+       destroy the first.  Append-only, oldest-first, push() only. */
+    var _p74base=window.setItemOverride;
+    if(typeof _p74base!=='function'||_p74base.__p74wrapped)return;
+    function _p74hist(id,nw){
+      /* the STORE is the sole source of history - an incoming patch never
+         supplies prior[], so there is no path by which a caller could hand
+         us a shorter list and shorten the record. */
+      var hist=[];
+      try{
+        var ov=window.getOverlay?window.getOverlay():null;
+        var it=(ov&&ov.items)?ov.items[id]:null;
+        var out=it&&it.verificationWithdrawn;
+        if(out&&typeof out.withdrawnBy==='string'&&out.withdrawnBy){
+          if(out.prior&&out.prior.length)hist=out.prior.slice();
+          hist.push({withdrawnBy:out.withdrawnBy||'',withdrawnAt:out.withdrawnAt||'',
+            priorBy:out.priorBy||'',priorAt:out.priorAt||'',reason:
+            (typeof out.reason==='string'?out.reason:'')});
+        }
+      }catch(e){}
+      nw.prior=hist;
+    }
+    var _p74wrap=function(id,patch){
+      try{
+        var nw=patch&&patch.verificationWithdrawn;
+        if(nw&&typeof nw==='object'&&typeof nw.withdrawnBy==='string'&&nw.withdrawnBy)_p74hist(id,nw);
+      }catch(e){}
+      return _p74base.apply(this,arguments);
+    };
+    _p74wrap.__p74wrapped=true;
+    window.setItemOverride=_p74wrap;
+  })();
   /* boot: load overlay from IndexedDB (migrating an old localStorage overlay once), then re-render */
   function bootStore(done){
     function finish(){if(_pendingPersist&&_idbReady){_pendingPersist=false;persist();}
@@ -10044,7 +10365,27 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var o=window.getOverlay?window.getOverlay():null;
     var cur=(o&&o.items&&o.items[id])||{};
     if(cur.contentVerified){
-      window.setItemOverride&&window.setItemOverride(id,{contentVerified:false});
+      /* (p74) PROHIBITION: an unsigned session may not withdraw a
+         verification silently.  PAIRED INVARIANT: with nobody signed in, the
+         same refusal the certify branch below already uses fires here too,
+         and NOTHING is written.  MEASURED against the p73 build: this branch
+         previously wrote {contentVerified:false} unconditionally, with no
+         signer check at all - that gap is what this block closes. */
+      var _who74=window.__zActive?window.__zActive():'';
+      if(!_who74){
+        try{if(window.__zOpenPerson)window.__zOpenPerson();}catch(e){}
+        try{if(window.__toast)window.__toast('Pick who you are to withdraw a verification');}catch(e){}
+        return;
+      }
+      /* PROHIBITION: never remove or rewrite contentVerification.verifiedBy.
+         PAIRED INVARIANT: the ghost is resolved by the ADDITION of
+         verificationWithdrawn - contentVerification itself is not read for
+         any purpose but priorBy/priorAt below, and is not part of this
+         patch, so the prior signer's record stands untouched. */
+      var _priorCV74=cur.contentVerification||{};
+      window.setItemOverride&&window.setItemOverride(id,{contentVerified:false,
+        verificationWithdrawn:{withdrawnBy:_who74,withdrawnAt:_p12Now(),
+          priorBy:(_priorCV74.verifiedBy||''),priorAt:(_priorCV74.verifiedAt||''),reason:''}});
     }else{
       var who=window.__zActive?window.__zActive():'';
       if(!who){
@@ -10186,6 +10527,21 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     try{window.__toast&&window.__toast(st.verified&&st.by&&st.by!==who
       ? 'Saved. '+st.by+"'s verification withdrawn" : 'Saved');}catch(_e){}
     _repaint();
+  },true);
+})();
+</script>
+<script>
+/* (p74) the glossary History disclosure toggle - hidden attribute only,
+   no render, no write. */
+(function(){
+  document.addEventListener('click',function(e){
+    var t=e.target&&e.target.closest?e.target.closest('[data-gxhist]'):null;
+    if(!t)return;
+    var gp=document.getElementById('gpanel');if(!gp||!gp.contains(t))return;
+    e.preventDefault();e.stopPropagation();
+    var hx=document.getElementById('gpHistBox');if(!hx)return;
+    if(hx.hasAttribute('hidden')){hx.removeAttribute('hidden');t.setAttribute('aria-expanded','true');}
+    else{hx.setAttribute('hidden','');t.setAttribute('aria-expanded','false');}
   },true);
 })();
 </script>
