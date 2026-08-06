@@ -433,7 +433,20 @@
     margin-left:auto}
   .zp-chip:active{transform:scale(.96);background:rgba(42,36,28,.06)}
   .secbar .p5-secadd + .zp-chip{margin-left:8px}
-  #topbar .zp-chip{margin-left:auto;margin-right:8px;color:var(--gold);border-color:rgba(203,182,143,.5)}
+  /* (p76) #topbar is pointer-events:none (B1) - the chip must reclaim
+     it for itself, or the identity control would stop responding to
+     taps entirely.  Its own painted box is 59.2x28 (MEASURED), short
+     of the 44x44 minimum tap target (acceptance bar 3) - a
+     transparent ::before CENTRED on the chip extends the hit area to
+     44px tall.  VARIANT B (Dani, 2026-08-06): the first draft
+     anchored this to bottom:0 to grow UP into the status-bar strip;
+     MEASURED, 10px of it fell OFF the viewport inside the old 34px
+     band and the real tap area was ~34px.  B1 now makes the band
+     44px and this box is centred on the chip, spanning exactly the
+     band (y 0-44): nothing off-screen, nothing bleeding into the
+     scrollable content below. */
+  #topbar .zp-chip{margin-left:auto;margin-right:8px;color:var(--gold);border-color:rgba(203,182,143,.5);pointer-events:auto;position:relative}
+  #topbar .zp-chip::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100%,44px);height:44px}
   .zp-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.75;flex:0 0 auto}
   .view.collapsed .zp-chip{display:none}
 
@@ -498,8 +511,28 @@
   .view{min-height:100dvh;position:relative}
 
   /* ---- home top bar ---- */
-  .topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:460px;z-index:30;padding:calc(var(--safeT) + 6px) 24px 0;transition:background .35s,box-shadow .35s}
-  .topbar.scrolled{background:rgba(28,24,20,.92);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.05);padding-bottom:9px}
+  /* (p76) OPAQUE at every scroll position, not just when `.scrolled`
+     fires (acceptance bar 1) - see the module docstring: the
+     `.scrolled` listener is bound to window.scrollY, which never
+     changes in this layout, so relying on `.scrolled` for opacity
+     left the band permanently transparent.  pointer-events:none so
+     the band's empty span passes taps through to the content beneath
+     it (acceptance bar 3); `#topbar .zp-chip` reclaims pointer-events
+     below (B4) since it is the one control the band does own.
+     VARIANT B (Dani's click, 2026-08-06): band grown from
+     6+28+0 = 34px to 8+28+8 = 44px so B4's tap extension fits
+     entirely on-screen.  MEASURED at 34px: 6 contiguous tappable
+     rows (y 0-28); at 44px: 8 rows (y 0-40).  The band exists ONLY
+     on home - exactly one #topbar in the document, first child of
+     view-home, 0x0 under a display:none ancestor on the other seven
+     views (LEDGER-3 CORRECTION 1) - where it sits on the #241F19
+     hero and is visually indistinguishable from it.  Captures
+     A-home-0.png / B-home-0.png confirm: no aesthetic cost. */
+  .topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:460px;z-index:30;padding:calc(var(--safeT) + 8px) 24px 8px;transition:background .35s,box-shadow .35s;background:var(--charcoal-soft);pointer-events:none}
+  /* (p76) same opaque token as base .topbar - `.scrolled` has higher
+     specificity than bare `.topbar`, so if the window.scrollY bug is
+     ever fixed elsewhere this must not reintroduce translucency. */
+  .topbar.scrolled{background:var(--charcoal-soft);box-shadow:0 1px 0 rgba(255,255,255,.05);padding-bottom:9px}
   .condensed{display:flex;align-items:center;justify-content:center;height:0;opacity:0;overflow:hidden;transition:opacity .3s,height .3s}
   .topbar.scrolled .condensed{height:26px;opacity:1}
   .condensed .mk{display:block;width:92px;height:20px;background:var(--logo) center/contain no-repeat}
@@ -1203,7 +1236,10 @@
 
   /* ---------- CLASS D — intermediate glass ---------- */
   /* chrome glass (confident) */
-  .topbar.scrolled{background:var(--glass-dark);backdrop-filter:blur(var(--blur-strong)) saturate(1.4);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(1.4);box-shadow:0 1px 0 var(--glass-dark-hi) inset,0 8px 30px -18px rgba(0,0,0,.7);border-bottom:1px solid var(--glass-dark-stroke)}
+  /* (p76) later cascade override of .topbar.scrolled (higher source
+     order, same specificity as B2) - kept consistent with B2's opaque
+     token so whichever one "wins" the visual result is identical. */
+  .topbar.scrolled{background:var(--charcoal-soft);box-shadow:0 1px 0 var(--glass-dark-hi) inset,0 8px 30px -18px rgba(0,0,0,.7);border-bottom:1px solid var(--glass-dark-stroke)}
   .secbar{background:var(--glass-lite);backdrop-filter:blur(var(--blur-strong)) saturate(1.3);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(1.3);border-bottom:1px solid var(--glass-lite-stroke);box-shadow:0 1px 0 rgba(255,255,255,.5) inset}
   .searchbar{background:var(--glass-lite);border:1px solid var(--glass-lite-stroke);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur))}
   .ff-sheet{background:var(--glass-lite);backdrop-filter:blur(var(--blur-strong)) saturate(1.3);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(1.3);border-top:1px solid var(--glass-lite-stroke);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 -12px 40px rgba(0,0,0,.3)}
@@ -1218,15 +1254,27 @@
      the cream body below stays warm and readable — disciplined glass, as agreed. */
 
   /* floating glass tab bar (the signature; home only via JS body class is optional — shown app-wide) */
-  .tabbar{position:fixed;left:0;right:0;margin:0 auto;width:fit-content;transform-origin:50% 100%;bottom:calc(var(--safeB) + 14px);z-index:45;display:flex;gap:2px;padding:6px;border-radius:100px;background:var(--glass-dark);border:1px solid var(--glass-dark-stroke);backdrop-filter:blur(var(--blur-strong)) saturate(1.4);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(1.4);box-shadow:0 1px 0 var(--glass-dark-hi) inset,0 18px 44px -18px rgba(0,0,0,.8)}
+  /* (p76) OPAQUE, no backdrop-filter dependency (acceptance bar 1).
+     var(--charcoal-soft) is this build's own pre-existing
+     prefers-reduced-transparency fallback (#241F19) for this exact
+     rule, promoted from conditional to unconditional - not a new
+     colour. */
+  .tabbar{position:fixed;left:0;right:0;margin:0 auto;width:fit-content;transform-origin:50% 100%;bottom:calc(var(--safeB) + 14px);z-index:45;display:flex;gap:2px;padding:6px;border-radius:100px;background:var(--charcoal-soft);border:1px solid var(--glass-dark-stroke);box-shadow:0 1px 0 var(--glass-dark-hi) inset,0 18px 44px -18px rgba(0,0,0,.8)}
   .tabbar button{appearance:none;border:none;background:transparent;color:rgba(243,240,233,.62);font-family:inherit;font-size:9.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 13px;border-radius:100px;cursor:pointer;transition:background .2s,color .2s,font-size .3s cubic-bezier(.32,.72,.28,1),gap .3s cubic-bezier(.32,.72,.28,1),padding .3s cubic-bezier(.32,.72,.28,1)}
   .tabbar button.on{background:rgba(203,182,143,.16);color:var(--cream)}
   .tabbar button svg{width:19px;height:19px}
   /* Ask = flagship action inside the bar: gold filled, slightly elevated{background:linear-gradient(145deg,var(--gold),var(--gold-deep));color:var(--cream);margin-left:4px;padding:8px 16px;box-shadow:0 1px 0 rgba(255,255,255,.22) inset,0 6px 16px -6px rgba(143,111,69,.8)}
   /* Instagram-style compaction: scroll down -> compact, scroll up -> expand */
   .tabbar{transition:padding .3s cubic-bezier(.32,.72,.28,1),transform .3s cubic-bezier(.32,.72,.28,1)}
-  .tabbar.mini{padding:4px;transform:translateY(9px) scale(.88)}
-  .tabbar.mini button{font-size:0;gap:0;padding:10px 12px}
+  /* (p76) D-A: remove the scale(.88) shrink.  `.mini` is still
+     toggled by the existing scroll JS (untouched) - it now resolves
+     to the SAME padding/transform as rest, so the toggle is a no-op
+     visually, at every scroll position. */
+  .tabbar.mini{padding:6px;transform:none}
+  /* (p76) D-A: remove the font-size:0 label drop - matches
+     `.tabbar button`'s own rest values exactly, so labels stay
+     legible in the mini state too. */
+  .tabbar.mini button{font-size:9.5px;gap:2px;padding:7px 13px}
   /* Menu popover (dropdown from the Menu tab) */
   .menupop{position:fixed;left:50%;transform:translateX(-50%) translateY(14px);bottom:calc(var(--safeB) + 84px);z-index:46;width:min(330px,calc(100% - 32px));padding:8px;border-radius:20px;background:var(--glass-dark);border:1px solid var(--glass-dark-stroke);backdrop-filter:blur(var(--blur-strong)) saturate(1.4);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(1.4);box-shadow:0 1px 0 var(--glass-dark-hi) inset,0 26px 60px -20px rgba(0,0,0,.85);opacity:0;visibility:hidden;transition:opacity .22s,transform .22s}
   .menupop.open{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
@@ -1247,7 +1295,15 @@
 
   /* A8 reserve bottom space so content clears the single floating tab bar */
   .secwrap{padding-bottom:calc(var(--safeB) + 130px)!important}
-  .home-scroll,#view-home,.feed,.pulse{padding-bottom:calc(var(--safeB) + 130px)!important}
+  /* (p78) `.feed` REMOVED from this selector.  MEASURED: `.feed`
+     occurs exactly twice in the document (food, bev) and neither is
+     outside `.secwrap`, which carries this identical reserve one line
+     above - so `.feed` could only ever DOUBLE it.  Result before:
+     food/bev content ended at 584 while the other six views ended at
+     ~714, a ~260px hole with the nav floating over blank background.
+     The reserve VALUE is unchanged everywhere; only its double
+     application on two views stops. */
+  .home-scroll,#view-home,.pulse{padding-bottom:calc(var(--safeB) + 130px)!important}
 
   /* C6 beverage card: warm cream frame instead of cold pure white */
   #view-bev .dishhero,#view-bev .face.bottle,#view-bev .photo,#view-bev figure,#view-bev .imgwrap{background:var(--cream-card)!important}
@@ -3394,7 +3450,37 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   function chip(t,o={}){const rk=window.GXRESOLVE?window.GXRESOLVE(t):null;const isLink=!!o.link&&!!rk;const cls='chip2'+(o.gar?' gar':'')+(isLink?' link':'');const xa=isLink?` data-xlink="${window.__escA(t)}"`:'';const note=o.note?` <span class="note">(${window.__esc(o.note)})</span>`:'';return `<span class="${cls}"${xa}>${em(t)}${window.__esc(t)}${note}</span>`;}
   function chipsList(arr,o={}){return arr.map((t,i)=>chip(t,{gar:o.gar,link:!!o.link})).join("");}
   function ingProse(arr){return arr.map(t=>{const rk=window.GXRESOLVE?window.GXRESOLVE(t):null;const cls='ingx'+(rk?' link':'');const xa=rk?` data-xlink="${window.__escA(t)}"`:'';const e2=em(t);return `<span class="${cls}"${xa}>${e2?e2+' ':''}${window.__esc(t)}</span>`;}).join(', ');}
-  function alpill(d){const a=window.__esc(d.allerg.slice(0,3).join(" · "));const extra=(d.allerg.length>3||d.allergExtra)?(" +"+((d.allergExtra||0)+(d.allerg.length-3))):"";return `⚠ ${a}${extra}`;}
+  /* (p77) EVERY allergen, always - no slice, no "+N", matching the
+     un-truncated join+escape pattern wineCard/beerCard/cocktailCard
+     already use, verbatim, one call site each.
+     d.allergExtra is dead data (0 hits in either content JSON or the
+     baked FOOD/BEV arrays) and is no longer read here - see the module
+     docstring's MEASURED FACTS. PRESENTATION ONLY: d.allerg itself is
+     never read for anything but this join, never written, never
+     reordered - the array literal Dani signed off is what paints. */
+  function alpill(d){return `⚠ ${window.__esc(d.allerg.join(" · "))}`;}
+  /* (p77) DROP THE DUPLICATE CATEGORY PREFIX - foodCard's front face
+     already shows the category once via `catpill` (`d.cat`, e.g.
+     "TAPAS"); on 75 of 76 baked dish/special objects `d.sub` restates
+     the SAME category as its own leading "word · " token
+     (e.g. sub is Tapas \u00b7 Charred), printing the category twice on
+     one card face.  This strips ONLY a case-insensitive `cat + " · "`
+     leading match (or a sub that IS just the category, with nothing
+     left over) - a sub that does not start with its own category is
+     returned byte-identical (special.dry-aged-wagyu-sliders: cat
+     "SPECIAL", sub does not start with it - falls through unchanged).
+     PRESENTATION ONLY: d.sub/d.cat string literals are never edited,
+     only what this one call site paints from them. */
+  function _p77CatSub(d){
+    var s=(d&&d.sub)||'', c=(d&&d.cat)||'';
+    if(!c) return s;
+    var cl=c.toLowerCase(), sl=s.toLowerCase();
+    if(sl===cl) return '';
+    var pre=cl+' · ';
+    if(sl.indexOf(pre)===0) return s.slice(pre.length);
+    return s;
+  }
+
   window.__linkProv=function(e){
     /* (p43-A) ONE reader for a provenance stamp, whichever vocabulary wrote it.
        Links say verifiedDate, absences say date — same concept, two names.
@@ -3497,7 +3583,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
     return `<div class="dish${d.needsImage?' needsimg':''}${d._edited?' edited':''}${(window.__av86&&window.__av86(d))?' av86':''}" data-key="${dishKey(d.name)}"${d.id?(' data-id="'+d.id+'"'):''}${d.needsImage?' data-needsimage="1"':''}><div class="flip">
       ${front}
         ${catpill}
-        <div class="fgrad"><div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(d.sub)}</div>
+        <div class="fgrad"><div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(_p77CatSub(d))}</div>
           <div class="fbottom">${priceF}<span class="alpill">${alpill(d)}</span></div>
           <button class="detailsbtn" data-flip>details ↗</button></div>
       </div>
