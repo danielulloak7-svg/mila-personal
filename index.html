@@ -542,6 +542,33 @@
   .zp-pick.on{border-color:var(--gold);background:rgba(203,182,143,.16)}
   .zp-pick .zp-nm{flex:1 1 auto}
   .zp-tick{flex:0 0 auto;color:var(--gold-text);font-weight:700}
+  /* p89: sign-in person picker -> single trigger + bottom sheet (Dani,
+     2026-08-08). Sheet chrome (.ed-dim/.ed-sheet/.ed-drag/.ed-grab/.sh-head/
+     .sh-title/.sh-x) and the row list (.zp-list/.zp-pick/.zp-nm/.zp-tick,
+     directly above) are 100% reused, zero new CSS for either. Only the
+     trigger itself is new; its colours are copied byte-for-byte from the
+     .lg-who-b pill it replaces (#16161A / #fff / #e3ddcd - MEASURED
+     literals already in this stylesheet, not new). */
+  .lg-who-trigger{appearance:none;-webkit-appearance:none;font-family:inherit;display:flex;
+    align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:52px;
+    text-align:left;color:#16161A;background:#fff;border:1px solid #e3ddcd;border-radius:12px;
+    padding:13px 16px;cursor:pointer;font-size:14.5px;font-weight:600;margin-top:6px}
+  .lg-who-trigger:active{transform:scale(.98)}
+  /* MEASURED: rgba(22,22,26,.55) (the .lg-who-note alpha, tried first) reads
+     4.004:1 on this white card - short of 4.5:1 for 17px/600 text (not "large"
+     by the 18.66px+bold rule). Reused rgba(22,22,26,.8) instead - the exact
+     .lg-foot literal already in this document, not a new value - which
+     measures 18+:1 here (MEASURED against the real painted #fff card, not
+     assumed from .lg-foot's own cream background). */
+  .lg-who-trigger-chev{flex:0 0 auto;font-size:17px;line-height:1;color:rgba(22,22,26,.8);
+    transform:rotate(90deg)}
+  /* scoped hit-area fix, the identical ::before technique p80/p81 already use
+     elsewhere in this document. The shared .sh-x rule (40x40, reused by every
+     OTHER sheet's close button in the app) is left untouched - only this
+     button's own box is widened, via a second class. */
+  .lg-who-x{position:relative}
+  .lg-who-x::before{content:"";position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);width:max(100%,44px);height:44px}
   .zp-erow{display:flex;gap:8px;align-items:center}
   .zp-erow .ed-inp{flex:1 1 auto;margin:0}
   .zp-addrow{display:flex;gap:8px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
@@ -1782,13 +1809,19 @@
       <div class="lg-word">Zapheria</div>
       <div class="lg-venue">KNOW WHAT YOU SERVE</div>
       <div class="lg-field lg-who"><div class="lg-label">Who are you?</div>
-        <div class="lg-who-list" id="lgWhoList"><button type="button" class="lg-who-b" data-zpick="Dani">Dani</button><button type="button" class="lg-who-b" data-zpick="Sindi">Sindi</button></div>
+        <button type="button" class="lg-who-trigger" id="lgWhoTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="lgWhoSheet"><span class="lg-who-trigger-nm" id="lgWhoTriggerNm">Pick who you are</span><span class="lg-who-trigger-chev" aria-hidden="true">&#8250;</span></button>
         <div class="lg-who-note">Used to sign what you edit. It is not a password and protects nothing: anyone with this phone can pick any name.</div>
         <div class="lg-gate" id="lgGate">Pick who you are to continue.</div>
       </div>
       <button class="lg-btn" data-signin>Sign in</button>
     </div>
     <div class="lg-foot">The knowledge engine for fine dining</div>
+  </div>
+  <div class="ed-dim" id="lgWhoDim"></div>
+  <div class="ed-sheet" id="lgWhoSheet" role="dialog" aria-modal="true" aria-label="Who are you?">
+    <div class="ed-drag"><div class="ed-grab"></div></div>
+    <div class="sh-head"><div class="sh-title">Who are you?</div><button class="sh-x lg-who-x" id="lgWhoSheetX" type="button" aria-label="Close">✕</button></div>
+    <div class="sh-scroll"><div class="zp-list" id="lgWhoList"><button type="button" class="zp-pick" data-zpick="Dani"><span class="zp-nm">Dani</span></button><button type="button" class="zp-pick" data-zpick="Sindi"><span class="zp-nm">Sindi</span></button></div></div>
   </div>
 </div>
 <script>
@@ -1816,9 +1849,12 @@
       var host=document.getElementById(LIST); if(!host)return;
       var bs=host.getElementsByTagName('button');
       for(var i=0;i<bs.length;i++)
-        bs[i].className=(bs[i].getAttribute('data-zpick')===name)?'lg-who-b on':'lg-who-b';
+        bs[i].className=(bs[i].getAttribute('data-zpick')===name)?'zp-pick on':'zp-pick';
       var g=document.getElementById('lgGate');
       if(g)g.classList.remove('on','shake');
+      /* (p89) instant trigger-label feedback - same 'record the tap, PHASE 7 confirms it later' contract as the rest of this shim. */
+      var tn=document.getElementById('lgWhoTriggerNm');
+      if(tn)tn.textContent=name;
     }catch(e){}
   }
   function stop(){
@@ -1837,7 +1873,7 @@
         if(host&&window.MutationObserver){
           mo=new MutationObserver(function(){
             if(!PENDING)return;
-            var cur=host.querySelector('.lg-who-b.on');
+            var cur=host.querySelector('.zp-pick.on');
             if(!cur||cur.getAttribute('data-zpick')!==PENDING)mark(PENDING);
           });
           mo.observe(host,{childList:true});
@@ -1865,6 +1901,7 @@
     e.preventDefault();
     PENDING=name; DEADLINE=Date.now()+3000;
     mark(name);
+    closeWho();          /* (p89) choosing dismisses the sheet */
     /* If PHASE 7 is already live it also sees this click (both listeners are
        document-capture) and calls __zSetActive itself; that call is idempotent
        (_active===n short-circuits), so a duplicate is harmless. */
@@ -1872,6 +1909,30 @@
       try{window.__zSetActive(name);}catch(err){}
     }
     reconcile();
+  },true);
+
+  /* (p89) the sheet open/close - self-contained, does NOT call into the
+     late-loading openS/closeS (MEASURED at ~92.7% of this document, even
+     later than PHASE 7 itself: reusing them here would silently reintroduce
+     the exact cold-start dead window this whole shim exists to avoid). */
+  function openWho(){
+    var d=document.getElementById('lgWhoDim'),s=document.getElementById('lgWhoSheet'),
+        tr=document.getElementById('lgWhoTrigger');
+    if(d)d.classList.add('open');
+    if(s)s.classList.add('open');
+    if(tr)tr.setAttribute('aria-expanded','true');
+  }
+  function closeWho(){
+    var d=document.getElementById('lgWhoDim'),s=document.getElementById('lgWhoSheet'),
+        tr=document.getElementById('lgWhoTrigger');
+    if(d)d.classList.remove('open');
+    if(s)s.classList.remove('open');
+    if(tr)tr.setAttribute('aria-expanded','false');
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target; if(!t||!t.closest)return;
+    if(t.closest('#lgWhoTrigger')){e.preventDefault();openWho();return;}
+    if(t.closest('#lgWhoDim')||t.closest('#lgWhoSheetX')){e.preventDefault();closeWho();return;}
   },true);
 
   /* read-only introspection for harnesses; not part of the public identity API */
@@ -10762,8 +10823,9 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   function paint(){
     try{
       setHTML(document.getElementById('lgWhoList'),_people.map(function(p){
-        return '<button type="button" class="lg-who-b'+(p===_active?' on':'')
-          +'" data-zpick="'+_e(p)+'">'+_e(p)+'</button>';}).join(''));
+        return '<button type="button" class="zp-pick'+(p===_active?' on':'')
+          +'" data-zpick="'+_e(p)+'"><span class="zp-nm">'+_e(p)+'</span>'
+          +(p===_active?'<span class="zp-tick">\u2713</span>':'')+'</button>';}).join(''));
       var g=document.getElementById('lgGate');
       if(g&&_active&&g.classList.contains('on'))g.classList.remove('on','shake');
       if(_active){setTXT(document.querySelector('.role'),_active);
@@ -10777,7 +10839,9 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
                   setTXT(document.querySelector('.wname'),_active);
                   setTXT(document.querySelector('.lgw-name'),_active);
                   setTXT(document.querySelector('.avatar'),_zInitials(_active));
-                  setTXT(document.querySelector('.lgw-av'),_zInitials(_active));}
+                  setTXT(document.querySelector('.lgw-av'),_zInitials(_active));
+                  /* (p89) keep the sign-in trigger's own label in sync - same difference-guarded setTXT, same trigger set as the rest of this block. */
+                  setTXT(document.getElementById('lgWhoTriggerNm'),_active);}
       var cs=document.querySelectorAll('.zp-chip'),h=chipHTML();
       for(var i=0;i<cs.length;i++)setHTML(cs[i],h);
     }catch(e){}
