@@ -4158,7 +4158,12 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       if(_dv.rejected){_rEm++;return '';}
       _tEm++;if(_dv.certified)_cEm++;else if(p._prop)_pEm++;
       if(p.ai&&!_dv.certified)_anyAi=true;   /* p25: counted AFTER the off-menu drop */
-      return '<div class="pn-item"><div class="pn-main"><div class="pn-dish" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</div><div class="pn-why">'+window.__esc(p.why)+'</div>'+window.__pairEdgeMark(p._eid)+'</div>'+(p._prop?'<span class="pn-badge prop">✎ PROPOSED</span>':(_nEm++===0?'<span class="pn-badge top">✦ TOP</span>':''))+'</div>';
+      /* (p90b) this badge used to land on whichever row happened to be
+         FIRST EMITTED, not the best pairing - a claim the data never
+         made. Removed; rows, order, why-text and PROPOSED marking are
+         byte-identical below. _nEm is left declared (still used by
+         nothing else in this closure) so no other line has to move. */
+      return '<div class="pn-item"><div class="pn-main"><div class="pn-dish" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</div><div class="pn-why">'+window.__esc(p.why)+'</div>'+window.__pairEdgeMark(p._eid)+'</div>'+(p._prop?'<span class="pn-badge prop">✎ PROPOSED</span>':'')+'</div>';
     }).filter(Boolean).join('');
     var done={}; rich.forEach(function(p){done[p.d]=1;});
     var chips=(d.pairWines||[]).map(function(id){var b=idx[id];if(!b||done[id]||b.kind!=='wine')return '';if(window.__avOff&&window.__avOff(b))return '';var m=(window.__av86&&window.__av86(b))?' <span class="av86-inline">86</span>':'';return '<span class="chip2 pair-chip" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</span>';}).filter(Boolean).join('');
@@ -4232,8 +4237,12 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       /* the badge and the note describe THIS panel's real state - four
          cases, one sentence each.  Nothing certified -> the two strings
          below are the ones that shipped, character for character. */
-      var _pnBadge=((_allC||!w.ai)&&!_pnPropA)?'<span class="pn-verified">VERIFIED</span>'
-        :'<span class="sp-unverified">NOT VERIFIED</span>';
+      /* (p90d) same class, same logic, same underlying verified/unverified
+     state as before - text only, so the two colliding .sp-unverified
+     badges on a wine sheet (this one and __wineStyleBlock's) can be
+     told apart without reading the surrounding paragraph. */
+  var _pnBadge=((_allC||!w.ai)&&!_pnPropA)?'<span class="pn-verified">PAIRINGS VERIFIED</span>'
+        :'<span class="sp-unverified">PAIRINGS NOT VERIFIED</span>';
       var _pnNote='';
       if(_allC)_pnNote='<div class="pn-certnote">\u2713 Every pairing for this wine has been certified by a sommelier.</div>';
       else if(_pnTotV&&_pnCertV===_pnTotV)_pnNote='<div class="pn-certnote">\u2713 Every pairing shown here is sommelier-certified. The '+_moreL.length+' more in the full list are not \u2014 open the sheet below.</div>';
@@ -4380,7 +4389,13 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   function _verifBadgeCompact(m){
     var id=(m&&m.id)?m.id:'';
     if(m&&m.contentVerified)return '<span class="itm-verif on mini" data-verif="'+id+'" data-verif-state="on" role="button">✓</span>';
-    return '<span class="itm-verif off mini" data-verif="'+id+'" data-verif-state="off" role="button">○</span>';
+    /* (p90a) 309/309 spirits render this branch today - a badge on
+       every row costs attention and discriminates nothing. Removed;
+       the 'on' branch above (still wired to the same [data-verif]
+       toggle) and the full-size badge on the spirits detail sheet
+       both survive untouched, so contentVerified stays readable AND
+       toggleable - just not duplicated onto every list row. */
+    return '';
   }
   /* the OPTIONAL source field lives here, next to the badge — never in the
      one-tap path itself, so it can never block or delay the tap. */
@@ -4808,7 +4823,7 @@ function __wineStyleBlock(r){
     +'<div class="sh-p" style="font-size:10.5px;color:var(--muted-soft);margin:0 0 8px;font-style:italic">Classic pairings for this category</div>'
     +'<div class="pairs">'+s.gen.map(function(p){return '<span class="pchip">'+E(p)+'</span>';}).join('')+'</div>'):'';
   return '<div class="ws-card">'
-    +'<div class="ws-head">\u2726 Style \u00b7 '+E(s.label)+' <span class="sp-unverified">NOT VERIFIED</span></div>'
+    +'<div class="ws-head">\u2726 Style \u00b7 '+E(s.label)+' <span class="sp-unverified">STYLE NOTES NOT VERIFIED</span></div>'
     +'<div class="ws-note">'+(s.broad?'This category groups wines of different origins, so these notes are deliberately broad. ':'')
       +'These notes describe the <b>category</b>, not this bottle, this producer or this vintage. Authored from the wine list\u2019s own classification \u2014 not sommelier-verified. Do not quote to guests as verified.</div>'
     +'<div class="sh-p">'+E(s.desc)+'</div>'
@@ -7227,7 +7242,12 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +((_cw!==_bk)?'<div class="pn-wyorig"><b>Original:</b> '+E(_bk)+'</div>':'')
       +'<div class="pn-rjact"><button class="pn-vb ghost" type="button" data-pnwycancel>Cancel</button>'
       +((_cw!==_bk)?'<button class="pn-vb ghost" type="button" data-pnwyreset>Restore original</button>':'')
-      +'<button class="pn-vb cert" type="button" data-pnwysave>Save reason</button></div></div>';
+      /* (p90e) 'Save reason' persists an edited why-text; it records no
+     verdict, so it no longer wears Certify's class. Re-classed to the
+     SAME neutral treatment already used by Cancel/Restore original/
+     Undo/the Reason opener in this exact panel - no new CSS, and
+     Certify's own "pn-vb cert" markup (below) is untouched. */
+  +'<button class="pn-vb ghost" type="button" data-pnwysave>Save reason</button></div></div>';
     return _amk()+'<div class="pn-vact" data-eid="'+E(eid)+'" data-pdish="'+E((it&&it._did)||'')+'" data-baked="'+E(_bk)+'">'+head
       +'<button class="pn-vb ghost" type="button" data-pnwhyopen>✎ Reason</button>'
       +'<div class="pn-rjbox" hidden><label class="pn-rjlab">Why is this pairing wrong?</label>'
