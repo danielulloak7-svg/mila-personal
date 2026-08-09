@@ -110,6 +110,8 @@
   .needimg-badge{position:absolute;top:10px;left:10px;z-index:3;font-size:8.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#826728;background:var(--cream);border:1px solid rgba(190,160,70,.5);border-radius:8px;padding:3px 7px}
   #hoySection{position:relative}
   .hoy-edit{position:absolute;top:2px;right:2px;z-index:2;appearance:none;font-family:inherit;font-size:11.5px;font-weight:700;color:var(--gold-text);background:var(--cream-card);border:1px solid rgba(176,141,87,.4);border-radius:16px;padding:5px 11px;cursor:pointer}
+  .hoy-edit::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100%,44px);height:44px}
+
   .hoy-edit:active{transform:scale(.96)}
   #hoyBody{margin-top:4px}
   .hoy-amuse{display:flex;gap:12px;align-items:stretch;background:var(--cream-card);border:1px solid var(--line);border-radius:16px;padding:10px;cursor:pointer;box-shadow:var(--e1)}
@@ -497,7 +499,9 @@
   .p5-secadd{appearance:none;-webkit-appearance:none;font-family:inherit;display:inline-flex;
     align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.3px;white-space:nowrap;
     color:var(--gold-text);background:transparent;border:1px solid var(--gold);border-radius:20px;
-    padding:7px 12px;cursor:pointer;margin-left:auto}
+    padding:7px 12px;cursor:pointer;margin-left:auto;position:relative}
+  .p5-secadd::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100%,44px);height:44px}
+
   .p5-secadd:active{transform:scale(.96);background:rgba(42,36,28,.05)}
   .view.collapsed .p5-secadd{display:none}
 
@@ -509,7 +513,7 @@
     flex:1 1 40%;min-width:112px}
   .lg-who-b:active{transform:scale(.98)}
   .lg-who-b.on{background:#1E4D49;border-color:#1E4D49;color:#F3F0E9}
-  .lg-who-note{margin-top:8px;font-size:10.5px;line-height:1.5;color:rgba(22,22,26,.55)}
+  .lg-who-note{margin-top:8px;font-size:10.5px;line-height:1.5;color:rgba(22,22,26,.68)}
   .lg-gate{display:none;margin-top:10px;font-size:11.5px;font-weight:600;color:#a83226}
   .lg-gate.on{display:block}
   .lg-gate.shake{animation:zshake .34s ease}
@@ -721,6 +725,7 @@
 
   .fchip.on{background:var(--charcoal);color:var(--cream);border-color:var(--charcoal)}
   .showing{font-size:12px;color:var(--muted);margin:10px 2px 16px}
+  .showing-note{margin:-13px 2px 0;font-size:10px;line-height:13px;color:var(--muted)}
   .feed{display:flex;flex-direction:column;gap:18px}
 
   /* ---- flip card ---- */
@@ -853,6 +858,8 @@
 .pr-orphan{color:#8a4a00}
 .pr-orphanl{font-size:9pt;font-weight:600;color:#8a4a00;margin:0 0 6px}
   .lnr{font-size:9px;color:var(--muted-soft);margin-left:6px;vertical-align:middle}
+  /* (p97) same box model as .lnr above (font-size/margin-left/vertical-align byte-identical) - colour+glyph change only, never a layout change; --success is the pre-existing affirmative token, not a new one. */
+  .lvr{font-size:9px;color:var(--success);font-weight:700;margin-left:6px;vertical-align:middle}
   .lgroup:first-child{margin-top:4px}
   .lrow{display:flex;align-items:center;gap:12px;padding:13px 6px;border-bottom:1px solid var(--line);cursor:pointer}
   .lrow:active{background:rgba(176,141,87,.07)}
@@ -901,7 +908,7 @@
   .gic{flex:none;width:30px;height:30px;border-radius:50%;background:var(--cream-card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:2px}
   .gmain{flex:1;min-width:0}
   .ghead{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-  .gname{font-family:var(--serif);font-size:16px;color:var(--ink);font-weight:500}.gnr{font-size:10px;color:#98520b;font-weight:700;margin-left:4px;vertical-align:1px}
+  .gname{font-family:var(--serif);font-size:16px;color:var(--ink);font-weight:500}.gnr{font-size:10px;color:#98520b;font-weight:700;margin-left:4px;vertical-align:1px}/* (p97) same box model as .gnr above - colour+glyph change only. */.gvr{font-size:10px;color:var(--success);font-weight:700;margin-left:4px;vertical-align:1px}
   .gtag{font-size:9px;font-weight:700;letter-spacing:.4px;padding:3px 7px;border-radius:10px;/* (p28-B) neutral fallback: categories with no colour rule of their own used to render as an unstyled bare word */color:var(--muted);background:rgba(142,133,118,.12);border:1px solid rgba(142,133,118,.30)}
   .gtag.protein{color:#9c4a55;background:rgba(180,82,100,.12);border:1px solid rgba(180,82,100,.3)}
   .gtag.food{color:#826728;background:rgba(190,160,70,.16);border:1px solid rgba(190,160,70,.36)}
@@ -941,7 +948,9 @@
   .ask-sub{font-size:10.5px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:5px}
   .ask-sub .gdot{width:7px;height:7px;border-radius:50%;background:#3FA46B;box-shadow:0 0 0 0 rgba(63,164,107,.5);animation:gpulse 2.2s infinite}
   @keyframes gpulse{0%{box-shadow:0 0 0 0 rgba(63,164,107,.5)}70%{box-shadow:0 0 0 6px rgba(63,164,107,0)}100%{box-shadow:0 0 0 0 rgba(63,164,107,0)}}
-  .ask-close{margin-left:auto;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:16px}
+  .ask-close{margin-left:auto;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:16px;position:relative}
+  .ask-close::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100%,44px);height:44px}
+
   .grip{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:38px;height:4px;border-radius:4px;background:var(--line)}
   .msgs{flex:1;overflow-y:auto;padding:18px 16px 8px;display:flex;flex-direction:column;gap:12px}.msgs::-webkit-scrollbar{width:0}
   .row{display:flex;opacity:0;transform:translateY(8px)}.ask.open .row{animation:rise .5s forwards}
@@ -1145,13 +1154,18 @@
   .lg-mark{display:flex;justify-content:center}
   .lg-mark svg{width:46px;height:46px}
   .lg-word{font-family:var(--serif);font-weight:400;font-size:34px;color:#16161A;text-align:center;letter-spacing:.5px;margin-top:14px}
-  .lg-venue{text-align:center;font-size:10.5px;font-weight:600;letter-spacing:2.5px;color:rgba(22,22,26,.5);margin-top:6px}
+  .lg-venue{text-align:center;font-size:10.5px;font-weight:600;letter-spacing:2.5px;color:rgba(22,22,26,.68);margin-top:6px}
   .lg-field{margin-top:18px}
   .lg-field:first-of-type{margin-top:34px}
-  .lg-label{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(22,22,26,.55)}
+  .lg-label{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(22,22,26,.68)}
   .lg-input{margin-top:6px;background:#fff;border:1px solid #e3ddcd;border-radius:12px;padding:14px 15px;font-size:14px;color:#16161A}
   .lg-dots{letter-spacing:3px;color:rgba(22,22,26,.6)}
-  .lg-btn{width:100%;margin-top:26px;appearance:none;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.3px;color:#F3F0E9;background:#1E4D49;border:none;border-radius:12px;padding:15px;cursor:pointer;transition:background .2s}
+  .lg-btn{width:100%;margin-top:26px;appearance:none;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.3px;color:#1E4D49;background:transparent;border:2px solid rgba(30,77,73,.65);border-radius:12px;padding:15px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+  /* (p98) MEASURED (composited on --cream #F3F0E9, the login screen's only
+     background - no gradient exists on this surface): label #1E4D49 solid
+     = 8.34:1 (>=4.5:1); border rgba(30,77,73,.65) = 4.32:1 (>=3.0:1). */
+  .lg-btn.picked{color:#F3F0E9;background:#1E4D49;border-color:transparent}
+
   .lg-btn:active{background:#173b38}
   .lg-forgot{text-align:center;font-size:12px;color:#4FA89E;margin-top:16px;font-weight:500}
   .lg-foot{text-align:center;font-size:10.5px;letter-spacing:.4px;color:rgba(22,22,26,.8)}
@@ -1263,6 +1277,8 @@
   /* back button floats into row 1, left */
   .view.collapsed .secbar{position:sticky;top:0;z-index:27;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border:none;box-shadow:none;height:0;padding:0;overflow:visible}
   .view.collapsed .secbar .backbtn{position:relative;left:16px;top:calc(var(--safeT) + 14px)}
+  .backbtn::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100%,44px);height:44px}
+
   /* p96: compact page-context caption, visible ONLY while collapsed
      (sticky-scrolled). Text is copied from this view's own .sectitle
      at boot (see JS patch below) - never a second hardcoded string.
@@ -1487,6 +1503,8 @@
   .pn-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
   .pn-note{margin-top:9px;font-size:10px;color:var(--gold-text);background:rgba(176,141,87,.09);border:1px solid rgba(176,141,87,.3);border-radius:10px;padding:7px 9px;line-height:1.45}
   .pn-close{position:absolute;top:22px;right:14px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;font-size:13px}
+  .pn-close::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100%,44px);height:44px}
+
   .pn-chips{flex:none;display:flex;flex-wrap:wrap;gap:8px;padding:11px 18px 9px;border-bottom:1px solid var(--line)}
   .pn-body{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:4px 18px calc(var(--safeB) + 26px)}
   .pn-sec{font-size:10px;font-weight:700;letter-spacing:1.8px;color:var(--muted);text-transform:uppercase;margin:16px 0 4px;display:flex;align-items:center;gap:7px}
@@ -1895,6 +1913,11 @@
       /* (p89) instant trigger-label feedback - same 'record the tap, PHASE 7 confirms it later' contract as the rest of this shim. */
       var tn=document.getElementById('lgWhoTriggerNm');
       if(tn)tn.textContent=name;
+      /* (p98) instant disabled->primary swap, same early-bind contract as
+         the trigger-label line above - a pick made before the identity
+         module loads still marks the button ready immediately. */
+      var p98b=document.querySelector('.lg-btn');
+      if(p98b)p98b.classList.add('picked');
     }catch(e){}
   }
   function stop(){
@@ -2133,6 +2156,17 @@
   window.__zSignInTap=function(ev){
     if(ev){if(ev.__zsi19)return;try{ev.__zsi19=1;}catch(e){}}
     if(FIRED)return;
+    /* (p98) synchronous, zero-wait feedback: if the button has not been
+       marked .picked by EITHER path above, nobody is chosen yet - say so
+       now, not ~1.7s from now when the async resolve()/defer() below
+       finally confirms it. resolve()/defer() themselves are UNCHANGED:
+       if a returning user's stored identity resolves moments later,
+       window.__zSignIn() still fires and the whole login screen goes
+       away, silently superseding this transient gate() call. gate() is
+       idempotent (guarded shake-class toggle) - calling it twice is
+       harmless. */
+    var p98g=document.querySelector('.lg-btn');
+    if(p98g&&!p98g.classList.contains('picked'))gate();
     if(resolve())return;
     defer();
   };
@@ -2187,7 +2221,7 @@
     </div>
     <div class="ffrow"><button class="ff-btn" data-ffopen><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Free-from filter</button></div>
     <div class="ff-active" id="ffActiveFood" style="display:none"></div>
-    <div class="showing" id="foodShowing"></div>
+    <div class="showing" id="foodShowing"></div><div class="showing-note" id="foodShowingNote">Not the full catalog — “All” also includes today’s special.</div>
     <div class="feed" id="foodFeed"></div>
   </div>
 </div>
@@ -2196,7 +2230,7 @@
 <div class="view hidden" id="view-bev">
   <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><span class="ctx-lbl" aria-hidden="true"></span><button class="p5-secadd" data-p5add="bev" type="button">＋ Add</button></div>
   <div class="secwrap">
-    <h1 class="sectitle">Beverages</h1>
+    <h1 class="sectitle">Drinks Menu</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="bevSearch" type="text" placeholder="Search drinks or ingredients…" autocomplete="off"></div>
     <div class="fchips" id="bevChips"></div>
@@ -2213,7 +2247,7 @@
 <div class="view hidden" id="view-wine">
   <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><span class="ctx-lbl" aria-hidden="true"></span><button class="p5-secadd" data-p5add="wine" type="button">＋ Add</button></div>
   <div class="secwrap">
-    <h1 class="sectitle">Wine Catalog</h1>
+    <h1 class="sectitle">Wine List</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="wineSearch" type="text" placeholder="Search wines, producers, appellations…" autocomplete="off"></div>
     <div class="fchips" id="wineChips"></div>
@@ -2228,7 +2262,7 @@
 <div class="view hidden" id="view-spirits">
   <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><span class="ctx-lbl" aria-hidden="true"></span><button class="p5-secadd" data-p5add="spirit" type="button">＋ Add</button></div>
   <div class="secwrap">
-    <h1 class="sectitle">Spirits Catalog</h1>
+    <h1 class="sectitle">Spirits</h1>
     <div class="fbox">
     <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="spiritSearch" type="text" placeholder="Search spirits, distilleries, origins…" autocomplete="off"></div>
     <div class="fchips" id="spiritChips"></div>
@@ -2397,8 +2431,8 @@
 <div class="menupop" id="menuPop" aria-hidden="true">
   <div class="menupop-title">Menu &amp; Knowledge</div>
   <button data-view="food"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M5 18a7 7 0 0 1 14 0"/><path d="M12 8V6.5"/><circle cx="12" cy="5.6" r="0.7" fill="currentColor" stroke="none"/></svg></span><span class="mp-lbl">Food Menu</span><span class="mp-n" id="mpFoodN">75 dishes</span></button>
-  <button data-view="bev"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h14l-6 7.5v6"/><path d="M9 21h6"/><path d="M7.4 8h9.2"/></svg></span><span class="mp-lbl">Beverages</span><span class="mp-n" id="mpBevN">54 drinks</span></button>
-  <button data-view="wine"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l-.6 5.2a3.4 3.4 0 0 1-6.8 0z"/><path d="M12 14.5V20"/><path d="M8.5 20h7"/></svg></span><span class="mp-lbl">Wine Catalog</span><span class="mp-n" id="mpWineN">30 selections</span></button>
+  <button data-view="bev"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h14l-6 7.5v6"/><path d="M9 21h6"/><path d="M7.4 8h9.2"/></svg></span><span class="mp-lbl">Drinks Menu</span><span class="mp-n" id="mpBevN">54 drinks</span></button>
+  <button data-view="wine"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l-.6 5.2a3.4 3.4 0 0 1-6.8 0z"/><path d="M12 14.5V20"/><path d="M8.5 20h7"/></svg></span><span class="mp-lbl">Wine List</span><span class="mp-n" id="mpWineN">30 selections</span></button>
   <button data-view="spirits"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 5h11l-1 14h-9z"/><path d="M7.5 12h9"/></svg></span><span class="mp-lbl">Spirits</span><span class="mp-n" id="mpSpiritN">30 selections</span></button>
   <button data-view="glossary"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M19 17H6a2 2 0 0 0-2 2"/></svg></span><span class="mp-lbl">Glossary</span><span class="mp-n" id="mpGlossN">414 terms</span></button>
   <button data-view="alink" data-mgo="alink"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 13.4a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 0 0-5.7-5.7l-1.3 1.3"/><path d="M13.4 10.6a4 4 0 0 0-5.7 0l-2.6 2.6a4 4 0 0 0 5.7 5.7l1.3-1.3"/></svg></span><span class="mp-lbl">Allergen Links</span><span class="mp-n" id="alinkPendN">pending</span></button>
@@ -5446,7 +5480,31 @@ const WINE_PN_BYGLASS={
     /* p30: `prod` is absent on the 484 printed-list rows - render only the
        truthy parts, never the word "undefined".  A non-750ml format is a
        DIFFERENT bottle (identity includes format), so it shows on the row. */
-    const _nr=r.needsReview?`<span class="lnr" title="needs review — printed list only, no verified detail">△</span>`:``;
+    /* (p97) STOP painting a triangle on the 94.2% flagged-
+       unverified wine rows; PAINT a checkmark on the ones a human
+       has actually verified instead - same slot, same variable
+       (both ${_nr} interpolations below are untouched), same OUTER
+       r.needsReview gate (byte-identical to control - this is what
+       keeps every row's height, and the whole list's scrollTop,
+       IDENTICAL to control: the 484/30 tall/short split this slot
+       drove before is unchanged, forever, regardless of who gets
+       verified later - contentVerified only ever picks what paints
+       INSIDE an already-reserved slot, never whether the slot
+       exists). r.contentVerified is the SAME field basicWine's own
+       Verify button (_wver, defined two functions away) reads - r
+       is already merged with the overlay here (p35's own comment).
+       Verified: the SAME checkmark _verifBadgeCompact's 'on' branch
+       and .gp-revbtn.on already paint elsewhere for 'verified'.
+       Not yet verified: the OLD triangle markup, byte-identical
+       (same class, same glyph, same font metrics), with visibility
+       :hidden added - invisible to sighted users AND assistive
+       tech (out of the accessibility tree), but its box still
+       occupies the exact pixels the visible triangle used to, so
+       nothing reflows as verification happens over time. △ itself
+       is never again painted on screen for wine or glossary; it
+       stays spirits-only (p86, untouched) and keeps its old,
+       genuinely-informative meaning there (34%). */
+    const _nr=r.needsReview?(r.contentVerified===true?`<span class="lvr" title="content verified by staff">✓</span>`:`<span class="lnr" style="visibility:hidden">△</span>`):``;
     const _fsub=[r.prod,r.vint].filter(Boolean).join(' · ');
     if(r.feat) return `<div class="lrow feat" data-wid="${id}"><div class="lmain"><span class="feattag">FEATURED</span><div class="lname">${r.name}</div>${_nr}${_fsub?`<div class="lprod">${_fsub}</div>`:``}</div><div class="lprice" style="color:var(--gold-text)">view ›</div></div>`;
     const _sub=[r.prod,(r.fmt&&r.fmt!=='750ml')?r.fmt:null].filter(Boolean).join(' · ');
@@ -6519,7 +6577,26 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
        __zPending exists. */
     let _pend=(g.needsReview===true);
     try{if(window.__zPending)_pend=window.__zPending(g);}catch(_e){_pend=(g.needsReview===true);}
-    const nr=_pend?`<span class="gnr" title="generic definition, not yet verified">△</span>`:'';
+    /* (p97) same reasoning as (a) above, glossary side, and the
+       same reason for the same shape: the OUTER gate stays
+       g.needsReview===true (the STATIC baked flag, not `_pend` -
+       `_pend` also depends on verified state, and gating the SLOT
+       on it would shrink the reserved-row set the moment a term is
+       verified, moving .ghead's flex-wrap points and drifting
+       glossary scrollTop over time; g.needsReview never changes, so
+       gating on it keeps geometry stable FOREVER, not just today).
+       g.contentVerified is the SAME field the glossary panel's own
+       .gp-revbtn Verify button reads via __zVerifyGet - g is
+       already merged with the overlay by glossRow's own
+       g=window.__gloss(g) one line above where this function is
+       called. Verified: new .gvr checkmark. Not yet verified: the
+       OLD .gnr triangle markup, byte-identical, with visibility
+       :hidden added - .ghead is a flex row, and a visibility:hidden
+       flex item still reserves its flex-basis, so the SAME wrap
+       points survive. _pend stays declared and computed above but
+       is no longer read here - harmless, same precedent as p90(b)'s
+       _nEm. */
+    const nr=g.needsReview===true?(g.contentVerified===true?`<span class="gvr" title="content verified by staff">✓</span>`:`<span class="gnr" style="visibility:hidden">△</span>`):'';
     const _gx=(window.__escA?window.__escA(g.id||''):String(g.id||''));
     /* (p38-C) `used` stays exactly as authored in the data — we never
        mutate GLOSS. Only records whose `used` ASSERTS A COUNT (a digit)
@@ -7869,7 +7946,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     return h+foot();
   }
   function buildSpirit(){
-    var h=head('Spirits List');
+    var h=head('Spirits');
     var src=prSrc(typeof SPIRITS!=='undefined'?SPIRITS:[]);
     var order=[["vodka","Vodka"],["gin","Gin"],["rum","Rum"],["tequila","Tequila"],["mezcal","Mezcal"],["whiskey","Whiskey"],["cognac","Cognac"],["calvados","Calvados"],["other","Other"]];
     order.forEach(function(so){
@@ -10956,7 +11033,12 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
                   setTXT(document.querySelector('.avatar'),_zInitials(_active));
                   setTXT(document.querySelector('.lgw-av'),_zInitials(_active));
                   /* (p89) keep the sign-in trigger's own label in sync - same difference-guarded setTXT, same trigger set as the rest of this block. */
-                  setTXT(document.getElementById('lgWhoTriggerNm'),_active);}
+                  setTXT(document.getElementById('lgWhoTriggerNm'),_active);
+                  /* (p98) same guard as every write in this block - covers the
+                     returning-user path (stored identity, no fresh tap this
+                     session) that PHASE 18's mark() above never sees. */
+                  var p98p=document.querySelector('.lg-btn');
+                  if(p98p)p98p.classList.add('picked');}
       var cs=document.querySelectorAll('.zp-chip'),h=chipHTML();
       for(var i=0;i<cs.length;i++)setHTML(cs[i],h);
     }catch(e){}
