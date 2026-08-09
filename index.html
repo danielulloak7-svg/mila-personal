@@ -2378,9 +2378,9 @@
 </nav>
 <div class="menupop" id="menuPop" aria-hidden="true">
   <div class="menupop-title">Menu &amp; Knowledge</div>
-  <button data-view="food"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M5 18a7 7 0 0 1 14 0"/><path d="M12 8V6.5"/><circle cx="12" cy="5.6" r="0.7" fill="currentColor" stroke="none"/></svg></span><span class="mp-lbl">Food Menu</span><span class="mp-n">75 dishes</span></button>
-  <button data-view="bev"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h14l-6 7.5v6"/><path d="M9 21h6"/><path d="M7.4 8h9.2"/></svg></span><span class="mp-lbl">Beverages</span><span class="mp-n">54 drinks</span></button>
-  <button data-view="wine"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l-.6 5.2a3.4 3.4 0 0 1-6.8 0z"/><path d="M12 14.5V20"/><path d="M8.5 20h7"/></svg></span><span class="mp-lbl">Wine Catalog</span><span class="mp-n">30 selections</span></button>
+  <button data-view="food"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M5 18a7 7 0 0 1 14 0"/><path d="M12 8V6.5"/><circle cx="12" cy="5.6" r="0.7" fill="currentColor" stroke="none"/></svg></span><span class="mp-lbl">Food Menu</span><span class="mp-n" id="mpFoodN">75 dishes</span></button>
+  <button data-view="bev"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h14l-6 7.5v6"/><path d="M9 21h6"/><path d="M7.4 8h9.2"/></svg></span><span class="mp-lbl">Beverages</span><span class="mp-n" id="mpBevN">54 drinks</span></button>
+  <button data-view="wine"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l-.6 5.2a3.4 3.4 0 0 1-6.8 0z"/><path d="M12 14.5V20"/><path d="M8.5 20h7"/></svg></span><span class="mp-lbl">Wine Catalog</span><span class="mp-n" id="mpWineN">30 selections</span></button>
   <button data-view="spirits"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 5h11l-1 14h-9z"/><path d="M7.5 12h9"/></svg></span><span class="mp-lbl">Spirits</span><span class="mp-n" id="mpSpiritN">30 selections</span></button>
   <button data-view="glossary"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M19 17H6a2 2 0 0 0-2 2"/></svg></span><span class="mp-lbl">Glossary</span><span class="mp-n" id="mpGlossN">414 terms</span></button>
   <button data-view="alink" data-mgo="alink"><span class="mp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 13.4a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 0 0-5.7-5.7l-1.3 1.3"/><path d="M13.4 10.6a4 4 0 0 0-5.7 0l-2.6 2.6a4 4 0 0 0 5.7 5.7l1.3-1.3"/></svg></span><span class="mp-lbl">Allergen Links</span><span class="mp-n" id="alinkPendN">pending</span></button>
@@ -4679,6 +4679,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
               foodState.q?(n+" result"+(n!==1?"s":"")+" for “"+foodState.q+"”") :
               (n+" of "+(window.__avCount?window.__avCount(FOOD):FOOD.length)+" dishes");
     document.getElementById('foodShowing').textContent=(showSpecial?"1 active special · ":"")+label;
+    try{var _p94fs=document.getElementById('foodShowing');if(_p94fs)_p94fs.title='On-menu dishes matching this filter (not counting today’s special, shown separately above). The full FOOD catalog holds '+(typeof FOOD!=='undefined'&&Array.isArray(FOOD)?FOOD.length:'?')+' dishes total, including any not currently on the menu.';}catch(e){}
     window.__foodNoDataCount=nod.length;
     window.__foodMatchCount=list.length;
   }
@@ -6425,6 +6426,18 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
      const. */
   try{var _p86n=document.getElementById('mpSpiritN');
       if(_p86n&&typeof SPIRITS!=='undefined'&&Array.isArray(SPIRITS))_p86n.textContent=SPIRITS.length+' selections';}catch(e){}
+  /* p94: the same live-count treatment for the three remaining
+     "Menu & Knowledge" popover rows that still printed stale
+     literals - Food Menu (75, coincidentally correct today but still
+     a bare literal), Beverages (54 vs 56 live) and Wine Catalog (30
+     vs 514 live). Same guarded id-based patch pattern as mpGlossN/
+     mpSpiritN above, same lexical position. */
+  try{var _p94f=document.getElementById('mpFoodN');
+      if(_p94f&&typeof FOOD!=='undefined'&&Array.isArray(FOOD))_p94f.textContent=FOOD.length+' dishes';}catch(e){}
+  try{var _p94b=document.getElementById('mpBevN');
+      if(_p94b&&typeof BEV!=='undefined'&&Array.isArray(BEV))_p94b.textContent=BEV.length+' drinks';}catch(e){}
+  try{var _p94w=document.getElementById('mpWineN');
+      if(_p94w&&typeof WINE!=='undefined'&&Array.isArray(WINE))_p94w.textContent=WINE.length+' selections';}catch(e){}
   // Alias layer: map dish components to glossary terms that already exist (spelling variants + substring).
   window.GXALIAS={
     "bubu-arare":"bubu arare",
@@ -9752,7 +9765,8 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     w.innerHTML=names.map(function(x){
       var lbl=String(x).replace(/[^A-Za-z\s]/g,'').trim();
       var n=(lbl==='All')?(c.total+c.specials):(lbl==='Specials'?c.specials:(c.byCat[lbl.toUpperCase()]||0));
-      return '<button class="fchip'+(lbl===cur?' on':'')+'">'+esc(x)+' <span class="fcount">'+n+'</span></button>';
+      var _p94ti=(lbl==='All')?' title="Every on-menu dish, including today’s active special. The plain on-menu total (without the special) is shown above the list."':'';
+      return '<button class="fchip'+(lbl===cur?' on':'')+'"'+_p94ti+'>'+esc(x)+' <span class="fcount">'+n+'</span></button>';
     }).join('');
   };
   window.__bevChipsRebuild=function(){
