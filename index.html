@@ -198,7 +198,8 @@
   .mc-conf .ed-imgrow{margin-top:2px}
   #mcResetWrap .ed-imgrow,#edRevWrap .ed-imgrow{margin-top:10px}
   .mc-list{display:flex;flex-direction:column;gap:6px;margin:6px 0 4px;max-height:240px;overflow-y:auto}
-  .mc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cream-card);border:1px solid var(--line);border-radius:11px;padding:9px 12px;font-size:13px;color:var(--ink)}
+  .mc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cream-card);border:1px solid var(--line);border-radius:13px;padding:9px 12px;font-size:13px;color:var(--ink)}
+  .mc-name{font-weight:600}
   .mc-revert{appearance:none;font-family:inherit;font-size:11.5px;font-weight:700;color:var(--danger);background:transparent;border:1px solid rgba(180,82,74,.4);border-radius:9px;padding:5px 10px;cursor:pointer;flex:0 0 auto}
   .hoy-pick-list{display:flex;flex-direction:column;gap:2px;max-height:260px;overflow-y:auto;border:1px solid var(--line);border-radius:11px;padding:6px}
   .hoy-pick-row{display:flex;align-items:center;gap:10px;padding:8px 6px;font-size:13px;color:var(--ink);cursor:pointer}
@@ -440,9 +441,9 @@
   .ed-avnote{font-size:11px;line-height:1.5;opacity:.72;margin-top:8px}
   /* gear panel: off-menu recovery list */
   .om-sec{margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)}
-  .om-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
-  .om-row:last-child{border-bottom:none}
-  .om-name{font-size:13px}
+  .om-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cream-card);border:1px solid var(--line);border-radius:13px;padding:12px 14px}
+  .om-list{display:flex;flex-direction:column;gap:8px}
+  .om-name{font-size:13px;font-weight:600}
   .om-kind{display:block;font-size:10px;opacity:.65;letter-spacing:.04em}
   .om-rest{flex:0 0 auto;padding:6px 12px;border-radius:9px;border:1px solid rgba(78,124,90,.5);
     background:rgba(78,124,90,.1);color:#3d6b4c;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer}
@@ -485,6 +486,7 @@
   .p5-rs{font-size:11px;color:var(--muted);line-height:1.4}
   .p5-badge{flex:0 0 auto;min-width:24px;height:22px;display:flex;align-items:center;justify-content:center;
     font-size:11px;font-weight:700;color:var(--cream);background:var(--charcoal);border-radius:11px;padding:0 7px}
+  .p5-badge.zero{background:var(--line);color:var(--muted)} /* p95: 4.817:1 muted/line - measured, see docstring */
   .p5-chev{flex:0 0 auto;width:18px;text-align:center;font-size:21px;line-height:1;color:var(--gold-text);opacity:1}
   .p5-foot{margin-top:16px;font-size:10.5px;color:var(--muted);text-align:center;line-height:1.55}
   .p5-danger{margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
@@ -580,7 +582,7 @@
 
   .zc-list{display:flex;flex-direction:column;gap:12px}
   .zc-item{border:1px solid rgba(178,59,50,.35);background:rgba(178,59,50,.05);border-radius:13px;padding:12px}
-  .zc-h{font-family:var(--serif);font-size:15.5px;color:var(--ink);margin-bottom:3px}
+  .zc-h{font-family:var(--serif);font-size:15.5px;font-weight:600;color:var(--ink);margin-bottom:3px}
   .zc-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:10px;color:var(--muted);margin-bottom:9px}
   .zc-f{margin:0 0 9px}
   .zc-fk{font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gold-text);margin-bottom:3px}
@@ -739,7 +741,13 @@
   .wtv{flex:1;font-size:12px;line-height:1.5;color:var(--ink)}
   .catpill{position:absolute;top:14px;left:14px;font-size:9.5px;font-weight:700;letter-spacing:1px;color:#3a546b;background:#cfe0ee;padding:5px 10px;border-radius:14px;z-index:2;backface-visibility:hidden;-webkit-backface-visibility:hidden}
   .catpill.b{color:#5b4a82;background:#e7ddf3}
-  .fcount{color:var(--muted-soft);font-size:11px;font-weight:600;margin-left:1px}
+  .fcount{color:var(--muted-soft);font-size:11px;font-weight:500;margin-left:1px}
+  /* p96: desaturate chip category emoji so a saturated glyph (worst
+     case measured: the Amuse chopsticks emoji, which renders as two
+     bright red/dark strokes) cannot outrank the ink-colored label
+     beside it. Same glyph, same position - filter only, no new
+     asset, no icon reassignment. */
+  .fic{filter:saturate(.55) brightness(.97);display:inline-block}
   .fchip.on .fcount{color:rgba(243,240,233,.75)}
   .front.bottle{background:radial-gradient(125% 85% at 50% 34%, #fefefe 0%, #faf7f1 60%, #efe9dd 100%)}
   .front.bottle .bimg{position:absolute;left:0;right:0;top:0;bottom:0;background-size:contain;background-repeat:no-repeat;background-position:center 44%;filter:drop-shadow(0 16px 20px rgba(60,45,30,.20))}
@@ -1255,6 +1263,16 @@
   /* back button floats into row 1, left */
   .view.collapsed .secbar{position:sticky;top:0;z-index:27;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border:none;box-shadow:none;height:0;padding:0;overflow:visible}
   .view.collapsed .secbar .backbtn{position:relative;left:16px;top:calc(var(--safeT) + 14px)}
+  /* p96: compact page-context caption, visible ONLY while collapsed
+     (sticky-scrolled). Text is copied from this view's own .sectitle
+     at boot (see JS patch below) - never a second hardcoded string.
+     position:absolute inside .secbar, which already has an explicit
+     height:0 in this state (pre-existing rule) - cannot add flow
+     height, cannot move anything below it. Sits in the dead
+     16px-104px zone below the back button, left of the search bar
+     (measured empty in every catalog view - P96-CENSUS.md). */
+  .ctx-lbl{display:none}
+  .view.collapsed .secbar .ctx-lbl{display:block;position:absolute;left:16px;top:calc(var(--safeT) + 33px);width:80px;font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
   /* fbox becomes the full-bleed sticky bar: column of [search row][controls row] */
   .view.collapsed .fbox{position:sticky;top:0;display:flex;flex-direction:column;gap:8px;
     margin:0 -18px;padding:calc(var(--safeT) + 10px) 16px 10px;
@@ -2159,7 +2177,7 @@
 
 <!-- ============ FOOD ============ -->
 <div class="view hidden" id="view-food">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="food" type="button">＋ Add</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><span class="ctx-lbl" aria-hidden="true"></span><button class="p5-secadd" data-p5add="food" type="button">＋ Add</button></div>
   <div class="secwrap">
     <h1 class="sectitle">Food Menu</h1>
     <div class="fbox">
@@ -2176,7 +2194,7 @@
 
 <!-- ============ BEVERAGES ============ -->
 <div class="view hidden" id="view-bev">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="bev" type="button">＋ Add</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><span class="ctx-lbl" aria-hidden="true"></span><button class="p5-secadd" data-p5add="bev" type="button">＋ Add</button></div>
   <div class="secwrap">
     <h1 class="sectitle">Beverages</h1>
     <div class="fbox">
@@ -2193,7 +2211,7 @@
 
 <!-- ============ WINE ============ -->
 <div class="view hidden" id="view-wine">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="wine" type="button">＋ Add</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><span class="ctx-lbl" aria-hidden="true"></span><button class="p5-secadd" data-p5add="wine" type="button">＋ Add</button></div>
   <div class="secwrap">
     <h1 class="sectitle">Wine Catalog</h1>
     <div class="fbox">
@@ -2208,7 +2226,7 @@
 
 <!-- ============ SPIRITS ============ -->
 <div class="view hidden" id="view-spirits">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><button class="p5-secadd" data-p5add="spirit" type="button">＋ Add</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><span class="ctx-lbl" aria-hidden="true"></span><button class="p5-secadd" data-p5add="spirit" type="button">＋ Add</button></div>
   <div class="secwrap">
     <h1 class="sectitle">Spirits Catalog</h1>
     <div class="fbox">
@@ -2223,7 +2241,7 @@
 
 <!-- ============ GLOSSARY ============ -->
 <div class="view hidden" id="view-glossary">
-  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button></div>
+  <div class="secbar"><button class="backbtn" data-back>‹ MILĀ</button><span class="ctx-lbl" aria-hidden="true"></span></div>
   <div class="secwrap">
     <h1 class="sectitle">Glossary</h1>
     <div class="fbox">
@@ -6438,6 +6456,18 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
       if(_p94b&&typeof BEV!=='undefined'&&Array.isArray(BEV))_p94b.textContent=BEV.length+' drinks';}catch(e){}
   try{var _p94w=document.getElementById('mpWineN');
       if(_p94w&&typeof WINE!=='undefined'&&Array.isArray(WINE))_p94w.textContent=WINE.length+' selections';}catch(e){}
+  /* p96: collapsed-header page-context caption - copy each catalog
+     view's own <h1 class=sectitle> text into its .secbar .ctx-lbl
+     once at boot. Never invents a label: it is the same title the
+     view already displays when expanded, just visible in the
+     collapsed state too. Runs once - .sectitle text is static
+     per view, never re-rendered after this point. */
+  try{
+    document.querySelectorAll('.view').forEach(function(v){
+      var t=v.querySelector('.sectitle'), c=v.querySelector('.secbar .ctx-lbl');
+      if(t&&c){var tx=t.textContent.trim();c.textContent=tx;c.setAttribute('title',tx);}
+    });
+  }catch(e){}
   // Alias layer: map dish components to glossary terms that already exist (spelling variants + substring).
   window.GXALIAS={
     "bubu-arare":"bubu arare",
@@ -9766,7 +9796,9 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       var lbl=String(x).replace(/[^A-Za-z\s]/g,'').trim();
       var n=(lbl==='All')?(c.total+c.specials):(lbl==='Specials'?c.specials:(c.byCat[lbl.toUpperCase()]||0));
       var _p94ti=(lbl==='All')?' title="Every on-menu dish, including today’s active special. The plain on-menu total (without the special) is shown above the list."':'';
-      return '<button class="fchip'+(lbl===cur?' on':'')+'"'+_p94ti+'>'+esc(x)+' <span class="fcount">'+n+'</span></button>';
+      var _p96m=String(x).match(/^([^\sA-Za-z]+)\s*(.*)$/);
+      var _p96ic=_p96m?_p96m[1]:'', _p96wd=_p96m?_p96m[2]:String(x);
+      return '<button class="fchip'+(lbl===cur?' on':'')+'"'+_p94ti+'><span class="fic">'+esc(_p96ic)+'</span> '+esc(_p96wd)+' <span class="fcount">'+n+'</span></button>';
     }).join('');
   };
   window.__bevChipsRebuild=function(){
@@ -9791,7 +9823,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var cur=String((window.bevState&&window.bevState.cat)||'All').toUpperCase();
     w.innerHTML=out.map(function(x){
       return '<button class="fchip'+(String(x.l).toUpperCase()===cur?' on':'')+'" data-bev="'+escAttr(x.l)+'">'
-        +esc(x.e+' '+x.l)+' <span class="fcount">'+x.n+'</span></button>';
+        +'<span class="fic">'+esc(x.e)+'</span> '+esc(x.l)+' <span class="fcount">'+x.n+'</span></button>';
     }).join('');
     /* PHASE 12: this function just replaced #bevChips wholesale — re-append the
        "Unverified" toggle chip or it is silently lost on the next edit. */
@@ -9801,7 +9833,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       var vfBtn=document.createElement('button');
       vfBtn.type='button';vfBtn.id='bevVfChip';
       vfBtn.className='fchip vf-toggle'+(vfOn?' on':'');
-      vfBtn.innerHTML='🔎 Unverified <span class="fcount">'+vfN+'</span>';
+      vfBtn.innerHTML='<span class="fic">🔎</span> Unverified <span class="fcount">'+vfN+'</span>';
       w.appendChild(vfBtn);
     }catch(e){}
   };
@@ -10353,11 +10385,17 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     try{if(typeof SPECIAL!=='undefined'&&SPECIAL&&window.__av86&&window.__av86(SPECIAL))n86++;}catch(e){}
     return n86;
   }
-  function p5Row(view,name,sub,badge){
+  function p5Row(view,name,sub,badge,showZero){
+    /* p95: showZero is OPT-IN. Omitted (data/person/people) -> byte-identical
+       to the pre-p95 behaviour (bare truthy check, 0 hides the pill). Only
+       edits/off/queue pass showZero=true, so a real zero count renders a
+       MUTED pill instead of vanishing - see module docstring. */
+    var _bShow=showZero?(badge!==null&&badge!==undefined):!!badge;
+    var _bZero=_bShow&&Number(badge)===0;
     return '<button class="p5-row" data-p5go="'+escAttr(view)+'" type="button">'
       +'<span class="p5-rl"><span class="p5-rn">'+esc(name)+'</span>'
       +(sub?('<span class="p5-rs">'+sub+'</span>'):'')+'</span>'
-      +(badge?('<span class="p5-badge">'+esc(String(badge))+'</span>'):'')
+      +(_bShow?('<span class="p5-badge'+(_bZero?' zero':'')+'">'+esc(String(badge))+'</span>'):'')
       +'<span class="p5-chev" aria-hidden="true">›</span></button>';
   }
   function p5Empty(t){return '<div class="om-empty">'+t+'</div>';}
@@ -10376,14 +10414,14 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +'<div class="p5-rows">'
       +p5Row('edits','Edited items',
              n?('Renames, allergens, photos'+(created?(' · '+created+' created'):'')):'You have not edited anything yet',
-             n?n:0)
+             n?n:0,true)
       +p5Row('off','Off-menu',
              '<b>'+offs.length+'</b> item'+(offs.length!==1?'s':'')+' hidden from the menu'
              +(n86?(' · <b>'+n86+'</b> marked 86 today'):''),
-             offs.length?offs.length:0)
+             offs.length?offs.length:0,true)
       +p5Row('queue','Needs verification',
         _p33q?('<b>'+_p33q+'</b> item'+(_p33q!==1?'s':'')+' waiting to be verified')
-             :'Everything has been verified',_p33q)
+             :'Everything has been verified',_p33q,true)
       +p5Row('data','Data and backup','Export, import or reset',0)
       +(_zc?p5Row('conflicts','In conflict',
                   '<b>'+_zc+'</b> item'+(_zc!==1?'s':'')+' with two different versions — you choose',_zc):'')
@@ -10400,7 +10438,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     if(n){
       h+='<div class="mc-list p5-tall">'+ids.map(function(id){
         var b=baseItem(id);var nm=(o.items[id]&&o.items[id].name)||(b&&b.name)||id;
-        return '<div class="mc-row"><span>'+esc(nm)+'</span><button class="mc-revert" data-mcrev="'+escAttr(id)+'" type="button">Revert</button></div>';
+        return '<div class="mc-row"><span class="mc-name">'+esc(nm)+'</span><button class="mc-revert" data-mcrev="'+escAttr(id)+'" type="button">Revert</button></div>';
       }).join('')+'</div>';
     }else{
       h+=p5Empty('No items edited yet. Open a dish and tap <b>Edit</b>.');
