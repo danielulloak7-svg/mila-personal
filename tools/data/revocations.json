@@ -1,0 +1,20 @@
+[
+ {
+  "dish": "dish.salmon-crispy-rice",
+  "allergen": "Egg",
+  "from": "absent_verified",
+  "to": "present",
+  "revokedBy": "Dani",
+  "date": "2026-08-10",
+  "reason": "La confirmacion de cocina del 2026-07-21 queda superada por MILA-Alergenos-2026-08-09.pdf hoja p6, que lista huevo. El plato lleva mayo."
+ },
+ {
+  "dish": "dish.truffle-cream-spaghetti",
+  "allergen": "Egg",
+  "from": "absent_verified",
+  "to": "present",
+  "revokedBy": "Dani",
+  "date": "2026-08-10",
+  "reason": "La confirmacion de cocina del 2026-07-21 queda superada por MILA-Alergenos-2026-08-09.pdf hoja p23, que lista huevo. El plato es espagueti."
+ }
+]

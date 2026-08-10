@@ -1,0 +1,60 @@
+{"p": 1, "pos": "M-Edamame", "label": "Allergens", "list": ["sesame", "spice", "citrus", "soy", "garlic (allium)"], "mods": "no spice, salt only, plain"}
+{"p": 2, "pos": "M-Shishito", "label": "Allergens", "list": ["spice", "soy", "alcohol"], "mods": null}
+{"p": 3, "pos": "M-Zucchini Temp", "label": "Allergens", "list": ["gluten", "garlic", "sesame", "citrus", "dairy", "spice"], "mods": null}
+{"p": 4, "pos": "M-Mushroom Dumpling", "label": "Allergies", "list": ["allium", "gluten", "spice", "soy", "citrus", "shellfish", "sesame"], "mods": null}
+{"p": 5, "pos": "M-Chicken Yakitori", "label": "Allergies", "list": ["sesame", "spice", "citrus", "soy", "garlic"], "mods": null}
+{"p": 6, "pos": "M-Salmon Crispy Rice", "label": "Allergens", "list": ["sesame", "gluten", "garlic", "onion", "soy", "spice", "alcohol", "citrus", "egg"], "mods": null, "note": "reads 'alcohol citrus' with no comma"}
+{"p": 7, "pos": "M-Spicy Tuna Crispy Rice", "label": "Allergens", "list": ["seafood", "spice", "gluten", "egg", "soy", "citrus", "onion"], "mods": null}
+{"p": 8, "pos": "M-Vegan Caviar Potato Millefeuille", "label": "Allergens", "list": ["citrus", "onion", "mustard", "dairy"], "mods": null}
+{"p": 9, "pos": "M-Wagyu Beef Tartare", "label": "Allergens", "list": ["egg", "garlic", "alcohol", "seafood", "citrus", "pepper", "allium", "soy"], "mods": null}
+{"p": 10, "pos": "M-Hamachi Crudo", "label": "Allergens", "list": ["onion", "spice", "garlic", "seafood", "citrus"], "mods": null}
+{"p": 11, "pos": "M-MILA Oysters 6pcs", "label": "Allergens", "list": ["shellfish", "onion", "alcohol", "spice", "sesame", "citrus", "soy"], "mods": null}
+{"p": 12, "pos": "M-Beetroot Tartare", "label": "Allergies", "list": ["sesame", "soy", "citrus", "allium", "spice", "alcohol"], "mods": null}
+{"p": 13, "pos": "M-Seabream Carpaccio", "label": "Allergies", "list": ["citrus", "soy", "seafood", "spice", "pepper"], "mods": null}
+{"p": 14, "pos": "M-Bluefin Toro Tartare", "label": "Allergies", "list": ["seafood", "sesame", "citrus", "soy", "allium", "chili"], "mods": null}
+{"p": 15, "pos": "M-Tuna Tartare", "label": "Allergies", "list": ["seafood", "sesame", "citrus", "spice", "soy", "alcohol", "chili"], "mods": null}
+{"p": 16, "pos": "M-Seafood Platter", "label": "Allergies", "list": ["shellfish", "fish", "soy", "alcohol", "allium", "alcohol"], "mods": null, "note": "POS lists alcohol twice"}
+{"p": 17, "pos": "M-Madai Crudo", "label": "Allergens", "list": ["spice", "citrus", "onion", "alcohol", "seafood"], "mods": null, "note": "TRAILING COMMA after seafood - list may be cut off at modal edge, verify"}
+{"p": 18, "pos": "M-MILA House Salad", "label": "Allergies", "list": ["sesame", "alcohol", "soy", "gluten", "spice", "allium", "citrus"], "mods": null}
+{"p": 19, "pos": "M-Crab Salad", "label": "Allergens", "list": ["sesame", "gluten", "shellfish", "soy", "citrus", "seafood"], "mods": null}
+{"p": 20, "pos": "M-Seaweed Salad", "label": "Allergens", "list": ["sesame", "spice", "soy", "alcohol", "seafood", "citrus", "onion", "chili"], "mods": "no fish, no shellfish", "note": "EXPLICIT ABSENCE CLAIM in POS text - candidate for absent_verified, needs Dani"}
+{"p": 21, "pos": "M-Spinach Salad", "label": "Allergens", "list": ["sesame", "spice", "chili", "allium", "mushroom"], "mods": null}
+{"p": 22, "pos": "M-Wagyu Gyoza", "label": "Allergens", "list": ["gluten", "onion", "sesame", "soy", "spice", "citrus", "seafood", "mushroom", "alcohol"], "mods": null}
+{"p": 23, "pos": "M-Truffle Pasta", "label": "Allergens", "list": ["gluten", "dairy", "onion", "garlic", "alcohol", "soy", "egg"], "mods": null}
+{"p": 24, "pos": "M-Hot Pot", "label": "Allergens", "list": ["soy", "onion", "garlic", "alcohol", "dairy", "mushroom", "citrus"], "mods": "can be made vegan"}
+{"p": 25, "pos": "M-Tenderloin", "label": "Allergens", "list": ["soy", "allium", "spice", "egg", "citrus", "alcohol", "seafood", "sesame"], "mods": null}
+{"p": 26, "pos": "M-Skirt Steak", "label": "Allergens", "list": ["sesame", "garlic", "onion", "spice"], "mods": null}
+{"p": 27, "pos": "M-Prime Ribeye", "label": "Allergens", "list": ["sesame", "garlic", "onion", "spice", "dairy", "mushroom"], "mods": "wafu sauce has gluten", "note": "CONDITIONAL gluten via wafu sauce"}
+{"p": 28, "pos": "M-Tomahawk", "label": "Allergens", "list": ["soy", "onion", "citrus", "dairy", "seafood", "gluten"], "mods": null}
+{"p": 29, "pos": "M-Poussin Hen", "label": "Allergens", "list": ["soy", "citrus", "alcohol", "garlic", "spice", "mustard"], "mods": null}
+{"p": 30, "pos": "M-Spicy Chipotle Lamb", "label": "Allergens", "list": ["sesame", "gluten", "soy", "spice", "alcohol", "dairy", "egg"], "mods": null}
+{"p": 31, "pos": "M-Aged Porterhouse", "label": "Allergies", "list": ["Citrus", "Chili", "Allium", "Alcohol", "Soy", "Fish", "Egg", "Gluten"], "mods": null, "note": "CORRECTED 2026-08-10 by Dani: POS printed 'Dish', confirmed typo for 'Fish'. Provenance = Dani's confirmation, NOT the PDF text.", "correctedBy": "Dani", "correctedDate": "2026-08-10", "correctedFrom": "Dish"}
+{"p": 32, "pos": "M-Salmon", "label": "Allergens", "list": ["seafood", "garlic", "spice", "citrus", "onion", "soy", "dairy"], "mods": null}
+{"p": 33, "pos": "M-Octopus Skewer", "label": "Allergens", "list": ["soy", "gluten", "spice", "citrus", "shellfish", "pepper", "allium", "mustard", "garlic"], "mods": "gluten can be removed"}
+{"p": 34, "pos": "M-Seabass", "label": "Allergens", "list": ["seafood", "citrus", "garlic", "spice", "shellfish", "soy", "alcohol"], "mods": null}
+{"p": 35, "pos": "M-Black Cod", "label": "Allergens", "list": ["seafood", "spice", "alcohol", "garlic", "citrus"], "mods": null}
+{"p": 36, "pos": "M-King Crab Pot", "label": "Allergies", "list": ["shellfish", "seafood", "dairy", "sesame", "soy", "spice", "citrus", "egg", "allium"], "mods": null}
+{"p": 37, "pos": "M-Branzino (2lb)", "label": "Allergens", "list": ["garlic", "gluten", "alcohol", "citrus", "fish"], "mods": null}
+{"p": 38, "pos": "M-Dover Sole", "label": "Allergens", "list": ["sesame", "citrus", "dairy", "soy", "garlic", "seafood"], "mods": null}
+{"p": 39, "pos": "M-Lobster Tempura", "label": "Allergens", "list": ["shellfish", "egg", "citrus", "soy", "gluten", "spice", "chili", "seafood"], "mods": null}
+{"p": 40, "pos": "M-Sweet Corn", "label": "Allergens", "list": ["dairy", "spice", "garlic", "onion", "sesame", "gluten", "soy", "citrus", "spice"], "mods": null, "note": "POS lists spice twice"}
+{"p": 41, "pos": "M-Broccolini", "label": "Allergens", "list": ["soy", "alcohol", "citrus", "sesame"], "mods": null}
+{"p": 42, "pos": "M-Brussels", "label": "Allergens", "list": ["soy", "allium", "sesame", "seafood"], "mods": null}
+{"p": 43, "pos": "M-Artichokes", "label": "Allergens", "list": ["garlic", "spice", "citrus", "soy"], "mods": null}
+{"p": 44, "pos": "M-Mushrooms", "label": "Allergens", "list": ["dairy", "seafood", "onion", "citrus", "alcohol"], "mods": null}
+{"p": 45, "pos": "M-Wasabi Mash Potato", "label": "Allergens", "list": ["spice", "dairy"], "mods": null}
+{"p": 46, "pos": "M-Wagyu Kagoshima", "label": "Allergens", "list": ["soy", "onion", "citrus", "dairy", "gluten"], "mods": null}
+{"p": 47, "pos": "M-Salmon Avocado Maki", "label": "Allergens", "list": ["seafood", "sesame", "citrus", "spice"], "mods": null}
+{"p": 48, "pos": "M-Spicy Tuna Maki", "label": "Allergens", "list": ["gluten", "sesame", "seafood", "egg", "shellfish"], "mods": null}
+{"p": 49, "pos": "M-Spicy Hamachi Maki", "label": "Allergens", "list": ["gluten", "seafood", "citrus", "egg", "sesame"], "mods": null}
+{"p": 50, "pos": "M-Truffle Scallop Maki", "label": "Allergens", "list": ["shellfish", "citrus", "egg", "sesame", "mollusk"], "mods": null}
+{"p": 51, "pos": "M-Mediterranean Vegetable Maki", "label": "Allergens", "list": ["sesame", "gluten", "garlic", "soy", "spice", "alcohol", "citrus"], "mods": null}
+{"p": 52, "pos": "M-Foie Gras Toro Wagyu", "label": "Allergens", "list": ["citrus", "chili", "seafood", "alcohol", "gluten", "soy"], "mods": null, "note": "no obvious 1:1 match in app FOOD list - needs Dani"}
+{"p": 53, "pos": "M-Crispy Shrimp Maki", "label": "Allergens", "list": ["sesame", "gluten", "onion", "shellfish", "spice", "eggs"], "mods": null}
+{"p": 54, "pos": "M-Beetroot Maki", "label": "Allergens", "list": ["citrus", "spice", "soy", "sesame", "gluten", "onion", "garlic"], "mods": null}
+{"p": 55, "pos": "M-Nigiri Sampler", "label": "Allergens", "list": ["sesame", "dairy", "seafood", "shellfish", "citrus", "garlic", "soy"], "mods": null}
+{"p": 56, "pos": "M-Nigiri Omakase", "label": "Allergens", "list": ["sesame", "dairy", "seafood", "shellfish", "citrus", "garlic", "soy"], "mods": null}
+{"p": 57, "pos": "M-Seasonal Cheesecake", "label": "Allergies", "list": ["dairy", "sesame", "egg", "nut"], "mods": null}
+{"p": 58, "pos": "M-Chocolate Mousse Parfait", "label": "Allergies", "list": ["dairy", "egg", "nut", "sesame"], "mods": null}
+{"p": 59, "pos": "M-MILA Chocolate Lava Cake", "label": "Allergens", "list": ["gluten", "egg", "dairy", "soy"], "mods": null}
+{"p": 60, "pos": "M-Passion Fruit Vacherin", "label": "Allergens", "list": ["citrus", "dairy", "egg", "coconut"], "mods": null}

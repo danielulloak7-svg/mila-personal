@@ -1,0 +1,190 @@
+{
+ "source": {
+  "file": "MILA-Alergenos-2026-08-09.pdf",
+  "pages": 60,
+  "kind": "photographs of POS screen, no text layer",
+  "read_by": "strategy chat (vision) 2026-08-10",
+  "rule": "listed=present; not listed=unknown; never absent_verified"
+ },
+ "allergen_adds": [
+  {
+   "dish": "dish.oysters",
+   "name": "Oysters",
+   "add": "Soy",
+   "provenance": "POS sheet p11"
+  },
+  {
+   "dish": "dish.salmon-crispy-rice",
+   "name": "Salmon Crispy Rice",
+   "add": "Egg",
+   "provenance": "POS sheet p6"
+  },
+  {
+   "dish": "dish.wagyu-beef-tartare",
+   "name": "Wagyu Beef Tartare",
+   "add": "Soy",
+   "provenance": "POS sheet p9"
+  },
+  {
+   "dish": "dish.wagyu-beef-tartare",
+   "name": "Wagyu Beef Tartare",
+   "add": "Spice",
+   "provenance": "POS sheet p9"
+  },
+  {
+   "dish": "dish.truffle-cream-spaghetti",
+   "name": "Truffle Cream Spaghetti",
+   "add": "Egg",
+   "provenance": "POS sheet p23"
+  },
+  {
+   "dish": "dish.14oz-prime-ribeye",
+   "name": "14oz Prime Ribeye",
+   "add": "Mushroom",
+   "provenance": "POS sheet p27"
+  },
+  {
+   "dish": "dish.free-range-young-chicken",
+   "name": "Free Range Young Chicken",
+   "add": "Mustard",
+   "provenance": "POS sheet p29"
+  },
+  {
+   "dish": "dish.marinated-chilean-seabass",
+   "name": "Marinated Chilean Seabass",
+   "add": "Alcohol",
+   "provenance": "POS sheet p34"
+  },
+  {
+   "dish": "dish.grilled-whole-branzino",
+   "name": "Grilled Whole Branzino",
+   "add": "Citrus",
+   "provenance": "POS sheet p37"
+  },
+  {
+   "dish": "dish.grilled-artichokes",
+   "name": "Grilled Artichokes",
+   "add": "Soy",
+   "provenance": "POS sheet p43"
+  },
+  {
+   "dish": "dish.octopus-skewer",
+   "name": "Octopus Skewer",
+   "add": "Mustard",
+   "provenance": "POS sheet p33"
+  },
+  {
+   "dish": "dish.octopus-skewer",
+   "name": "Octopus Skewer",
+   "add": "Allium",
+   "provenance": "POS sheet p33"
+  },
+  {
+   "dish": "dish.octopus-skewer",
+   "name": "Octopus Skewer",
+   "add": "Garlic",
+   "provenance": "POS sheet p33"
+  },
+  {
+   "dish": "dish.aburi-a5-kagoshima-wagyu-maki",
+   "name": "Aburi A5 Kagoshima Wagyu Maki",
+   "add": "Alcohol",
+   "provenance": "POS sheet p52"
+  },
+  {
+   "dish": "dish.aburi-a5-kagoshima-wagyu-maki",
+   "name": "Aburi A5 Kagoshima Wagyu Maki",
+   "add": "Chili",
+   "provenance": "POS sheet p52"
+  },
+  {
+   "dish": "dish.dry-aged-porterhouse",
+   "name": "14-Day Dry-Aged Porterhouse",
+   "add": "Alcohol",
+   "provenance": "POS sheet p31"
+  },
+  {
+   "dish": "dish.dry-aged-porterhouse",
+   "name": "14-Day Dry-Aged Porterhouse",
+   "add": "Citrus",
+   "provenance": "POS sheet p31"
+  },
+  {
+   "dish": "dish.dry-aged-porterhouse",
+   "name": "14-Day Dry-Aged Porterhouse",
+   "add": "Soy",
+   "provenance": "POS sheet p31"
+  },
+  {
+   "dish": "dish.dry-aged-porterhouse",
+   "name": "14-Day Dry-Aged Porterhouse",
+   "add": "Fish",
+   "provenance": "POS p31 printed \"Dish\"; corrected to Fish by Dani 2026-08-10"
+  },
+  {
+   "dish": "dish.exotic-vacherin",
+   "name": "Exotic Vacherin",
+   "add": "Coconut",
+   "provenance": "POS sheet p60"
+  },
+  {
+   "dish": "dish.hamachi-crudo",
+   "name": "Hamachi Crudo",
+   "add": "Coconut",
+   "provenance": "Dani 2026-08-10 (NOT in POS sheet p10)"
+  },
+  {
+   "dish": "dish.truffle-scallop-maki",
+   "name": "Truffle Scallop Maki",
+   "add": "Mollusk",
+   "provenance": "POS sheet p50"
+  }
+ ],
+ "absent_verified": [
+  {
+   "dish": "dish.seaweed-salad",
+   "allergen": "Fish",
+   "verifiedBy": "Dani",
+   "date": "2026-08-10",
+   "source": "MILA-Alergenos-2026-08-09.pdf p20 - literal text \"no fish, no shellfish\""
+  },
+  {
+   "dish": "dish.seaweed-salad",
+   "allergen": "Shellfish",
+   "verifiedBy": "Dani",
+   "date": "2026-08-10",
+   "source": "MILA-Alergenos-2026-08-09.pdf p20 - literal text \"no fish, no shellfish\""
+  }
+ ],
+ "new_terms": [
+  "Coconut",
+  "Mollusk"
+ ],
+ "rejected_terms": {
+  "Pepper": "maps to Spice (Dani 2026-08-10)",
+  "Dish": "POS typo for Fish (Dani 2026-08-10)"
+ },
+ "new_dish": {
+  "id": "dish.seafood-platter",
+  "name": "Seafood Platter",
+  "pos_name": "M-Seafood Platter",
+  "page": 16,
+  "allerg": [
+   "Shellfish",
+   "Fish",
+   "Soy",
+   "Alcohol",
+   "Allium"
+  ],
+  "needsReview": true,
+  "note": "composition, description and price NOT sourced - stub only, never invent"
+ },
+ "pending_not_to_write": [
+  {
+   "dish": "dish.dry-aged-porterhouse",
+   "allergen": "Egg",
+   "page": 31,
+   "reason": "Dani holds it for kitchen confirmation. Must stay unknown."
+  }
+ ]
+}
