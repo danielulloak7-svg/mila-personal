@@ -55,6 +55,36 @@ Verificado el 2026-08-10 contra un archivo roto a propósito: inyectando tres de
 procedencia de una ausencia verificada) el checker los encuentra los cuatro. Una sonda
 que sale limpia sin haber demostrado que encuentra el defecto no prueba nada.
 
+## `check-forms.mjs` — que cada bebida reciba SU formulario
+
+```
+node tools/check-forms.mjs
+```
+
+Necesita Playwright (`npm i -D playwright` y `npx playwright install chromium`). Si no
+está instalado, **se salta solo** y no rompe nada: la comprobación de alérgenos no
+depende de él.
+
+Abre el editor de seis ítems reales y comprueba que cada uno recibe el formulario que
+le toca: una botella y un vino por copa el de vino, un sake y una cerveza el suyo, un
+cóctel y un plato el de comida.
+
+Existe porque el 2026-08-10 los **sakes heredaban el formulario de vino** —a un Junmai
+Ginjo le pedía Cuvée, Appellation y Uvas— y las **cervezas el de comida**, que le pedía
+Ingredientes y Guarnición a una Sapporo. Era el mismo defecto de los BTG, un nivel más
+abajo. Este check es lo que impide que vuelva.
+
+## Trampa aprendida: `__mergeOv` es una lista blanca
+
+El overlay de ediciones **no** se mezcla campo a campo automáticamente: `__mergeOv`
+copia una lista explícita de campos. Un campo nuevo del editor que no esté en esa lista
+se guarda y se ignora en silencio al leerlo de vuelta.
+
+Pasó exactamente eso con `grade` y `seimai` la primera vez: el formulario se veía
+perfecto, el toast decía «Changes saved», y el dato no volvía. **Si añades un campo al
+editor, añádelo también a `__mergeOv`.** La prueba que lo caza es un ida y vuelta:
+escribir, guardar, releer.
+
 ## Qué hay en `data/`
 
 - `pos-extraction-2026-08-10.jsonl` — las 60 hojas del POS transcritas y verificadas a
