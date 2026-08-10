@@ -226,6 +226,44 @@
   .ed-baserow .ed-btr{flex:1;min-width:0}
   .ed-basenote{font-size:11px;line-height:1.45;color:var(--muted);margin:2px 0 0}
   .ed-liadd:active{transform:scale(.99)}
+
+  /* p100 -- wine editor: content grouped by how often a sommelier
+     actually changes it. Vintage/price sit first (no scroll); tasting/
+     service next; identity/catalog fields sit behind a native <details>
+     disclosure so a long, rarely-touched tail never pads the common
+     10-second edit. See p100_wine_editor.py module docstring. */
+  .w-sec{margin-top:4px}
+  .w-quickgrid,.w-svcgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 8px}
+  .w-quickgrid>div>.ed-lbl,.w-svcgrid>div>.ed-lbl{margin-top:14px}
+  @media (max-width:359px){.w-quickgrid,.w-svcgrid{grid-template-columns:1fr}}
+  .w-pricenote{font-size:11px;line-height:1.45;color:var(--gold-text);margin:6px 0 0;font-style:italic}
+  .w-details{margin-top:16px;border:1px solid var(--line);border-radius:12px;padding:2px 13px 13px;background:var(--cream-card)}
+  .w-details summary{list-style:none;cursor:pointer;min-height:44px;box-sizing:border-box;display:flex;align-items:center;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin:0 -13px;padding:0 13px}
+  .w-details summary::-webkit-details-marker{display:none}
+  .w-details summary::after{content:'▸';margin-left:auto;color:var(--gold-text);font-size:12px;transition:transform .15s}
+  .w-details[open] summary::after{transform:rotate(90deg)}
+  .w-detbody{padding-top:2px}
+  .w-sysnote{margin-top:16px;padding-top:12px;border-top:1px dashed var(--line);font-size:11px;line-height:1.55}
+  .w-systtl{font-weight:800;letter-spacing:.6px;text-transform:uppercase;font-size:9.5px;color:var(--muted);margin-bottom:6px}
+  .w-sysrow{display:flex;gap:8px;padding:2px 0;color:var(--muted)}
+  .w-sysk{flex:0 0 auto;min-width:92px;font-weight:700;color:var(--muted-soft)}
+  .w-sysv{flex:1}
+  /* the Wine List sheet's edit door: a REAL box (min-height, no
+     pseudo-hitbox overlay), spaced 12px from the price line above and
+     the tags row's own 13px top margin below -- its tap target cannot
+     reach a neighbour's visible area (verified with elementFromPoint,
+     see report). */
+  .sh-editrow{margin:12px 0 2px}
+  .sh-editbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;appearance:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--gold-text);background:rgba(176,141,87,.12);border:1px solid rgba(176,141,87,.4);border-radius:10px;padding:0 14px;min-height:44px;box-sizing:border-box;cursor:pointer}
+  .sh-editbtn:active{transform:scale(.97)}
+  .price-edited{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.03em;color:var(--ink);background:rgba(176,141,87,.18);border:1px solid rgba(176,141,87,.45);border-radius:5px;padding:1px 6px;margin-left:7px;vertical-align:middle}
+  /* the Decant control reuses the existing .ed-tb tri-state button (the
+     allergen Present/Not-sure/Verified-free buttons), which ships at
+     28px tall -- fine for a dense allergen grid, too short for a
+     stand-alone tappable control. Scoped to [data-wdec] ONLY, so the
+     pre-existing allergen buttons elsewhere are byte-identical, unmoved,
+     unresized. */
+  .ed-tb[data-wdec]{min-height:44px;min-width:44px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;padding:0 14px}
   /* (P4.e) allergen-LINK: AL sheet must sit ABOVE the dish-editor sheet */
   .al-dim{z-index:88}
   .al-sheet{z-index:89}
@@ -413,18 +451,7 @@
   .ed-err{color:#b23b32;font-size:11.5px;font-weight:600;line-height:1.4;margin:4px 0 0;min-height:0}
   .ed-err:empty{display:none}
 
-  /* --- PHASE C: 86 (out today) visual state --- */
-  .dish.av86 .face.front{filter:grayscale(.72) brightness(.93)}
-  /* the badge lives on the .dish wrapper, NOT inside .face.front: a filtered element
-     filters its own ::after too, which washed the red out to grey. */
-  .dish.av86{position:relative}
-  .dish.av86::after{content:'86 · NOT TODAY';position:absolute;top:14px;left:50%;transform:translateX(-50%);
-    z-index:6;font-size:10px;font-weight:800;letter-spacing:.09em;color:#fff;background:rgba(168,50,38,.94);
-    border:1px solid rgba(255,255,255,.28);padding:4px 10px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.28);
-    pointer-events:none;white-space:nowrap}
-  .dish.av86 .face.back{box-shadow:inset 0 0 0 2px rgba(168,50,38,.35)}
-  .av86-inline{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.06em;color:#a83226;
-    background:rgba(178,59,50,.13);border:1px solid rgba(178,59,50,.45);border-radius:5px;padding:1px 5px;margin-left:7px;vertical-align:middle}
+  
   /* PHASE 17 / DECISION A: "no allergen data" marker. Absence of evidence is
      not evidence of absence — this pill says we do not know, and must never
      read as a verified-safe result. Warning ochre, dashed, never green. */
@@ -438,9 +465,20 @@
   .ed-avtri .ed-avb{flex:1;padding:10px 6px;border-radius:10px;border:1px solid var(--line);background:transparent;
     font-family:inherit;font-size:12px;font-weight:700;color:var(--ink,#2b2b2b);cursor:pointer}
   .ed-avtri .ed-avb.on.a{background:rgba(78,124,90,.14);border-color:rgba(78,124,90,.55);color:#3d6b4c}
-  .ed-avtri .ed-avb.on.e{background:rgba(214,120,20,.16);border-color:rgba(214,120,20,.55);color:#a05a08}
   .ed-avtri .ed-avb.on.o{background:rgba(178,59,50,.14);border-color:rgba(178,59,50,.55);color:#a83226}
   .ed-avnote{font-size:11px;line-height:1.5;opacity:.72;margin-top:8px}
+  /* PHASE C99 -- delete: kept structurally apart from the reversible
+     Availability toggle by a divider and 22px of top margin, its own
+     section, never a neighbour of Hide. */
+  .ed-delsec{margin-top:22px;padding-top:14px;border-top:2px solid var(--line)}
+  .ed-delbtn{min-height:44px;box-sizing:border-box;display:flex;align-items:center;justify-content:center}
+  .ed-delsec .ed-delstart{color:var(--danger);font-weight:700}
+  .ed-delnote{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 10px}
+  .ed-delinp{min-height:44px;box-sizing:border-box;width:100%;font-family:inherit;font-size:14px;color:var(--ink);
+    background:var(--cream-card);border:1px solid var(--line);border-radius:10px;padding:0 12px}
+  .ed-delrow{display:flex;gap:8px;margin-top:10px}
+  .ed-delrow .ed-btn{margin-top:0}
+  .ed-btn:disabled{opacity:.42;cursor:not-allowed}
   /* gear panel: off-menu recovery list */
   .om-sec{margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)}
   .om-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cream-card);border:1px solid var(--line);border-radius:13px;padding:12px 14px}
@@ -2319,19 +2357,6 @@
 .ts-act svg{width:18px;height:18px;color:var(--gold-deep)}
 .ts-act.danger{color:var(--danger)}.ts-act.danger svg{color:var(--danger)}
 #teamSheet,#inviteSheet{max-height:86vh;overflow-y:auto}
-/* 86 board */
-.e86-note{font-size:11.5px;color:var(--muted);line-height:1.45;padding:11px 13px;border:1px dashed var(--line);border-radius:12px;margin-bottom:14px}
-.e86-note b{color:var(--danger)}
-.e86-row{display:flex;align-items:center;gap:11px;padding:11px 13px;background:var(--cream-card);border:1px solid var(--line);border-radius:13px;margin-bottom:8px}
-.e86-row.on{border-color:rgba(180,82,74,.4);background:rgba(180,82,74,.05)}
-.e86-main{flex:1;min-width:0}
-.e86-nm{font-family:var(--serif);font-size:14.5px;color:var(--ink)}
-.e86-row.on .e86-nm{color:var(--danger);text-decoration:line-through}
-.e86-sub{font-size:11px;color:var(--muted);margin-top:1px}
-.e86-tog{flex:0 0 auto;width:52px;height:30px;border-radius:999px;border:none;background:var(--line);position:relative;cursor:pointer;transition:background .2s}
-.e86-tog.on{background:var(--danger)}
-.e86-knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-.e86-tog.on .e86-knob{transform:translateX(22px)}
 /* verify queue */
 .vq-tabs{display:flex;gap:8px;margin-bottom:14px}
 .vq-tab{flex:1;padding:9px;border-radius:11px;border:1px solid var(--line);background:var(--cream-card);font-family:inherit;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
@@ -2525,7 +2550,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   window.__avail=function(d){try{if(!d||!d.id)return 'active';
     var ov=(window.getOverlay?(window.getOverlay().items||{}):{});var it=ov[d.id];
     var v=(it&&it.availability)||d.availability||BAKED_AVAIL[d.id]||'active';
-    return (v==='86'||v==='off-menu')?v:'active';}catch(e){return 'active';}};
+    return (v==='off-menu')?v:'active';}catch(e){return 'active';}};
   window.__avOff=function(d){return window.__avail(d)==='off-menu';};
   /* (p44-U4) A DELISTED bottle is one the restaurant took off the printed
      list.  It is not a data defect and must never render like one.  The
@@ -2554,7 +2579,6 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       if(window.__delisted(w))out.declared.push(w.id);else out.orphans.push(w.id);
     });}catch(e){out.err=String(e);}
     return out;};
-  window.__av86=function(d){return window.__avail(d)==='86';};
   window.__avUnavail=function(d){return window.__avail(d)!=='active';};
   window.__avCount=function(arr){var n=0;(arr||[]).forEach(function(d){if(!window.__avOff(d))n++;});return n;};
   window.__avOffList=function(){var out=[];function scan(a){(a||[]).forEach(function(d){if(window.__avOff(d))out.push(d);});}
@@ -3550,7 +3574,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
     const priceF=d.price?`<span class="dprice">${d.price}</span>`:(d.special?`<span class="dprice spec">Tonight only</span>`:'');
     const provBadge=d.special?`<span class="sp-prov">PROVISIONAL</span>`:'';
     const provNote=d.special?`<div class="sp-note"><span>⚠</span><span><b>Manager-declared special.</b> Separate from the verified catalog — allergens are as declared. Confirm with the kitchen for allergy guests.</span></div>${brow('Service',`<span class="bval">${d.dates||''}</span>`)}`:'';
-    return `<div class="dish${d.needsImage?' needsimg':''}${d._edited?' edited':''}${(window.__av86&&window.__av86(d))?' av86':''}" data-key="${dishKey(d.name)}"${d.id?(' data-id="'+d.id+'"'):''}${d.needsImage?' data-needsimage="1"':''}><div class="flip">
+    return `<div class="dish${d.needsImage?' needsimg':''}${d._edited?' edited':''}" data-key="${dishKey(d.name)}"${d.id?(' data-id="'+d.id+'"'):''}${d.needsImage?' data-needsimage="1"':''}><div class="flip">
       ${front}
         ${catpill}
         <div class="fgrad"><div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(_p77CatSub(d))}</div>
@@ -4223,7 +4247,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
     var rows=rich.map(function(p){
       var b=idx[p.d]; if(!b) return '';
       if(window.__avOff&&window.__avOff(b)) return '';                       /* off-menu: drop, no dangling ref */
-      var m=(window.__av86&&window.__av86(b))?' <span class="av86-inline">86</span>':'';
+      var m='';
       /* (p61) same two rules as the wine side: a rejected pairing is not
          offered here, and a certified one no longer counts toward the
          authored-and-unverified disclaimer. */
@@ -4240,7 +4264,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       return '<div class="pn-item"><div class="pn-main"><div class="pn-dish" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</div><div class="pn-why">'+window.__esc(p.why)+'</div>'+window.__pairEdgeMark(p._eid)+'</div>'+(p._prop?'<span class="pn-badge prop">✎ PROPOSED</span>':'')+'</div>';
     }).filter(Boolean).join('');
     var done={}; rich.forEach(function(p){done[p.d]=1;});
-    var chips=(d.pairWines||[]).map(function(id){var b=idx[id];if(!b||done[id]||b.kind!=='wine')return '';if(window.__avOff&&window.__avOff(b))return '';var m=(window.__av86&&window.__av86(b))?' <span class="av86-inline">86</span>':'';return '<span class="chip2 pair-chip" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</span>';}).filter(Boolean).join('');
+    var chips=(d.pairWines||[]).map(function(id){var b=idx[id];if(!b||done[id]||b.kind!=='wine')return '';if(window.__avOff&&window.__avOff(b))return '';var m='';return '<span class="chip2 pair-chip" data-drink="'+dishKey(b.name)+'">🍷 '+window.__esc(_mn(b))+m+'</span>';}).filter(Boolean).join('');
     if(!rows&&!chips){
       /* (p61) symmetric with the wine side: say WHY it is empty. */
       if(!_rEm)return '';
@@ -4279,7 +4303,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   function milaPairPanel(d){
     var w=d.pn?window.__pairEdgesForWine(d.pn):null;
     if(w){
-      /* PHASE C: an off-menu dish is dropped from the panel; an 86'd dish stays, marked. */
+      /* PHASE C: an off-menu (or deleted) dish is dropped from the panel. */
       function _pnAvail(l){return (l||[]).filter(function(x){if(!x.k||!window.__dishByKey||!window.__avOff)return true;var dd=window.__dishByKey(x.k);return !(dd&&window.__avOff(dd));});}
       /* (p61) a REJECTED pairing stops being offered here - this is the
          panel a runner reads to a guest.  It is not deleted: the Explore
@@ -4330,7 +4354,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       if(!_pnTot&&_pnRej)_pnNote+='<div class="pn-none">Every pairing for this wine has been rejected in review. Open the sheet below to read why.</div>';
       var top=_topL.map(function(it){
         var a=it.k?(' data-dish="'+it.k+'"'):'';
-        var m=(it.k&&window.__dishByKey&&window.__av86&&window.__av86(window.__dishByKey(it.k)))?' <span class="av86-inline">86</span>':'';
+        var m='';
         return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+m+'</div><div class="pn-why">'+window.__esc(it.why)+'</div>'+window.__pairEdgeMark(it._eid)+'</div>'+(it._prop?'<span class="pn-badge prop">✎ PROPOSED</span>':'<span class="pn-badge top">✦ TOP</span>')+'</div>';
       }).join('');
       var more=_moreL.length;
@@ -4345,14 +4369,14 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
     var chips=names.map(function(n){
       var dd=(window.__dishByKey)?window.__dishByKey(dishKey(n)):null;
       if(dd&&window.__avOff&&window.__avOff(dd))return '';                    /* off-menu: drop */
-      var m=(dd&&window.__av86&&window.__av86(dd))?' <span class="av86-inline">86</span>':'';
+      var m='';
       return '<span class="chip2 pair-chip" data-dish="'+dishKey(n)+'">🍽 '+n+m+'</span>';
     }).filter(Boolean).join('');
     if(!chips) return '';
     return '<div class="milabox"><div class="mptitle">✦ MILA Pairings</div><div class="mpsub">Verified from MILA\'s own menu — tap to open the dish</div><div class="chips2">'+chips+'</div></div>';
   }
   function _bevWrap(d, front, fgrad, back){
-    return `<div class="dish${d.needsImage?' needsimg':''}${d._edited?' edited':''}${(d.kind==='wine'&&!d.photo)?' nophoto-bottle':''}${(window.__av86&&window.__av86(d))?' av86':''}" data-key="${dishKey(d.name)}"${d.id?(' data-id="'+d.id+'"'):''}${d.needsImage?' data-needsimage="1"':''}><div class="flip">
+    return `<div class="dish${d.needsImage?' needsimg':''}${d._edited?' edited':''}${(d.kind==='wine'&&!d.photo)?' nophoto-bottle':''}" data-key="${dishKey(d.name)}"${d.id?(' data-id="'+d.id+'"'):''}${d.needsImage?' data-needsimage="1"':''}><div class="flip">
       ${front}
         <span class="catpill b">${d.sense}</span>
         <div class="fgrad">${fgrad}</div>
@@ -4415,7 +4439,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
         ${d.decant!==null?`<div class="svc-item"><div class="svc-k">Decant</div><div class="svc-v">${d.decant?'Yes':'No'}</div></div>`:''}
         ${d.glassware?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${d.glassware}</div></div>`:''}
       </div>` : '';
-    const priceRow = (d.price||d.bottlePrice) ? `<span class="bval">${d.price?('Glass '+d.price):''}${d.price&&d.bottlePrice?' · ':''}${d.bottlePrice?('Bottle '+d.bottlePrice):''}</span>` : '';
+    const priceRow = (d.price||d.bottlePrice) ? `<span class="bval">${d.price?('Glass '+d.price):''}${d.price&&d.bottlePrice?' · ':''}${d.bottlePrice?('Bottle '+d.bottlePrice):''}</span>${d.priceProv?`<span class="price-edited" title="Edited by ${window.__esc(d.priceProv.by||'')} · ${window.__esc(d.priceProv.date||'')} — diverges from the printed list">✎ edited</span>`:''}` : '';
     return `<div class="bname">${window.__esc(d.name)}${badge}</div><div class="bdiv"></div>
       ${d.producer?brow('Producer',`<span class="bval" style="color:var(--gold-text);font-weight:700">${d.producer}</span>`):''}
       ${d.cuvee?brow('Cuvée',`<span class="bval" style="color:var(--gold-text);font-weight:700">${d.cuvee}</span>`):''}
@@ -6847,7 +6871,7 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
     else{sheetBody.setAttribute('data-wxid',(r&&r.id)?String(r.id):'');openSheet(basicWine(r));}
   }
   function basicWine(r){
-    var price=(r.btg?'BTG '+r.btg:(r.btgPending?'<span class="sp-needsreview">BTG PRICE PENDING</span>':''))+(r.btl?(r.btg||r.btgPending?' ':'')+'<span class="btl">'+(r.btg?'· ':'')+r.btl+'/btl</span>':'');
+    var price=(r.btg?'BTG '+r.btg:(r.btgPending?'<span class="sp-needsreview">BTG PRICE PENDING</span>':''))+(r.btl?(r.btg||r.btgPending?' ':'')+'<span class="btl">'+(r.btg?'· ':'')+r.btl+'/btl</span>':'')+(r.priceProv?'<span class="price-edited" title="Edited by '+window.__escA(String(r.priceProv.by||''))+' · '+window.__escA(String(r.priceProv.date||''))+' — diverges from the printed list">✎ edited</span>':'');
     /* p30: prod-less records must not print "undefined" in sh-sub, and the
        bottle format earns its own tag - it is part of the wine's identity. */
     var _shSub=[r.prod,r.vint].filter(Boolean).join(' · ');
@@ -6906,7 +6930,7 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
         _wverbtn='<button class="gp-revbtn" type="button" data-wxrev="'+_wid+'" title="Records who verified this entry, and when">Verify</button>';
       }
     }
-    return '<div class="sh-top"><div><div class="sh-name">'+window.__esc(r.name)+(r.needsReview?'<span class="sp-needsreview"> NEEDS REVIEW</span>':'')+'</div>'+_shSubDiv+'<div class="sh-prices">'+price+'</div></div></div>'+(r.aiLayer?'<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>':'')+tags+box+(r.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+window.__esc(r.desc)+'</div>':'')+notes+_wstyle+nav+pairs+genp+_wverbtn;
+    return '<div class="sh-top"><div><div class="sh-name">'+window.__esc(r.name)+(r.needsReview?'<span class="sp-needsreview"> NEEDS REVIEW</span>':'')+'</div>'+_shSubDiv+'<div class="sh-prices">'+price+'</div></div></div>'+'<div class="sh-editrow"><button class="sh-editbtn" type="button" data-edit="'+window.__escA(String(r.id||''))+'">✎ Edit</button></div>'+(r.aiLayer?'<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>':'')+tags+box+(r.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+window.__esc(r.desc)+'</div>':'')+notes+_wstyle+nav+pairs+genp+_wverbtn;
   }
   /* (p35) sheet-refresh: repaint the OPEN wine sheet in place after a
      verify toggle, exactly like p33's __zGlossRefreshSheet.  __toggleContentVerify
@@ -7248,7 +7272,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   dim.addEventListener('click',close);
   document.getElementById('pnClose').addEventListener('click',close);
   function badge(t){if(t==='prop')return '<span class="pn-badge prop">✎ PROPOSED</span>';if(t==='top')return '<span class="pn-badge top">✦ TOP</span>';if(t==='exc')return '<span class="pn-badge exc">EXCELLENT</span>';if(t==='catalog')return '<span class="pn-badge top">✦ CATALOG</span>';if(t==='style')return '<span class="pn-badge good">STYLE</span>';return '<span class="pn-badge good">GOOD</span>';}
-  function item(it,t){var a=it.k?(' data-dish="'+it.k+'"'):'';var _86=(it.k&&window.__dishByKey&&window.__av86&&window.__av86(window.__dishByKey(it.k)))?' <span class="av86-inline">86</span>':'';return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+_86+'</div>'+(it.why?'<div class="pn-why">'+window.__esc(it.why)+'</div>':'')+_vrow(it)+'</div>'+badge((it&&it._prop)?'prop':(t||it.tier))+'</div>';}
+  function item(it,t){var a=it.k?(' data-dish="'+it.k+'"'):'';var _86='';return '<div class="pn-item"><div class="pn-main"><div class="pn-dish"'+a+'>'+window.__esc(it.name)+_86+'</div>'+(it.why?'<div class="pn-why">'+window.__esc(it.why)+'</div>':'')+_vrow(it)+'</div>'+badge((it&&it._prop)?'prop':(t||it.tier))+'</div>';}
   function secHead(t,n){return '<div class="pn-sec">'+t+(n?' <span class="cnt">· '+n+'</span>':'')+'</div>';}
   function render(cat){
     var w=cur;if(!w)return;
@@ -7842,7 +7866,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
      so by then it exists -- but resolving it at definition time would freeze the fallback in.
      Records are merged BEFORE any filtering/grouping/rendering, so Dani's saved edits are what
      prints, and off-menu records are dropped from the live availability layer (never a
-     hardcoded id list). 86'd items print normally and unmarked -- Dani's explicit decision. */
+     hardcoded id list). */
   function prSrc(arr){
     var MRG=(window.__mrgItem||function(d){return d;}),OFF=(window.__avOff||function(){return false;});
     return (arr||[]).map(function(d){return MRG(d);}).filter(function(d){return !OFF(d);});
@@ -8147,11 +8171,11 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var c=cfg(), h='', tiles='';
     /* CURRENT AMUSE tile */
     var a=merged(byId(c.amuseId));
-    if(a&&window.__avUnavail&&window.__avUnavail(a)){tiles+=pfTile('CURRENT AMUSE · UNAVAILABLE','🥢',a.name,((window.__av86&&window.__av86(a))?'86':'Off-menu')+' · no automatic substitute',keyOf(a.name),'gold',window.__safeImg&&window.__safeImg(a.photo));a=null;}
+    if(a&&window.__avUnavail&&window.__avUnavail(a)){tiles+=pfTile('CURRENT AMUSE · UNAVAILABLE','🥢',a.name,'Off-menu'+' · no automatic substitute',keyOf(a.name),'gold',window.__safeImg&&window.__safeImg(a.photo));a=null;}
     if(a){var asub=(a.currentAmuse&&a.currentAmuse.served)||a.sub||a.tableside||'';tiles+=pfTile('CURRENT AMUSE','🥢',a.name,asub,keyOf(a.name),'gold',window.__safeImg&&window.__safeImg(a.photo));}
     /* always-active tiles (oysters) */
     (c.activos||[]).forEach(function(id){
-      var d=merged(byId(id)); if(!d)return; if(window.__avUnavail&&window.__avUnavail(d)){tiles+=pfTile('CURRENT · UNAVAILABLE','🍽️',d.name,((window.__av86&&window.__av86(d))?'86':'Off-menu')+' · no automatic substitute',keyOf(d.name),'gold',window.__safeImg&&window.__safeImg(d.photo));return;}
+      var d=merged(byId(id)); if(!d)return; if(window.__avUnavail&&window.__avUnavail(d)){tiles+=pfTile('CURRENT · UNAVAILABLE','🍽️',d.name,'Off-menu'+' · no automatic substitute',keyOf(d.name),'gold',window.__safeImg&&window.__safeImg(d.photo));return;}
       var isOy=!!d.currentOyster||/oyster/i.test(d.name||'');
       var tag=isOy?'CURRENT OYSTERS':'CURRENT';
       var emo=isOy?'🦪':'🍽️';
@@ -8971,6 +8995,75 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
         else _warnField(d.id,'photo',it.photo);
       }else if(it.needsImage===true){m.photo='';m.needsImage=true;}
     }catch(e){_warnField(d.id,'photo',it.photo);}
+    /* (p100) wine-only content fields -- simple string passthrough.
+       fstr already warns+skips a non-string overlay value and falls back
+       to the baked value, so a corrupt overlay entry can never crash a
+       render. */
+    try{fstr('producer','producer');}catch(e){_warnField(d.id,'producer',it.producer);}
+    try{fstr('cuvee','cuvee');}catch(e){_warnField(d.id,'cuvee',it.cuvee);}
+    try{fstr('aroma','aroma');}catch(e){_warnField(d.id,'aroma',it.aroma);}
+    try{fstr('palate','palate');}catch(e){_warnField(d.id,'palate',it.palate);}
+    try{fstr('finish','finish');}catch(e){_warnField(d.id,'finish',it.finish);}
+    try{fstr('body','body');}catch(e){_warnField(d.id,'body',it.body);}
+    try{fstr('temp','temp');}catch(e){_warnField(d.id,'temp',it.temp);}
+    try{fstr('pourSize','pourSize');}catch(e){_warnField(d.id,'pourSize',it.pourSize);}
+    try{fstr('vint','vint');}catch(e){_warnField(d.id,'vint',it.vint);}
+    try{fstr('prod','prod');}catch(e){_warnField(d.id,'prod',it.prod);}
+    try{fstr('desc','desc');}catch(e){_warnField(d.id,'desc',it.desc);}
+    try{fstr('vintage','vintage');}catch(e){_warnField(d.id,'vintage',it.vintage);}
+    try{fstr('appellation','appellation');}catch(e){_warnField(d.id,'appellation',it.appellation);}
+    try{fstr('region','region');}catch(e){_warnField(d.id,'region',it.region);}
+    try{fstr('story','story');}catch(e){_warnField(d.id,'story',it.story);}
+    try{fstr('blend','blend');}catch(e){_warnField(d.id,'blend',it.blend);}
+    try{fstr('glassware','glassware');}catch(e){_warnField(d.id,'glassware',it.glassware);}
+    try{fstr('producerNotes','producerNotes');}catch(e){_warnField(d.id,'producerNotes',it.producerNotes);}
+    try{fstr('tip','tip');}catch(e){_warnField(d.id,'tip',it.tip);}
+    try{fstr('btg','btg');}catch(e){_warnField(d.id,'btg',it.btg);}
+    try{fstr('btl','btl');}catch(e){_warnField(d.id,'btl',it.btl);}
+    try{fstr('price','price');}catch(e){_warnField(d.id,'price',it.price);}
+    try{fstr('bottlePrice','bottlePrice');}catch(e){_warnField(d.id,'bottlePrice',it.bottlePrice);}
+    /* (p100) grapes: WINE bottles bake this as a comma STRING; a BEV
+       by-the-glass record bakes it as an ARRAY of grape names. The editor
+       always writes one comma-separated STRING (a single text input for
+       both record shapes); the shape written back here follows the
+       BAKED record's own original shape (d.grapes, read before any
+       overlay is applied) -- never the overlay's -- so a card's own
+       renderer (which .map()s a BTG's grapes) never receives a type it
+       does not expect. */
+    try{
+      if(typeof it.grapes==='string'){
+        if(Array.isArray(d.grapes)){
+          m.grapes=it.grapes.split(',').map(function(s){return s.trim();}).filter(Boolean);
+        }else{
+          m.grapes=it.grapes;
+        }
+      }else if(it.grapes!=null){
+        _warnField(d.id,'grapes',it.grapes);
+      }
+    }catch(e){_warnField(d.id,'grapes',it.grapes);}
+    /* (p100) decant is a TRI-STATE (true / false / null="not sourced"),
+       so it cannot use fstr (string-only), farr (array-only), or a
+       `!= null` presence guard (null is itself a legitimate WRITTEN
+       value here, not "absent" -- and it is what the existing wineBack()
+       renderer already keys "no decant info" off of, unchanged). */
+    try{
+      if(Object.prototype.hasOwnProperty.call(it,'decant')){
+        var _dcv=it.decant;
+        if(_dcv===true||_dcv===false||_dcv===null)m.decant=_dcv;
+        else _warnField(d.id,'decant',_dcv);
+      }
+    }catch(e){_warnField(d.id,'decant',it.decant);}
+    /* (p100) price provenance -- who and when a glass/bottle price was
+       last hand-edited, so the sheet can flag "this diverges from the
+       printed list" instead of silently presenting an edited number as
+       sourced. Never read as, or merged with, allergenProvenance or
+       contentVerification -- an edited price is never treated as newly
+       verified. */
+    try{
+      if(it.priceProv&&typeof it.priceProv==='object'&&typeof it.priceProv.by==='string'&&typeof it.priceProv.date==='string'){
+        m.priceProv={by:it.priceProv.by,date:it.priceProv.date};
+      }
+    }catch(e){_warnField(d.id,'priceProv',it.priceProv);}
     return m;
   };
   /* (A3) the published line renders the ACTUAL stored provenance, never a hardcoded name.
@@ -9080,6 +9173,67 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
 
   /* ---------- EDITOR ---------- */
   var ed=null;
+  /* p100 -- classify + snapshot every wine-only field at editor-open time.
+     A record with no source for a field snapshots it as '' (bottle/btg
+     text fields) or null (btg decant) -- NEVER a plausible default. The
+     editor renders that as an empty field with a "not sourced" placeholder,
+     never a guess. */
+  function _wineSnap(id,cur){
+    var wineKind=null;
+    try{
+      if((typeof WINE!=='undefined')&&WINE.some(function(x){return x.id===id;}))wineKind='bottle';
+      else if((typeof BEV!=='undefined')&&BEV.some(function(x){return x.id===id&&x.kind==='wine';}))wineKind='btg';
+    }catch(e){}
+    if(!wineKind)return {wineKind:null};
+    var isBtl=(wineKind==='bottle');
+    function s(v){return String(v||'');}
+    var grapesRaw=cur.grapes;
+    var grapesText=Array.isArray(grapesRaw)?grapesRaw.join(', '):s(grapesRaw);
+    var priceGlass=isBtl?s(cur.btg):s(cur.price);
+    var priceBottle=isBtl?s(cur.btl):s(cur.bottlePrice);
+    var pp=(cur.priceProv&&typeof cur.priceProv==='object')?cur.priceProv:null;
+    var priceProvNote=(pp&&pp.by&&pp.date)?('Price last edited by '+pp.by+' \u00b7 '+pp.date+' \u2014 diverges from the printed list'):'';
+    var sysLines=[];
+    function sys(lbl,val){if(val)sysLines.push([lbl,String(val)]);}
+    sys('Section',cur.sectLabel||cur.sect);
+    sys('Subsection',cur.subsectLabel);
+    sys('Catalog group',cur.catLabel);
+    if(!isBtl)sys('Menu section',cur.sense);
+    sys('Format',cur.fmt||cur.format);
+    if(cur.needsReview)sysLines.push(['Status','Flagged for review \u2014 see the Verification queue']);
+    if(cur.unverified)sysLines.push(['Status','Not yet verified']);
+    if(cur.stub)sysLines.push(['Status','Stub \u2014 no verified catalog identity yet']);
+    if(cur.identPending)sysLines.push(['Status','Technical sheet pending']);
+    if(cur.delisted)sysLines.push(['Status','Delisted']);
+    if(cur.aiLayer)sysLines.push(['Source','AI-drafted \u2014 not verified, do not quote to guests']);
+    sys('Verified on',cur.srcVerified);
+    sys('Source document',cur.srcDoc);
+    sys('Source note',cur.srcNote);
+    sys('Source gap',cur.srcGap);
+    sys('Unverified reason',cur.unverifiedReason);
+    sys('Catalog pairing note',cur.srcPairings);
+    if(cur.pairs&&cur.pairs.length)sysLines.push(['Dish pairings','Edited in the Pairing editor, not here']);
+    return {
+      wineKind:wineKind,
+      wProducer:s(cur.producer),wCuvee:s(cur.cuvee),
+      wVintage:isBtl?s(cur.vint):s(cur.vintage),
+      wRegion:isBtl?s(cur.prod):s(cur.appellation),
+      wRegion2:isBtl?'':s(cur.region),
+      wGrapesText:grapesText,
+      wBlend:s(cur.blend),
+      wAroma:s(cur.aroma),wPalate:s(cur.palate),wFinish:s(cur.finish),
+      wBody:s(cur.body),wTemp:s(cur.temp),wPourSize:s(cur.pourSize),
+      wDesc:isBtl?s(cur.desc):s(cur.story),
+      wGlassware:isBtl?'':s(cur.glassware),
+      wDecant:isBtl?null:((cur.decant===true||cur.decant===false)?cur.decant:null),
+      wProducerNotes:isBtl?'':s(cur.producerNotes),
+      wTip:isBtl?'':s(cur.tip),
+      wPriceGlass:priceGlass,wPriceBottle:priceBottle,
+      wPrice0:JSON.stringify([priceGlass,priceBottle]),
+      wPriceProvNote:priceProvNote,
+      wSysLines:sysLines
+    };
+  }
   function openEditor(id){
     var base=baseItem(id);if(!base){toast('Item not found');return;}
     var cur=window.__mergeOv(base);
@@ -9098,7 +9252,8 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var isBottle=false;
     try{isBottle=((typeof WINE!=='undefined')&&WINE.some(function(x){return x.id===id;}))
               ||((typeof SPIRITS!=='undefined')&&SPIRITS.some(function(x){return x.id===id;}));}catch(e){}
-    ed={id:id,isBottle:isBottle,name:cur.name||'',desc:(cur.tableside||cur.desc||''),
+    var _w100=_wineSnap(id,cur);
+    ed=Object.assign({id:id,isBottle:isBottle,name:cur.name||'',desc:(cur.tableside||cur.desc||''),
         ings:(cur.ingredients||[]).slice(),sauces:(cur.sauces||[]).slice(),garnish:(cur.garnish||[]).slice(),
         /* (p47) the base section exists for exactly the items that carry a base[]
            array -- including an EMPTY one (two mocktails ship base:[]), which is a
@@ -9111,7 +9266,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
         st:st,st0:st0,prov0:prov0,av0:(cur.absentVerified||[]).slice(),extra:extra,extra0:extra.slice(),
         source:src,photo:cur.photo||'',photoTouched:false,needsImage:!!cur.needsImage,
         kind:cur.kind||'',isDrink:isDrink,name0:cur.name||'',presentLabels:(cur.allerg||[]).slice(),
-        avail:(window.__avail?window.__avail(cur):'active')};
+        avail:(window.__avail?window.__avail(cur):'active')},_w100);
     renderEditor();openS('edDim','edSheet');
   }
   function syncInputs(){
@@ -9133,6 +9288,19 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       });
       var _sb=b.querySelector('[data-f="sub"]');if(_sb)ed.sub=_sb.value;
     }
+    /* (p100) wine-only fields, gated on ed.wineKind: never runs for a
+       food/drink item, so their syncInputs() behaviour is untouched. */
+    if(ed.wineKind){
+      var _wsub=b.querySelector('[data-f="sub"]');if(_wsub)ed.sub=_wsub.value;
+      var _wmap={vintage:'wVintage',priceGlass:'wPriceGlass',priceBottle:'wPriceBottle',
+        producer:'wProducer',cuvee:'wCuvee',region:'wRegion',region2:'wRegion2',grapes:'wGrapesText',
+        blend:'wBlend',aroma:'wAroma',palate:'wPalate',finish:'wFinish',body:'wBody',temp:'wTemp',
+        pourSize:'wPourSize',desc:'wDesc',glassware:'wGlassware',producerNotes:'wProducerNotes',tip:'wTip'};
+      for(var _wk in _wmap){
+        var _wel=b.querySelector('[data-wf="'+_wk+'"]');
+        if(_wel)ed[_wmap[_wk]]=_wel.value;
+      }
+    }
   }
   function listSec(label,key,arr){
     var rows=(arr||[]).map(function(v,i){
@@ -9141,6 +9309,69 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     return '<label class="ed-lbl">'+label+'</label><div class="ed-list">'+rows+'</div>'
       +'<button class="ed-liadd" data-add="'+key+'" type="button">＋ Add</button>';
   }
+  /* p100 -- the wine-only section. Never rendered for food/cocktails/
+     beer/spirits (ed.wineKind is only set by _wineSnap for a WINE-array
+     bottle or a BEV kind:"wine" BTG record). Grouped: vintage+price
+     first (frequent), tasting+service next, identity+catalog details
+     behind a native <details> (rare -- see module docstring). */
+  function _wineSec(ed){
+    if(!ed.wineKind)return '';
+    var isBtl=(ed.wineKind==='bottle');
+    var descLbl=isBtl?'Description':'Story';
+    var quick='<div class="w-sec"><label class="ed-lbl">Vintage &amp; price</label>'
+      +'<div class="w-quickgrid">'
+      +'<div><label class="ed-lbl">Vintage</label><input class="ed-inp" data-wf="vintage" value="'+escAttr(ed.wVintage)+'" placeholder="e.g. 2021 or NV"></div>'
+      +'<div><label class="ed-lbl">Glass price</label><input class="ed-inp" data-wf="priceGlass" value="'+escAttr(ed.wPriceGlass)+'" placeholder="Not by the glass"></div>'
+      +'<div><label class="ed-lbl">Bottle price</label><input class="ed-inp" data-wf="priceBottle" value="'+escAttr(ed.wPriceBottle)+'" placeholder="Not by the bottle"></div>'
+      +'</div>'
+      +(ed.wPriceProvNote?('<div class="w-pricenote">'+esc(ed.wPriceProvNote)+'</div>'):'')
+      +'</div>';
+    var tasteSvc='<div class="w-sec">'
+      +'<label class="ed-lbl">'+descLbl+'</label><textarea class="ed-inp" data-wf="desc" placeholder="Not sourced yet">'+esc(ed.wDesc)+'</textarea>'
+      +'<label class="ed-lbl">Aroma</label><textarea class="ed-inp" data-wf="aroma" placeholder="Not sourced yet">'+esc(ed.wAroma)+'</textarea>'
+      +'<label class="ed-lbl">Palate</label><textarea class="ed-inp" data-wf="palate" placeholder="Not sourced yet">'+esc(ed.wPalate)+'</textarea>'
+      +'<label class="ed-lbl">Finish</label><textarea class="ed-inp" data-wf="finish" placeholder="Not sourced yet">'+esc(ed.wFinish)+'</textarea>'
+      +'<div class="w-svcgrid">'
+      +'<div><label class="ed-lbl">Body</label><input class="ed-inp" data-wf="body" value="'+escAttr(ed.wBody)+'" placeholder="e.g. Medium"></div>'
+      +'<div><label class="ed-lbl">Serve at</label><input class="ed-inp" data-wf="temp" value="'+escAttr(ed.wTemp)+'" placeholder="e.g. 10-12\u00b0C"></div>'
+      +'<div><label class="ed-lbl">Pour size</label><input class="ed-inp" data-wf="pourSize" value="'+escAttr(ed.wPourSize)+'" placeholder="e.g. 1oz"></div>'
+      +'</div>';
+    if(!isBtl){
+      var _dv=ed.wDecant;
+      tasteSvc+='<label class="ed-lbl">Decant</label><div class="ed-tri">'
+        +'<button class="ed-tb u'+(_dv===null?' on':'')+'" data-wdec="null" type="button">Not sourced</button>'
+        +'<button class="ed-tb a'+(_dv===false?' on':'')+'" data-wdec="false" type="button">No</button>'
+        +'<button class="ed-tb p'+(_dv===true?' on':'')+'" data-wdec="true" type="button">Yes</button>'
+        +'</div>'
+        +'<label class="ed-lbl">Glassware</label><input class="ed-inp" data-wf="glassware" value="'+escAttr(ed.wGlassware)+'" placeholder="e.g. Champagne Flute">';
+    }
+    tasteSvc+='</div>';
+    var idBody='<label class="ed-lbl">Producer</label><input class="ed-inp" data-wf="producer" value="'+escAttr(ed.wProducer)+'" placeholder="Not sourced yet">'
+      +'<label class="ed-lbl">Cuv\u00e9e</label><input class="ed-inp" data-wf="cuvee" value="'+escAttr(ed.wCuvee)+'" placeholder="Not sourced yet">';
+    if(isBtl){
+      idBody+='<label class="ed-lbl">Region / Appellation</label><input class="ed-inp" data-wf="region" value="'+escAttr(ed.wRegion)+'" placeholder="Not sourced yet">';
+    }else{
+      idBody+='<label class="ed-lbl">Appellation</label><input class="ed-inp" data-wf="region" value="'+escAttr(ed.wRegion)+'" placeholder="Not sourced yet">'
+        +'<label class="ed-lbl">Region</label><input class="ed-inp" data-wf="region2" value="'+escAttr(ed.wRegion2)+'" placeholder="Not sourced yet">';
+    }
+    idBody+='<label class="ed-lbl">Grapes</label><input class="ed-inp" data-wf="grapes" value="'+escAttr(ed.wGrapesText)+'" placeholder="Comma-separated, e.g. Chardonnay, Pinot Noir">';
+    if(!isBtl){
+      idBody+='<label class="ed-lbl">Blend</label><input class="ed-inp" data-wf="blend" value="'+escAttr(ed.wBlend)+'" placeholder="Not sourced yet">'
+        +'<label class="ed-lbl">Card subtitle</label><input class="ed-inp" data-f="sub" value="'+escAttr(ed.sub||'')+'" placeholder="Line under the name on the card front\u2026">'
+        +'<div class="ed-basenote">Shown on the drinks-list card front, under the name.</div>'
+        +'<label class="ed-lbl">Producer notes</label><textarea class="ed-inp" data-wf="producerNotes" placeholder="Not sourced yet">'+esc(ed.wProducerNotes)+'</textarea>'
+        +'<label class="ed-lbl">Tip</label><textarea class="ed-inp" data-wf="tip" placeholder="Not sourced yet">'+esc(ed.wTip)+'</textarea>';
+    }
+    var sysInfo='';
+    if(ed.wSysLines&&ed.wSysLines.length){
+      sysInfo='<div class="w-sysnote"><div class="w-systtl">Catalog &amp; source info \u2014 read-only</div>'
+        +ed.wSysLines.map(function(p){return '<div class="w-sysrow"><span class="w-sysk">'+esc(p[0])+'</span><span class="w-sysv">'+esc(p[1])+'</span></div>';}).join('')
+        +'</div>';
+    }
+    var details='<details class="w-details"><summary>Identity &amp; catalog details</summary><div class="w-detbody">'+idBody+sysInfo+'</div></details>';
+    return quick+tasteSvc+details;
+  }
+
   function renderEditor(){
     /* (A3) the “Verified free ✓” (absent_verified) control is HARD-GATED behind a typed source of
        >= 4 characters. absent_verified is a human act; it needs verifiedBy + date + source. */
@@ -9181,9 +9412,16 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
         +'<input class="ed-inp" data-f="sub" value="'+escAttr(ed.sub||'')+'" placeholder="Line under the name on the card front…">'
         +'<div class="ed-basenote">On most cocktails this line names the base spirit. If you change the spirit, change it here too — the front of the card is what the guest sees first.</div>';
     }
-    var lists=ed.isBottle?'':(basesec+listSec('Ingredients','ings',ed.ings)
+    /* (p100) a BTG wine (BEV kind:"wine") is NOT in WINE/SPIRITS, so the
+       original `ed.isBottle` alone is false for it -- without also gating
+       on ed.wineKind here, a by-the-glass pour still received the full
+       Base-spirits/Ingredients/Sauces/Garnish food block (this was the
+       exact defect Dani hit). WINE-array bottles are unaffected: isBottle
+       is already true for them. */
+    var lists=(ed.isBottle||ed.wineKind)?'':(basesec+listSec('Ingredients','ings',ed.ings)
       +(ed.isDrink?'':listSec('Sauces','sauces',ed.sauces))
       +listSec('Garnish','garnish',ed.garnish));
+    var winesec=_wineSec(ed);
     /* allergen-source LINK classification per present allergen (Inherent/Removable/Pending) */
     var links='';
     if(ed.presentLabels&&ed.presentLabels.length&&window.__linkState){
@@ -9195,22 +9433,23 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
             +'<button class="ed-linkbtn" data-linkedit="'+escAttr(a)+'" type="button">Link / edit source</button></div>';
         }).join('')+'</div>';
     }
-    /* PHASE C — availability: Active / 86 / Off-menu. The item is never deleted. */
-    var _av=ed.avail||'active';
-    var _avnote=(_av==='86')?'Still on the menu but out today. It shows dimmed with the “86” stamp, and stays searchable and studiable.'
-      :(_av==='off-menu'?'No longer served. Hidden from the menu, the counts, search and pairings. <b>Nothing is deleted</b>: restore it from ⚙ → “Off-menu”.'
-      :'Served as normal.');
+    /* PHASE C99 — availability: On menu / Off menu (two states only —
+       86 is Toast's job, not ours). The item is never deleted by this
+       control; deletion is a separate, typed-confirmation action below. */
+    var _av=(ed.avail==='off-menu')?'off-menu':'active';
+    var _avnote=(_av==='off-menu')?'No longer served. Hidden from the menu, the counts, search and pairings. <b>Nothing is deleted</b>: restore it from ⚙ → “Off-menu”.'
+      :'Served as normal.';
     var avsec='<div class="ed-avsec"><label class="ed-lbl">Availability</label><div class="ed-avtri">'
-      +'<button class="ed-avb a'+(_av==='active'?' on':'')+'" data-av="active" type="button">Active</button>'
-      +'<button class="ed-avb e'+(_av==='86'?' on':'')+'" data-av="86" type="button">86</button>'
-      +'<button class="ed-avb o'+(_av==='off-menu'?' on':'')+'" data-av="off-menu" type="button">Off-menu</button>'
+      +'<button class="ed-avb a'+(_av==='active'?' on':'')+'" data-av="active" type="button">On menu</button>'
+      +'<button class="ed-avb o'+(_av==='off-menu'?' on':'')+'" data-av="off-menu" type="button">Off menu</button>'
       +'</div><div class="ed-avnote">'+_avnote+'</div></div>';
     document.getElementById('edBody').innerHTML=
       '<div class="ed-title">Edit item</div><div class="ed-sub">'+esc(ed.id)+'</div>'
       +'<label class="ed-lbl">Name</label><input class="ed-inp" data-f="name" value="'+escAttr(ed.name)+'">'
       +'<div class="ed-err" id="edNameErr">'+(ed.nameErr?esc(ed.nameErr):'')+'</div>'
-      +'<label class="ed-lbl">Description</label><textarea class="ed-inp" data-f="desc">'+esc(ed.desc)+'</textarea>'
+      +(ed.wineKind?'':'<label class="ed-lbl">Description</label><textarea class="ed-inp" data-f="desc">'+esc(ed.desc)+'</textarea>')
       +lists
+      +winesec
       +'<label class="ed-lbl">Allergens</label><div class="ed-algrid">'+al+'</div>'+prov+extra
       +links
       +'<label class="ed-lbl">Photo</label>'+img
@@ -9220,7 +9459,8 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +avsec
       +'<button class="ed-btn" data-edact="save" type="button">Save</button>'
       +'<button class="ed-btn ghost" data-edact="cancel" type="button">Cancel</button>'
-      +'<div id="edRevWrap"><button class="ed-btn ghost" data-edact="revert" type="button">Revert to original</button></div>';
+      +'<div id="edRevWrap"><button class="ed-btn ghost" data-edact="revert" type="button">Revert to original</button></div>'
+      +'<div class="ed-delsec"><div id="edDelWrap"><button class="ed-btn ghost ed-delbtn ed-delstart" data-edact="delete-start" type="button">Delete this item…</button></div></div>';
     var f=document.getElementById('edFile');
     if(f)f.addEventListener('change',function(){var file=this.files&&this.files[0];if(!file)return;downscale(file,function(dataURL){syncInputs();ed.photo=dataURL;ed.photoTouched=true;ed.needsImage=false;renderEditor();});});
     /* (A3) toggle the “Verified free ✓” gate live, in place — no re-render, so focus/caret survive */
@@ -9374,13 +9614,42 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       if(dropped.length)toast('Incomplete provenance: '+dropped.join(', ')+' reverts to “Not sure”');
     }
     if(ed.photoTouched){if(ed.photo){patch.photo=ed.photo;patch.needsImage=false;}else{patch.photo='';patch.needsImage=true;}}
-    patch.availability=(ed.avail==='86'||ed.avail==='off-menu')?ed.avail:'active';
+    /* (p100) wine-only content + price. Descriptive/identity fields are
+       written every save (same always-write contract as name/description
+       above); price PROVENANCE is stamped only when the number actually
+       changed since the editor opened, so an unrelated edit (a typo fix
+       in Aroma, a photo swap) never re-signs a price nobody touched --
+       same change-only pattern as (p47) base/sub and (A4) allergen
+       provenance. An edited price is NEVER treated as newly verified:
+       priceProv is its own field, never read by __toggleContentVerify. */
+    if(ed.wineKind){
+      var _wk100=ed.wineKind,_wtrim100=function(s){return String(s||'').trim();};
+      patch.producer=_wtrim100(ed.wProducer);patch.cuvee=_wtrim100(ed.wCuvee);
+      patch.aroma=_wtrim100(ed.wAroma);patch.palate=_wtrim100(ed.wPalate);patch.finish=_wtrim100(ed.wFinish);
+      patch.body=_wtrim100(ed.wBody);patch.temp=_wtrim100(ed.wTemp);patch.pourSize=_wtrim100(ed.wPourSize);
+      patch.grapes=_wtrim100(ed.wGrapesText);
+      if(_wk100==='bottle'){
+        patch.vint=_wtrim100(ed.wVintage);patch.prod=_wtrim100(ed.wRegion);patch.desc=_wtrim100(ed.wDesc);
+      }else if(_wk100==='btg'){
+        patch.vintage=_wtrim100(ed.wVintage);patch.appellation=_wtrim100(ed.wRegion);patch.region=_wtrim100(ed.wRegion2);
+        patch.story=_wtrim100(ed.wDesc);patch.blend=_wtrim100(ed.wBlend);patch.glassware=_wtrim100(ed.wGlassware);
+        patch.producerNotes=_wtrim100(ed.wProducerNotes);patch.tip=_wtrim100(ed.wTip);
+        patch.decant=(ed.wDecant===true||ed.wDecant===false)?ed.wDecant:null;
+        var _subNow100=_wtrim100(ed.sub);
+        if(_subNow100!==_wtrim100(ed.sub0))patch.sub=_subNow100;
+      }
+      var _pg100=_wtrim100(ed.wPriceGlass),_pb100=_wtrim100(ed.wPriceBottle);
+      if(_wk100==='bottle'){patch.btg=_pg100;patch.btl=_pb100;}
+      else if(_wk100==='btg'){patch.price=_pg100;patch.bottlePrice=_pb100;}
+      if(JSON.stringify([_pg100,_pb100])!==ed.wPrice0){patch.priceProv={by:_zsig(),date:today()};}
+    }
+    patch.availability=(ed.avail==='off-menu')?ed.avail:'active';
     if(setItemOverride(ed.id,patch)){closeS('edDim','edSheet');rerender();
       /* (C4) the duplicate-name warning rides ALONG WITH the save toast. Toasting it
          separately at validation time would be overwritten by this one ~1ms later and
          the user would never see it — a silent duplicate is exactly what C4 forbids. */
       var _dupW=window.__lastDupWarn||'';window.__lastDupWarn='';
-      toastSave((patch.availability==='off-menu'?'Off-menu — recoverable in ⚙':(patch.availability==='86'?'Marked 86 — none today':'Changes saved'))+_dupW);}
+      toastSave((patch.availability==='off-menu'?'Off-menu — recoverable in ⚙':'Changes saved')+_dupW);}
   }
   document.getElementById('edSheet').addEventListener('click',function(e){
     var tb=e.target.closest('[data-al]');
@@ -9396,6 +9665,8 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     if(del){syncInputs();var kd=del.getAttribute('data-del'),ix=+del.getAttribute('data-idx');if(ed[kd])ed[kd].splice(ix,1);renderEditor();return;}
     var av=e.target.closest('[data-av]');
     if(av){syncInputs();ed.avail=av.getAttribute('data-av');renderEditor();return;}
+    var wdec=e.target.closest('[data-wdec]');
+    if(wdec){syncInputs();var _wv=wdec.getAttribute('data-wdec');ed.wDecant=(_wv==='true')?true:(_wv==='false'?false:null);renderEditor();return;}
     var le=e.target.closest('[data-linkedit]');
     if(le){syncInputs();var alg=le.getAttribute('data-linkedit');if(window.__openLinkEditor)window.__openLinkEditor(ed.id,alg);return;}   /* (A6) id, not name */
     var act=e.target.closest('[data-edact]');if(!act)return;
@@ -9404,6 +9675,14 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     else if(a==='save'){saveEditor();}
     else if(a==='cancel'){closeS('edDim','edSheet');}
     else if(a==='revert'){syncInputs();askRevert();}
+    else if(a==='delete-start'){askDelete();}
+    else if(a==='delete-cancel'){var _dw=document.getElementById('edDelWrap');if(_dw)_dw.innerHTML='<button class="ed-btn ghost ed-delbtn ed-delstart" data-edact="delete-start" type="button">Delete this item…</button>';}
+    else if(a==='delete-confirm'){
+      var _delId=ed.id,_delNm=ed.name||ed.id;
+      if(window.setItemOverride)window.setItemOverride(_delId,{availability:'off-menu',deleted:true});
+      closeS('edDim','edSheet');rerender();
+      toastSave('Deleted — '+_delNm+' is off the menu and off the Off-menu list');
+    }
     else if(a==='revert-yes'){clearItem(ed.id);closeS('edDim','edSheet');rerender();toastSave('Reset to original');}
     else if(a==='revert-no'){renderEditor();}
   });
@@ -9440,6 +9719,27 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +'<button class="ed-btn ghost small" data-edact="revert-no" type="button">Cancel</button></div>';
     try{w.scrollIntoView({block:'center'});}catch(e){}
   }
+  /* PHASE C99 -- delete requires a WRITTEN confirmation (typing the
+     item's own name), never a single tap, because it is the one
+     action here that is not casually reversible from the Off-menu
+     list. See module docstring for the honest scope of "delete" in a
+     build with data baked in at generation time. */
+  function askDelete(){
+    var w=document.getElementById('edDelWrap');if(!w)return;
+    var nm=ed.name||ed.id;
+    w.innerHTML='<div class="ed-delnote">This removes <b>'+esc(nm)+'</b> from the menu, the counts, search and pairings — immediately, everywhere. Unlike Off-menu, it will <b>not</b> appear in ⚙ → “Off-menu” to restore. Type the item’s name to confirm.</div>'
+      +'<input class="ed-inp ed-delinp" id="edDelInp" placeholder="Type the item name" autocomplete="off" autocapitalize="off" spellcheck="false">'
+      +'<div class="ed-delrow"><button class="ed-btn danger ed-delbtn" id="edDelConfirmBtn" data-edact="delete-confirm" type="button" disabled>Delete permanently</button>'
+      +'<button class="ed-btn ghost ed-delbtn" data-edact="delete-cancel" type="button">Cancel</button></div>';
+    var inp=document.getElementById('edDelInp'),btn=document.getElementById('edDelConfirmBtn');
+    var target=String(nm||'').trim().toLowerCase();
+    if(inp)inp.addEventListener('input',function(){
+      var ok=target.length>0&&String(this.value||'').trim().toLowerCase()===target;
+      if(btn)btn.disabled=!ok;
+    });
+    try{w.scrollIntoView({block:'center'});}catch(e){}
+  }
+
   /* refresh the dish editor's link states after a link is saved/unlinked in the AL sheet */
   window.__afterLink=function(){try{if(ed&&document.getElementById('edSheet').classList.contains('open'))renderEditor();}catch(e){}updateCount();};
   /* verification handles (read/drive only — nothing here can write a verified absence) */
@@ -9548,7 +9848,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   window.__hoyEff=hoyEff;
   function renderHoyPick(){
     var foods=((typeof FOOD!=='undefined')?FOOD:[]).filter(function(d){return !(window.__avUnavail&&window.__avUnavail(d));});var eff=hoyEff();
-    /* (C6) the configured amuse is ALWAYS the selected option, even when it is 86 or
+    /* (C6) the configured amuse is ALWAYS the selected option, even when it is
        off-menu (the availability filter above removes it from the list). Without this the
        browser selects option 0 and Save silently substitutes a different dish. */
     var _has=foods.some(function(d){return d.id===eff.amuseId;});
@@ -10452,16 +10752,6 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   },true);
 
   /* ---- shared bits ---- */
-  function p5Count86(){
-    var n86=0;
-    function _c(a){(a||[]).forEach(function(d){if(window.__av86&&window.__av86(d))n86++;});}
-    try{_c((typeof FOOD!=='undefined')?FOOD:[]);}catch(e){}
-    try{_c((typeof BEV!=='undefined')?BEV:[]);}catch(e){}
-    try{_c((typeof WINE!=='undefined')?WINE:[]);}catch(e){}
-    try{_c((typeof SPIRITS!=='undefined')?SPIRITS:[]);}catch(e){}
-    try{if(typeof SPECIAL!=='undefined'&&SPECIAL&&window.__av86&&window.__av86(SPECIAL))n86++;}catch(e){}
-    return n86;
-  }
   function p5Row(view,name,sub,badge,showZero){
     /* p95: showZero is OPT-IN. Omitted (data/person/people) -> byte-identical
        to the pre-p95 behaviour (bare truthy check, 0 hides the pill). Only
@@ -10483,7 +10773,6 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var _p33q=0;try{_p33q=(window.__zPendingList?window.__zPendingList().length:0);}catch(e){_p33q=0;}
     var _zc=0;try{_zc=window.__zConflictCount?window.__zConflictCount():0;}catch(e){}
     var offs=(window.__avOffList?window.__avOffList():[]);
-    var n86=p5Count86();
     var created=0;try{created=window.__createdIds().length;}catch(e){}
     var h='<button class="p5-add" data-p5go="newpick" type="button">'
         +'<span class="p5-plus">＋</span><span>Add to the menu</span></button>'
@@ -10493,8 +10782,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
              n?('Renames, allergens, photos'+(created?(' · '+created+' created'):'')):'You have not edited anything yet',
              n?n:0,true)
       +p5Row('off','Off-menu',
-             '<b>'+offs.length+'</b> item'+(offs.length!==1?'s':'')+' hidden from the menu'
-             +(n86?(' · <b>'+n86+'</b> marked 86 today'):''),
+             '<b>'+offs.length+'</b> item'+(offs.length!==1?'s':'')+' hidden from the menu',
              offs.length?offs.length:0,true)
       +p5Row('queue','Needs verification',
         _p33q?('<b>'+_p33q+'</b> item'+(_p33q!==1?'s':'')+' waiting to be verified')
@@ -10526,9 +10814,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   /* ---- view: off-menu (PHASE C recovery — nothing is ever deleted) ---- */
   function renderPanelOff(o){
     var offs=(window.__avOffList?window.__avOffList():[]);
-    var n86=p5Count86();
-    var h='<div class="ed-sub p5-sub"><b>'+offs.length+'</b> item'+(offs.length!==1?'s':'')+' hidden from the menu'
-      +(n86?(' · <b>'+n86+'</b> marked 86 today'):'')+'</div>';
+    var h='<div class="ed-sub p5-sub"><b>'+offs.length+'</b> item'+(offs.length!==1?'s':'')+' hidden from the menu</div>';
     if(offs.length){
       h+='<div class="om-list p5-tall">'+offs.map(function(d){
         var nm=(o.items[d.id]&&o.items[d.id].name)||d.name||d.id;
@@ -12046,5 +12332,61 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       setTimeout(function(){res({controller:true,timeout:true});},3000);
     });
   };
+})();
+</script>
+<script>
+/* p99 -- availability two-state: migration + delete-aware off-menu list.
+   Pure window.* consumers only, appended after every dependency is
+   defined and exposed, so load order cannot race this. */
+(function(){
+  'use strict';
+  window.__avDeleted=function(d){
+    try{
+      if(!d||!d.id)return false;
+      var ov=(window.getOverlay?(window.getOverlay().items||{}):{});
+      return !!(ov[d.id]&&ov[d.id].deleted);
+    }catch(e){return false;}
+  };
+  /* Off-menu recovery list must never offer "Restore" for a deleted
+     item -- that is the whole point of separating the two actions. */
+  var _p99origOffList=window.__avOffList;
+  if(typeof _p99origOffList==='function'){
+    window.__avOffList=function(){
+      var list=_p99origOffList();
+      return list.filter(function(d){return !window.__avDeleted(d);});
+    };
+  }
+  /* Migration: any overlay item still carrying the old out-today
+     availability marker from a previous build becomes 'active' (NOT
+     'off-menu' -- that marker never meant "stop serving", it meant
+     "none today", which is Toast's job now). Runs lazily on
+     window.getOverlay(), keyed by object identity so a freshly-loaded
+     (async IndexedDB) or freshly-imported overlay is re-checked exactly
+     once; a WeakSet is used instead of a flag on the overlay object
+     itself so nothing extra is ever persisted or exported -- the
+     migration touches ONLY the availability field, via the app's own
+     sanctioned write path (setItemOverride), which is what stamps
+     updatedAt/updatedBy -- the same provenance every other write
+     already gets. */
+  var _p99origGetOverlay=window.getOverlay;
+  var _p99seen=(typeof WeakSet!=='undefined')?new WeakSet():null;
+  if(typeof _p99origGetOverlay==='function'){
+    window.getOverlay=function(){
+      var o=_p99origGetOverlay();
+      try{
+        if(o&&o.items&&(!_p99seen||!_p99seen.has(o))){
+          if(_p99seen)_p99seen.add(o);
+          var toFix=[];
+          for(var id in o.items){
+            if(Object.prototype.hasOwnProperty.call(o.items,id)&&o.items[id]&&o.items[id].availability==='86')toFix.push(id);
+          }
+          toFix.forEach(function(fid){
+            try{window.setItemOverride&&window.setItemOverride(fid,{availability:'active'});}catch(e){}
+          });
+        }
+      }catch(e){}
+      return o;
+    };
+  }
 })();
 </script>
