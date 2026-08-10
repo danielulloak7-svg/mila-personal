@@ -1,0 +1,1783 @@
+{
+ "drink.amabuki-himawarai-ginjo": {
+  "id": "drink.amabuki-himawarai-ginjo",
+  "kind": "sake",
+  "matchedVintage": "",
+  "vintageOfSource": "",
+  "cuveeConfidence": "unconfirmed",
+  "grapes": [],
+  "blendText": "",
+  "region": "",
+  "subRegion": "",
+  "brewery": "",
+  "prefecture": "Saga",
+  "riceVariety": "Sake Komachi",
+  "seimaibuai": "55%",
+  "grade": "Junmai Ginjo",
+  "smv": "+10",
+  "acidity": "1.5",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "",
+  "abv": "16%",
+  "residualSugar": "",
+  "style": "Junmai Ginjo brewed with sunflower (himawari) flower yeast",
+  "body": "",
+  "servingTemp": "True Sake: this \"soft, smooth, and lush fluid does best with a nice chill\".",
+  "aroma": "Genji Sake: \"complex notes of wildflowers and anise\". True Sake: \"brown grass, corn, honey, and of course sunflower\".",
+  "palate": "Genji Sake: \"Round and bold flavors with a hint of dryness, with a smooth and crisp palate\". True Sake: \"starchy corn tones with hints of sweet potato, and sunflower seed elements\" with \"a unique sweet vein\".",
+  "finish": "",
+  "producerNotes": "Brewed with sunflower flower yeast; Amabuki is \"known for using fun and new yeasts made from flowers and fruits\". True Sake notes \"layers and layers of flavors not typically found in the sake world\". Genji Sake pairing suggestion: \"Try with unexpected foods, such as aged cheeses and pickled vegetables\".",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://genjisake.com/sakes/amabuki-himawari-junmai-ginjo-nama/",
+    "what": "Genji Sake (US importer) page for Amabuki Himawari Junmai Ginjo NAMA: grade Junmai Ginjo, rice Sake Komachi, seimaibuai 55%, SMV +10, ABV 16%, sunflower yeast, aroma/palate, pairing note.",
+    "type": "importer"
+   },
+   {
+    "url": "https://www.truesake.com/products/amabuki-sunflower",
+    "what": "True Sake (US specialist retailer) page for Amabuki Himawari 'Sunflower' Junmai Ginjo NAMA: Saga prefecture, SMV +10, acidity 1.5, sunflower yeast, aroma/palate descriptors, chilled service, explicitly unpasteurized (nama).",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "brewery / kura legal name (no source located naming the kura; 'Amabuki' is the brand)",
+   "finish descriptor",
+   "brewery's own website data",
+   "serving temperature as a numeric range",
+   "critic scores",
+   "allergen or fining statement"
+  ],
+  "warnings": [
+   "BOTTLING UNCONFIRMED - biggest risk in this batch. Both sources describe the NAMA (unpasteurized) Himawari Junmai Ginjo; the MILA list says only 'Junmai Ginjo'. Amabuki also sells a Himawari Junmai Ginjo CUP. If MILA pours the pasteurized bottling, the SMV/acidity/ABV figures here may not apply.",
+   "cuveeConfidence 'unconfirmed' for that reason - do NOT publish these figures to staff until the bottle on the floor is checked against the label.",
+   "brewery field left empty: no source explicitly names the kura entity, only the 'Amabuki' brand.",
+   "Sake has no vintage; matchedVintage/vintageOfSource left empty by design."
+  ]
+ },
+ "drink.carillon-1611-puligny-montrachet-2023": {
+  "id": "drink.carillon-1611-puligny-montrachet-2023",
+  "matchedVintage": true,
+  "vintageOfSource": "2023",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Chardonnay"
+  ],
+  "blendText": "",
+  "region": "Burgundy, France",
+  "subRegion": "Puligny-Montrachet (village level, not Premier Cru)",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "10% new oak (Corney & Barrow, for this 2023 village bottling; no duration stated)",
+  "abv": "13.0%",
+  "style": "Dry white",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "Honeysuckle and creme brulee with white peach and jasmine on the nose. (Corney & Barrow, 2023 village)",
+  "palate": "The palate is open and delectable, offering a more extrovert expression of the vintage, whilst remaining taut and finely textured. (Corney & Barrow, 2023 village) / Mid lemon yellow, slightly toasty. Clearly stricter after the Chassagnes. Nicely balanced, with medium generosity and length. (K&L, 2023 village)",
+  "finish": "The class shows at the finish, with precision. (K&L, 2023 village)",
+  "producerNotes": "Corney & Barrow (2023 village): drawn from four hectares spread across five parcels - Derriere la Velle, Reuchaux, Corvee des Vignes, Tremblots and Les Rousselles. K&L (2023 village): approximately 5 hectares across various lieux-dits, with six parcels bottled separately in 2023 (fewer than the usual eight because of additional parcellaire releases). Sotheby's Wine (domaine-level, not vintage-specific): 6.5 hectares of vines, most of them sprinkled around prime sites of Premier Crus and Village Puligny-Montrachet; his use of new oak (never more than 15% even on the top cuvees) never supersedes the freshness and minerality; a style where precision and balance override the need for boldness and power. Drinking windows given: 2026-2031 (Corney & Barrow), 2027-2030 (K&L).",
+  "criticScores": [
+   {
+    "critic": "Jasper Morris",
+    "score": "90-92",
+    "note": "Barrel/range score, tasted October 2024; quoted by K&L Wines, not read at Inside Burgundy source (paywalled/JS-gated).",
+    "url": "https://shop.klwines.com/products/details/1919746"
+   },
+   {
+    "critic": "Burghound (Allen Meadows)",
+    "score": "87-90",
+    "note": "Range score, reviewed June 2025; quoted by K&L Wines, not read at Burghound source.",
+    "url": "https://shop.klwines.com/products/details/1919746"
+   }
+  ],
+  "allergenNotes": "No 'contains sulphites' text and no fining-agent statement was found on any consulted source. Corney & Barrow's product page lists the wine as 'vegan-suitable' - recorded verbatim as a retailer claim only; it is NOT evidence that any allergen is absent.",
+  "sources": [
+   {
+    "url": "https://www.corneyandbarrow.com/puligny-montrachet-domaine-francois-carillon-2023-10012472023bt06wb-0.html",
+    "what": "Village-level 2023 Puligny-Montrachet, Domaine Francois Carillon: grape (Chardonnay), 13.0% ABV, 10% new oak, five named parcels, tasting note, drinking window 2026-2031, 'vegan-suitable' claim",
+    "type": "retailer"
+   },
+   {
+    "url": "https://shop.klwines.com/products/details/1919746",
+    "what": "Village-level 2023 Puligny-Montrachet, Domaine Francois Carillon: Chardonnay, six parcels bottled separately in 2023, tasting note, drinking window 2027-2030, quoted Jasper Morris and Burghound scores",
+    "type": "retailer"
+   },
+   {
+    "url": "https://wine.sothebys.com/blogs/producer/precision-and-balance-from-domaine-francois-carillon",
+    "what": "Domaine-level (not vintage-specific): 6.5 ha holdings, never more than 15% new oak, house style",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "producer website / official technical sheet",
+   "soil",
+   "farming (organic/biodynamic status)",
+   "vinification detail (pressing, fermentation vessel, lees, malolactic)",
+   "elevage duration in months",
+   "body",
+   "servingTemp",
+   "sulphite / fining declaration"
+  ],
+  "warnings": [
+   "No producer website or official tech sheet for Domaine Francois Carillon was found; every field comes from retailers, so all data is second-hand.",
+   "Domaine Francois Carillon bottles many 2023 wines under near-identical names (1er Cru Les Perrieres, Les Champs Gains, Les Folatieres, plus lieu-dit village cuvees Les Aubues and Clos du Vieux Chateau). Only the plain village 'Puligny-Montrachet' bottling was used here; the 1er Cru and lieu-dit data were deliberately excluded.",
+   "Retailers disagree on the village cuvee's size: Corney & Barrow says 4 ha / five named parcels, K&L says ~5 ha / six parcels bottled separately. Both recorded, neither resolved.",
+   "Critic scores are ranges quoted by a retailer and were not verified at Inside Burgundy or Burghound directly.",
+   "The Sotheby's '10-15% new oak' and house-style statements are domaine-level and not specific to the 2023 village bottling; the vintage-specific figure is Corney & Barrow's 10% new oak.",
+   "A Sotheby's tasting note for the village Puligny exists but is for the 2019 vintage - not used.",
+   "The id contains '1611', which matches nothing found in any source; if it is a MILA bin/SKU number that is fine, but it is not part of the wine's identity."
+  ]
+ },
+ "drink.champagne-renard-barnier": {
+  "id": "drink.champagne-renard-barnier",
+  "matchedVintage": "NV",
+  "vintageOfSource": "NV",
+  "cuveeConfidence": "likely",
+  "grapes": [
+   "Pinot Noir",
+   "Pinot Meunier"
+  ],
+  "blendText": "50% Pinot Noir, 50% Pinot Meunier (Robert Rolls; avosbulles.com)",
+  "region": "Champagne, France",
+  "subRegion": "Villevenard (Marne), south of Epernay",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "'Aged for three years on the lees with reserve wine in the blend' (Robert Rolls); 'aged for at least 3 years before release'; avosbulles.com states the house does not commercialise its cuvees before 3 years of ageing",
+  "abv": "12% (avosbulles.com, '12°')",
+  "dosage": "",
+  "style": "Brut, Blanc de Noirs, non-vintage",
+  "body": "",
+  "servingTemp": "7-10 °C (avosbulles.com)",
+  "aroma": "'Fine mousse with aromas of ripe fruit and freshly baked bread' / 'fresh lightly biscuit aroma' (Robert Rolls); 'fruite, pomme au four legerement caramelisee, jus de poire et noisette fraiche' — fruity, lightly caramelised baked apple, pear juice and fresh hazelnut (avosbulles.com)",
+  "palate": "'Attaque franche, aromes fruites, variations de mirabelle, dense, riche' — frank attack, fruity, mirabelle plum variations, dense, rich (avosbulles.com); 'fully flavoured palate', 'balance and weight' with 'poised ripeness' (Robert Rolls)",
+  "finish": "",
+  "producerNotes": "Colour: 'pale gold' (Robert Rolls) / 'teinte jaune doree et lumineuse, fines bulles' (avosbulles.com). Robert Rolls describes a small family-run house south of Epernay whose two black grapes give 'weight, and ability to age, with a softer fruit style'; the merchant calls it a best-seller and 'the house champagne at some of London's best addresses', and notes a new label was introduced for Christmas 2025 with the wine itself unchanged.",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://robertrolls.com/product/cuvee-speciale-blanc-de-noirs-brut/",
+    "what": "Cuvee identity (Cuvee Speciale Blanc de Noirs Brut NV), 50/50 Pinot Noir-Pinot Meunier, 3 years' ageing before release, aroma/palate notes, producer background",
+    "type": "UK importer/merchant"
+   },
+   {
+    "url": "https://robertrolls.com/champagne-renard-barnier-cuvee-speciale-nv/",
+    "what": "Confirms Cuvee Speciale = Blanc de Noirs, village Villevenard, 50/50 blend, three years on lees with reserve wine, colour and tasting notes",
+    "type": "UK importer/merchant"
+   },
+   {
+    "url": "https://www.avosbulles.com/181-champagne-renard-barnier-cuvee-speciale.html",
+    "what": "50% Pinot Noir / 50% Pinot Meunier, 12 degrees alcohol, serving temperature 7-10 °C, robe/nez/bouche tasting notes, 3-year ageing policy",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "soil",
+   "farming",
+   "vinification detail",
+   "dosage",
+   "body",
+   "finish",
+   "criticScores",
+   "allergen/sulphite statement",
+   "fining agents",
+   "serving format confirmation"
+  ],
+  "warnings": [
+   "No producer website found; all data comes from a UK merchant (Robert Rolls) and French retailers — not producer-confirmed.",
+   "IDENTITY: the merchant sells this cuvee as 'Cuvee Speciale Blanc de Noirs Brut'; the MILA list prints only 'Cuvee Speciale'. Treated as the same wine because blend, village and producer match, but this is unconfirmed by the producer.",
+   "Renard-Barnier makes several cuvees (incl. a Blanc de Blancs listed in Guide Hachette) — do not transfer this data to any other Renard-Barnier bottling.",
+   "Alcohol (12%) rests on a single French retailer; a UK listing slug shows 12% vol as well but could not be fetched (robots/timeout).",
+   "Dosage, soil and vinification are stated nowhere — left empty, not inferred."
+  ]
+ },
+ "drink.chateau-dyquem": {
+  "id": "drink.chateau-dyquem",
+  "kind": "wine",
+  "matchedVintage": "2016",
+  "vintageOfSource": "2016",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Semillon",
+   "Sauvignon Blanc"
+  ],
+  "blendText": "75% Semillon and 25% Sauvignon Blanc",
+  "region": "Bordeaux, France",
+  "subRegion": "Sauternes",
+  "brewery": "",
+  "prefecture": "",
+  "riceVariety": "",
+  "seimaibuai": "",
+  "grade": "",
+  "smv": "",
+  "acidity": "",
+  "soil": "\"most of Yquem's vineyard plots have a deep clay subsoil that stores large enough reserves of winter rainwater\" (producer technical sheet)",
+  "farming": "",
+  "vinification": "Harvest by successive selective picking passes (tries): 27-28 September; early October; 18-22 October (approximately half the crop); 28 and 31 October then 2, 3 and 4 November. \"75% of the crop was picked in the last two weeks.\" Botrytis trigger: \"The first significant period of precipitation (43 mm) since the 20th of June took place on the 14th, 15th, and 16th of September. This was ideal for triggering botrytis.\" \"Another heavy shower (38 mm) on a single day, the 30th of September was ideal for spreading noble rot.\" Final yield 20 hl/ha. 40% of the crop went into the grand vin.",
+  "aging": "",
+  "abv": "14.20% Vol.",
+  "residualSugar": "135 g/L",
+  "style": "Sweet botrytised white (Sauternes, Premier Cru Superieur). Total acidity 4.8 g/L H2T; pH 3.90 (producer technical sheet).",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "Per Decanter (01/06/2017), quoted in the producer technical sheet: \"Clear citrus on the nose with a hint of flint and smoke, allowing the soft white flowers and lime blossom to steal up on you.\" Per Neal Martin (28/04/2017): \"opens gradually with light honeyed aromas, white flowers, apple blossom and just a touch of honeysuckle\".",
+  "palate": "Per Neal Martin (28/04/2017): \"The palate is medium-bodied with a viscous opening, a subtle spice note leaving the mouth tingling.\" Per Matthew Jukes (25/04/2017): \"Pineapple, orange marmalade, exotic flowers and spice all blossom in the glass. There is a real sense of phenolic richness and overall viscosity to the 2016.\"",
+  "finish": "Per Decanter (01/06/2017): \"There are caramel notes through the mid-palate and great persistency-extremely elegant.\"",
+  "producerNotes": "Estate size stated as \"104 ha en production\". Final yield \"20 hl/ha, the highest in recent years\" against a stated average of 9 hl/ha; \"40% going into the grand vin compared to 50% last year\".",
+  "criticScores": [
+   {
+    "critic": "Decanter",
+    "score": "",
+    "note": "\"Clear citrus on the nose with a hint of flint and smoke, allowing the soft white flowers and lime blossom to steal up on you. There are caramel notes through the mid-palate and great persistency-extremely elegant.\" (01/06/2017)",
+    "url": "https://www.bordeaux-tradition.com/wp-content/uploads/2018/05/Yquem-2016-FT-GB.pdf"
+   },
+   {
+    "critic": "Neal Martin",
+    "score": "",
+    "note": "\"opens gradually with light honeyed aromas, white flowers, apple blossom and just a touch of honeysuckle...The palate is medium-bodied with a viscous opening, a subtle spice note leaving the mouth tingling.\" (28/04/2017)",
+    "url": "https://www.bordeaux-tradition.com/wp-content/uploads/2018/05/Yquem-2016-FT-GB.pdf"
+   },
+   {
+    "critic": "Matthew Jukes",
+    "score": "",
+    "note": "\"Pineapple, orange marmalade, exotic flowers and spice all blossom in the glass. There is a real sense of phenolic richness and overall viscosity to the 2016.\" (25/04/2017)",
+    "url": "https://www.bordeaux-tradition.com/wp-content/uploads/2018/05/Yquem-2016-FT-GB.pdf"
+   },
+   {
+    "critic": "Jancis Robinson",
+    "score": "",
+    "note": "\"Fragrant and luscious. Round and dried fruits. Real lift on the nose but massive depth too.\" (24/04/2017)",
+    "url": "https://www.bordeaux-tradition.com/wp-content/uploads/2018/05/Yquem-2016-FT-GB.pdf"
+   }
+  ],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://www.bordeaux-tradition.com/wp-content/uploads/2018/05/Yquem-2016-FT-GB.pdf",
+    "what": "Official Chateau d'Yquem 2016 technical sheet (EN), dated 29/05/2017: blend, ABV, residual sugar, total acidity, pH, soil, harvest tries, botrytis conditions, yield, selection rate, and the four quoted critic notes.",
+    "type": "producer"
+   }
+  ],
+  "notFound": [
+   "vinification detail (fermentation vessel/temperature)",
+   "aging / elevage (barrel type, % new oak, months)",
+   "farming / viticulture practices",
+   "serving temperature",
+   "allergen, fining-agent or sulphite statement",
+   "numeric critic scores"
+  ],
+  "warnings": [
+   "Producer technical sheet contains NO elevage/aging or vinification section - those fields are genuinely absent from the source, not omitted.",
+   "aroma/palate/finish are CRITIC quotes reproduced in the producer sheet, not a producer tasting note; each is attributed inline.",
+   "No sulphite or fining statement located; allergenNotes deliberately empty. Absence of a statement is NOT evidence of allergen absence."
+  ]
+ },
+ "drink.chateau-suduiraut": {
+  "id": "drink.chateau-suduiraut",
+  "kind": "wine",
+  "matchedVintage": "2011",
+  "vintageOfSource": "2011",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Semillon",
+   "Sauvignon Blanc"
+  ],
+  "blendText": "Semillon 93%, Sauvignon blanc 7%",
+  "region": "Bordeaux, France",
+  "subRegion": "Sauternes",
+  "brewery": "",
+  "prefecture": "",
+  "riceVariety": "",
+  "seimaibuai": "",
+  "grade": "",
+  "smv": "",
+  "acidity": "Total acidity 3.5 g/l",
+  "soil": "",
+  "farming": "",
+  "vinification": "Harvest \"between 1st and 27th October with a total of 3 selective pickings\"; the \"second picking started on 8th October\".",
+  "aging": "\"45% in new barrels, 55% from barrels of one vintage, for 20 months\"",
+  "abv": "13.5% vol.",
+  "residualSugar": "",
+  "style": "Sweet botrytised white (Sauternes, Premier Cru Classe)",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "\"very fresh nose evoking citrus such as orange and lemon, and ripe fruit like yellow peach, enhanced with aniseed and a hint of minerality\"",
+  "palate": "\"creaminess that is always tempered by great freshness...richness, yet without ostentation; candied fruit, such as lemon...very ripe apricot and vanilla\"",
+  "finish": "\"rich and long with notes of candied citrus, and extremely fresh\"",
+  "producerNotes": "Bottled July 16th 2013.",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://www.suduiraut.com/en/vin/1/chateau-suduiraut/2011",
+    "what": "Official Chateau Suduiraut producer site, GRAND VIN 2011 vintage page: blend percentages, ABV, total acidity, harvest dates and number of tries, barrel regime and 20-month elevage, bottling date, nose/palate/finish tasting note.",
+    "type": "producer"
+   }
+  ],
+  "notFound": [
+   "residual sugar",
+   "soil / terroir description on the vintage page",
+   "farming / viticulture practices",
+   "serving temperature",
+   "allergen, fining-agent or sulphite statement",
+   "critic scores"
+  ],
+  "warnings": [
+   "IDENTITY TRAP: the producer site also publishes 'Lions de Suduiraut' (second label) at the same URL pattern with DIFFERENT figures (Semillon 94% / Sauvignon 6%). Data here is from the GRAND VIN 2011 page only.",
+   "Residual sugar not published by the producer for this vintage; left empty rather than inferred from Sauternes norms.",
+   "No sulphite or fining statement located; allergenNotes deliberately empty."
+  ]
+ },
+ "drink.feraud-provence": {
+  "id": "drink.feraud-provence",
+  "matchedVintage": true,
+  "vintageOfSource": "2025",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Grenache",
+   "Syrah",
+   "Cabernet Sauvignon",
+   "Cinsault",
+   "Rolle"
+  ],
+  "blendText": "Grenache, Syrah, Cabernet Sauvignon, Cinsault, Rolle (producer states the varieties; no percentages given)",
+  "region": "Cotes de Provence AOP, Provence, France",
+  "subRegion": "",
+  "soil": "",
+  "farming": "Certified organic - the Agriculture Biologique (AB) label is displayed on the producer's page for this cuvee; the estate describes its viticulture as organic.",
+  "vinification": "Vinification in stainless steel tanks.",
+  "aging": "",
+  "abv": "12.5%",
+  "style": "Rose, AOP Cotes de Provence. Producer analysis: residual sugar 0.5 g/L, acidity 2.93 g/L. Colour: bright and pale, with peach tones and silvery reflections.",
+  "body": "",
+  "servingTemp": "9 C ('9 C fresh and young')",
+  "aroma": "Citrus notes of grapefruit, pineapple and banana, enveloped in salty and mineral scents.",
+  "palate": "Precise and beautifully balanced, with natural freshness bringing structure and depth, supporting a certain roundness.",
+  "finish": "",
+  "producerNotes": "Cuvee Prestige 2025 from Domaine des Feraud. Estate-level (homepage, not cuvee-specific): the domaine is in the village of Vidauban in the Cotes de Provence, approximately 40 km from Saint-Tropez, farms 50 hectares, and describes 'heat-insulating sandy soils'. Producer's suggested pairings for this cuvee: salads, vegetarian dishes, grilled items and cheeses.",
+  "criticScores": [],
+  "allergenNotes": "Producer's technical panel for the 2025 Cuvee Prestige states 'SO2 Total: 96mg/L' (recorded verbatim). No 'contains sulphites' label text, no fining-agent statement (egg/albumin, casein/milk, isinglass/fish) and no vegan claim were found on the producer's page or homepage.",
+  "sources": [
+   {
+    "url": "https://www.domainedesferaud.com/en/cuvee-prestige-2025-ar101.php",
+    "what": "Producer page for Cuvee Prestige 2025, 750ml: grape varieties, stainless-steel vinification, 12.5% ABV, RS 0.5 g/L, acidity 2.93 g/L, SO2 total 96 mg/L, colour, nose, palate, 9 C serving temperature, pairings, AB organic label",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.domainedesferaud.com/en/",
+    "what": "Producer homepage: estate located in Vidauban ~40 km from Saint-Tropez, 50 hectares, sandy soils, organic viticulture",
+    "type": "producer"
+   }
+  ],
+  "notFound": [
+   "cuvee-level soil description",
+   "grape percentages",
+   "aging / elevage",
+   "finish descriptor",
+   "body",
+   "harvest or vinification dates",
+   "fining agents",
+   "critic scores for the 2025 vintage"
+  ],
+  "warnings": [
+   "The 2025 is very young: the only third-party reviews found (The Real Review, Winepilot, Campbell Mattinson) are for the 2024 vintage and were deliberately NOT used. criticScores is empty by design.",
+   "Soil left empty on purpose: the 'heat-insulating sandy soils' line is an estate-wide homepage statement, not a stated soil for this cuvee's parcels. It is recorded in producerNotes only.",
+   "Format matters for identity: the producer publishes a separate page for the Cuvee Prestige 2025 in magnum. This record is from the standard-bottle page - confirm MILA pours the 750ml.",
+   "MILA's list reads 'Prestige'; the producer's own name for the wine is 'Cuvee Prestige'. Same wine, different shorthand.",
+   "The producer states organic certification via the AB logo but gives no certifier body number or certification date."
+  ]
+ },
+ "drink.florio-marsala-riserva-2015": {
+  "id": "drink.florio-marsala-riserva-2015",
+  "kind": "wine",
+  "matchedVintage": "2015",
+  "vintageOfSource": "2015",
+  "cuveeConfidence": "likely",
+  "grapes": [
+   "Grillo"
+  ],
+  "blendText": "Grillo",
+  "region": "Sicily, Italy",
+  "subRegion": "Marsala Superiore Riserva DOC",
+  "brewery": "",
+  "prefecture": "",
+  "riceVariety": "",
+  "seimaibuai": "",
+  "grade": "",
+  "smv": "",
+  "acidity": "",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "Producer states the Marsala Superiore Riserva category is \"aged in oak barrels for at least 4 years\". Diffords Guide states \"4 years\" of maturation in casks in Florio's seaside cellars. No 2015-vintage-specific cask or duration statement located.",
+  "abv": "19.50%",
+  "residualSugar": "",
+  "style": "Semisecco (medium-dry) Marsala Superiore Riserva. Producer states Semisecco has a \"natural residual sugar content between 40 g/l and 100 g/l\" - this is a category range, not a measured value for this bottling.",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "",
+  "palate": "",
+  "finish": "",
+  "producerNotes": "",
+  "criticScores": [
+   {
+    "critic": "Decanter",
+    "score": "",
+    "note": "Decanter lists a review of \"Florio, Semisecco Superiore Riserva [SR2715], Marsala, 2015\" and states 19.50% alcohol; the tasting note and score are behind the Decanter Premium paywall and were NOT retrieved.",
+    "url": "https://www.decanter.com/wine-reviews/italy/sicily/florio-semisecco-superiore-riserva-sr2715-marsala-2015-73833/"
+   }
+  ],
+  "allergenNotes": "\"Contains sulfites\" - stated on the Callmewine listing for Marsala Superiore Riserva Semisecco Florio, but that listing is the 2018 vintage, NOT 2015. Treated as a label-level declaration carried over with an explicit vintage caveat. No fining-agent statement located for any vintage.",
+  "sources": [
+   {
+    "url": "https://www.decanter.com/wine-reviews/italy/sicily/florio-semisecco-superiore-riserva-sr2715-marsala-2015-73833/",
+    "what": "Decanter review index entry for the 2015 vintage: confirms exact wine name/vintage \"Florio, Semisecco Superiore Riserva [SR2715], Marsala, 2015\" and alcohol 19.50%. Note text paywalled.",
+    "type": "critic"
+   },
+   {
+    "url": "https://enotecabernetti.it/en/prodotto/florio-marsala-semisecco-superiore-riserva-2015/",
+    "what": "Retailer listing for the 2015: grape variety Grillo, denomination Marsala Superiore Riserva DOC, Sicily, 19,5% vol., 75 cl.",
+    "type": "retailer"
+   },
+   {
+    "url": "https://cantineflorio.it/en/marsala-florio/",
+    "what": "Cantine Florio (producer) category page: Marsala Superiore Riserva \"aged in oak barrels for at least 4 years\"; Semisecco defined by \"natural residual sugar content between 40 g/l and 100 g/l\".",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.diffordsguide.com/beer-wine-spirits/8491/florio-marsala-superiore-riserva-semisecco",
+    "what": "Reference entry: non-vintage listing, \"4 years\" maturation in casks in Florio's seaside cellars, described as a medium-dry marsala.",
+    "type": "reference"
+   },
+   {
+    "url": "https://www.callmewine.com/en/marsala-superiore-riserva-semisecco-florio-2015-P61851.htm",
+    "what": "Retailer listing reached from a 2015 search but serving the 2018 vintage. USED ONLY for the label declaration \"Contains sulfites\". Its Grillo 100%, 48-months-in-wood, mistella/cooked-must vinification and tasting notes are 2018 data and were NOT copied into this record.",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "2015-vintage-specific tasting note (aroma/palate/finish)",
+   "measured residual sugar for this bottling",
+   "soil",
+   "farming",
+   "vinification detail attributable to the 2015",
+   "serving temperature attributable to the 2015",
+   "body",
+   "numeric critic score"
+  ],
+  "warnings": [
+   "WEAKEST RECORD of the seven. No producer technical sheet for the 2015 was located; no producer product page (cantineflorio.it product URLs blocked by robots.txt).",
+   "A retailer page surfaced by a '2015' search actually served the 2018 vintage - its tasting notes and 48-month wood figure were deliberately EXCLUDED to avoid vintage blending.",
+   "Aging figure is a CATEGORY minimum ('at least 4 years'), not a measured 2015 figure.",
+   "Residual sugar left empty: only the 40-100 g/l Semisecco category range is sourced, which is a legal band, not this wine's value.",
+   "cuveeConfidence 'likely' not 'certain': Florio uses lot codes (SR2715 in Decanter vs SR1015 elsewhere) for the same vintage; the exact lot on the MILA list is unverified."
+  ]
+ },
+ "drink.georges-noel-chablis-vieille-vignes": {
+  "id": "drink.georges-noel-chablis-vieille-vignes",
+  "matchedVintage": "no - the producer could not be identified, so no vintage could be matched",
+  "vintageOfSource": "",
+  "cuveeConfidence": "unconfirmed",
+  "grapes": [
+   "Chardonnay"
+  ],
+  "blendText": "",
+  "region": "Chablis AOC, Bourgogne, France",
+  "subRegion": "",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "",
+  "abv": "",
+  "residualSugar": "",
+  "style": "",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "",
+  "palate": "",
+  "finish": "",
+  "producerNotes": "",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://www.bourgogne-wines.com/wine-and-terroir/bourgogne-and-its-appellations/chablis-and-chablis-premier-cru,2458,9253.html?args=Y29tcF9pZD0yMjc4JmFjdGlvbj12aWV3RmljaGUmaWQ9MjU5Jnw%3D",
+    "what": "BIVB official appellation page - sole basis for the grape variety: Chablis AOC is 'Chardonnay (known locally as Beaunois)'. Appellation law, NOT a producer statement about this wine.",
+    "type": "appellation body"
+   },
+   {
+    "url": "https://www.chablis-wines.com/visit/wine-producers/george-courgis-89800,3301,16192.html?args=Y29tcF9pZD0yNTgzJmFjdGlvbj12aWV3RmljaGUmaWQ9VklOQk9VMDAwMDIwMTM0NCZ8",
+    "what": "Identity check on candidate A, Domaine George of Courgis: official Chablis producer directory lists Petit Chablis, Chablis, Chablis 1er Cru Butteaux and Chablis 1er Cru Les Beauregards - and NO Vieilles Vignes cuvee. 16.66 ha family estate.",
+    "type": "appellation body"
+   },
+   {
+    "url": "https://www.vivino.com/en/domaine-earl-george-chablis-vieilles-vignes/w/1215370",
+    "what": "Identity check on candidate A: a 'Domaine George Chablis Vieilles Vignes' does exist in commerce, though absent from the official directory. No technical data taken from here.",
+    "type": "other"
+   },
+   {
+    "url": "https://www.vivino.com/en/georges-noel-chablis/w/1915217",
+    "what": "Identity check on candidate B: a label 'Georges Noel Chablis' exists, with no Vieilles Vignes cuvee found. No technical data taken from here.",
+    "type": "other"
+   }
+  ],
+  "notFound": [
+   "the producer itself - no estate matching 'George Noel' with a Chablis Vieilles Vignes could be identified",
+   "producer website",
+   "US importer",
+   "any technical sheet",
+   "soil, farming, vinification, aging, ABV, residual sugar",
+   "tasting note",
+   "critic scores",
+   "sulphite or fining statement",
+   "any 2025-vintage source"
+  ],
+  "warnings": [
+   "IDENTITY UNRESOLVED - this record is deliberately near-empty. No producer named 'George Noel' making a Chablis Vieilles Vignes could be found on any producer site, importer site, the official Chablis producer directory or wine-searcher. Nothing beyond the appellation and grape is asserted.",
+   "THREE DISTINCT CANDIDATES, none confirmed. (A) Domaine George, a 16.66 ha family estate in Courgis (89800): a 'Domaine George Chablis Vieilles Vignes' is traded, but the official Chablis producer directory lists only Petit Chablis, Chablis and two 1er Crus for them, with no Vieilles Vignes. (B) 'Georges Noel', a label listed on Vivino with no Vieilles Vignes cuvee and no traceable estate - possibly a negociant or private label. (C) a misprint on MILA's list. These cannot be merged; picking one would be invention.",
+   "NAME-SIMILARITY TRAP, do not fall into it: Domaine Georges Noellat is a well-known Burgundy estate but it is in Vosne-Romanee / Nuits-Saint-Georges in the Cote de Nuits, it is not in Chablis, and it makes no Chablis at all. Any 'Georges Noel(lat)' data found online almost certainly belongs to that estate and must not be attached to this record.",
+   "SEPARATE PROBLEM even once the producer is resolved: the 2025 vintage is too young for a published tech sheet, so vintage-specific values (ABV, tasting note) will likely still be unavailable.",
+   "The grape is the ONLY inferred-by-law field and it is flagged as such: Chablis AOC is 100% Chardonnay by appellation regulation. It is not a producer statement about this bottle.",
+   "Kimmeridgian limestone was NOT recorded as this wine's soil. It is the appellation's characteristic terroir, not a sourced fact about this producer's parcels, and recording it would be exactly the appellation-typical inference that is prohibited.",
+   "RECOMMENDED ACTION: photograph the actual bottle label. Producer name, importer strip label and vintage on the glass will resolve this in one step; no amount of further web search will."
+  ]
+ },
+ "drink.harmand-geoffroy-gevrey-chambertin": {
+  "id": "drink.harmand-geoffroy-gevrey-chambertin",
+  "matchedVintage": true,
+  "vintageOfSource": "2021 for the wine-specific fields (Rosenthal-network retailers, wine.com). Farming / vinification / elevage figures are DOMAINE-LEVEL descriptions from the US importer and a UK agency, not a 2021 technical sheet.",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Pinot Noir"
+  ],
+  "blendText": "Rosenthal Wine Merchant (US importer) states the domaine's 9 hectares are 'all planted to Pinot Noir and situated exclusively within the boundaries of the village of Gevrey Chambertin'. No source states a varietal percentage for this specific cuvee.",
+  "region": "Burgundy, Cote de Nuits, France",
+  "subRegion": "Gevrey-Chambertin (village AOC). RWM Selections names the parcels as 'En Champs, Champerrier, Combes du Dessus', sitting just below the premier cru Les Champeaux on the north (Brochon) side of Gevrey. Howard Street Wine Merchant instead places the parcel 'beneath and to the side of Clos Prieur'.",
+  "soil": "",
+  "farming": "US importer (Rosenthal): 'Soil turned by tractor and hand; no herbicides', no chemical fertilizers or insecticides, debudding practiced, green harvest when needed, manual harvest. Fine Wine Experience: 'Vineyards are ploughed, and there is no weedkiller, insecticide or chemical fertilizer used.' No organic/biodynamic certification is claimed by any source.",
+  "vinification": "Rosenthal (US importer, domaine-level): 'grapes are destemmed 100%'; cold maceration of up to five days; temperature-controlled cuvaison of 15-21 days. Fine Wine Experience adds that Philippe Harmand uses 'traditional punching down or pumping over, depending on the profile of the year'.",
+  "aging": "Rosenthal (domaine-level): 'aged for approximately 16 months on the fine lees in small oak barrels', with the new-oak percentage varying by the importance of the cuvee; bottled without filtration. Fine Wine Experience states 40% new oak for the Vieilles Vignes cuvee (not vintage-specific).",
+  "abv": "13% (wine.com listing for the 2021)",
+  "style": "",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "",
+  "palate": "Howard Street Wine Merchant describes 'concentration of dark fruit, minerality, and firm structure'. RWM Selections calls it one of the most powerful wines in the cellar, with 'dark, almost somber fruit', 'reticent in its youth and quite profound with seven to ten years of age'.",
+  "finish": "",
+  "producerNotes": "Vine age is given differently by each source: Howard Street 'Vines that are 50 to 80 years old'; RWM Selections 'Vines were planted 55 to 85 years ago'; Fine Wine Experience 'vines average 65 years old'. Rosenthal recommends decanting before service. Fine Wine Experience calls it 'a reference Gevrey' of 'Fantastic value'.",
+  "criticScores": [],
+  "allergenNotes": "Rosenthal Wine Merchant (US importer) states the wines are 'Bottled without filtration'. Filtration is not fining and this statement says nothing about allergen presence or absence. No fining-agent statement and no sulphite statement was found for this cuvee.",
+  "sources": [
+   {
+    "url": "https://www.rosenthalwinemerchant.com/growers/domaine-harmand-geoffroy-83989/",
+    "what": "US importer grower page: holdings, 100% Pinot Noir, farming, 100% destemming, cold maceration, 15-21 day cuvaison, ~16 months on fine lees in small oak barrels, bottled without filtration, decant",
+    "type": "us-importer"
+   },
+   {
+    "url": "https://rwmselections.com/products/domaine-harmand-geoffroy-gevrey-chambertin-vieilles-vignes-2021",
+    "what": "2021 vintage listing: parcels En Champs / Champerrier / Combes du Dessus, vines planted 55-85 years ago, position below Les Champeaux, style description",
+    "type": "retailer"
+   },
+   {
+    "url": "https://howardstreet.wine/products/harmand-geoffroy-gevrey-chambertin-vieilles-vignes-2021",
+    "what": "2021 vintage listing: vines 50-80 years old, parcel beneath/beside Clos Prieur, dark fruit + minerality + firm structure, 7-10 year cellaring",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.wine.com/product/domaine-harmand-geoffroy-gevrey-chambertin-vieilles-vignes-2021/2459354",
+    "what": "2021 vintage listing: 13% ABV, winemaker notes (very old vines, 55-85 years, below Les Champeaux)",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.finewineexperience.com/agency/domaine-harmand-geoffroy/",
+    "what": "Agency page: farming (no weedkiller/insecticide/chemical fertiliser), punching down or pumping over, Vieilles Vignes at 40% new oak, average vine age 65 years",
+    "type": "agency"
+   }
+  ],
+  "notFound": [
+   "soil",
+   "style",
+   "body",
+   "servingTemp",
+   "aroma",
+   "finish",
+   "criticScores",
+   "harvest dates",
+   "yield",
+   "producer-published technical sheet for the 2021 vintage",
+   "sulphite/fining statement"
+  ],
+  "warnings": [
+   "The domaine's own website could not be fetched (robots/redirect failure); no producer-published 2021 technical sheet was located. All technical data is importer/agency/retailer-sourced.",
+   "Farming, vinification, elevage and the 40% new-oak figure are DOMAINE-LEVEL descriptions, not confirmed for the 2021 vintage specifically.",
+   "Sources disagree on vine age (50-80 vs 55-85 vs 'average 65') and on the parcels (En Champs/Champerrier/Combes du Dessus vs 'beneath and to the side of Clos Prieur'). Both parcel descriptions are recorded; neither is confirmed by the producer.",
+   "The 13% ABV is a retailer listing, not a producer or label figure."
+  ]
+ },
+ "drink.jean-marc-crochet-sancerre": {
+  "id": "drink.jean-marc-crochet-sancerre",
+  "matchedVintage": "no - no source found carries the 2025 vintage for this wine",
+  "vintageOfSource": "none - the US importer tech sheet and web page are undated and non-vintage-specific; the producer site shows no 2025",
+  "cuveeConfidence": "likely",
+  "grapes": [
+   "Sauvignon Blanc"
+  ],
+  "blendText": "Importer tech sheet: 'Sauvignon Blanc grape blend.' Producer states its whites are Sauvignon Blanc across 10 hectares.",
+  "region": "Sancerre AOC, Loire Valley, France",
+  "subRegion": "Bue",
+  "soil": "Producer: the white-wine vines are 'plantes sur sol argilo-calcaire (caillottes)' - clay-limestone (caillottes), where 'l'argile retient bien l'eau et les elements nutritifs, tandis que le calcaire apporte de la mineralite et un bon drainage' (the clay holds water and nutrients while the limestone brings minerality and good drainage). Stated for the estate's whites generally, not for the 2025 specifically.",
+  "farming": "",
+  "vinification": "",
+  "aging": "",
+  "abv": "",
+  "residualSugar": "",
+  "style": "",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "",
+  "palate": "",
+  "finish": "",
+  "producerNotes": "Importer: 'The Crochet family has cultivated the hills of Bue since the 16th century'; Jean-Marc began in 1980 and Mathieu joined in 2007, three generations now involved. The estate's range is Sancerre Blanc AOC, Sancerre Blanc Grand Chemarin, Sancerre Blanc Chene Marchand, Sancerre Rouge (Pinot Noir) and Sancerre Rose (Pinot Noir). The producer site mentions amphora vinification as a traditional method they explore, with 'micro-oxygenation subtile' and preservation of fruit character - it is NOT stated that the generic Sancerre Blanc is vinified this way. Importer food pairings: pork, shellfish, spicy cuisines, vegetarian dishes, goat cheese.",
+  "criticScores": [],
+  "allergenNotes": "Vintage Imports (US importer), on both the product page and the downloadable tech sheet, states verbatim: 'This wine contains allergens, sulfites.' No fining-agent statement was found on any source. Nothing found constitutes evidence that any allergen is absent.",
+  "sources": [
+   {
+    "url": "https://www.jeanmarc-mathieu-crochet.com/",
+    "what": "Producer site: clay-limestone (caillottes) soils for the whites, Sauvignon Blanc, 10 ha, full cuvee list, amphora mention",
+    "type": "producer"
+   },
+   {
+    "url": "https://vntgimports.com/wines/jean-marc-et-mathieu-crochet-sancerre-blanc/",
+    "what": "US importer product page: 'Sauvignon Blanc grape blend', 13% ABV, village Bue, family history, tasting note, 'This wine contains allergens, sulfites.'",
+    "type": "importer"
+   },
+   {
+    "url": "https://vntgimports.com/download/?id=61900",
+    "what": "US importer downloadable tech sheet for Sancerre Blanc - undated, no vintage stated; 13% ABV; tasting note; sulfite statement",
+    "type": "importer"
+   },
+   {
+    "url": "https://www.ruedesvignerons.com/en/domaine/51/domaine-jean-marc-et-mathieu-crochet",
+    "what": "Checked for estate technical detail - confirms Bue and the 16th-century family history, no soil/vinification/aging data",
+    "type": "other"
+   }
+  ],
+  "notFound": [
+   "any 2025-vintage source for this wine",
+   "2025 tech sheet (vintage too young)",
+   "ABV for the 2025",
+   "vinification (vessel, yeast, malolactic) for the generic Sancerre Blanc",
+   "aging (vessel and duration)",
+   "residual sugar",
+   "vine age",
+   "farming practice or certification (HVE / organic / sustainable)",
+   "vintage-specific tasting note",
+   "critic scores",
+   "fining-agent statement"
+  ],
+  "warnings": [
+   "VINTAGE NOT MATCHED. No source found carries a 2025 of this wine. The 2025 Sancerre harvest is too recent for a published tech sheet. The importer's tech sheet is undated and non-vintage-specific.",
+   "DELIBERATELY LEFT EMPTY rather than borrowed from the undated sheet: abv, aroma, palate, finish, style. For the record, the undated importer sheet states ABV '13%' and the note 'Intense nose, tight yet bursting with citrus and hints of white flower. The palate has an extraordinary ripeness almost leading to some spicy, exotic fruit notes and impressive structure', plus 'lovely balance and poise with energy and mineral vivacity' and 'very good length of flavor'. These must NOT be published as 2025 data - alcohol in particular moves vintage to vintage.",
+   "CUVEE IDENTITY (likely, not certain): the estate makes three white Sancerres - the generic Sancerre Blanc AOC plus two lieu-dit bottlings, Grand Chemarin and Chene Marchand. A list line reading simply 'Sancerre' points to the generic cuvee, which is also the one the US importer carries, but this is an inference from the bare name. If it is in fact Grand Chemarin or Chene Marchand, the soil, price tier and profile all change.",
+   "PRODUCER-IDENTITY TRAP: Sancerre has many unrelated Crochet estates - Lucien Crochet, Francois Crochet, Daniel Crochet, Dominique et Janine Crochet, Gerard Crochet. Several of them also release a 2025 Sancerre Blanc. Only Jean-Marc et Mathieu Crochet (Bue) was used here. Do not accept data from any other Crochet.",
+   "The producer's amphora reference was NOT recorded as vinification: the site presents it as a method the estate explores, without tying it to the generic Sancerre Blanc.",
+   "The soil description is estate-level for the whites, not confirmed for the 2025 bottling."
+  ]
+ },
+ "drink.lynch-bages-pauillac": {
+  "id": "drink.lynch-bages-pauillac",
+  "matchedVintage": true,
+  "vintageOfSource": "2009 - blend, harvest dates, yield, ABV and elevage come from the chateau's own 2009 vintage page. Soil and plantings are estate-level.",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Cabernet Sauvignon",
+   "Merlot",
+   "Cabernet Franc",
+   "Petit Verdot"
+  ],
+  "blendText": "'76% Cabernet Sauvignon, 18% Merlot, 4% Cabernet Franc, 2% Petit Verdot' (chateau's own 2009 vintage page; Farr Vintners states the same). The Wine Cellar Insider gives 76/18/3 Petit Verdot/2 Cabernet Franc - the chateau figure was used.",
+  "region": "Bordeaux, Left Bank, France",
+  "subRegion": "Pauillac AOC (5eme Cru Classe, 1855)",
+  "soil": "Estate-level (The Wine Cellar Insider): 'gravel, chalk, and sand soils' across a 100-hectare vineyard, including parcels on the Bages plateau (up to 20 metres elevation), the Monferan plateau, and land near Pauillac village.",
+  "farming": "",
+  "vinification": "Estate-level (The Wine Cellar Insider): vinification in '35 stainless steel vats that vary in size'; malolactic fermentation in 'a combination of 30% French oak barrels with the remainder taking place in tank'.",
+  "aging": "'15 months in French oak barrels (70% new wood)' for the 2009 (chateau's own vintage page; Farr Vintners states 70% new oak). The estate's general regime is an average of 70% new French oak for 12 to 15 months.",
+  "abv": "'Nearly 13.5%' (chateau's own 2009 vintage page). Farr Vintners lists 13.4-13.5%.",
+  "style": "",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "",
+  "palate": "The Wine Cellar Insider (95 points): 'full-bodied, round, concentrated, and with a polish to its tannins', showing 'layers of ripe, blackberries, black currants, lead pencil, cedar chest, and tobacco notes'.",
+  "finish": "",
+  "producerNotes": "The chateau describes 2009 as 'A vintage that was made from gentle, progressive weather, with gradual concentration coming from perfect summer ripening, followed, continuously and without interruption, by further concentration from a perfect autumn', and records 'the highest level of polyphenols ever measured at Lynch-Bages'. Harvest ran 28 September to 12 October; 68% of the total crop went into the grand vin. Estate plantings are 75% Cabernet Sauvignon, 17% Merlot, 6% Cabernet Franc, 2% Petit Verdot.",
+  "criticScores": [
+   {
+    "critic": "Robert Parker (Wine Advocate, issue 199)",
+    "score": "98",
+    "note": "'Expressive, voluptuously textured effort with unctuosity and powerful, juicy, succulent blackberry and black currant flavors' (March 2012)",
+    "url": "https://www.farrvintners.com/wine.php?wine=25983"
+   },
+   {
+    "critic": "Jane Anson (JaneAnson.com)",
+    "score": "98",
+    "note": "'Muscular structure and concentration make something very special. Beginning to open up with plenty more to give' (April 2022)",
+    "url": "https://www.farrvintners.com/wine.php?wine=25983"
+   },
+   {
+    "critic": "James Suckling (JamesSuckling.com)",
+    "score": "97",
+    "note": "'Wonderful fruit and ultra-fine tannins. One of the top buys of the vintage' (February 2012)",
+    "url": "https://www.farrvintners.com/wine.php?wine=25983"
+   },
+   {
+    "critic": "Neal Martin (Wine Advocate)",
+    "score": "96",
+    "note": "'Medium-bodied with citrus fresh entry... well balanced with insistent minty finish. Gorgeous' (July 2013)",
+    "url": "https://www.farrvintners.com/wine.php?wine=25983"
+   },
+   {
+    "critic": "The Wine Cellar Insider",
+    "score": "95",
+    "note": "'Surprisingly forward for Lynch Bages... full-bodied, round, concentrated, and with a polish to its tannins, this is already starting to come around.'",
+    "url": "https://www.thewinecellarinsider.com/bordeaux-wine-producer-profiles/bordeaux/pauillac/lynch-bages/"
+   },
+   {
+    "critic": "Stephen Browett (Southwold tasting)",
+    "score": "18.5/20",
+    "note": "'Incredible mouthful of black creme de cassis fruit. Truly great Pauillac' (January 2013)",
+    "url": "https://www.farrvintners.com/wine.php?wine=25983"
+   },
+   {
+    "critic": "Steven Spurrier (Decanter.com)",
+    "score": "18/20",
+    "note": "'Lifted and long. Expressive elegance over natural vigour' (April 2010)",
+    "url": "https://www.farrvintners.com/wine.php?wine=25983"
+   }
+  ],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://www.lynchbages.mobi/en/lynch-bages/2009",
+    "what": "Chateau's own 2009 vintage page: blend 76/18/4/2, harvest 28 Sept - 12 Oct, 68% of the crop, 15 months in French oak with 70% new wood, alcohol nearly 13.5%, highest polyphenol level ever measured, vintage description",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.farrvintners.com/wine.php?wine=25983",
+    "what": "Lynch-Bages 2009: blend confirmation, 70% new oak, 13.4-13.5% ABV, full critic score table with review text and dates",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.thewinecellarinsider.com/bordeaux-wine-producer-profiles/bordeaux/pauillac/lynch-bages/",
+    "what": "Estate profile: 100 ha, gravel/chalk/sand soils, Bages and Monferan plateaus, plantings 75/17/6/2, 35 stainless vats, malolactic 30% in barrel, 70% new oak for 12-15 months; 95-point 2009 tasting note",
+    "type": "critic"
+   }
+  ],
+  "notFound": [
+   "farming practices / certification",
+   "style",
+   "body",
+   "servingTemp",
+   "aroma",
+   "finish",
+   "allergenNotes / sulphite or fining statement",
+   "yield in hl/ha"
+  ],
+  "warnings": [
+   "Blend conflict on the minor varieties: chateau says 4% Cabernet Franc / 2% Petit Verdot; The Wine Cellar Insider says 3% Petit Verdot / 2% Cabernet Franc. The chateau figure was used.",
+   "Yield is stated by the chateau as '68% of total crop', not as hl/ha - do not convert or present it as a hectolitre yield.",
+   "Soil, vat count and malolactic detail are estate-level, not confirmed as 2009-specific.",
+   "No sulphite or fining-agent statement was found for this wine in any source; the allergen fields are empty, which is NOT evidence of absence.",
+   "This is a 2009 bottle - a 17-year-old wine. Bottle-to-bottle variation and provenance matter for service; no source addresses current drinking condition."
+  ]
+ },
+ "drink.moet-and-chandon-imperial": {
+  "id": "drink.moet-and-chandon-imperial",
+  "matchedVintage": "NV",
+  "vintageOfSource": "NV",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Pinot Noir",
+   "Meunier",
+   "Chardonnay"
+  ],
+  "blendText": "Pinot Noir 30-40%, Meunier 30-40%, Chardonnay 20-30%; 20-30% specially selected reserve wines",
+  "region": "Champagne, France",
+  "subRegion": "",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "24 months in the cellars plus 3 months' rest after disgorgement (moet.com); champmarket states 'maturation, about twice as long for each cuvee as the legal limit'",
+  "abv": "12.5% (champmarket.com)",
+  "dosage": "7 g/L (moet.com official); retailers Millesima and Champmarket state 9 g/L — see warnings",
+  "style": "Brut, non-vintage",
+  "body": "",
+  "servingTemp": "Between 8 and 10 °C (champmarket.com)",
+  "aroma": "'Green apple, citrus' followed by 'mineral freshness and white flowers', then 'blonde nuances of brioche, cereals and fresh nuts' (moet.com)",
+  "palate": "'Generous and tasty, white fruit notes including pear, white peach and apple' with 'fine, light bubbles' (moet.com); 'a tasty and delicate palate harmoniously combines generosity and subtlety, amplitude and freshness' (Millesima)",
+  "finish": "'Finishing with the sweet liveliness of the citrus nuances' (moet.com)",
+  "producerNotes": "Colour: 'slightly golden straw yellow with delicate green glints' (moet.com). Moet.com food pairings: raw seafood (sushi, sashimi, oysters, sea urchin), simply prepared white fish (roasted, poached), fresh vegetables with seafood elements, herb-forward dishes; the house advises against excessive sweetness/honey/candied fruit, dark chocolate, burnt spices and bitter elements, overcooked dishes and soft sticky textures.",
+  "criticScores": [
+   {
+    "critic": "Wine Spectator",
+    "score": "91",
+    "note": "Listed by retailer Millesima on its non-vintage Brut Imperial page without base-year or review-date attribution",
+    "url": "https://www.millesima-usa.com/champagne-moet-chandon-brut-imperial-0000.html"
+   },
+   {
+    "critic": "Decanter",
+    "score": "91",
+    "note": "Listed by retailer Millesima without base-year or review-date attribution",
+    "url": "https://www.millesima-usa.com/champagne-moet-chandon-brut-imperial-0000.html"
+   },
+   {
+    "critic": "James Suckling",
+    "score": "90",
+    "note": "Listed by retailer Millesima without base-year or review-date attribution",
+    "url": "https://www.millesima-usa.com/champagne-moet-chandon-brut-imperial-0000.html"
+   },
+   {
+    "critic": "Jeb Dunnuck",
+    "score": "90",
+    "note": "Listed by retailer Millesima without base-year or review-date attribution",
+    "url": "https://www.millesima-usa.com/champagne-moet-chandon-brut-imperial-0000.html"
+   },
+   {
+    "critic": "Robert Parker (Wine Advocate)",
+    "score": "88",
+    "note": "Listed by retailer Millesima as 'Parker', without base-year or review-date attribution",
+    "url": "https://www.millesima-usa.com/champagne-moet-chandon-brut-imperial-0000.html"
+   },
+   {
+    "critic": "Vinous (Antonio Galloni)",
+    "score": "86",
+    "note": "Listed by retailer Millesima without base-year or review-date attribution",
+    "url": "https://www.millesima-usa.com/champagne-moet-chandon-brut-imperial-0000.html"
+   },
+   {
+    "critic": "Jancis Robinson",
+    "score": "14",
+    "note": "On the 20-point scale; listed by retailer Millesima without base-year or review-date attribution",
+    "url": "https://www.millesima-usa.com/champagne-moet-chandon-brut-imperial-0000.html"
+   }
+  ],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://www.moet.com/en-us/foodpairing/moet-imperial",
+    "what": "Producer page: blend percentages, 24 months cellaring + 3 months post-disgorgement, 7 g/L dosage, colour, nose, palate, finish, food pairings",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.millesima-usa.com/champagne-moet-chandon-brut-imperial-0000.html",
+    "what": "Blend and 20-30% reserve wines, 9 g/L dosage, tasting notes, aggregated critic scores",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.champmarket.com/en/champagne/moet-chandon-brut-imperial-bouteille-new/",
+    "what": "12.5% alcohol, blend and reserve wines, 9 g/L dosage, serving temperature 8-10 °C, maturation note, tasting notes",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "subRegion/Epernay confirmation from a source",
+   "soil",
+   "farming",
+   "vinification detail",
+   "body",
+   "allergen/sulphite statement",
+   "fining agents"
+  ],
+  "warnings": [
+   "DOSAGE CONFLICT: moet.com states 7 g/L; Millesima and Champmarket both state 9 g/L. Producer figure kept, retailer figure recorded — do not present as settled.",
+   "Alcohol 12.5% comes from a retailer only; the producer page did not state ABV.",
+   "'Epernay' as printed on the MILA list is not confirmed by any source read here, so subRegion was left empty rather than asserted.",
+   "Critic scores are retailer-aggregated with no base year or review date; a non-vintage cuvee's score can refer to a different disgorgement.",
+   "Moet & Chandon also sells Imperial variants (Rose Imperial, Ice Imperial, Nectar Imperial) — this record is the Brut 'Moet Imperial' only."
+  ]
+ },
+ "drink.nanbu-bijin-southern-beauty-daiginjo": {
+  "id": "drink.nanbu-bijin-southern-beauty-daiginjo",
+  "kind": "sake",
+  "matchedVintage": "",
+  "vintageOfSource": "",
+  "cuveeConfidence": "certain",
+  "grapes": [],
+  "blendText": "",
+  "region": "",
+  "subRegion": "",
+  "brewery": "Nanbu Bijin (Nanbubijin Co. Ltd.)",
+  "prefecture": "Iwate (Ninohe city)",
+  "riceVariety": "Yamada Nishiki",
+  "seimaibuai": "50%",
+  "grade": "Junmai Daiginjo",
+  "smv": "0",
+  "acidity": "1.6",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "",
+  "abv": "16.8%",
+  "residualSugar": "",
+  "style": "Junmai Daiginjo, Yamada Nishiki, brand name Shinpaku (\"white heart\" of the rice grain)",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "Brewery: \"beautiful aromas of fresh peach or strawberry with very mild rice aromas like soft marshmallows\". Importer/retailer True Sake: \"a collection of strawberry, floral, peach, pear, and apricot aromas\".",
+  "palate": "Brewery: \"a very good balance between gorgeous ginjo aroma flavor and soft tastes of Yamada Nishiki sake rice\". True Sake: \"layers of smooth and juicy flavors\", \"soft and round\" in the glass.",
+  "finish": "True Sake: \"surprisingly dry\".",
+  "producerNotes": "Yeast M310. Water: \"Subsoil water from Orizumebasenkyo in Iwate Prefectural Natural Park (water of low to medium calcium content)\". Brewery states the sake is Kosher Certified and suggests it \"as an aperitif or also with main courses\".",
+  "criticScores": [],
+  "allergenNotes": "True Sake states: \"One of the few certified vegan sakes in the world!\" Recorded verbatim as a retailer claim ONLY. This is NOT proof of the absence of any allergen and must NOT be used to set absent_verified on any allergen flag. No fining-agent or sulphite statement located.",
+  "sources": [
+   {
+    "url": "http://www.southern-beauty.com/sake-lineup/",
+    "what": "Nanbu Bijin official English brewery site ('Southern Beauty') sake lineup: Shinpaku entry - rice Yamada Nishiki, seimaibuai 50%, SMV 0, ABV 16.8%, yeast M310, aroma description, Ninohe city / Iwate, Kosher certified.",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.nanbubijin.co.jp/en/sake/nihonshu/junmai-daiginjo/shinpaku/",
+    "what": "Nanbubijin Co. Ltd. official corporate page for Junmai Daiginjo Yamada Nishiki -Shin Paku-: rice variety, 50% polishing, water source (Orizumebasenkyo subsoil water), flavour balance statement, Kosher certification.",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.truesake.com/products/nanbu-bijin-shinpaku-junmai-daiginjo-southern-beauty",
+    "what": "True Sake (US specialist retailer): Iwate, Junmai Daiginjo, SMV +4, acidity 1.6, aroma/palate/finish descriptors, certified-vegan claim.",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "serving temperature",
+   "official acidity figure from the brewery",
+   "critic scores",
+   "fining-agent or sulphite statement"
+  ],
+  "warnings": [
+   "SMV CONFLICT: the brewery's own site states SMV 0; True Sake states SMV +4. The producer value (0) is recorded per the source hierarchy; the discrepancy is unresolved and should be confirmed before it reaches staff-facing copy.",
+   "acidity 1.6 comes only from the retailer (True Sake), not the brewery.",
+   "The 'certified vegan' claim is recorded verbatim but is explicitly NOT allergen-absence evidence.",
+   "Sake has no vintage; matchedVintage/vintageOfSource left empty by design."
+  ]
+ },
+ "drink.palmer-alter-ego-margaux": {
+  "id": "drink.palmer-alter-ego-margaux",
+  "matchedVintage": true,
+  "vintageOfSource": "2019 - the blend, ABV and elevage figures come from 2019-specific technical sheets and merchant listings. Estate soil, farming and the general Alter Ego elevage regime are estate/cuvee-level, not 2019-specific.",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Merlot",
+   "Cabernet Sauvignon",
+   "Petit Verdot"
+  ],
+  "blendText": "'51% Merlot, 40% Cabernet Sauvignon, 9% Petit Verdot' for the 2019 - stated identically by the Alter Ego 2019 technical sheet, Lanigan & Edwards, Farr Vintners and Berry Bros. & Rudd. No Cabernet Franc in this vintage per these sources.",
+  "region": "Bordeaux, Left Bank, France",
+  "subRegion": "Margaux AOC (Chateau Palmer is a 3eme Cru Classe of the 1855 classification)",
+  "soil": "Estate-level (The Wine Cellar Insider): Palmer's 66-hectare vineyard holds '18 different gravel, clay and sand soil types' across 114 parcels, with Merlot planted in gravel with clay. Chateau Palmer's own Alter Ego page describes the estate terroir as 'silky, sandy, gravelly soil'. Lanigan & Edwards instead describes a 55-hectare vineyard on 'a plateau of thin gravel from the Guntz period' with lydite, quartzite and chalcedony stones.",
+  "farming": "Estate-level: Chateau Palmer converted progressively from 2008, reached '100% biodynamic farming in 2014' (2014 being 'the first fully biodynamic vintage') and was certified biodynamic in 2017 (The Wine Cellar Insider). Berry Bros. & Rudd's 2019 Alter Ego listing notes biodynamic principles.",
+  "vinification": "Chateau Palmer states that Alter Ego is made in the same cellar by the same team as the grand vin and that 'the vinification process is adapted to each of the 54 vats depending on which wine they will contain'. Fruit is selected for 'phenolic maturity, density, and depth'.",
+  "aging": "'Aged in partly new French oak barrels for 18 months' for the 2019 (Alter Ego 2019 technical sheet). Lanigan & Edwards specifies 18 months in barrel with 'a moderate percentage of new oak barrels (25 to 40%)' to preserve fruitiness. The Wine Cellar Insider gives the Alter Ego regime as '25% to 40% new, French oak barrels for between 16 to 18 months'.",
+  "abv": "14% (Alter Ego 2019 technical sheet, Farr Vintners, Berry Bros. & Rudd)",
+  "style": "Chateau Palmer characterises Alter Ego as 'spontaneous, round, generous, and silky' yet 'both intense and light, rich and delicate', with a blend 'often dominated by Merlot' - more approachable in youth than the grand vin.",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "'Fragrant aromas of red fruits, oriental spices and hints of aromatic herbs' (2019 technical sheet). Lanigan & Edwards adds 'explosive aromatics' with 'subtle notes of red fruits evoking raspberries and redcurrants' and 'the floral fragrance of a field in spring'.",
+  "palate": "'Decisive, soft, juicy, with ripe tannins' (2019 technical sheet). Lanigan & Edwards: 'initially refreshing', unfolding into 'a texture of great softness and length'.",
+  "finish": "",
+  "producerNotes": "Chateau Palmer does not present Alter Ego as a second wine but as 'another facet to the estate' and 'another expression of terroir', launched with the 1998 vintage. The Wine Cellar Insider notes it originated from 8 hectares of vines.",
+  "criticScores": [
+   {
+    "critic": "James Suckling",
+    "score": "96",
+    "note": "'Extremely refined tannins that are well-integrated into the wine' (Dec 2021)",
+    "url": "https://www.farrvintners.com/wine.php?wine=61501"
+   },
+   {
+    "critic": "Lisa Perrotti-Brown MW (The Wine Independent)",
+    "score": "94",
+    "note": "'Finely grained tannins and compelling freshness to match intense fruit' (May 2023); earlier note 'lively, refreshing and delicately fruited' with 'savory layers' (May 2022)",
+    "url": "https://www.farrvintners.com/wine.php?wine=61501"
+   },
+   {
+    "critic": "Neal Martin (Vinous)",
+    "score": "94",
+    "note": "'Medium-bodied with sappy black fruit, quite saline and peppery' (Feb 2023); scored 93 in Feb 2022 - 'very saline toward the finish, with good persistence'",
+    "url": "https://www.farrvintners.com/wine.php?wine=61501"
+   },
+   {
+    "critic": "Jane Anson (Decanter)",
+    "score": "94",
+    "note": "'Outstanding Alter Ego that puts emphasis on pleasure' (Jun 2020); scored 93 on JaneAnson.com in Jan 2022 - 'supple tannins supporting layers of damson fruits'",
+    "url": "https://www.farrvintners.com/wine.php?wine=61501"
+   },
+   {
+    "critic": "William Kelley (Wine Advocate)",
+    "score": "91",
+    "note": "'More immediate than the more muscular, powerful grand vin' (Apr 2022)",
+    "url": "https://www.farrvintners.com/wine.php?wine=61501"
+   },
+   {
+    "critic": "Jancis Robinson MW (JancisRobinson.com)",
+    "score": "17.5/20",
+    "note": "'A charmer' with 'youthful depths' (Feb 2023)",
+    "url": "https://www.farrvintners.com/wine.php?wine=61501"
+   },
+   {
+    "critic": "James Lawther MW (JancisRobinson.com)",
+    "score": "17+/20",
+    "note": "'Tannins so fine you almost forget them' (Jun 2020)",
+    "url": "https://www.farrvintners.com/wine.php?wine=61501"
+   },
+   {
+    "critic": "The Wine Cellar Insider",
+    "score": "94",
+    "note": "'Flowers and red fruits is the name of the game here... exudes freshness, soft, silky textures and a wealth of earthy, fresh, tobacco tinted, red pit fruits.'",
+    "url": "https://www.thewinecellarinsider.com/bordeaux-wine-producer-profiles/bordeaux/margaux/palmer/"
+   }
+  ],
+  "allergenNotes": "Berry Bros. & Rudd's 2019 Alter Ego listing states the wine contains sulphites and notes 'extremely low SO2 levels (37ppm)' consistent with the estate's biodynamic approach. A low SO2 figure is a level, not an absence, and says nothing about any other allergen. No fining-agent statement (egg white / albumin, casein, isinglass) was found in any consulted source.",
+  "sources": [
+   {
+    "url": "https://vinumlector.com/wp-content/uploads/2025/09/Alter-Ego-de-Chateau-Palmer-Margaux-Grand-Cru-Classe-AOC-2019.pdf",
+    "what": "Alter Ego 2019 technical sheet: 51% Merlot / 40% Cabernet Sauvignon / 9% Petit Verdot, Margaux Grand Cru Classe AOC, 14% ABV, 18 months in partly new French oak, tasting note, drink 2023-2040. Explicitly the second wine, not the grand vin.",
+    "type": "technical-sheet"
+   },
+   {
+    "url": "https://www.lanigan-edwards.com/margaux/c_alteregopalmer19.pdf",
+    "what": "Alter Ego 2019 merchant sheet: same blend, Margaux 3eme Cru Classe, 18 months in barrel with 25-40% new oak, Guntz gravel plateau description, tasting note, critic score list",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.farrvintners.com/wine.php?wine=61501",
+    "what": "Alter Ego 2019: blend confirmation, 14% ABV, full critic score table with review text and dates",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.bbr.com/products-20198004295-2019-alter-ego-de-palmer-margaux-bordeaux",
+    "what": "Alter Ego 2019: blend, 14% ABV, biodynamic principles, contains sulphites at extremely low SO2 (37ppm), Jane Anson and Lisa Perrotti-Brown notes",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.chateau-palmer.com/en/alterego",
+    "what": "Producer page for Alter Ego: identity ('another facet to the estate', not called a second wine), first vintage 1998, estate sourcing on silky sandy gravelly soil, vinification adapted across 54 vats, style",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.thewinecellarinsider.com/bordeaux-wine-producer-profiles/bordeaux/margaux/palmer/",
+    "what": "Estate profile: 66 ha / 18 soil types / 114 parcels, biodynamic conversion from 2008, 100% biodynamic 2014, certified 2017; Alter Ego regime 25-40% new oak for 16-18 months; 94-point note for the 2019 Alter Ego",
+    "type": "critic"
+   }
+  ],
+  "notFound": [
+   "harvest dates",
+   "yield",
+   "body",
+   "servingTemp",
+   "finish",
+   "exact new-oak percentage for the 2019 specifically",
+   "fining-agent statement"
+  ],
+  "warnings": [
+   "Alter Ego is Chateau Palmer's SECOND wine (the estate itself calls it 'another facet to the estate'). All data here is Alter Ego data; no grand vin figures were used.",
+   "ABV conflict: 14% (technical sheet, Farr Vintners, Berry Bros. & Rudd - used) vs 13.5% (Lanigan & Edwards).",
+   "Vineyard size conflict: 66 hectares (The Wine Cellar Insider, Palmer estate) vs 55 hectares (Lanigan & Edwards). Both recorded, neither confirmed on chateau-palmer.com.",
+   "Chateau Palmer's own 2019 Alter Ego vintage page returned 404; no producer-published 2019 blend/harvest data was obtained directly from the chateau.",
+   "Soil and biodynamic certification data are ESTATE-level. Alter Ego is drawn from the same estate, but no source states the 2019 Alter Ego parcels specifically.",
+   "The 37ppm SO2 figure comes from a merchant listing, not from the chateau."
+  ]
+ },
+ "drink.paul-hobbs-chardonnay": {
+  "id": "drink.paul-hobbs-chardonnay",
+  "matchedVintage": "yes - the producer's own 2022 Russian River Valley Chardonnay product sheet was located and used",
+  "vintageOfSource": "2022",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Chardonnay"
+  ],
+  "blendText": "'100% chardonnay' (producer)",
+  "region": "Russian River Valley AVA, Sonoma County, California, USA",
+  "subRegion": "",
+  "soil": "Producer, 2022 sheet: 'Various exposures and soils including Goldridge, brown sandy loam and clay loam'. Rootstocks: 420a, swz, rg, 3309, 101-14. Clonal selections: Hyde-Wente, Hudson-Wente, 15, Batto, Wente, Montrachet, Mt. Eden, 76, 548, 72.",
+  "farming": "",
+  "vinification": "Producer, 2022 sheet: hand-harvested at night using shears only; whole-cluster pressed while still cold from the field; barrel-fermented with indigenous yeasts; aged sur lies with batonnage; spontaneous malolactic fermentation. Harvest ran August 31 - September 17, with picking for the vintage having begun August 22, the earliest on record for the winery. Vintage conditions: early bud break and bloom, June berry shatter after unexpected rainfall, low yields and small berries from dry soils, a temperate summer giving uniform ripening, cool nights preserving acidity.",
+  "aging": "Producer, 2022 sheet: 'Aged 15 months in French oak barrels; 36% new.' Bottled unfined and unfiltered, January 2024.",
+  "abv": "",
+  "residualSugar": "",
+  "style": "",
+  "body": "Critics disagree and no producer figure exists: 'Full-bodied' (James Suckling), 'Medium to full-bodied' (Jeb Dunnuck), 'Medium in body' (Vinous), 'medium-bodied' (Robert Parker's Wine Advocate).",
+  "servingTemp": "",
+  "aroma": "Producer, 2022 sheet: pale straw color, with a 'bright pairing of fresh citrus peel and crisp Asian pear' evolving into apple and tropical fruit, with gardenia notes.",
+  "palate": "Producer, 2022 sheet: apple and tropical fruit carrying through, with brioche and minerality.",
+  "finish": "Producer, 2022 sheet: brioche and minerality on the finish.",
+  "producerNotes": "The winery's standing description of this bottling (not vintage-specific): '100% chardonnay', 'Whole-cluster pressed while still cold from the field', 'Barrel-fermented with indigenous yeasts', 'Aged sur lies with bi-weekly batonnage', 'Spontaneous malolactic fermentation', 'Aged in a selection of new and neutral French oak barrels', 'Unfined and unfiltered'. On the appellation: the Russian River Valley lies 'between the Russian River and Mayacamas Mountains' with 'cool fog and warm temperatures, coupled with enviable soils'.",
+  "criticScores": [
+   {
+    "critic": "James Suckling",
+    "score": "94",
+    "note": "The fruit in this is very beautiful, with sliced apples, cream and hints of stone. Full-bodied with plenty of fruit and a creamy texture that shows tension and intensity.",
+    "url": "https://www.wine.com/product/paul-hobbs-russian-river-chardonnay-2022/1953131"
+   },
+   {
+    "critic": "Jeb Dunnuck",
+    "score": "93",
+    "note": "Medium to full-bodied, it's elegant and long on the palate, with a wide window for enjoyment over the next 7-8 years.",
+    "url": "https://www.wine.com/product/paul-hobbs-russian-river-chardonnay-2022/1953131"
+   },
+   {
+    "critic": "Vinous",
+    "score": "93",
+    "note": "Medium in body and vibrant with terrific depth, the Russian River Chardonnay is a beautiful introduction to the range.",
+    "url": "https://www.wine.com/product/paul-hobbs-russian-river-chardonnay-2022/1953131"
+   },
+   {
+    "critic": "Wine Spectator",
+    "score": "93",
+    "note": "Offers a stylish, sleek mix of tangerine, mango puree and peach preserves, plus a touch of grilled Meyer lemon.",
+    "url": "https://www.wine.com/product/paul-hobbs-russian-river-chardonnay-2022/1953131"
+   },
+   {
+    "critic": "Robert Parker's Wine Advocate",
+    "score": "90",
+    "note": "The medium-bodied palate offers generous, gently honeyed flavors and integrated, spicy new oak.",
+    "url": "https://www.wine.com/product/paul-hobbs-russian-river-chardonnay-2022/1953131"
+   }
+  ],
+  "allergenNotes": "No sulphite declaration and no fining-agent statement appears on the producer's 2022 product sheet or on the retailer pages checked. The producer states the wine is 'Bottled unfined and unfiltered' - a processing statement about this wine only, and NOT evidence that any allergen is absent. Alliance Wine (UK importer) tags the wine 'Vegetarian, vegan' and 'winemaker working organically'; that same page contains a clear factual error (it describes the fruit as coming from 'prime appellations in the Napa Valley' for a Russian River Valley wine), so its claims are recorded here as unverified and are not used as allergen or farming data.",
+  "sources": [
+   {
+    "url": "https://paulhobbswinery.com/wp-content/uploads/2024/02/chrr22.pdf",
+    "what": "Producer's official 2022 Russian River Valley Chardonnay product sheet - vintage-matched primary source for soils, clones, rootstocks, harvest dates, vintage conditions, winemaking, 15 months French oak / 36% new, bottling date, tasting note",
+    "type": "producer"
+   },
+   {
+    "url": "https://paulhobbswinery.com/wines/chardonnay/",
+    "what": "Producer library-vintages index; used to locate the correct 2022 sheet URL and to confirm it is the appellation-tier RRV Chardonnay rather than a single-vineyard bottling",
+    "type": "producer"
+   },
+   {
+    "url": "https://paulhobbswinery.com/russian-river-valley-chardonnay/",
+    "what": "Producer page for this bottling: '100% chardonnay', whole-cluster pressing, indigenous yeasts, sur lies with bi-weekly batonnage, spontaneous malolactic, new and neutral French oak, unfined and unfiltered, appellation description",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.wine.com/product/paul-hobbs-russian-river-chardonnay-2022/1953131",
+    "what": "2022-specific retail SKU: all five critic scores and review texts, plus a 14.2% ABV figure (see warnings)",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.alliancewine.com/paul-hobbs/chardonnay-russian-river-2022-8128",
+    "what": "UK importer 2022 page: corroborates 36% new French oak; states 14.5% ABV, 12-15 months oak, and vegan/organic tags - all recorded as unverified because the page also misstates the origin as Napa Valley",
+    "type": "importer"
+   }
+  ],
+  "notFound": [
+   "ABV - not given on the producer sheet; two secondary sources conflict",
+   "pH, TA, residual sugar - not published on the 2022 sheet",
+   "yield in tons per acre for 2022 (published for 2021, not for 2022)",
+   "cooperage list for 2022 (published for 2021, not for 2022)",
+   "farming practice or certification confirmed by the producer",
+   "serving temperature",
+   "sulphite or fining declaration"
+  ],
+  "warnings": [
+   "ABV CONFLICT, left empty: wine.com states 14.2% for the 2022, Alliance Wine states 14.5% for the 2022, and the producer's own 2022 sheet gives no alcohol figure at all. Neither secondary source outranks the other and the Alliance page is independently unreliable (see below). Read the ABV off the bottle label before publishing it.",
+   "The Alliance Wine 2022 page describes the fruit as from 'prime appellations in the Napa Valley' - factually wrong for a Russian River Valley wine. Its 12-15 months oak, 14.5% ABV, organic and vegan claims are therefore all treated as unverified. Its '36% new' oak figure was not used from that page either; that figure is recorded because the producer's own 2022 sheet states it.",
+   "CUVEE IDENTITY IS CERTAIN BUT EASY TO BREAK: Paul Hobbs makes several other Chardonnays that are ALSO Russian River Valley - George Menini Estate, Ross Station Estate, Edward James Estate and Ellen Lane Estate. Their 2022 sheets (chgm22.pdf, chrs22.pdf) are separate wines with different oak regimes and different data. This record uses only the appellation-tier 'Chardonnay, Russian River Valley' sheet, chrr22.pdf.",
+   "DO NOT SUBSTITUTE ADJACENT VINTAGES. The 2021 sheet says 12 months / 25% new oak and the 2023 sheet says 15 months / 27% new oak; the 2022 is 15 months / 36% new. Harvest dates differ sharply too (2022 began August 22, the earliest on record; 2023 began September 20, the latest in over a decade). These numbers are not interchangeable.",
+   "Critic scores and review texts were read from the wine.com listing, which reproduces them; they were not verified against each critic's own publication.",
+   "'Unfined and unfiltered' is a processing statement about this wine, not an allergen-absence claim, and must never be rendered as one on a guest-facing surface."
+  ]
+ },
+ "drink.perrier-jouet-rose": {
+  "id": "drink.perrier-jouet-rose",
+  "matchedVintage": "NV",
+  "vintageOfSource": "NV",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Chardonnay",
+   "Pinot Noir",
+   "Meunier"
+  ],
+  "blendText": "25% Chardonnay, 50% Pinot Noir (including added red wines), 25% Meunier; red wines 12-15% of the reserve wines (producer technical sheet). Champmarket states 'reserve wines up to 15%'.",
+  "region": "Champagne, France",
+  "subRegion": "",
+  "soil": "",
+  "farming": "",
+  "vinification": "Fermentation in temperature-regulated stainless steel fermenters with full malolactic fermentation (producer technical sheet)",
+  "aging": "Three years' ageing on the lees in the cellars of Perrier-Jouet, 'more than twice the time required by the appellation'",
+  "abv": "12.5% ABV (wine.com)",
+  "dosage": "8 to 11 grams per litre, added according to the year (producer technical sheet); Champmarket states 8 to 10 g/L",
+  "style": "Brut Rose, non-vintage",
+  "body": "",
+  "servingTemp": "Between 9 and 11 °C",
+  "aroma": "Producer sheet: pomegranates, pears, apricots, blood oranges, red fruits, biscuit, butter, pastries and white flowers, developing to blackcurrant, creme de cassis, raspberry, honeysuckle, roses, lime, blackberries and Morello cherries; Champmarket adds 'subtle floral notes (honeysuckle)' and 'buttery and brioche notes'",
+  "palate": "'Rich and long in the mouth. A gourmet champagne, with the authentic character of a rose' (producer sheet); 'the attack is intense and lively. The wine is rich, with length, character and good fullness' (Champmarket); 'pink grapefruit, strawberry, raspberry, blackberry, honeysuckle' (Perrier-Jouet tasting sheet)",
+  "finish": "'Persistent' (wine.com winemaker note)",
+  "producerNotes": "Colour: 'luminous rose with pale orange glints; fine, lively, persistent sparkle' (producer sheet); 'salmon-pink with orange flecks' (Perrier-Jouet tasting sheet); 'a fresh salmon pink colour' (Champmarket). Producer describes it as 'the most gourmet cuvee'. Producer food pairings: salmon, red snapper, sushi, duck breast, lamb with cranberries, desserts with red berries, white chocolate and vanilla.",
+  "criticScores": [
+   {
+    "critic": "Decanter",
+    "score": "96",
+    "note": "Listed by retailer Wine.com on the non-vintage Blason Rose page without base-year or review-date attribution",
+    "url": "https://www.wine.com/product/perrier-jouet-blason-rose/110757"
+   },
+   {
+    "critic": "James Suckling",
+    "score": "92",
+    "note": "Listed by retailer Wine.com without base-year or review-date attribution",
+    "url": "https://www.wine.com/product/perrier-jouet-blason-rose/110757"
+   },
+   {
+    "critic": "Wine Spectator",
+    "score": "92",
+    "note": "Listed by retailer Wine.com without base-year or review-date attribution",
+    "url": "https://www.wine.com/product/perrier-jouet-blason-rose/110757"
+   }
+  ],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://prh-perrierjouet-prod.s3-eu-west-1.amazonaws.com/perrierjouet.uk.prod/s3fs-public/2017-06/PJ_FICHES.TECHNIQUES_ENG_BR.pdf",
+    "what": "Official Perrier-Jouet technical sheet: blend 25/50/25, 12-15% red wine of reserve wines, dosage 8-11 g/L, ageing more than twice appellation requirement, stainless steel fermentation with full malolactic, colour, nose, palate, serving temp 9-11 °C, food pairings",
+    "type": "producer"
+   },
+   {
+    "url": "https://cdn.accentuate.io/2200471666737/3311071592573/Perrier-Jouet-Tasting-Sheets---Blason-Rose-v1568137484395.pdf",
+    "what": "Perrier-Jouet tasting sheet (brand-distributed PDF): blend, 8-11 g/L dosage, 3 years' bottle ageing with 15% reserve wines, colour, nose, palate",
+    "type": "producer/distributor"
+   },
+   {
+    "url": "https://www.wine.com/product/perrier-jouet-blason-rose/110757",
+    "what": "12.5% ABV, blend, winemaker tasting note incl. persistent finish, critic scores",
+    "type": "US retailer"
+   },
+   {
+    "url": "https://www.champmarket.com/en/champagne/perrier-jouet-blason-rose-bottle/",
+    "what": "Blend and reserve wines up to 15%, dosage 8-10 g/L, three years on lees, serving temperature 9-11 °C, colour and tasting notes",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "subRegion/Epernay confirmation from a source",
+   "soil",
+   "farming",
+   "body",
+   "allergen/sulphite statement",
+   "fining agents"
+  ],
+  "warnings": [
+   "DOSAGE: producer sheet says 8-11 g/L 'according to the year'; Champmarket says 8-10 g/L. Both recorded, neither reconciled.",
+   "Alcohol 12.5% comes from a US retailer only; neither producer PDF states ABV.",
+   "'Epernay' as printed on the MILA list is not confirmed by any source read here, so subRegion was left empty rather than asserted.",
+   "Critic scores are retailer-aggregated with no base year or review date; for a non-vintage cuvee they may refer to a different blend.",
+   "Perrier-Jouet also makes Belle Epoque Rose and Grand Brut Rose — this record is Blason Rose only.",
+   "The producer technical sheet PDF is dated to a 2017 upload; a current disgorgement may differ."
+  ]
+ },
+ "drink.sea-smoke-ten-pinot-noir": {
+  "id": "drink.sea-smoke-ten-pinot-noir",
+  "matchedVintage": true,
+  "vintageOfSource": "2023 - the producer's own product page for the 2023 'Ten' supplied ABV, aging and tasting notes. Vineyard soil / farming / clone data is estate-level from seasmoke.com and applies to the estate, not to the 2023 vintage specifically.",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Pinot Noir"
+  ],
+  "blendText": "'100% Pinot Noir' (producer). K&L adds 'estate-grown, destemmed'. Producer states the wine comes from ten different clones - the source of the cuvee name.",
+  "region": "California, USA",
+  "subRegion": "Sta. Rita Hills AVA, Santa Barbara County - Sea Smoke estate vineyards",
+  "soil": "Producer (estate vineyards page): 'Semi-siliceous shale with calcareous strata and diatomite. Thin topsoils of rich Gazos, Lopez and Botella clay soils'.",
+  "farming": "Producer (estate vineyards page): began 'farming organically in 2005' and subsequently 'employed biodynamic farming practices across our estate vineyards', now 'pushing into the realm of regenerative agriculture'. No certifying body (Demeter, CCOF, SIP) is named on that page.",
+  "vinification": "K&L states the fruit is 'estate-grown, destemmed'. No further fermentation detail is published by the producer on the 2023 product page.",
+  "aging": "'16 months in 56% New French Oak' (producer, 2023 product page; K&L states the same). 'Bottled with no fining and no filtration'.",
+  "abv": "14.6% (producer, 2023 product page)",
+  "style": "",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "'The aromas begin with notes of blueberry, cassis, a hint of lavender followed by a myriad of exotic spices, some hazelnut, thyme and an element of licorice.' (producer)",
+  "palate": "'A brooding and intense wine.' 'Firm, mature tannins - evidence of Ten's ageability'. (producer)",
+  "finish": "'a long, velvety finish' (producer)",
+  "producerNotes": "Estate: 172 acres ranging from 218-720 feet elevation with southern exposure, in the Santa Ynez River canyon where Pacific marine fog ('sea smoke') preserves acidity. Ten French clones planted: 777, 667, 2a, 115, 113, 828, 05, 459, 09 and 16.",
+  "criticScores": [],
+  "allergenNotes": "Producer states the 2023 'Ten' is 'bottled with no fining and no filtration' (seasmoke.com). This is a statement about processing only; it is not evidence that any allergen is absent. No sulphite statement was found on any consulted source.",
+  "sources": [
+   {
+    "url": "https://seasmoke.com/products/2023-sea-smoke-ten-pinot-noir-750ml",
+    "what": "Producer product page for the 2023 'Ten': 14.6% ABV, Santa Rita Hills, 100% Pinot Noir from ten clones, 16 months in 56% new French oak, no fining/no filtration, full tasting note",
+    "type": "producer"
+   },
+   {
+    "url": "https://seasmoke.com/pages/estate-vineyards",
+    "what": "Producer estate page: soil types, organic since 2005 then biodynamic then regenerative, the ten clones, 172 acres at 218-720 ft, southern exposure, marine fog",
+    "type": "producer"
+   },
+   {
+    "url": "https://shop.klwines.com/products/details/1930304",
+    "what": "Retailer listing for the 2023 'Ten': 100% Pinot Noir estate-grown and destemmed, 16 months / 56% new French oak, unfined and unfiltered, producer tasting note reproduced",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "style",
+   "body",
+   "servingTemp",
+   "criticScores",
+   "harvest dates",
+   "yield",
+   "fermentation detail (whole cluster %, yeast)",
+   "sulphite statement",
+   "certifying body for the biodynamic claim"
+  ],
+  "warnings": [
+   "K&L files this wine under appellation 'Santa Maria/Santa Barbara', which contradicts the producer's Sta. Rita Hills designation; the producer designation was used.",
+   "A retailer (Wine Spies) advertises 'Decanter: 100 points' alongside this wine; that score could not be tied to the 2023 'Ten' and was NOT recorded.",
+   "Soil, farming and clone data are estate-level, not vintage-specific to 2023.",
+   "The producer names no certifying body for the organic/biodynamic claim - treat as a practice claim, not a certification."
+  ]
+ },
+ "drink.serenello-extra-dry-prosecco": {
+  "id": "drink.serenello-extra-dry-prosecco",
+  "matchedVintage": "NV",
+  "vintageOfSource": "NV",
+  "cuveeConfidence": "likely",
+  "grapes": [
+   "Glera",
+   "Chardonnay",
+   "Pinot Bianco",
+   "Pinot Grigio"
+  ],
+  "blendText": "85% Glera, 15% blend (Chardonnay, Pinot Bianco and Pinot Grigio) per clickwine.it and The Wine Collective; missionws.se instead states 'Glera 100%' — see warnings.",
+  "region": "Veneto, Italy",
+  "subRegion": "Prosecco DOC (provinces of Treviso, Padua, Pordenone, Venice)",
+  "soil": "",
+  "farming": "",
+  "vinification": "Charmat / tank method ('Charmantmethod', missionws.se)",
+  "aging": "",
+  "abv": "11% vol.",
+  "dosage": "",
+  "style": "Extra Dry sparkling (Prosecco DOC Extra Dry)",
+  "body": "",
+  "servingTemp": "6-7 °C (clickwine.it); missionws.se states 6-8 °C",
+  "aroma": "'Hints of white flowers and fruity golden apples' (clickwine.it); 'lively perlage, and intense scents of white flowers and golden apple' (missionws.se)",
+  "palate": "'Fresh and on the palate it is elegant and soft, with a pleasantly sugary vein' (clickwine.it); 'good intensity, fresh, elegant and soft at taste, pleasantly sugary' (missionws.se)",
+  "finish": "",
+  "producerNotes": "Producer given as Serena Wines / 'Serena 1881 SRL' (missionws.se, The Wine Collective). Retailer serving suggestion: 'Recommended as an aperitif and with hors d'oeuvres in general. Excellent with vegetable and fish first courses and delicate fish second courses' (clickwine.it).",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://clickwine.it/gb/sparkling-wines/15798-prosecco-doc-extra-dry-serenello-8010719007308.html",
+    "what": "Grapes (85% Glera + 15% Chardonnay/Pinot Bianco/Pinot Grigio), appellation and provinces, 11% vol, residual sugar 15-17 g/l, serving temp 6-7 °C, colour, nose, palate, food pairing",
+    "type": "retailer"
+   },
+   {
+    "url": "https://missionws.se/en/products/serenello-prosecco-d-o-c-extra-dry/",
+    "what": "Producer 'Serena Wines', Veneto, 11%, residual sugar 14 g/l, Charmat method, serving temp 6-8 °C, tasting notes",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.thewinecollective.com.au/products/nv-serenello-prosecco-doc",
+    "what": "Producer 'Serena 1881 SRL', same 85/15 grape breakdown, Treviso, 11% alcohol, residual sugar 8-10 g/l, tasting notes",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "soil",
+   "farming",
+   "aging",
+   "body",
+   "finish",
+   "criticScores",
+   "allergen/sulphite statement",
+   "fining agents"
+  ],
+  "warnings": [
+   "Producer site serenello.it could not be fetched (self-signed TLS certificate blocks robots.txt) — all data is retailer-sourced, not producer-confirmed.",
+   "GRAPE CONFLICT: clickwine.it and The Wine Collective say 85% Glera + 15% Chardonnay/Pinot Bianco/Pinot Grigio; missionws.se says Glera 100%.",
+   "RESIDUAL SUGAR CONFLICT (three values): 15-17 g/l (clickwine.it), 14 g/l (missionws.se), 8-10 g/l (The Wine Collective). Left empty rather than guessed.",
+   "The Wine Collective listing is titled 'Serenello Prosecco DOC' without 'Extra Dry' and its 8-10 g/l reading is Brut-range — it may describe a different bottling of the same brand.",
+   "Serenello also produces a Prosecco DOC Rose Extra Dry and a 1.5 L Extra Dry; data here is for the 750 ml still-white-based Extra Dry.",
+   "Serving temperature differs slightly by source (6-7 vs 6-8 °C)."
+  ]
+ },
+ "drink.ste-marguerite-les-fantastique-provence": {
+  "id": "drink.ste-marguerite-les-fantastique-provence",
+  "matchedVintage": true,
+  "vintageOfSource": "2025",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Grenache",
+   "Cinsault",
+   "Rolle"
+  ],
+  "blendText": "Grenache, Cinsault, Rolle (producer states the varieties; no percentages given)",
+  "region": "Cotes de Provence (PDO), Provence, France",
+  "subRegion": "La Londe (83); classified Cru Classe Cotes de Provence",
+  "soil": "Siliceous clay, structured with pebbles and broken quartz.",
+  "farming": "Organic wine - FR BIO 01 Ecocert. Registered with the Vegan Society.",
+  "vinification": "Cold skin maceration before pressing. Temperature-controlled vinification. Selection of the best vats.",
+  "aging": "Aged in vats on fine lees.",
+  "abv": "13% Vol.",
+  "style": "Rose, Cru Classe Cotes de Provence",
+  "body": "",
+  "servingTemp": "8-10 C",
+  "aroma": "Rich aromas of white peach and pear, with lychee, passion fruit and grapefruit zest. (The Drinks Business reports 'aromas of white peach, citrus and pear'.)",
+  "palate": "Aromatic freshness with citrus and floral notes (rose, hint of jasmine).",
+  "finish": "A long finish that lingers.",
+  "producerNotes": "Cuvee Fantastique Rose 2025, harvested September 2025. Colour: pearly pink with luminous golden highlights. Producer's pairings: poultry with morels, grilled red meats, Asian cuisine, and tuna tataki with ginger and sesame spices. The Drinks Business (March 2026 launch coverage of the 2025 collection) adds that the cuvee is 'crafted from grapes sourced from the estate's old vines on historic plots', calls it 'a rose of great elegance', suggests truffle risotto or pan-seared scallops, and notes it is 'recommended by Raimonds Tomsons, World's Best Sommelier 2023'.",
+  "criticScores": [],
+  "allergenNotes": "Producer states for this cuvee: 'Fining and filtration before bottling' - the fining agent is NOT named. Producer also states the wine is 'Registered with the Vegan Society'; recorded verbatim as a producer claim only, and it is NOT to be treated as evidence that any allergen is absent. No 'contains sulphites' label text and no SO2 figure were found.",
+  "sources": [
+   {
+    "url": "https://www.chateausaintemarguerite.com/en/vins-de-provence/fantastique-rose/",
+    "what": "Producer page for Cuvee Fantastique Rose 2025: Cru Classe Cotes de Provence, La Londe, grapes, soil, Ecocert FR BIO 01 organic, Vegan Society registration, cold maceration and vat aging on fine lees, fining and filtration, 13% ABV, colour/nose/palate/finish, 8-10 C, pairings, September 2025 harvest",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.thedrinksbusiness.com/2026/03/chateau-sainte-marguerite-unveils-2025-rose-collection/",
+    "what": "Trade coverage of the 2025 rose collection: confirms Fantastique 2025 as Cru Classe, old-vine historic plots, aroma note, sommelier endorsement",
+    "type": "trade press"
+   }
+  ],
+  "notFound": [
+   "grape percentages",
+   "body",
+   "SO2 / sulphite declaration",
+   "name of the fining agent",
+   "maceration and aging durations",
+   "critic scores with points for the 2025 vintage"
+  ],
+  "warnings": [
+   "MILA's list reads 'Les Fantastique'; the producer's name is 'Cuvee Fantastique Rose'. Same wine, but the MILA label text should be corrected.",
+   "Producer's site brands the estate 'Chateau Sainte-Marguerite'; some US retailers list the 2025 as 'Maison Sainte Marguerite'. Confirm against the bottle before treating the two as one entity.",
+   "The estate makes several Cru Classe roses (Symphonie, Fantastique, and others); only the Fantastique page was used.",
+   "criticScores is empty: no scored review of the 2025 Fantastique was found, only the unscored sommelier endorsement quoted in producerNotes.",
+   "The producer explicitly fines this wine but does not name the agent - allergen status for fining residues is unknown, not absent."
+  ]
+ },
+ "drink.taylor-fladgate-20y-tawny": {
+  "id": "drink.taylor-fladgate-20y-tawny",
+  "kind": "wine",
+  "matchedVintage": "NV",
+  "vintageOfSource": "NV",
+  "cuveeConfidence": "certain",
+  "grapes": [
+   "Touriga Nacional",
+   "Touriga Franca",
+   "Tinta Barroca",
+   "Tinta Roriz",
+   "Tinto Cao",
+   "Tinta Amarela"
+  ],
+  "blendText": "Touriga Nacional, Touriga Franca, Tinta Barroca, Tinta Roriz, Tinto Cao, Tinta Amarela",
+  "region": "Douro, Portugal",
+  "subRegion": "Porto / Port DOC",
+  "brewery": "",
+  "prefecture": "",
+  "riceVariety": "",
+  "seimaibuai": "",
+  "grade": "",
+  "smv": "",
+  "acidity": "Total acidity 5.3 g/l",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "Matured in \"seasoned oak casks each holding about 630 litres of wine\" (producer). US importer states \"Average of 20 years in neutral oak\".",
+  "abv": "20%",
+  "residualSugar": "111.17 g/l",
+  "style": "Aged Tawny Port, 20 Year Old category. Appearance: \"Intense amber tawny colour\". \"Ready to drink\" - does not require decanting.",
+  "body": "",
+  "servingTemp": "\"between 12 C to 16 C, slightly chilled\" (producer). Importer adds it \"can be served cool in the summer\".",
+  "aroma": "\"Opulent and voluptuous nose of complex spicy, jammy and nutty aromas, hints of orange flower and a fine oakiness\"",
+  "palate": "\"Full of very rich and concentrated flavour\"",
+  "finish": "\"long mellow finish\"",
+  "producerNotes": "Producer storage advice: \"The bottle should be kept upright, protected from light and at a cool and constant temperature.\" Producer pairing note: desserts featuring figs, almonds, caramel, creme brulee and dried fruits. Producer describes it as \"The most popular 20 Year Old Aged Tawny Port in the United States of America\".",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://www.taylor.pt/en/port-wine/20-year-old-tawny",
+    "what": "Taylor Fladgate official producer page: nose/palate/finish, colour, cask ageing (630-litre seasoned oak casks), serving temperature 12-16 C, storage advice, ready-to-drink/no decanting, pairings.",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.kobrandwineandspirits.com/product/taylor_fladgate_20_year_old_tawny_porto/",
+    "what": "Kobrand (US importer) technical page: ABV 20%, grape varieties, average 20 years in neutral oak, residual sugar 111.17 g/l, total acidity 5.3 g/l, tasting descriptors.",
+    "type": "importer"
+   }
+  ],
+  "notFound": [
+   "soil",
+   "farming",
+   "vinification detail (fortification/lagares)",
+   "body",
+   "allergen, fining-agent or sulphite statement",
+   "critic scores"
+  ],
+  "warnings": [
+   "NV by category: '20 Year Old' is an average-age indication, not a vintage. matchedVintage recorded as NV.",
+   "No sulphite or fining statement located on producer or importer pages; allergenNotes deliberately empty."
+  ]
+ },
+ "drink.valot-nuits-saint-georges": {
+  "id": "drink.valot-nuits-saint-georges",
+  "matchedVintage": false,
+  "vintageOfSource": "",
+  "cuveeConfidence": "unconfirmed",
+  "grapes": [],
+  "blendText": "",
+  "region": "",
+  "subRegion": "",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "",
+  "abv": "",
+  "style": "",
+  "body": "",
+  "servingTemp": "",
+  "aroma": "",
+  "palate": "",
+  "finish": "",
+  "producerNotes": "",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://tuttowines.com/producers/romuald-valot/",
+    "what": "UK importer page for producer Romuald Valot - cited ONLY as evidence of what this producer actually bottles (Beaujolais range plus a Ladoix Pinot Noir); no Nuits-Saint-Georges is listed. No field in this record is derived from it.",
+    "type": "importer"
+   }
+  ],
+  "notFound": [
+   "any listing, tech sheet, retailer page, importer page or critic review for a Romuald Valot Nuits-Saint-Georges, any vintage",
+   "vintage confirmation (2022)",
+   "grapes",
+   "region / subRegion",
+   "soil",
+   "farming",
+   "vinification",
+   "aging",
+   "abv",
+   "style",
+   "body",
+   "servingTemp",
+   "aroma",
+   "palate",
+   "finish",
+   "producer notes",
+   "critic scores",
+   "allergen / sulphite / fining statement"
+  ],
+  "warnings": [
+   "IDENTITY UNCONFIRMED - every field left empty on purpose. No source of any kind was found for a Nuits-Saint-Georges bottled by Romuald Valot, in 2022 or any vintage.",
+   "The only documented 'Romuald Valot' is a producer based in Beaujeu, Beaujolais (~11 ha, granite, Beaujolais-Villages, Brouilly, Cote de Brouilly, Chiroubles, Chenas, Regnie), whose ONLY Cote d'Or wine is a Pinot Noir from Ladoix in the Cote de Beaune - a different appellation, on the opposite side of the Cote d'Or from Nuits-Saint-Georges. His data was NOT copied into this record.",
+   "Likely causes to check with Dani, in order: (a) the wine list mis-transcribed the producer name; (b) the appellation on the list is wrong and the bottle is the Ladoix; (c) it is a tiny negociant cuvee with no web presence.",
+   "RESOLUTION REQUIRED BEFORE ANY PUBLICATION: photograph the bottle's front label AND the importer strip label, then re-run. Do not seed this drink from appellation-typical assumptions."
+  ]
+ },
+ "drink.vouvray-domaine-pichot": {
+  "id": "drink.vouvray-domaine-pichot",
+  "matchedVintage": "partial - a 2023 bottling of this cuvee is confirmed to exist, but every technical statement found is non-vintage-specific boilerplate; no 2023 tech sheet exists",
+  "vintageOfSource": "none vintage-specific; producer cuvee page lists vintages 2009 and 2023, wine.com page is the 2023 SKU, Serendipity Wines lists 2023 and 2025",
+  "cuveeConfidence": "likely",
+  "grapes": [
+   "Chenin Blanc"
+  ],
+  "blendText": "100% Chenin Blanc (Serendipity Wines); importer Vineyard Brands: the estate's vines 'are all of the Chenin Blanc variety'",
+  "region": "Vouvray AOC, Touraine, Loire Valley, France",
+  "subRegion": "Le Peu de la Moriette, a named estate parcel; Vineyard Brands: 'The 60 acres of vineyards are all in Vouvray, six miles east of Tours on the right bank of the Loire River'",
+  "soil": "Producer states its three parcels (Le Marigny, Peu de la Moriette, Coteau de la Biche) lie on argilo-calcaire and argilo-siliceux soils (clay-limestone and clay-flint). The producer does NOT break this out per parcel, so it is not stated that Le Peu de la Moriette specifically is one or the other.",
+  "farming": "Vineyard Brands (US importer): 'Certified Sustainable (Haute valeur environnementale OCACIA - Vineyard Specific)', listed as vegan; 'The vines are thirty years old on average'. Producer site states only a philosophy, 'Travailler avec Dame nature en la respectant', and names no certification.",
+  "vinification": "",
+  "aging": "Serendipity Wines (US distributor): '80% in stainless steel tanks, 20% in 400L wooden vats.' Not attributed to any vintage.",
+  "abv": "",
+  "residualSugar": "21-24 g/L - producer, cuvee-specific: 'Entre 21 et 24 g de sucres residuels'",
+  "style": "Demi-sec (semi-dry). Producer: 'Vin demi-sec'. Wine.com sweetness field: 'Semi-Dry (Tendre)'. Wine.com winemaker note: 'Domaine Pichot Vouvray is a semi-dry wine that combines freshness in the mouth and roundness on the palate.'",
+  "body": "",
+  "servingTemp": "8-10 C - producer: 'A deguster entre 8 et 10 degres' (see warnings: the same figure appears on other Pichot cuvee pages)",
+  "aroma": "Serendipity Wines: 'Beautiful deep golden yellow color with brilliant reflections. Impressive nose of concentration with aromas of flowers and ripe fruit.' Not attributed to a vintage.",
+  "palate": "Serendipity Wines: 'On the palate, beautiful aromatic richness, fruit perfectly balanced by the very present minerality.' Producer: the wine 'allie fraicheur en bouche et rondeur sur le palais'. Neither is attributed to a vintage.",
+  "finish": "Serendipity Wines: 'The finish is incredibly persistent.' Not attributed to a vintage.",
+  "producerNotes": "Producer food pairings for this cuvee: fish, scallops, veal, poultry with cream sauce, goat cheese, lemon meringue tart. Wine.com states the producer suggests fish, scallops, white meat with cream sauce, and goat cheese. Vineyard Brands: 'The stylish wines of the Pichot family continue to show the perfumed elegance of Chenin Blanc and are authentic expressions of a particular terrain, climate, cellar, and the winemaker's art.' Cellars are 'in caverns hewn from the rolling hills which were once quarried to provide stone to construct the grand chateaux of the Loire' (Serendipity).",
+  "criticScores": [],
+  "allergenNotes": "No sulphite declaration and no fining-agent statement was found on the producer site, the US importer (Vineyard Brands), the US distributor (Serendipity Wines) or wine.com. Vineyard Brands lists the PRODUCER as 'Vegan' alongside its sustainability certification; this is a producer-level listing, not a bottling-specific fining declaration, and it is not evidence that any allergen is absent.",
+  "sources": [
+   {
+    "url": "https://domaine-pichot.com/product/le-peu-de-la-moriette/",
+    "what": "Producer cuvee page for Le Peu de la Moriette: 'Vin demi-sec', 21-24 g/L residual sugar, serving temp 8-10 C, food pairings, vintages listed (2009, 2023)",
+    "type": "producer"
+   },
+   {
+    "url": "https://domaine-pichot.com/",
+    "what": "Producer home page: full cuvee list with style and residual sugar per cuvee, soils (argilo-calcaire / argilo-siliceux), farming philosophy, Chenin Blanc",
+    "type": "producer"
+   },
+   {
+    "url": "https://domaine-pichot.com/product/coteau-de-la-biche/",
+    "what": "Producer page for the DRY Coteau de la Biche cuvee (7-9 g/L RS) - used to define the alternative-identity scenario and to detect boilerplate",
+    "type": "producer"
+   },
+   {
+    "url": "https://domaine-pichot.com/product/clos-cartaud/",
+    "what": "Producer page for Clos Cartaud (3-5 g/L RS) - third sample used to confirm the site's vinification/aging/ABV text is repeated boilerplate",
+    "type": "producer"
+   },
+   {
+    "url": "https://www.vineyardbrands.com/producer.aspx?id=25",
+    "what": "US importer producer page: 60 acres all in Vouvray, 6 miles east of Tours, right bank; vines 30 years old average; all Chenin Blanc; HVE OCACIA certified sustainable; vegan; cuvee list",
+    "type": "importer"
+   },
+   {
+    "url": "https://serendipitywines.com/product/domaine-pichot-vouvray-le-peu-de-la-moriette/",
+    "what": "US distributor product page: 100% Chenin Blanc, 12.0% ABV, aging 80% stainless / 20% 400L wooden vats, tasting note, vintages 2023 and 2025",
+    "type": "distributor"
+   },
+   {
+    "url": "https://www.wine.com/product/domaine-pichot-vouvray-domaine-le-peu-de-la-moriette-2023/2242232",
+    "what": "2023-specific retail SKU: winemaker note, 'Semi-Dry (Tendre)' sweetness, Chenin Blanc, Vouvray/Touraine/Loire",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "vintage-specific 2023 technical sheet (does not appear to exist)",
+   "trustworthy ABV for this cuvee (two sources conflict, see warnings)",
+   "vinification detail (fermentation vessel, yeast, malolactic) for this cuvee",
+   "vine age specific to the Le Peu de la Moriette parcel",
+   "soil specific to the Le Peu de la Moriette parcel",
+   "critic scores for the 2023",
+   "label sulphite declaration",
+   "fining/filtration statement"
+  ],
+  "warnings": [
+   "CUVEE IDENTITY (likely, not certain): Pichot makes at least 8 Vouvray cuvees. The bottling sold in the US simply as 'Domaine Pichot Vouvray' is the estate wine Domaine Le Peu de la Moriette - wine.com, Serendipity Wines and Vineyard Brands all sell it under the bare name 'Vouvray'. That is the wine reported here. It is not proven that MILA's list line refers to it.",
+   "IF THE WINE IS ACTUALLY THE DRY COTEAU DE LA BICHE, the following fields change: residualSugar becomes 7-9 g/L instead of 21-24 g/L; style becomes SEC / dry ('Vin sec') instead of demi-sec/semi-dry; the producer's tasting descriptor becomes 'notes florales avec une sensation de fraicheur' (floral, fresh) instead of 'fraicheur en bouche et rondeur sur le palais' (fresh and round); the producer's pairings become spring/summer dishes, seafood platters, salad of red mullet and prawns with grapefruit and avocado, instead of cream-sauce white meat and goat cheese. Service consequence: it would stop being a sweet-leaning wine and could no longer be sold to a guest as an off-dry Vouvray. The name in the US market is the tell - Coteau de la Biche is always labelled and listed WITH its cuvee name.",
+   "SOURCE-QUALITY FINDING: the producer's own product pages carry an identical block of boilerplate technical text across at least three different cuvees. Le Peu de la Moriette, Coteau de la Biche and Clos Cartaud all show the same '13.5' alcohol figure, the same 'approximately 12-14 months ... 60 gallon French and Hungarian oak barrels, partly new and partly used once previously' aging text, and the same fermentation text which even mentions 'tannins' - on white wines. This text is a template, not per-cuvee data. It has therefore NOT been used for abv, vinification or aging. Only the fields that genuinely differ between the cuvee pages (residual sugar, style, pairings) were taken from the producer site.",
+   "ABV CONFLICT, left empty: Serendipity Wines (US distributor) states 12.0%; the producer page states '13.5' but that figure is the boilerplate described above and is repeated identically on other cuvees. Neither is vintage-specific. No ABV is asserted here. Verify against the physical 2023 bottle label.",
+   "AGING CONFLICT: Serendipity says 80% stainless / 20% 400L wooden vats; the producer boilerplate says 12-14 months in 60-gallon French and Hungarian oak. These are incompatible. Serendipity's version was recorded because it is cuvee-plausible and the producer text is demonstrably a template, but it is not vintage-attributed and remains unverified.",
+   "The 8-10 C serving temperature also appears on the Coteau de la Biche page, so it may be generic house advice rather than a cuvee-specific spec.",
+   "All tasting descriptors recorded here are non-vintage-specific marketing copy, not a 2023 tasting note.",
+   "Serendipity Wines lists a 2025 of this cuvee alongside the 2023; do not let a distributor page for a different vintage be read as 2023 data."
+  ]
+ },
+ "drink.wakatake-onikoroshi": {
+  "id": "drink.wakatake-onikoroshi",
+  "kind": "sake",
+  "matchedVintage": "",
+  "vintageOfSource": "",
+  "cuveeConfidence": "likely",
+  "grapes": [],
+  "blendText": "",
+  "region": "",
+  "subRegion": "",
+  "brewery": "Omuraya Brewing Company (Wakatake)",
+  "prefecture": "Shizuoka",
+  "riceVariety": "Yamadanishiki, Gohyakumangoku, Aichinokaori",
+  "seimaibuai": "50%",
+  "grade": "Junmai Daiginjo",
+  "smv": "0.0",
+  "acidity": "1.5",
+  "soil": "",
+  "farming": "",
+  "vinification": "",
+  "aging": "",
+  "abv": "16.5%",
+  "residualSugar": "",
+  "style": "Junmai Daiginjo, brand name Onikoroshi (\"Demon Slayer\")",
+  "body": "",
+  "servingTemp": "\"Cold, Room Temperature, or Warm\"",
+  "aroma": "\"delicate aroma of ripe fruits\"",
+  "palate": "\"velvety texture\"",
+  "finish": "\"sharp, crisp note\"",
+  "producerNotes": "Described as a \"clear Junmai Daiginjo\" with \"elegance\" that delivers sweetness; warming is said to \"broaden the already delicious aroma\".",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://palateproject.co/products/wakatake-onikoroshi-junmai-daiginjo",
+    "what": "Palate Project / Tippsy Sake product page (tippsysake.com 302-redirects here): brewery Omuraya, Shizuoka, rice varieties, seimaibuai 50%, grade Junmai Daiginjo, SMV 0.0, acidity 1.5, ABV 16.5%, serving temperatures, aroma/palate/finish.",
+    "type": "retailer"
+   }
+  ],
+  "notFound": [
+   "brewery's own website data",
+   "yeast",
+   "water source",
+   "importer technical sheet",
+   "critic scores",
+   "allergen or fining statement"
+  ],
+  "warnings": [
+   "IDENTITY TRAP: Wakatake Onikoroshi 'Demon Slayer' exists as BOTH a Junmai Ginjo (Chambers & Chambers item APR700) and a Junmai Daiginjo (APR710). This record is the JUNMAI DAIGINJO only, per the MILA list. Do not merge with Junmai Ginjo data.",
+   "cuveeConfidence 'likely': only a single retailer source; no brewery or US-importer page was located to corroborate the SMV/acidity/ABV figures.",
+   "Sake has no vintage; matchedVintage/vintageOfSource left empty by design."
+  ]
+ },
+ "drink.yves-cuilleron-les-vignes-da-cote": {
+  "id": "drink.yves-cuilleron-les-vignes-da-cote",
+  "matchedVintage": true,
+  "vintageOfSource": "2023 - two French retailers (1jour1vin, Le Carre des Vins) publish 2023-specific sheets. The producer's own site carries only the 2022 bottling of this wine; no producer 2023 sheet was found.",
+  "cuveeConfidence": "likely",
+  "grapes": [
+   "Syrah"
+  ],
+  "blendText": "'100% Syrah' (1jour1vin, 2023).",
+  "region": "Northern Rhone, France",
+  "subRegion": "IGP Collines Rhodaniennes. Ferry Plaza Wine Merchant sources the fruit to Chavanay, where the domaine is based; the wine is an IGP, NOT an AOC of Chavanay.",
+  "soil": "'Sols granitiques et alluvionnaires' - granitic and alluvial soils (1jour1vin and Le Carre des Vins, both for 2023). Ferry Plaza describes 'granite-infused soils' on terraces that must be worked by hand.",
+  "farming": "Le Carre des Vins (2023): manual harvest. Ferry Plaza: primarily manual work because the terraced terrain prevents mechanisation. No organic or biodynamic certification is claimed for this wine by any source.",
+  "vinification": "1jour1vin (2023): 'Parcellaire et traditionnelle avec tri, foulage et egrappage partiel, maceration de 3 semaines en cuves ouvertes avec levures naturelles' - parcel-by-parcel, sorting, crushing, partial destemming, three-week maceration in open vats with indigenous yeasts. Le Carre des Vins (2023) agrees: indigenous yeasts only, low-extraction maceration of about three weeks in open vats.",
+  "aging": "'7 mois en assemblage 50/50 barriques et cuves avant mise en bouteille' - 7 months, 50% barrel / 50% tank (1jour1vin, 2023). Le Carre des Vins (2023) states the same 7 months, 50% barrels with no new oak / 50% tanks.",
+  "abv": "12.5% (1jour1vin, 2023)",
+  "style": "",
+  "body": "",
+  "servingTemp": "Serve at 14 C, opening the bottle 30 minutes before tasting (1jour1vin, 2023).",
+  "aroma": "'Plaisant et aromatique sur les fruits rouges' - pleasant and aromatic on red fruits (1jour1vin, 2023). Le Carre des Vins (2023) cites violet, raspberry, white pepper and licorice.",
+  "palate": "'Souple et fruitee, jolis fruits rouges frais, epices delicates, belle expression de la Syrah' - supple and fruity, fresh red fruits, delicate spice, a fine expression of Syrah (1jour1vin, 2023).",
+  "finish": "Fresh (1jour1vin, 2023).",
+  "producerNotes": "1jour1vin gives a drinking window of 'a boire avant 2027' and pairings of charcuterie, barbecue, beef skewers with green tapenade, chicken skewers with prunes. Le Carre des Vins gives 2024-2029 and pairs it with matured Rhone charcuterie and cheese boards.",
+  "criticScores": [],
+  "allergenNotes": "",
+  "sources": [
+   {
+    "url": "https://www.1jour1vin.com/fr/guide-achat-vin/rhone/vins-igp-collines-rhodaniennes/yves-cuilleron/25830-vin-rouge-syrah-les-vignes-da-cote-yves-cuilleron-2023",
+    "what": "2023-specific sheet: 100% Syrah, granitic/alluvial soils, partial destemming, 3-week maceration in open vats with natural yeasts, 7 months 50/50 barrel/tank, 12.5% ABV, tasting note, 14 C service, pairings, drink before 2027",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.lecarredesvins.com/17095-yves-cuilleron-syrah-les-vignes-d-a-cote-2023-6877300.html",
+    "what": "2023-specific sheet: granitic and alluvial soils, manual harvest, indigenous yeasts, ~3-week low-extraction maceration in open vats, 7 months 50% barrel (no new oak) / 50% tank, violet/raspberry/white pepper/licorice, 15 C service",
+    "type": "retailer"
+   },
+   {
+    "url": "https://fpwm.com/2023-yves-cuilleron-les-vignes-d-a-cote-syrah-collines-rhodaniennes-france-750ml/",
+    "what": "2023 US retailer listing: fruit sourced from Chavanay, granite-infused terraced soils worked by hand, partial destemming, indigenous yeast, two-week open-top fermentation, tasting note",
+    "type": "retailer"
+   },
+   {
+    "url": "https://www.cuilleron.com/en/product/2/rouge/17/igp-collines-rhodaniennes",
+    "what": "Producer page for the 2022 bottling of this wine (different vintage) - 100% Syrah, 8 months 50% barrel / 50% tank, 12% ABV. Used only to corroborate the cuvee's general regime.",
+    "type": "producer"
+   }
+  ],
+  "notFound": [
+   "vine age",
+   "style",
+   "body",
+   "criticScores",
+   "harvest dates",
+   "yield",
+   "allergenNotes / sulphite or fining statement",
+   "producer-published 2023 technical sheet"
+  ],
+  "warnings": [
+   "MILA's list prints 'Chavanay' as the origin; the wine's legal designation is IGP Collines Rhodaniennes, not an appellation of Chavanay. Do not present it as an AOC.",
+   "Sources conflict on ABV: 12.5% (1jour1vin, 2023) vs '14 degrees' (Grands Bourgognes, 2023). The 12.5% figure was used; the producer's 2022 bottling is 12%, which is consistent with 12.5%, not with 14%.",
+   "Sources conflict on elevage: 7 months 50/50 barrel/tank (two 2023 French sheets, used) vs 'eight months in a combination of stainless-steel and small oak barrels (one to four years old)' (Ferry Plaza) vs 'aging in stainless steel tanks' only (Grands Bourgognes).",
+   "No producer page for the 2023 exists; cuveeConfidence is 'likely' rather than 'certain'. Cuilleron also bottles variant Vignes d'a Cote Syrahs ('Signe', 'Les Candives') - none of those were used.",
+   "Grands Bourgognes was rejected as a source for the technical fields because its ABV and elevage contradict every other source."
+  ]
+ }
+}

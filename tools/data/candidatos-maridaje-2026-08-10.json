@@ -1,0 +1,1571 @@
+[
+ {
+  "wine": "Serenello \"Extra Dry\" Prosecco",
+  "id": "drink.serenello-extra-dry-prosecco",
+  "house": "",
+  "intents": [
+   "crudo",
+   "seafood",
+   "salty",
+   "light"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    21,
+    "dish.bluefin-chu-toro-tartar",
+    "Bluefin Chū-Toro Tartare"
+   ],
+   [
+    20,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ],
+   [
+    20,
+    "dish.hamachi-crudo",
+    "Hamachi Crudo"
+   ],
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    16,
+    "dish.snow-crab-salad",
+    "Snow Crab Salad"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ]
+  ]
+ },
+ {
+  "wine": "Champagne Renard-Barnier",
+  "id": "drink.champagne-renard-barnier",
+  "house": "",
+  "intents": [
+   "crudo",
+   "seafood",
+   "salty",
+   "light"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    21,
+    "dish.bluefin-chu-toro-tartar",
+    "Bluefin Chū-Toro Tartare"
+   ],
+   [
+    20,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ],
+   [
+    20,
+    "dish.hamachi-crudo",
+    "Hamachi Crudo"
+   ],
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    16,
+    "dish.snow-crab-salad",
+    "Snow Crab Salad"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ]
+  ]
+ },
+ {
+  "wine": "Moët & Chandon Impérial",
+  "id": "drink.moet-and-chandon-imperial",
+  "house": "",
+  "intents": [
+   "crudo",
+   "seafood",
+   "salty",
+   "light"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    21,
+    "dish.bluefin-chu-toro-tartar",
+    "Bluefin Chū-Toro Tartare"
+   ],
+   [
+    20,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ],
+   [
+    20,
+    "dish.hamachi-crudo",
+    "Hamachi Crudo"
+   ],
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    16,
+    "dish.snow-crab-salad",
+    "Snow Crab Salad"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ]
+  ]
+ },
+ {
+  "wine": "Perrier-Jouët Blason Rosé",
+  "id": "drink.perrier-jouet-rose",
+  "house": "Seafood, grilled fish",
+  "intents": [
+   "seafood",
+   "fish",
+   "grilled fish"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    23,
+    "dish.whole-dover-sole",
+    "Whole Dover Sole"
+   ],
+   [
+    23,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ],
+   [
+    23,
+    "dish.salmon-avocado-maki",
+    "Salmon Avocado Maki"
+   ],
+   [
+    23,
+    "dish.nigiri-sampler-omakase",
+    "Nigiri Sampler — Omakase"
+   ],
+   [
+    23,
+    "dish.mediterrasian-black-cod",
+    "Mediterrasian Black Cod"
+   ],
+   [
+    23,
+    "dish.marinated-chilean-seabass",
+    "Marinated Chilean Seabass"
+   ],
+   [
+    23,
+    "dish.grilled-whole-branzino",
+    "Grilled Whole Branzino"
+   ],
+   [
+    23,
+    "dish.crispy-shrimp-maki",
+    "Crispy Shrimp Maki"
+   ]
+  ]
+ },
+ {
+  "wine": "Dom Pérignon Vintage 2017",
+  "id": "drink.dom-perignon-vintage-2017",
+  "house": "crudo, salty food",
+  "intents": [
+   "crudo",
+   "salty"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    11,
+    "dish.bluefin-chu-toro-tartar",
+    "Bluefin Chū-Toro Tartare"
+   ],
+   [
+    10,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ],
+   [
+    10,
+    "dish.hamachi-crudo",
+    "Hamachi Crudo"
+   ],
+   [
+    8,
+    "dish.wagyu-beef-tartare",
+    "Wagyu Beef Tartare"
+   ],
+   [
+    5,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    5,
+    "dish.tiramiso",
+    "Tiramisō"
+   ],
+   [
+    5,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    5,
+    "dish.spicy-chipotle-lamb",
+    "Spicy Chipotle Lamb"
+   ]
+  ]
+ },
+ {
+  "wine": "Vouvray, Domaine Pichot",
+  "id": "drink.vouvray-domaine-pichot",
+  "house": "versatile, pairs well with dishes that are slightly spice",
+  "intents": [
+   "light",
+   "spice"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    10,
+    "dish.wasabi-mashed-potatoes",
+    "Wasabi Mashed Potatoes"
+   ],
+   [
+    10,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    10,
+    "dish.beetroot-tartar",
+    "Beetroot Tartar"
+   ],
+   [
+    8,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    8,
+    "dish.seaweed-salad",
+    "Seaweed Salad"
+   ],
+   [
+    8,
+    "dish.charred-edamame",
+    "Charred Edamame"
+   ],
+   [
+    7,
+    "dish.zucchini-and-eggplant-chips",
+    "Zucchini & Eggplant 'Chips'"
+   ],
+   [
+    7,
+    "dish.wild-fungi-dumpling",
+    "Wild Fungi Dumpling"
+   ]
+  ]
+ },
+ {
+  "wine": "Livio Felluga Friulano 2023",
+  "id": "drink.livio-felluga-friulano-2022",
+  "house": "",
+  "intents": [
+   "seafood",
+   "fish",
+   "light",
+   "vegetable"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    15,
+    "dish.whole-dover-sole",
+    "Whole Dover Sole"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.spicy-tuna-maki",
+    "Spicy Tuna Maki"
+   ],
+   [
+    15,
+    "dish.spicy-hamachi-maki",
+    "Spicy Hamachi Maki"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ],
+   [
+    15,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ]
+  ]
+ },
+ {
+  "wine": "Jean-Marc Crochet Sancerre",
+  "id": "drink.jean-marc-crochet-sancerre",
+  "house": "goat cheese dishes, shellfish",
+  "intents": [
+   "cheese",
+   "shellfish",
+   "fish",
+   "goat cheese"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    13,
+    "dish.nigiri-sampler-omakase",
+    "Nigiri Sampler — Omakase"
+   ],
+   [
+    13,
+    "dish.crispy-shrimp-maki",
+    "Crispy Shrimp Maki"
+   ],
+   [
+    10,
+    "dish.amuse-salmon-gunkan",
+    "Salmon Gunkan Tartare"
+   ],
+   [
+    5,
+    "dish.whole-dover-sole",
+    "Whole Dover Sole"
+   ],
+   [
+    5,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    5,
+    "dish.truffle-scallop-maki",
+    "Truffle Scallop Maki"
+   ],
+   [
+    5,
+    "dish.spicy-tuna-maki",
+    "Spicy Tuna Maki"
+   ],
+   [
+    5,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ]
+  ]
+ },
+ {
+  "wine": "George Noel Chablis Vieilles Vignes",
+  "id": "drink.georges-noel-chablis-vieille-vignes",
+  "house": "",
+  "intents": [
+   "seafood",
+   "fish",
+   "light",
+   "vegetable"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    15,
+    "dish.whole-dover-sole",
+    "Whole Dover Sole"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.spicy-tuna-maki",
+    "Spicy Tuna Maki"
+   ],
+   [
+    15,
+    "dish.spicy-hamachi-maki",
+    "Spicy Hamachi Maki"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ],
+   [
+    15,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ]
+  ]
+ },
+ {
+  "wine": "Paul Hobbs Chardonnay",
+  "id": "drink.paul-hobbs-chardonnay",
+  "house": "",
+  "intents": [
+   "seafood",
+   "fish",
+   "light",
+   "vegetable"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    15,
+    "dish.whole-dover-sole",
+    "Whole Dover Sole"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.spicy-tuna-maki",
+    "Spicy Tuna Maki"
+   ],
+   [
+    15,
+    "dish.spicy-hamachi-maki",
+    "Spicy Hamachi Maki"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ],
+   [
+    15,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ]
+  ]
+ },
+ {
+  "wine": "Domaine François Carillon, Puligny Montrachet",
+  "id": "drink.carillon-1611-puligny-montrachet-2023",
+  "house": "",
+  "intents": [
+   "seafood",
+   "fish",
+   "light",
+   "vegetable"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    15,
+    "dish.whole-dover-sole",
+    "Whole Dover Sole"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.spicy-tuna-maki",
+    "Spicy Tuna Maki"
+   ],
+   [
+    15,
+    "dish.spicy-hamachi-maki",
+    "Spicy Hamachi Maki"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ],
+   [
+    15,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ]
+  ]
+ },
+ {
+  "wine": "Domaine des Féraud \"Prestige\" Rosé",
+  "id": "drink.feraud-provence",
+  "house": "",
+  "intents": [
+   "seafood",
+   "light",
+   "vegetable",
+   "shellfish"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    18,
+    "dish.snow-crab-salad",
+    "Snow Crab Salad"
+   ],
+   [
+    15,
+    "dish.truffle-scallop-maki",
+    "Truffle Scallop Maki"
+   ],
+   [
+    15,
+    "dish.oysters",
+    "Oysters"
+   ],
+   [
+    15,
+    "dish.nigiri-sampler-omakase",
+    "Nigiri Sampler — Omakase"
+   ],
+   [
+    15,
+    "dish.king-crab-hot-pot",
+    "King Crab Hot Pot"
+   ],
+   [
+    15,
+    "dish.grilled-madagascan-shrimp",
+    "Grilled Madagascan Shrimp"
+   ],
+   [
+    15,
+    "dish.crispy-shrimp-maki",
+    "Crispy Shrimp Maki"
+   ],
+   [
+    15,
+    "dish.baked-king-crab-roll",
+    "Baked King Crab Roll"
+   ]
+  ]
+ },
+ {
+  "wine": "Ste Marguerite \"Les Fantastique\" Provence",
+  "id": "drink.ste-marguerite-les-fantastique-provence",
+  "house": "",
+  "intents": [
+   "seafood",
+   "light",
+   "vegetable",
+   "shellfish"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    18,
+    "dish.snow-crab-salad",
+    "Snow Crab Salad"
+   ],
+   [
+    15,
+    "dish.truffle-scallop-maki",
+    "Truffle Scallop Maki"
+   ],
+   [
+    15,
+    "dish.oysters",
+    "Oysters"
+   ],
+   [
+    15,
+    "dish.nigiri-sampler-omakase",
+    "Nigiri Sampler — Omakase"
+   ],
+   [
+    15,
+    "dish.king-crab-hot-pot",
+    "King Crab Hot Pot"
+   ],
+   [
+    15,
+    "dish.grilled-madagascan-shrimp",
+    "Grilled Madagascan Shrimp"
+   ],
+   [
+    15,
+    "dish.crispy-shrimp-maki",
+    "Crispy Shrimp Maki"
+   ],
+   [
+    15,
+    "dish.baked-king-crab-roll",
+    "Baked King Crab Roll"
+   ]
+  ]
+ },
+ {
+  "wine": "Yves Cuilleron \"Les Vignes d'à Côté\"",
+  "id": "drink.yves-cuilleron-les-vignes-da-cote",
+  "house": "Roasted chicken thighs",
+  "intents": [
+   "chicken",
+   "roasted chicken"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    13,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    13,
+    "dish.shawarma-wagyu-gyoza",
+    "'Shawarma' Wagyu Gyoza"
+   ],
+   [
+    13,
+    "dish.free-range-young-chicken",
+    "Free Range Young Chicken"
+   ],
+   [
+    13,
+    "dish.chicken-yakitori",
+    "Chicken Yakitori"
+   ],
+   [
+    13,
+    "dish.broccolini",
+    "Broccolini"
+   ],
+   [
+    13,
+    "dish.amuse-salmon-gunkan",
+    "Salmon Gunkan Tartare"
+   ],
+   [
+    13,
+    "dish.14oz-prime-ribeye",
+    "14oz Prime Ribeye"
+   ]
+  ]
+ },
+ {
+  "wine": "Miner Family Vineyards \"Emily’s\"",
+  "id": "drink.miner-family-vineyards-emilys",
+  "house": "Beef, venison",
+  "intents": [
+   "beef",
+   "venison"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    7,
+    "dish.wagyu-skirt-steak",
+    "Wagyu Skirt Steak"
+   ],
+   [
+    7,
+    "dish.stone-axe-wagyu-ribeye",
+    "Stone Axe Wagyu Ribeye"
+   ],
+   [
+    7,
+    "dish.japanese-a5-wagyu",
+    "Japanese A5 Wagyu"
+   ],
+   [
+    7,
+    "dish.dry-aged-striploin",
+    "45-Day Dry-Aged Bone-In Striploin"
+   ],
+   [
+    7,
+    "dish.dry-aged-porterhouse",
+    "14-Day Dry-Aged Porterhouse"
+   ],
+   [
+    7,
+    "dish.beef-tenderloin",
+    "8oz Angus Beef Tenderloin"
+   ],
+   [
+    7,
+    "dish.32oz-prime-tomahawk",
+    "32oz Australian Wagyu Tomahawk"
+   ],
+   [
+    7,
+    "dish.14oz-prime-ribeye",
+    "14oz Prime Ribeye"
+   ]
+  ]
+ },
+ {
+  "wine": "Et Fille Pinot Noir",
+  "id": "drink.et-fille-pinot-noir",
+  "house": "",
+  "intents": [
+   "beef",
+   "lamb",
+   "mushroom",
+   "chicken"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    20,
+    "dish.14oz-prime-ribeye",
+    "14oz Prime Ribeye"
+   ],
+   [
+    13,
+    "dish.truffle-wagyu-nigiri",
+    "Truffle Wagyu Nigiri"
+   ],
+   [
+    13,
+    "dish.shawarma-wagyu-gyoza",
+    "'Shawarma' Wagyu Gyoza"
+   ],
+   [
+    10,
+    "dish.spicy-chipotle-lamb",
+    "Spicy Chipotle Lamb"
+   ],
+   [
+    10,
+    "dish.free-range-young-chicken",
+    "Free Range Young Chicken"
+   ],
+   [
+    7,
+    "dish.wagyu-skirt-steak",
+    "Wagyu Skirt Steak"
+   ],
+   [
+    7,
+    "dish.stone-axe-wagyu-ribeye",
+    "Stone Axe Wagyu Ribeye"
+   ],
+   [
+    7,
+    "dish.japanese-a5-wagyu",
+    "Japanese A5 Wagyu"
+   ]
+  ]
+ },
+ {
+  "wine": "Château La Grave Figeac",
+  "id": "drink.chateau-la-grave-figeac",
+  "house": "Beef, lamb, cheese",
+  "intents": [
+   "beef",
+   "lamb",
+   "cheese"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    10,
+    "dish.spicy-chipotle-lamb",
+    "Spicy Chipotle Lamb"
+   ],
+   [
+    7,
+    "dish.wagyu-skirt-steak",
+    "Wagyu Skirt Steak"
+   ],
+   [
+    7,
+    "dish.stone-axe-wagyu-ribeye",
+    "Stone Axe Wagyu Ribeye"
+   ],
+   [
+    7,
+    "dish.japanese-a5-wagyu",
+    "Japanese A5 Wagyu"
+   ],
+   [
+    7,
+    "dish.dry-aged-striploin",
+    "45-Day Dry-Aged Bone-In Striploin"
+   ],
+   [
+    7,
+    "dish.dry-aged-porterhouse",
+    "14-Day Dry-Aged Porterhouse"
+   ],
+   [
+    7,
+    "dish.beef-tenderloin",
+    "8oz Angus Beef Tenderloin"
+   ],
+   [
+    7,
+    "dish.32oz-prime-tomahawk",
+    "32oz Australian Wagyu Tomahawk"
+   ]
+  ]
+ },
+ {
+  "wine": "Valot Nuits-Saint-Georges",
+  "id": "drink.valot-nuits-saint-georges",
+  "house": "",
+  "intents": [
+   "beef",
+   "lamb",
+   "mushroom",
+   "chicken"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    20,
+    "dish.14oz-prime-ribeye",
+    "14oz Prime Ribeye"
+   ],
+   [
+    13,
+    "dish.truffle-wagyu-nigiri",
+    "Truffle Wagyu Nigiri"
+   ],
+   [
+    13,
+    "dish.shawarma-wagyu-gyoza",
+    "'Shawarma' Wagyu Gyoza"
+   ],
+   [
+    10,
+    "dish.spicy-chipotle-lamb",
+    "Spicy Chipotle Lamb"
+   ],
+   [
+    10,
+    "dish.free-range-young-chicken",
+    "Free Range Young Chicken"
+   ],
+   [
+    7,
+    "dish.wagyu-skirt-steak",
+    "Wagyu Skirt Steak"
+   ],
+   [
+    7,
+    "dish.stone-axe-wagyu-ribeye",
+    "Stone Axe Wagyu Ribeye"
+   ],
+   [
+    7,
+    "dish.japanese-a5-wagyu",
+    "Japanese A5 Wagyu"
+   ]
+  ]
+ },
+ {
+  "wine": "Sea Smoke \"Ten\" Pinot Noir",
+  "id": "drink.sea-smoke-ten-pinot-noir",
+  "house": "",
+  "intents": [
+   "beef",
+   "lamb",
+   "mushroom",
+   "chicken"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    20,
+    "dish.14oz-prime-ribeye",
+    "14oz Prime Ribeye"
+   ],
+   [
+    13,
+    "dish.truffle-wagyu-nigiri",
+    "Truffle Wagyu Nigiri"
+   ],
+   [
+    13,
+    "dish.shawarma-wagyu-gyoza",
+    "'Shawarma' Wagyu Gyoza"
+   ],
+   [
+    10,
+    "dish.spicy-chipotle-lamb",
+    "Spicy Chipotle Lamb"
+   ],
+   [
+    10,
+    "dish.free-range-young-chicken",
+    "Free Range Young Chicken"
+   ],
+   [
+    7,
+    "dish.wagyu-skirt-steak",
+    "Wagyu Skirt Steak"
+   ],
+   [
+    7,
+    "dish.stone-axe-wagyu-ribeye",
+    "Stone Axe Wagyu Ribeye"
+   ],
+   [
+    7,
+    "dish.japanese-a5-wagyu",
+    "Japanese A5 Wagyu"
+   ]
+  ]
+ },
+ {
+  "wine": "Harmand-Geoffroy Gevrey-Chambertin",
+  "id": "drink.harmand-geoffroy-gevrey-chambertin",
+  "house": "",
+  "intents": [
+   "beef",
+   "lamb",
+   "mushroom",
+   "chicken"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    20,
+    "dish.14oz-prime-ribeye",
+    "14oz Prime Ribeye"
+   ],
+   [
+    13,
+    "dish.truffle-wagyu-nigiri",
+    "Truffle Wagyu Nigiri"
+   ],
+   [
+    13,
+    "dish.shawarma-wagyu-gyoza",
+    "'Shawarma' Wagyu Gyoza"
+   ],
+   [
+    10,
+    "dish.spicy-chipotle-lamb",
+    "Spicy Chipotle Lamb"
+   ],
+   [
+    10,
+    "dish.free-range-young-chicken",
+    "Free Range Young Chicken"
+   ],
+   [
+    7,
+    "dish.wagyu-skirt-steak",
+    "Wagyu Skirt Steak"
+   ],
+   [
+    7,
+    "dish.stone-axe-wagyu-ribeye",
+    "Stone Axe Wagyu Ribeye"
+   ],
+   [
+    7,
+    "dish.japanese-a5-wagyu",
+    "Japanese A5 Wagyu"
+   ]
+  ]
+ },
+ {
+  "wine": "Palmer \"Alter Ego\" Margaux",
+  "id": "drink.palmer-alter-ego-margaux",
+  "house": "",
+  "intents": [
+   "beef",
+   "lamb",
+   "mushroom",
+   "chicken"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    20,
+    "dish.14oz-prime-ribeye",
+    "14oz Prime Ribeye"
+   ],
+   [
+    13,
+    "dish.truffle-wagyu-nigiri",
+    "Truffle Wagyu Nigiri"
+   ],
+   [
+    13,
+    "dish.shawarma-wagyu-gyoza",
+    "'Shawarma' Wagyu Gyoza"
+   ],
+   [
+    10,
+    "dish.spicy-chipotle-lamb",
+    "Spicy Chipotle Lamb"
+   ],
+   [
+    10,
+    "dish.free-range-young-chicken",
+    "Free Range Young Chicken"
+   ],
+   [
+    7,
+    "dish.wagyu-skirt-steak",
+    "Wagyu Skirt Steak"
+   ],
+   [
+    7,
+    "dish.stone-axe-wagyu-ribeye",
+    "Stone Axe Wagyu Ribeye"
+   ],
+   [
+    7,
+    "dish.japanese-a5-wagyu",
+    "Japanese A5 Wagyu"
+   ]
+  ]
+ },
+ {
+  "wine": "Lynch-Bages Pauillac",
+  "id": "drink.lynch-bages-pauillac",
+  "house": "Beef, lamb, cheese",
+  "intents": [
+   "beef",
+   "lamb",
+   "cheese"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    10,
+    "dish.spicy-chipotle-lamb",
+    "Spicy Chipotle Lamb"
+   ],
+   [
+    7,
+    "dish.wagyu-skirt-steak",
+    "Wagyu Skirt Steak"
+   ],
+   [
+    7,
+    "dish.stone-axe-wagyu-ribeye",
+    "Stone Axe Wagyu Ribeye"
+   ],
+   [
+    7,
+    "dish.japanese-a5-wagyu",
+    "Japanese A5 Wagyu"
+   ],
+   [
+    7,
+    "dish.dry-aged-striploin",
+    "45-Day Dry-Aged Bone-In Striploin"
+   ],
+   [
+    7,
+    "dish.dry-aged-porterhouse",
+    "14-Day Dry-Aged Porterhouse"
+   ],
+   [
+    7,
+    "dish.beef-tenderloin",
+    "8oz Angus Beef Tenderloin"
+   ],
+   [
+    7,
+    "dish.32oz-prime-tomahawk",
+    "32oz Australian Wagyu Tomahawk"
+   ]
+  ]
+ },
+ {
+  "wine": "Florio Marsala Riserva 2015",
+  "id": "drink.florio-marsala-riserva-2015",
+  "house": "",
+  "intents": [
+   "dessert",
+   "cheese",
+   "foie gras"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    10,
+    "dish.raspberry-cheesecake",
+    "Raspberry Cheesecake"
+   ],
+   [
+    7,
+    "dish.tiramiso",
+    "Tiramisō"
+   ],
+   [
+    5,
+    "dish.aburi-a5-kagoshima-wagyu-maki",
+    "Aburi A5 Kagoshima Wagyu Maki"
+   ],
+   [
+    2,
+    "dish.zucchini-and-eggplant-chips",
+    "Zucchini & Eggplant 'Chips'"
+   ],
+   [
+    2,
+    "dish.yuzu-moon",
+    "Yuzu Moon"
+   ],
+   [
+    2,
+    "dish.yuzu-blossom-panna-cotta",
+    "Yuzu Blossom Panna Cotta"
+   ],
+   [
+    2,
+    "dish.vegan-chocolate-mousse",
+    "Vegan Chocolate Mousse"
+   ],
+   [
+    2,
+    "dish.truffle-cream-spaghetti",
+    "Truffle Cream Spaghetti"
+   ]
+  ]
+ },
+ {
+  "wine": "Taylor Fladgate 20Y Tawny",
+  "id": "drink.taylor-fladgate-20y-tawny",
+  "house": "Cheeses, sweet desserts",
+  "intents": [
+   "cheese",
+   "dessert"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    10,
+    "dish.raspberry-cheesecake",
+    "Raspberry Cheesecake"
+   ],
+   [
+    7,
+    "dish.tiramiso",
+    "Tiramisō"
+   ],
+   [
+    2,
+    "dish.zucchini-and-eggplant-chips",
+    "Zucchini & Eggplant 'Chips'"
+   ],
+   [
+    2,
+    "dish.yuzu-moon",
+    "Yuzu Moon"
+   ],
+   [
+    2,
+    "dish.yuzu-blossom-panna-cotta",
+    "Yuzu Blossom Panna Cotta"
+   ],
+   [
+    2,
+    "dish.vegan-chocolate-mousse",
+    "Vegan Chocolate Mousse"
+   ],
+   [
+    2,
+    "dish.truffle-cream-spaghetti",
+    "Truffle Cream Spaghetti"
+   ],
+   [
+    2,
+    "dish.seasonal-mushroom-hotpot",
+    "Seasonal Mushroom Hotpot"
+   ]
+  ]
+ },
+ {
+  "wine": "Château Suduiraut",
+  "id": "drink.chateau-suduiraut",
+  "house": "",
+  "intents": [
+   "dessert",
+   "cheese",
+   "foie gras"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    10,
+    "dish.raspberry-cheesecake",
+    "Raspberry Cheesecake"
+   ],
+   [
+    7,
+    "dish.tiramiso",
+    "Tiramisō"
+   ],
+   [
+    5,
+    "dish.aburi-a5-kagoshima-wagyu-maki",
+    "Aburi A5 Kagoshima Wagyu Maki"
+   ],
+   [
+    2,
+    "dish.zucchini-and-eggplant-chips",
+    "Zucchini & Eggplant 'Chips'"
+   ],
+   [
+    2,
+    "dish.yuzu-moon",
+    "Yuzu Moon"
+   ],
+   [
+    2,
+    "dish.yuzu-blossom-panna-cotta",
+    "Yuzu Blossom Panna Cotta"
+   ],
+   [
+    2,
+    "dish.vegan-chocolate-mousse",
+    "Vegan Chocolate Mousse"
+   ],
+   [
+    2,
+    "dish.truffle-cream-spaghetti",
+    "Truffle Cream Spaghetti"
+   ]
+  ]
+ },
+ {
+  "wine": "Château d’Yquem",
+  "id": "drink.chateau-dyquem",
+  "house": "cheesecake, foie gras, lobster,",
+  "intents": [
+   "cheese",
+   "foie gras",
+   "cheesecake"
+  ],
+  "anchored": true,
+  "basis": "MILA house pairing",
+  "candidates": [
+   [
+    13,
+    "dish.raspberry-cheesecake",
+    "Raspberry Cheesecake"
+   ],
+   [
+    5,
+    "dish.aburi-a5-kagoshima-wagyu-maki",
+    "Aburi A5 Kagoshima Wagyu Maki"
+   ],
+   [
+    2,
+    "dish.zucchini-and-eggplant-chips",
+    "Zucchini & Eggplant 'Chips'"
+   ],
+   [
+    2,
+    "dish.truffle-cream-spaghetti",
+    "Truffle Cream Spaghetti"
+   ],
+   [
+    2,
+    "dish.tiramiso",
+    "Tiramisō"
+   ],
+   [
+    2,
+    "dish.seasonal-mushroom-hotpot",
+    "Seasonal Mushroom Hotpot"
+   ],
+   [
+    2,
+    "dish.amuse-salmon-gunkan",
+    "Salmon Gunkan Tartare"
+   ]
+  ]
+ },
+ {
+  "wine": "Amabuki Himawari Ginjo",
+  "id": "drink.amabuki-himawarai-ginjo",
+  "house": "",
+  "intents": [
+   "seafood",
+   "crudo",
+   "light",
+   "salty"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    21,
+    "dish.bluefin-chu-toro-tartar",
+    "Bluefin Chū-Toro Tartare"
+   ],
+   [
+    20,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ],
+   [
+    20,
+    "dish.hamachi-crudo",
+    "Hamachi Crudo"
+   ],
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    16,
+    "dish.snow-crab-salad",
+    "Snow Crab Salad"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ]
+  ]
+ },
+ {
+  "wine": "Wakatake Onikoroshi",
+  "id": "drink.wakatake-onikoroshi",
+  "house": "",
+  "intents": [
+   "seafood",
+   "crudo",
+   "light",
+   "salty"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    21,
+    "dish.bluefin-chu-toro-tartar",
+    "Bluefin Chū-Toro Tartare"
+   ],
+   [
+    20,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ],
+   [
+    20,
+    "dish.hamachi-crudo",
+    "Hamachi Crudo"
+   ],
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    16,
+    "dish.snow-crab-salad",
+    "Snow Crab Salad"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ]
+  ]
+ },
+ {
+  "wine": "Nanbu Bijin \"Southern Beauty\" Daiginjo",
+  "id": "drink.nanbu-bijin-southern-beauty-daiginjo",
+  "house": "",
+  "intents": [
+   "seafood",
+   "crudo",
+   "light",
+   "salty"
+  ],
+  "anchored": false,
+  "basis": "derived from wine profile",
+  "candidates": [
+   [
+    21,
+    "dish.bluefin-chu-toro-tartar",
+    "Bluefin Chū-Toro Tartare"
+   ],
+   [
+    20,
+    "dish.seabream-carpaccio",
+    "Seabream Carpaccio"
+   ],
+   [
+    20,
+    "dish.hamachi-crudo",
+    "Hamachi Crudo"
+   ],
+   [
+    18,
+    "dish.spicy-tuna-crispy-rice",
+    "Spicy Tuna Crispy Rice"
+   ],
+   [
+    18,
+    "dish.salmon-crispy-rice",
+    "Salmon Crispy Rice"
+   ],
+   [
+    16,
+    "dish.snow-crab-salad",
+    "Snow Crab Salad"
+   ],
+   [
+    15,
+    "dish.tuna-tartare",
+    "Tuna Tartare"
+   ],
+   [
+    15,
+    "dish.seared-salmon",
+    "Seared Salmon"
+   ]
+  ]
+ }
+]
