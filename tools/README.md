@@ -85,6 +85,32 @@ perfecto, el toast decía «Changes saved», y el dato no volvía. **Si añades 
 editor, añádelo también a `__mergeOv`.** La prueba que lo caza es un ida y vuelta:
 escribir, guardar, releer.
 
+## Rotación de BTG (p112)
+
+Cuando un vino por copa sale y entra otro, se hace en **una sola acción**, no en dos ediciones sueltas
+— así fue como el Lavico siguió apareciendo semanas después de dejar de servirse.
+
+```js
+window.__rotateBTG({
+  outId: "drink.duca-di-salaparuta-lavico-etna-bianco",
+  outReason: "Se acabó",
+  incoming: { name:"Livio Felluga Friulano", vintage:"2023", price:"19",
+              producer:"Livio Felluga", appellation:"Colli Orientali del Friuli", sense:"WHITES" }
+});
+window.__quarantined();   // qué está esperando fuente
+```
+
+Se niega, con mensaje claro, si: no hay nadie firmado, falta el nombre, falta la añada, falta el
+precio, el vino que sale no existe, o ya estaba fuera de carta. Probado contra los seis casos.
+
+**El vino que entra nace en cuarentena.** Recibe solo lo que una persona leyó de la botella o de la
+carta. Aroma, paladar, final, historia y maridajes quedan **vacíos a propósito** y el registro va
+marcado. No es que falte el dato: es que inventarlo aquí es exactamente lo que esta app existe para
+impedir. El enriquecimiento viene después y con fuente citada.
+
+Los dos vinos quedan enlazados por un `rotationId`, pero se registran como **dos eventos separados**
+— uno sale, otro entra — cada uno con su propia procedencia.
+
 ## Qué hay en `data/`
 
 - `pos-extraction-2026-08-10.jsonl` — las 60 hojas del POS transcritas y verificadas a
