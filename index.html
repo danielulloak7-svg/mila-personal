@@ -7908,6 +7908,16 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var nt=document.getElementById('alNote');if(nt)nt.addEventListener('input',function(){edit.note=this.value;});
   }
   function commit(){
+    /* (p120) CC-03. This wrote a kitchen removability decision - "the chef can leave
+       this out" - signed by whoever signer() defaulted to. On an unsigned phone that
+       was the literal string "Unidentified", and it overwrote a Chef-verified link.
+       Every other write in the app already refuses without a signer; this one did not. */
+    var _who120=null;try{_who120=window.__zActive?window.__zActive():null;}catch(e){}
+    if(!_who120){
+      try{window.__toast&&window.__toast('Pick who you are to record a removability decision');}catch(e){}
+      try{window.__zOpenPerson&&window.__zOpenPerson();}catch(e){}
+      return;
+    }
     var key=alkKey(edit.item,edit.alg);
     var rec={section:sectionsFor(edit.item,edit.comps).join(', '),component:edit.comps.join(', '),note:edit.note,removable:edit.removable||'unknown',linkedBy:signer(),linkedDate:today()};
     if(edit.removable==='yes'||edit.removable==='no'){rec.verifiedBy=signer();rec.verifiedDate=today();}
@@ -7921,7 +7931,11 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var cmp=e.target.closest('[data-alcmp]');if(cmp&&edit){var c=cmp.getAttribute('data-alcmp');var i=-1;for(var _j=0;_j<edit.comps.length;_j++){if(String(edit.comps[_j]).toLowerCase()===c.toLowerCase()){i=_j;break;}}if(i>=0)edit.comps.splice(i,1);else edit.comps.push(c);edit.confirming=false;renderEditor();return;}
     var tri=e.target.closest('[data-altri]');if(tri&&edit){edit.removable=tri.getAttribute('data-altri');edit.confirming=false;renderEditor();return;}
     var sv=e.target.closest('[data-alsave]');if(sv&&edit){if(!edit.comps.length)return;var needsSign=(edit.removable==='yes'||edit.removable==='no');if(needsSign&&!edit.confirming){edit.confirming=true;renderEditor();return;}commit();return;}
-    var ul=e.target.closest('[data-alunlink]');if(ul&&edit){try{if(window.__persistLink)window.__persistLink(edit.item,alkKey(edit.item,edit.alg),null);}catch(e){}closeEditor();renderAlink();try{if(typeof renderFood==='function')renderFood();}catch(e){}try{if(window.__afterLink)window.__afterLink();}catch(e){}return;}
+    var ul=e.target.closest('[data-alunlink]');if(ul&&edit){
+      var _w120=null;try{_w120=window.__zActive?window.__zActive():null;}catch(_z){}
+      if(!_w120){try{window.__toast&&window.__toast('Pick who you are to unlink a source');}catch(_z){}
+                 try{window.__zOpenPerson&&window.__zOpenPerson();}catch(_z){}return;}
+      try{if(window.__persistLink)window.__persistLink(edit.item,alkKey(edit.item,edit.alg),null);}catch(e){}closeEditor();renderAlink();try{if(typeof renderFood==='function')renderFood();}catch(e){}try{if(window.__afterLink)window.__afterLink();}catch(e){}return;}
     if(e.target.closest('[data-mgo="alink"]')){setTimeout(function(){alinkState.item=null;renderAlink();},20);}
   });
   /* expose for the dish editor integration */
@@ -9952,6 +9966,25 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
          “Not sure” is not a claim of absence, so this does not demand proof of
          absence — that would make the honest act impossible and push people
          toward the dishonest one.  It demands a REASON, and keeps it. */
+      /* (p120) F5. This compared the editor's OPEN-TIME snapshot with the sheet, so a
+         flag written to the store after the sheet opened was invisible to the gate and
+         was erased by the wholesale rebuild below. The gate now reads the live record:
+         a flag the operator actually cleared is gated as before; a flag that appeared
+         behind their back is silently re-added, because they never asked to remove it
+         and gating on something they never saw is a dead end. */
+      var _live120=[];
+      try{
+        var _lb=baseItem(ed.id),_lm=_lb?window.__mergeOv(_lb):null;
+        ((_lm&&_lm.allerg)||[]).forEach(function(l){
+          var c=window.__normAllerg?window.__normAllerg(l):null;
+          if(c&&_live120.indexOf(c)<0)_live120.push(c);
+        });
+      }catch(e){}
+      _live120.forEach(function(c){
+        if(ed.st[c]!=='present'&&ed.st0[c]!=='present'&&CANON.indexOf(c)>=0){
+          ed.st[c]='present';   /* never seen by this operator - keep it */
+        }
+      });
       var _pulled=CANON.filter(function(c){return ed.st0[c]==='present'&&ed.st[c]==='unknown';});
       var _pulledX=(ed.extra0||[]).filter(function(x){return ed.extra.indexOf(x)<0;});
       var _allPulled=_pulled.concat(_pulledX);
@@ -10037,6 +10070,84 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       }
     }
     patch.availability=(ed.avail==='off-menu')?ed.avail:'active';
+    /* (p120) CC-01 + CC-05. A verification is a claim ABOUT SOMETHING. When the
+       something changes, the claim stops being about it.
+       Composition change  -> every signed absence on this record is demoted to
+                              unknown and its provenance moved into an append-only
+                              allergenAbsenceInvalidated record. Nothing is deleted:
+                              who signed it, when, and against what is all kept, plus
+                              which fields changed and who changed them.
+       Content change      -> a contentVerified tick set by somebody else (or by the
+                              same person against older text) is withdrawn with the
+                              p74 verificationWithdrawn shape, and the item goes back
+                              into the verification queue where a human can look at it.
+       Both are announced, because a silent demotion is its own kind of lie. */
+    try{
+      var _b120=baseItem(ed.id), _cur120=_b120?window.__mergeOv(_b120):null;
+      if(_cur120){
+        var _now120=new Date().toISOString(), _by120=_zsig();
+        var _J=function(v){try{return JSON.stringify(v==null?null:v);}catch(e){return '';}};
+        var _compFields=['name','ingredients','sauces','garnish','base','description','tableside'];
+        var _changed=[];
+        _compFields.forEach(function(f){
+          if(!Object.prototype.hasOwnProperty.call(patch,f))return;
+          var a=_J(patch[f]), b=_J(_cur120[f]);
+          if(f==='description'&&b===_J(null))b=_J(_cur120.tableside);
+          if(a!==b)_changed.push(f);
+        });
+        if(_changed.length){
+          /* CC-01: signed absences no longer describe this record */
+          var _st120=(patch.allergenState&&typeof patch.allergenState==='object')
+                      ? patch.allergenState : (_cur120.allergenState||{});
+          var _pv120=(patch.allergenProvenance&&typeof patch.allergenProvenance==='object')
+                      ? patch.allergenProvenance : (_cur120.allergenProvenance||{});
+          var _av120=(Object.prototype.toString.call(patch.absentVerified)==='[object Array]')
+                      ? patch.absentVerified : (_cur120.absentVerified||[]);
+          var _inval=[];
+          Object.keys(_st120).forEach(function(k){
+            if(String(_st120[k]).toLowerCase()==='absent_verified')_inval.push(k);
+          });
+          if(_inval.length){
+            var _hist={};
+            try{if(_cur120.allergenAbsenceInvalidated&&typeof _cur120.allergenAbsenceInvalidated==='object')
+              _hist=JSON.parse(JSON.stringify(_cur120.allergenAbsenceInvalidated));}catch(e){}
+            var _stOut={},_pvOut={},_avOut=[];
+            Object.keys(_st120).forEach(function(k){_stOut[k]=_st120[k];});
+            Object.keys(_pv120).forEach(function(k){_pvOut[k]=_pv120[k];});
+            _av120.forEach(function(a){_avOut.push(a);});
+            _inval.forEach(function(k){
+              var p=_pv120[k]||{};
+              if(!Object.prototype.toString.call(_hist[k])==='[object Array]')_hist[k]=[];
+              if(!_hist[k])_hist[k]=[];
+              _hist[k].push({priorBy:p.verifiedBy||'',priorAt:p.date||'',priorSource:p.source||'',
+                             invalidatedBy:_by120,invalidatedAt:_now120,changedFields:_changed.slice()});
+              _stOut[k]='unknown';
+              delete _pvOut[k];
+              var ix=_avOut.indexOf(k); if(ix>=0)_avOut.splice(ix,1);
+            });
+            patch.allergenState=_stOut;
+            patch.allergenProvenance=_pvOut;
+            patch.absentVerified=_avOut;
+            patch.allergenAbsenceInvalidated=_hist;
+            try{toast(_inval.length+' verified absence'+(_inval.length!==1?'s':'')+
+              ' cleared \u2014 what this dish is made of changed');}catch(e){}
+          }
+          /* CC-05: the content tick is about text that no longer exists */
+          if(_cur120.contentVerified===true){
+            var _cv=_cur120.contentVerification||{};
+            var _wl=[];
+            try{if(Object.prototype.toString.call(_cur120.verificationWithdrawn)==='[object Array]')
+              _wl=JSON.parse(JSON.stringify(_cur120.verificationWithdrawn));}catch(e){}
+            _wl.push({withdrawnBy:_by120,withdrawnAt:_now120,
+                      priorBy:_cv.verifiedBy||'',priorAt:_cv.verifiedAt||'',
+                      reason:'content changed: '+_changed.join(', ')});
+            patch.contentVerified=false;
+            patch.verificationWithdrawn=_wl;
+            try{toast('Verification withdrawn \u2014 the text changed, it goes back to the queue');}catch(e){}
+          }
+        }
+      }
+    }catch(e){}
     if(setItemOverride(ed.id,patch)){closeS('edDim','edSheet');rerender();
       /* (C4) the duplicate-name warning rides ALONG WITH the save toast. Toasting it
          separately at validation time would be overwritten by this one ~1ms later and
@@ -10088,14 +10199,33 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
                garnish:'garnish',allergens:'allergens',absentVerified:'“Verified free ✓” verifications',
                allergenState:'allergen state',allergenProvenance:'allergen provenance',
                availability:'availability',contentVerified:'content verification',
-               contentVerification:'verification provenance'};
+               contentVerification:'verification provenance',
+               /* (p120) CC-04. A pairing record's fields were absent from this map, so
+                  reverting one reported "You will lose 0 changes" and then destroyed a
+                  signed rejection - its author, its date and the typed reason - and put
+                  the rejected pairing straight back into the recommendations. */
+               pairRejection:'pairing rejection',pairVerdict:'pairing verdict',
+               pairProposal:'proposed pairing',pairWhy:'rewritten pairing reason',
+               rejected:'pairing rejection',certified:'pairing certification',
+               allergenWithdrawn:'withdrawn allergen flags',
+               allergenAbsenceInvalidated:'retired absence verifications',
+               verificationWithdrawn:'withdrawn verifications',
+               mergeLog:'merge decisions'};
   function revertLoss(id){
     var o=getOverlay(),it=(o.items||{})[id]||{};
     var keys=Object.keys(_REVLBL).filter(function(k){return it[k]!=null;});
     var labels=[];keys.forEach(function(k){var l=_REVLBL[k];if(labels.indexOf(l)<0)labels.push(l);});
     var photo=!!it.photo||it.needsImage===true;
     var links=0;try{var L=(o.links||{})[id];if(isPlainObj(L))links=Object.keys(L).length;}catch(e){}
-    return {n:keys.length,labels:labels,photo:photo,links:links};
+    /* (p120) CC-04. A record that exists but whose keys this map does not know still
+       holds SOMETHING. Reporting 0 there is a bug, not a fact - so say the honest
+       thing instead of a reassuring number. */
+    var unknown=0;
+    try{Object.keys(it).forEach(function(k){
+      if(k==='updatedAt'||k==='updatedBy')return;
+      if(!Object.prototype.hasOwnProperty.call(_REVLBL,k))unknown++;});}catch(e){}
+    if(!keys.length&&unknown)labels.push('other saved changes on this record');
+    return {n:keys.length+(keys.length?0:(unknown?1:0)),labels:labels,photo:photo,links:links};
   }
   function lossText(id){
     var l=revertLoss(id),parts=[];
@@ -12853,6 +12983,16 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     _dec[id]=(v===true);render();return true;
   };
   window.__zMergeConfirm=function(){
+    /* (p120) IDP-08. Accepting someone else's verification is a judgement call, and
+       mergeLog exists precisely to record WHO made it. This was the one write path in
+       the app with no signer gate: an unsigned device wrote mergedBy:"" over another
+       person's signed work. Every other write already refuses; so does this one now. */
+    var who=me();
+    if(!who){
+      try{window.__zOpenPerson&&window.__zOpenPerson();}catch(e){}
+      try{window.__toast&&window.__toast('Pick who you are before accepting someone else\u2019s changes');}catch(e){}
+      return {ok:false,error:'not signed in'};
+    }
     if(!_plan)return {ok:false,error:'nothing open'};
     var res=mergeApply(_plan,_dec);done(res);return res;
   };
