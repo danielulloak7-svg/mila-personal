@@ -8436,6 +8436,60 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   }
   function idbGet(cb){idbGetAt(OKEY,cb);}
   function idbPut(val,cb){idbPutAt(OKEY,val,cb);}
+  /* (p119) RB-5. A whole-object write is a lost update waiting for a second tab.
+     Read what is stored inside the SAME transaction and merge per record id:
+     an id only the other tab has is kept, an id both have is decided by updatedAt
+     (this tab wins a tie, because this tab is the one the user just acted in).
+     _replaceNext is the deliberate escape hatch for a reset, which MUST be able to
+     write an empty overlay over a full one. */
+  var _replaceNext=false;
+  function _newer(a,b){
+    try{
+      var ta=(a&&a.updatedAt)||'', tb=(b&&b.updatedAt)||'';
+      if(ta&&tb)return ta>=tb?a:b;
+      return ta?a:(tb?b:a);
+    }catch(e){return a;}
+  }
+  function _mergeDim(mine,theirs){
+    if(!isPlainObj(theirs))return mine;
+    if(!isPlainObj(mine))return theirs;
+    Object.keys(theirs).forEach(function(k){
+      if(!Object.prototype.hasOwnProperty.call(mine,k)){mine[k]=theirs[k];return;}
+      mine[k]=_newer(mine[k],theirs[k]);
+    });
+    return mine;
+  }
+  function idbPutMerged(val,cb){
+    if(_replaceNext){_replaceNext=false;idbPutAt(OKEY,val,cb);return;}
+    try{
+      var tx=_idb.transaction(STORE,'readwrite'), os=tx.objectStore(STORE), rq=os.get(OKEY);
+      rq.onsuccess=function(){
+        try{
+          var stored=rq.result;
+          if(isPlainObj(stored)){
+            ['items','links','created'].forEach(function(d){
+              if(isPlainObj(stored[d]))val[d]=_mergeDim(isPlainObj(val[d])?val[d]:{},stored[d]);
+            });
+            if(isPlainObj(stored._conflicts)){
+              if(!isPlainObj(val._conflicts))val._conflicts={};
+              Object.keys(stored._conflicts).forEach(function(k){
+                if(!Object.prototype.hasOwnProperty.call(val._conflicts,k))val._conflicts[k]=stored._conflicts[k];
+              });
+            }
+          }
+          os.put(val,OKEY);
+        }catch(e){try{os.put(val,OKEY);}catch(_e){}}
+      };
+      rq.onerror=function(){try{os.put(val,OKEY);}catch(e){}};
+      tx.oncomplete=function(){cb&&cb(null);};
+      tx.onerror=function(){cb&&cb(tx.error||new Error('idb write error'));};
+      tx.onabort=function(){cb&&cb(tx.error||new Error('idb write aborted'));};
+    }catch(e){cb&&cb(e);}
+  }
+  /* (p119) and tell the other tabs, so an idle one re-reads instead of sitting on a
+     stale copy it will later write back. */
+  var _bc=null;try{if(window.BroadcastChannel)_bc=new BroadcastChannel('mila-overlay');}catch(e){_bc=null;}
+  function _pingTabs(){try{if(_bc)_bc.postMessage({t:'overlay',at:Date.now()});}catch(e){}}
 
   /* ---------- (B2) persistence HEALTH ----------
      IndexedDB can open cleanly on devices where it can never commit (private mode,
@@ -8465,10 +8519,10 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     _dirty=true;
     if(!_idbReady){_pendingPersist=true;return;}   /* (B2) real queue, flushed at boot end + on exit */
     _pendingWrites++;
-    idbPut(_overlay,function(err){
+    idbPutMerged(_overlay,function(err){
       _pendingWrites=Math.max(0,_pendingWrites-1);
       if(err){markPersist(false,'write error');toast('Could not save to the device');}
-      else{_dirty=false;markPersist(true,'');}
+      else{_dirty=false;markPersist(true,'');_pingTabs();}
     });
   }
   /* (B4) last-chance flush: a 39MB overlay takes ~280ms to commit and the tab can go
@@ -8661,6 +8715,8 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
      names all three (never window.confirm — native modals are banned here). */
   function clearAll(opts){
     if(!opts||opts.confirmed!==true){askClearAll();return false;}
+    /* (p119) a reset is the ONE write that must replace rather than merge. */
+    _replaceNext=true;
     return saveOverlay({items:{}});
   }
   function exportOverlay(){
@@ -8668,6 +8724,11 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var env={schemaVersion:SCHEMA_VERSION,restaurant:RESTAURANT,buildId:BUILD_ID,
              exportedAt:new Date().toISOString(),items:o.items||{},links:o.links||{},created:o.created||{}};
     if(o.hoy)env.hoy=o.hoy;
+    /* (p119) RB-6. The incoming version of a contested record lives ONLY inside
+       _conflicts. Leaving it out of the envelope meant the export -> reset -> import
+       cycle the app itself recommends destroyed every unresolved decision and the
+       other person's version behind it. */
+    try{if(isPlainObj(o._conflicts)&&Object.keys(o._conflicts).length)env._conflicts=o._conflicts;}catch(e){}
     try{if(window.__zPeople)env.people=window.__zPeople();}catch(e){}
     if(o._meta)env._meta=o._meta;
     return JSON.stringify(env,null,2);
@@ -8717,11 +8778,39 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       return false;});}catch(e){badc='?';}
     if(badc!==null)return {ok:false,reason:'Corrupt backup: created["'+badc+'"] is not a valid created item.'};
     if(o.hoy!=null&&!isPlainObj(o.hoy))return {ok:false,reason:'Corrupt backup: "hoy" is not an object.'};
+    /* (p119) F7. The shape check stopped at "is this an object". Every field inside
+       was accepted whatever its type, stored, counted as an edit, and then dropped
+       silently on read by __mergeOv's per-field fallback. A field that falls back to
+       baseline is a save the user believes they made and did not have. Mismatched
+       fields are stripped here, before the preview, and counted so the preview can
+       say so - the same way unprovenanced absences are already reported. */
+    var _STR=['name','description','tableside','sub','price','bottlePrice','btg','btl','vint',
+              'prod','producer','cuvee','grapes','region','body','temp','glassware','glass',
+              'aroma','palate','finish','producerNotes','story','tip','plating','prep','cat',
+              'sense','origin','photo','availability','style','abv','grade','seimai','brewery',
+              'fmt','desc','offMenuNote','unverifiedReason'];
+    var _ARR=['allerg','allergens','ingredients','sauces','garnish','absentVerified','base','pairs','grapesList'];
+    var _OBJ=['allergenState','allergenProvenance','priceProv','contentVerification'];
+    var _stripped=0, _strippedIds={};
+    try{
+      Object.keys(o.items).forEach(function(k){
+        var it=o.items[k];if(!isPlainObj(it))return;
+        Object.keys(it).forEach(function(f){
+          var v=it[f], bad=false;
+          if(_STR.indexOf(f)>=0&&v!=null&&typeof v!=='string')bad=true;
+          else if(_ARR.indexOf(f)>=0&&v!=null&&!Array.isArray(v))bad=true;
+          else if(_OBJ.indexOf(f)>=0&&v!=null&&!isPlainObj(v))bad=true;
+          if(bad){delete it[f];_stripped++;_strippedIds[k]=(_strippedIds[k]||0)+1;}
+        });
+      });
+    }catch(e){}
+    o.__strippedFields=_stripped;
+    o.__strippedIds=_strippedIds;
     if(o.restaurant!=null&&String(o.restaurant)!==RESTAURANT)
       return {ok:false,reason:'This backup is from another restaurant ("'+String(o.restaurant)+'"), not "'+RESTAURANT+'". Nothing was imported.'};
     /* legacy = pre-envelope export. Accepted and migrated, never rejected. */
     var legacy=(o.schemaVersion==null&&o.restaurant==null&&o.buildId==null);
-    return {ok:true,legacy:legacy,data:o};
+    return {ok:true,legacy:legacy,data:o,stripped:_stripped,strippedIds:_strippedIds};
   }
   var _pendingImport=null;
   /* pure probe: what WOULD an import do? Never writes, never renders. */
@@ -8735,13 +8824,18 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
             restaurant:(v.data.restaurant==null?null:String(v.data.restaurant)),
             schemaVersion:(v.data.schemaVersion==null?null:v.data.schemaVersion),
             buildId:(v.data.buildId==null?null:String(v.data.buildId)),
-            exportedAt:(v.data.exportedAt==null?null:String(v.data.exportedAt))};
+            exportedAt:(v.data.exportedAt==null?null:String(v.data.exportedAt)),
+            /* (p119) F7: how many fields this file carried that the app cannot store,
+               and on which items. A preview that hides this is the reason a corrupt
+               backup used to land looking like a clean one. */
+            stripped:(v.stripped||0),strippedIds:(v.strippedIds||{}),
+            data:v.data};
   };
   function importOverlay(json){
     var v=validateImport(json);
     if(!v.ok){window.__lastImportError=v.reason;toast(v.reason);return false;}
     window.__lastImportError=null;
-    _pendingImport={data:v.data,legacy:!!v.legacy};
+    _pendingImport={data:v.data,legacy:!!v.legacy,stripped:(v.stripped||0),strippedIds:(v.strippedIds||{})};
     openImportPreview();
     return true;   /* ACCEPTED FOR REVIEW — nothing written yet */
   }
@@ -8868,6 +8962,9 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   window.__importPending=function(){return !!_pendingImport;};
   function setHoy(h){var o=getOverlay();if(h===null){delete o.hoy;}else{o.hoy=h;}return saveOverlay(o);}
   window.getOverlay=getOverlay;window.setItemOverride=setItemOverride;window.clearItem=clearItem;window.clearAll=clearAll;window.exportOverlay=exportOverlay;window.importOverlay=importOverlay;
+  /* (p119) exposed so the regression suite can drive the real write path instead of
+     reaching into IndexedDB behind the app's back. */
+  window.saveOverlay=saveOverlay;window.__doExport=doExport;
   (function(){
     /* (p74) WITHDRAWAL HISTORY, at the choke point.  Every writer of
        verificationWithdrawn goes through window.setItemOverride; this
@@ -10061,6 +10158,14 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +'<div class="imp-row"><span>Allergen links</span><b id="impLinks">'+inc.links+'</b></div>'
       +'<div class="imp-row"><span>Created items</span><b id="impCreated">'+inc.created+'</b></div>'
       +'<div class="imp-row"><span>“Today” settings</span><b id="impHoy">'+(inc.hoy?'yes':'no')+'</b></div>'
+      /* (p119) F7. A field this app cannot store used to be accepted, counted as an
+         edit, and dropped on read - so the operator saw a save they did not have.
+         The preview now names the loss before anything is written. */
+      +((_pendingImport.stripped)?('<div class="imp-row"><span>Fields this app cannot store</span><b id="impStripped">'
+        +_pendingImport.stripped+'</b></div>'
+        +'<div class="imp-warn">These came in with the wrong type (a name that is a number, an ingredient list that is one string) and '
+        +'were <b>not</b> imported: '+esc(Object.keys(_pendingImport.strippedIds).slice(0,4).join(', '))
+        +(Object.keys(_pendingImport.strippedIds).length>4?' and more':'')+'. Everything else in the file is unaffected.</div>'):'')
       +'<div class="imp-warn" id="impWarn">This <b>MERGES</b> with what you already have (<b>'+cur.edits+'</b> item'+(cur.edits!==1?'s':'')
       +' edited and <b>'+cur.links+'</b> allergen link'+(cur.links!==1?'s':'')+'). '
       +'<b>Nothing of yours is deleted.</b> Anything only in the file is added; anything identical is left alone; '
@@ -10089,11 +10194,12 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +'<b>'+c.edits+'</b> edited item'+(c.edits!==1?'s':'')
       +', <b>'+c.links+'</b> allergen link'+(c.links!==1?'s':'')
       +(c.verifications?(', <b>'+c.verifications+'</b> verification mark'+(c.verifications!==1?'s':'')):'')
+      +(c.created?(', <b>'+c.created+'</b> item'+(c.created!==1?'s':'')+' you created'):'')
       +' and the <b>today</b> settings'+(c.hoy?'':' (currently the default)')+'.'
       +'</div>'
       +'<div class="ed-sub" style="margin:0 0 10px">'
       +'The app returns to the base version of 2026-07-28 (<b>37</b> verified items and <b>35</b> allergen links already included). '
-      +'The menu is not deleted. This cannot be undone.'
+      +'The printed menu records are not deleted'+(c.created?'; <b>the items you added yourself are</b>':'')+'. This cannot be undone.'
       +'</div>'
       +'<button class="ed-btn danger" data-mc="reset-export" type="button">⬇ Export and delete all</button>'
       +'<div class="ed-imgrow"><button class="ed-btn danger small" data-mc="reset-yes" type="button">Delete without exporting</button>'
@@ -10102,13 +10208,19 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   }
   window.__askClearAll=askClearAll;
   window.__openGear=function(){panelReset(['root']);openS('panelDim','panelSheet');};
+  /* (p119) RB-3. This returned nothing and swallowed its own failure, and the
+     delete that follows it was armed on an unconditional 400 ms timer. On a device
+     that refuses a blob download - an iOS home-screen PWA, a managed phone - the
+     user got "Could not export" immediately followed by "Exported and reset", with
+     everything gone and no file anywhere. It now reports whether it worked. */
   function doExport(){
     try{
       var blob=new Blob([exportOverlay()],{type:'application/json'});
       var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='mila-overlay.json';document.body.appendChild(a);a.click();
       setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},400);
       toast('Exported: mila-overlay.json');
-    }catch(e){toast('Could not export');}
+      return true;
+    }catch(e){toast('Could not export');return false;}
   }
   document.getElementById('panelSheet').addEventListener('click',function(e){
     var rs=e.target.closest('[data-restore]');
@@ -10132,7 +10244,10 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     else if(a==='rev-no'){panelRender();}
     else if(a==='reset'){askClearAll();}
     else if(a==='reset-yes'){if(clearAll({confirmed:true})){panelReset(['root']);rerender();toastSave('Everything reset');}}
-    else if(a==='reset-export'){doExport();setTimeout(function(){if(clearAll({confirmed:true})){panelReset(['root']);rerender();toastSave('Exported and reset');}},400);}
+    else if(a==='reset-export'){
+      /* (p119) the delete is armed only by a successful export. */
+      if(!doExport()){toast('Nothing was deleted \u2014 the export failed.');return;}
+      setTimeout(function(){if(clearAll({confirmed:true})){panelReset(['root']);rerender();toastSave('Exported and reset');}},400);}
     else if(a==='reset-no'){panelBack();}
     else if(a==='imp-export'){doExport();}
     else if(a==='imp-yes'){if(importApply()){rerender();panelReset(['root','merged']);toastSave('Changes merged');}else{panelReset(['root']);}}
@@ -10340,12 +10455,25 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       var a=_p4arr(t);if(!a)return;
       for(var i=a.length-1;i>=0;i--){if(a[i]&&a[i]._created)a.splice(i,1);}
     });
+    /* (p119) CC-06. Created ids are slug-derived and deterministic, so the id a
+       user creates today ('dish.chicken-karaage') is exactly the id an ingestion pass
+       bakes tomorrow for the same dish. Pushing regardless produced TWO cards for one
+       dish with contradicting allergen lists and one shared verification. The build
+       now wins - it is the verified core - and the local copy is set aside rather
+       than deleted, because discarding somebody's work without asking is the other
+       half of the same mistake. */
+    var _collided=[];
     Object.keys(cre).forEach(function(id){
       var it=cre[id];if(!isPlainObj(it))return;
       var a=_p4arr(it._type);if(!a)return;
+      var clash=false;
+      for(var ci=0;ci<a.length;ci++){if(a[ci]&&a[ci].id===id&&!a[ci]._created){clash=true;break;}}
+      if(clash){_collided.push(id);return;}
       if(it._type==='bev'&&it.sense)it.sense=_g7sense(it.sense);
       a.push(it);
     });
+    window.__createdSuperseded=_collided;
+    if(_collided.length){try{console.warn('[p119] created items superseded by the build:',_collided.join(', '));}catch(e){}}
     try{_g7order();}catch(e){try{console.error('[g7] order',e);}catch(_e){}}
     try{window.__bevById=null;}catch(e){}
     try{_idIdx=null;}catch(e){}
@@ -11326,16 +11454,67 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
 
   /* ---- resolution. A photo is NEVER lost to a merge: if the chosen side has
      no photo and the other side does, the photo is carried over. ---- */
+  /* (p119) F1 / F2. This used to write a WHOLE record built from c.local - a
+     snapshot frozen when the import ran and never re-read. The panel above it tells
+     the operator "yours stays active and nothing is deleted", so working while a
+     conflict sits unresolved is behaviour the app invites. Every edit saved in that
+     window was then thrown away by the button labelled Keep current, including
+     allergen flags a named person had added, which bypassed the removal gate the
+     editor enforces (a typed reason plus an allergenWithdrawn record).
+     The live record is now read at DECISION time:
+       keep mine      -> the live record wins outright. The conflict only ever
+                         concerned fields the incoming file touched.
+       take theirs    -> only the keys the incoming file actually carries are applied
+                         on top of the live record; every other live key survives.
+     Allergen fields are never narrowed here: present flags and signed absences are
+     unioned, never dropped, because this path has no gate and no typed reason. */
   window.__resolveConflict=function(key,which){
     var o=getOverlay(),c=zConf()[key];
     if(!c)return false;
-    var chosen=Object.assign({},(which==='incoming')?c.incoming:c.local);
-    var other=(which==='incoming')?c.local:c.incoming;
+    var dim=(c.dim==='created')?'created':'items';
+    if(!isPlainObj(o[dim]))o[dim]={};
+    var live=isPlainObj(o[dim][c.id])?o[dim][c.id]:(isPlainObj(c.local)?c.local:{});
+    var chosen=Object.assign({},live);
+    if(which==='incoming'&&isPlainObj(c.incoming)){
+      Object.keys(c.incoming).forEach(function(k){chosen[k]=c.incoming[k];});
+    }
+    var other=(which==='incoming')?live:(isPlainObj(c.incoming)?c.incoming:{});
+    /* union, never subtract: an allergen present on either side stays present */
+    try{
+      var A=function(x){return (x&&Object.prototype.toString.call(x.allerg)==='[object Array]')?x.allerg:[];};
+      var merged=A(chosen).slice();
+      A(live).concat(A(c.incoming)).forEach(function(f){
+        if(f&&merged.indexOf(f)<0)merged.push(f);
+      });
+      if(merged.length)chosen.allerg=merged;
+      var st={},src=[live.allergenState,(c.incoming||{}).allergenState,chosen.allergenState];
+      var any=false;
+      src.forEach(function(m){
+        if(!isPlainObj(m))return;any=true;
+        Object.keys(m).forEach(function(k){
+          var v=String(m[k]==null?'':m[k]).toLowerCase();
+          var cur=String(st[k]==null?'':st[k]).toLowerCase();
+          /* present outranks absent_verified outranks unknown - never downgrade */
+          var rank={present:3,absent_verified:2,unknown:1,'':0};
+          if((rank[v]||0)>(rank[cur]||0))st[k]=m[k];
+        });
+      });
+      if(any)chosen.allergenState=st;
+      var pv={};
+      [live.allergenProvenance,(c.incoming||{}).allergenProvenance].forEach(function(m){
+        if(isPlainObj(m))Object.keys(m).forEach(function(k){if(!pv[k])pv[k]=m[k];});
+      });
+      if(Object.keys(pv).length)chosen.allergenProvenance=pv;
+      var av=[];
+      [live.absentVerified,(c.incoming||{}).absentVerified].forEach(function(m){
+        if(Object.prototype.toString.call(m)==='[object Array]')
+          m.forEach(function(x){if(x&&av.indexOf(x)<0&&pv[x]&&pv[x].verifiedBy&&pv[x].date&&pv[x].source)av.push(x);});
+      });
+      if(av.length)chosen.absentVerified=av;
+    }catch(e){}
     if((!chosen.photo||!String(chosen.photo).length)&&other&&other.photo&&String(other.photo).length){
       chosen.photo=other.photo;chosen.needsImage=false;
     }
-    var dim=(c.dim==='created')?'created':'items';
-    if(!isPlainObj(o[dim]))o[dim]={};
     o[dim][c.id]=chosen;
     delete o._conflicts[key];
     saveOverlay(o);
