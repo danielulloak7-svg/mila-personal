@@ -2411,7 +2411,7 @@
 <div class="pn-sheet" id="pnSheet" role="dialog" aria-label="Wine pairings">
   <div class="pn-head"><div class="pn-grab"></div><button class="pn-close" id="pnClose">✕</button><div class="pn-name" id="pnName"></div><div class="pn-sub" id="pnSub"></div><div class="pn-note" id="pnNote">✦ <b>Authored pairings · NOT verified.</b> Written from the profile of this wine against the composition of each dish, not from a tasting — pending sommelier verification. Always confirm allergens on the dish card.</div></div>
   <div class="pn-rev"><button class="pn-revbtn" id="pnRev" type="button" aria-pressed="false">Review mode</button><button class="pn-propbtn" id="pnPropBtn" type="button" hidden>✎ Propose a pairing</button><span class="pn-revhint" id="pnRevHint"></span></div>
-<div class="pn-propbox" id="pnPropBox" hidden><label class="pn-plab" for="pnPropDish">Dish</label><select class="pn-psel" id="pnPropDish"></select><label class="pn-plab" for="pnPropWhy">Why this pairing works · in your words</label><textarea class="pn-wyta" id="pnPropWhy" rows="3" placeholder="Say why, the way you would say it to a guest."></textarea><div class="pn-propnote" id="pnPropNote">✎ The app never writes this sentence for you. It is stored with your name and shows on the wine and on the dish as <b>proposed, not certified</b> until someone certifies it.</div><div class="pn-perr" id="pnPropErr"></div><div class="pn-pact"><button class="pn-vb ghost" type="button" data-pnpcancel>Cancel</button><button class="pn-vb prop" type="button" data-pnpsave>Save proposal</button></div></div>
+<div class="pn-propbox" id="pnPropBox" hidden><label class="pn-plab" for="pnPropDish">Dish</label><select class="pn-psel" id="pnPropDish"></select><label class="pn-plab" for="pnPropWhy">Why this pairing works · in your words</label><textarea class="pn-wyta" maxlength="4000" id="pnPropWhy" rows="3" placeholder="Say why, the way you would say it to a guest."></textarea><div class="pn-propnote" id="pnPropNote">✎ The app never writes this sentence for you. It is stored with your name and shows on the wine and on the dish as <b>proposed, not certified</b> until someone certifies it.</div><div class="pn-perr" id="pnPropErr"></div><div class="pn-pact"><button class="pn-vb ghost" type="button" data-pnpcancel>Cancel</button><button class="pn-vb prop" type="button" data-pnpsave>Save proposal</button></div></div>
   <div class="pn-chips" id="pnChips"></div>
   <div class="pn-body" id="pnBody"></div>
 </div>
@@ -2446,7 +2446,7 @@
   <button class="gp-editbtn" type="button" data-gxedit style="display:none">Edit definition</button>
   <div class="gp-edit" id="gpEdit" hidden>
     <label class="gp-edlab" for="gpEdDef">Definition</label>
-    <textarea class="gp-edta" id="gpEdDef" rows="5" spellcheck="true"></textarea>
+    <textarea class="gp-edta" maxlength="4000" id="gpEdDef" rows="5" spellcheck="true"></textarea>
     <div class="gp-ednote" id="gpEdNote"></div>
     <div class="gp-edact">
       <button class="gp-edcancel" type="button" data-gxedcancel>Cancel</button>
@@ -2538,7 +2538,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   };
   const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${I[k]}</svg>`;
   const passBadge=`<span class="status pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>PASSED</span>`;
-  function card(icon,title,sub,o={}){const cls=o.flag?'card flag':'card';const badge=o.pass?passBadge:'';const nav=o.nav?` data-nav="${o.nav}"`:'';return `<button class="${cls}"${nav}>${badge}<span class="ic">${svg(icon)}</span><span class="t">${title}</span><span class="s">${sub}</span><span class="arr">→</span></button>`;}
+  function card(icon,title,sub,o={}){const cls=o.flag?'card flag':'card';const badge=o.pass?passBadge:'';const nav=o.nav?` data-nav="${window.__esc(o.nav)}"`:'';return `<button class="${cls}"${nav}>${badge}<span class="ic">${svg(icon)}</span><span class="t">${title}</span><span class="s">${sub}</span><span class="arr">→</span></button>`;}
   function tile(icon,title){return `<button class="tile"><span class="ic">${svg(icon)}</span><span class="t">${title}</span></button>`;}
   const head=(t)=>`<div class="sec-head"><span class="sec-title">${t}</span></div>`;
 
@@ -3606,8 +3606,8 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   };
   function foodCard(d){d=(window.__mergeOv?window.__mergeOv(d):d);
     const front=window.__safeImg(d.photo)?`<div class="face front" style="background-image:url('${window.__safeImg(d.photo)}')" data-flip>`:`<div class="face front ph" data-flip><span class="phic">${svg('food')}</span>${d.needsImage?'<span class="needimg-badge">photo pending</span>':''}`;
-    const catpill=d.special?`<span class="catpill spec">✦ ${d.cat}</span>`:`<span class="catpill">${d.cat}</span>`;
-    const priceF=d.price?`<span class="dprice">${d.price}</span>`:(d.special?`<span class="dprice spec">Tonight only</span>`:'');
+    const catpill=d.special?`<span class="catpill spec">✦ ${window.__esc(d.cat)}</span>`:`<span class="catpill">${window.__esc(d.cat)}</span>`;
+    const priceF=d.price?`<span class="dprice">${window.__esc(d.price)}</span>`:(d.special?`<span class="dprice spec">Tonight only</span>`:'');
     const provBadge=d.special?`<span class="sp-prov">PROVISIONAL</span>`:'';
     const provNote=d.special?`<div class="sp-note"><span>⚠</span><span><b>Manager-declared special.</b> Separate from the verified catalog — allergens are as declared. Confirm with the kitchen for allergy guests.</span></div>${brow('Service',`<span class="bval">${d.dates||''}</span>`)}`:'';
     return `<div class="dish${d.needsImage?' needsimg':''}${d._edited?' edited':''}" data-key="${dishKey(d.name)}"${d.id?(' data-id="'+d.id+'"'):''}${d.needsImage?' data-needsimage="1"':''}><div class="flip">
@@ -3618,16 +3618,16 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
           <button class="detailsbtn" data-flip>details ↗</button></div>
       </div>
       <div class="face back"><div class="backscroll">
-        <div class="bname">${window.__esc(d.name)}${provBadge}</div>${d.price?`<div class="bprice">${d.price}</div>`:``}<div class="bdiv"></div>
+        <div class="bname">${window.__esc(d.name)}${provBadge}</div>${d.price?`<div class="bprice">${window.__esc(d.price)}</div>`:``}<div class="bdiv"></div>
         ${brow('Tableside',`<div class="bts">${window.__esc(d.tableside)}</div>`)}
         ${d.currentOyster?`<div class="curoy"><div class="coyk"><span class="live"></span>CURRENT OYSTERS</div><div class="coyn">${d.currentOyster.name}</div><div class="coyo">${d.currentOyster.origin}</div><div class="coyp">${d.currentOyster.profile}</div><div class="coyu">✓ ${d.currentOyster.updated}</div></div>`:''}
         ${d.currentAmuse?`<div class="curoy"><div class="coyk"><span class="live"></span>CURRENT AMUSE</div><div class="coyn">${d.currentAmuse.name}</div><div class="coyo">${d.currentAmuse.served}</div><div class="coyp">${d.currentAmuse.profile}</div><div class="coyu">✓ ${d.currentAmuse.updated}</div></div>`:''}
         <div class="brow ingfold"><span class="blabel ingtoggle" data-ingtoggle>🌿 Ingredients <span class="plus">＋</span></span><div class="bcontent ingbody"><div class="inglist">${ingProse(d.ingredients)}</div></div></div>
         ${brow('🫙 Sauces',d.sauces.length?`<div class="chips2">${chipsList(d.sauces,{link:true})}</div>`:'')}
         ${brow('🍃 Garnish',d.garnish.length?`<div class="chips2">${chipsList(d.garnish,{gar:true,link:true})}</div>`:'')}
-        ${brow('Plating',d.plating?`<span class="bval">${d.plating}</span>`:'')}
-        <div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Key</b><span><i class="i"></i>Inherent</span><span><i class="r"></i>Removable</span><span><i class="p"></i>Pending</span><span class="lgt">Tap ⓘ for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}${d.allergExtra?`<span class="achip">+${d.allergExtra} more</span>`:''}</div>${(!d.allerg||!d.allerg.length)&&window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<div class="ab-nodata">No allergen data recorded for this item. That is not the same as &ldquo;no allergens&rdquo; \u2014 ask the kitchen before you answer a guest.</div>`:''}</div>
-        ${d.prep?brow('🥢 Preparation',`<span class="bval">${d.prep}</span>`):''}
+        ${brow('Plating',d.plating?`<span class="bval">${window.__esc(d.plating)}</span>`:'')}
+        <div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Key</b><span><i class="i"></i>Inherent</span><span><i class="r"></i>Removable</span><span><i class="p"></i>Pending</span><span class="lgt">Tap ⓘ for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}${d.allergExtra?`<span class="achip">+${window.__esc(d.allergExtra)} more</span>`:''}</div>${(!d.allerg||!d.allerg.length)&&window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<div class="ab-nodata">No allergen data recorded for this item. That is not the same as &ldquo;no allergens&rdquo; \u2014 ask the kitchen before you answer a guest.</div>`:''}</div>
+        ${d.prep?brow('🥢 Preparation',`<span class="bval">${window.__esc(d.prep)}</span>`):''}
         ${dishWinePairChips(d)}
         ${provNote}
       </div><div class="backfoot"><button class="flipback" data-unflip>↩ flip back</button><button class="editbtn" data-edit="${d.id||''}" type="button">✎ Edit</button></div></div>
@@ -4414,7 +4414,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   function _bevWrap(d, front, fgrad, back){
     return `<div class="dish${d.needsImage?' needsimg':''}${d._edited?' edited':''}${(d.kind==='wine'&&!d.photo)?' nophoto-bottle':''}" data-key="${dishKey(d.name)}"${d.id?(' data-id="'+d.id+'"'):''}${d.needsImage?' data-needsimage="1"':''}><div class="flip">
       ${front}
-        <span class="catpill b">${d.sense}</span>
+        <span class="catpill b">${window.__esc(d.sense)}</span>
         <div class="fgrad">${fgrad}</div>
       </div>
       <div class="face back"><div class="backscroll">${back}</div><div class="backfoot"><button class="flipback" data-unflip>↩ flip back</button><button class="editbtn" data-edit="${d.id||''}" type="button">✎ Edit</button></div></div>
@@ -4434,7 +4434,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   }
   function wineCard(d){
     const front=_bevPhotoFrontBottle(d);
-    const priceLine=d.price?`<span class="dprice">${d.price}</span>`:'';
+    const priceLine=d.price?`<span class="dprice">${window.__esc(d.price)}</span>`:'';
     /* (p114) grapes on the FRONT of the card. A server is asked "what is it made of"
        before anything else, and until now that meant flipping the card. Rendered
        only when the record actually carries grapes - a wine with no sourced
@@ -4465,10 +4465,10 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       /* verified pairing data exists, catalog identity does not — show only what is sourced */
       return `<div class="bname">${window.__esc(d.name)}${badge}</div><div class="bdiv"></div>
         <div class="identnote">Technical sheet pending: the catalog has no unambiguous record for this exact bottle, so grapes, vintage and tasting notes are deliberately not shown. The MILĀ pairings below <b>are</b> verified.</div>
-        ${d.region?brow('Region',`<span class="bval">${d.region}</span>`):''}
-        ${d.tip?brow('Tip',`<span class="bval" style="font-style:italic">${d.tip}</span>`):''}
-        ${d.price?brow('Price',`<span class="bval">Glass ${d.price}</span>`):''}
-        ${d.glassware?`<div class="service-block"><div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${d.glassware}</div></div></div>`:''}
+        ${d.region?brow('Region',`<span class="bval">${window.__esc(d.region)}</span>`):''}
+        ${d.tip?brow('Tip',`<span class="bval" style="font-style:italic">${window.__esc(d.tip)}</span>`):''}
+        ${d.price?brow('Price',`<span class="bval">Glass ${window.__esc(d.price)}</span>`):''}
+        ${d.glassware?`<div class="service-block"><div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${window.__esc(d.glassware)}</div></div></div>`:''}
         ${milaPairPanel(d)}
         ${_allergBox(d)}`;
     }
@@ -4477,24 +4477,24 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
     const vafLabel=_vafParts.map(function(p){return p[0];}).join(' \u00b7 ');
     const vaf=_vafParts.map(function(p){return p[1];}).join(' \u00b7 ');
     const svc = (d.temp||d.decant!==null||d.glassware) ? `<div class="service-block">
-        ${d.temp?`<div class="svc-item"><div class="svc-k">Serve at</div><div class="svc-v">${d.temp}</div></div>`:''}
+        ${d.temp?`<div class="svc-item"><div class="svc-k">Serve at</div><div class="svc-v">${window.__esc(d.temp)}</div></div>`:''}
         ${d.decant!==null?`<div class="svc-item"><div class="svc-k">Decant</div><div class="svc-v">${d.decant?'Yes':'No'}</div></div>`:''}
-        ${d.glassware?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${d.glassware}</div></div>`:''}
+        ${d.glassware?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${window.__esc(d.glassware)}</div></div>`:''}
       </div>` : '';
     const priceRow = (d.price||d.bottlePrice) ? `<span class="bval">${d.price?('Glass '+d.price):''}${d.price&&d.bottlePrice?' · ':''}${d.bottlePrice?('Bottle '+d.bottlePrice):''}</span>${d.priceProv?`<span class="price-edited" title="Edited by ${window.__esc(d.priceProv.by||'')} · ${window.__esc(d.priceProv.date||'')} — diverges from the printed list">✎ edited</span>`:''}` : '';
     return `<div class="bname">${window.__esc(d.name)}${badge}</div><div class="bdiv"></div>
-      ${d.producer?brow('Producer',`<span class="bval" style="color:var(--gold-text);font-weight:700">${d.producer}</span>`):''}
-      ${d.cuvee?brow('Cuvée',`<span class="bval" style="color:var(--gold-text);font-weight:700">${d.cuvee}</span>`):''}
+      ${d.producer?brow('Producer',`<span class="bval" style="color:var(--gold-text);font-weight:700">${window.__esc(d.producer)}</span>`):''}
+      ${d.cuvee?brow('Cuvée',`<span class="bval" style="color:var(--gold-text);font-weight:700">${window.__esc(d.cuvee)}</span>`):''}
       ${vaf?brow(vafLabel,`<span class="bval">${vaf}</span>`):''}
-      ${d.region?brow('Region',`<span class="bval">${d.region}</span>`):''}
+      ${d.region?brow('Region',`<span class="bval">${window.__esc(d.region)}</span>`):''}
       ${d.aiLayer?`<div class="sp-note" data-ailayer="1"><span>ⓘ</span><span>Not verified · do not quote to guests</span></div>`:''}
       ${d.grapes&&d.grapes.length?brow('Grapes',`<div class="chips2">${d.grapes.map(function(g){return chip(g);}).join('')}</div>`):''}
-      ${d.body?brow('Body',`<span class="bval">${d.body}</span>`):''}
+      ${d.body?brow('Body',`<span class="bval">${window.__esc(d.body)}</span>`):''}
       ${svc}
-      ${(d.aroma||d.palate||d.finish)?`<div class="wtaste">${d.aroma?`<div class="wtrow"><span class="wtk">Aroma</span><span class="wtv">${d.aroma}</span></div>`:''}${d.palate?`<div class="wtrow"><span class="wtk">Palate</span><span class="wtv">${d.palate}</span></div>`:''}${d.finish?`<div class="wtrow"><span class="wtk">Finish</span><span class="wtv">${d.finish}</span></div>`:''}</div>`:''}
-      ${d.producerNotes?brow('Producer notes',`<span class="bval" style="font-weight:400">${d.producerNotes}</span>`):''}
-      ${d.story?`<div class="wstory">${d.story}</div>`:''}
-      ${d.tip?brow('Tip',`<span class="bval" style="font-style:italic">${d.tip}</span>`):''}
+      ${(d.aroma||d.palate||d.finish)?`<div class="wtaste">${d.aroma?`<div class="wtrow"><span class="wtk">Aroma</span><span class="wtv">${window.__esc(d.aroma)}</span></div>`:''}${d.palate?`<div class="wtrow"><span class="wtk">Palate</span><span class="wtv">${window.__esc(d.palate)}</span></div>`:''}${d.finish?`<div class="wtrow"><span class="wtk">Finish</span><span class="wtv">${window.__esc(d.finish)}</span></div>`:''}</div>`:''}
+      ${d.producerNotes?brow('Producer notes',`<span class="bval" style="font-weight:400">${window.__esc(d.producerNotes)}</span>`):''}
+      ${d.story?`<div class="wstory">${window.__esc(d.story)}</div>`:''}
+      ${d.tip?brow('Tip',`<span class="bval" style="font-style:italic">${window.__esc(d.tip)}</span>`):''}
       ${priceRow?brow('Price',priceRow):''}
       ${window.__unverifNote?window.__unverifNote(d):''}
       ${milaPairPanel(d)}
@@ -4549,13 +4549,13 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   function beerCard(d){
     const front=_bevPhotoFront(d,'tumbler');
     const fgrad=`<div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(d.sub||'')}</div>
-          <div class="fbottom">${d.price?`<span class="dprice">${d.price}</span>`:''}${d.allerg&&d.allerg.length?`<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span>`:(window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<span class="alpill nd">\u26a0 No allergen data</span>`:'')}</div><button class="detailsbtn" data-flip>details ↗</button>`;
+          <div class="fbottom">${d.price?`<span class="dprice">${window.__esc(d.price)}</span>`:''}${d.allerg&&d.allerg.length?`<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span>`:(window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<span class="alpill nd">\u26a0 No allergen data</span>`:'')}</div><button class="detailsbtn" data-flip>details ↗</button>`;
     const back=`<div class="bname">${window.__esc(d.name)}${_verifBadge(d)}</div><div class="bdiv"></div>
       ${brow('Style · ABV',`<span class="bval">${window.__esc(d.sub||'')}</span>`)}
-      ${d.origin?brow('Origin',`<span class="bval">${d.origin}</span>`):''}
+      ${d.origin?brow('Origin',`<span class="bval">${window.__esc(d.origin)}</span>`):''}
       ${d.tableside?brow('Tableside',`<div class="bts">${window.__esc(d.tableside)}</div>`):''}
       ${(d.ingredients&&d.ingredients.length)?brow('🌿 Ingredients',`<div class="chips2">${chipsList(d.ingredients,{link:true})}</div>`):''}
-      ${(d.glass||(d.garnish&&d.garnish.length))?`<div class="service-block">${d.glass?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${d.glass}</div></div>`:''}${d.garnish&&d.garnish.length?`<div class="svc-item" style="flex-basis:100%"><div class="svc-k">Garnish</div><div class="chips2" style="margin-top:4px">${chipsList(d.garnish,{gar:true,link:true})}</div></div>`:''}</div>`:''}
+      ${(d.glass||(d.garnish&&d.garnish.length))?`<div class="service-block">${d.glass?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${window.__esc(d.glass)}</div></div>`:''}${d.garnish&&d.garnish.length?`<div class="svc-item" style="flex-basis:100%"><div class="svc-k">Garnish</div><div class="chips2" style="margin-top:4px">${chipsList(d.garnish,{gar:true,link:true})}</div></div>`:''}</div>`:''}
       ${window.__unverifNote?window.__unverifNote(d):''}
       ${_verifSourceInput(d)}
       ${_allergBox(d)}`;
@@ -4564,14 +4564,14 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   function cocktailCard(d){
     const front=_bevPhotoFront(d,'martini');
     const fgrad=`<div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(d.sub)}</div>
-          <div class="fbottom">${d.price?`<span class="dprice">${d.price}</span>`:''}<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span></div><button class="detailsbtn" data-flip>details ↗</button>`;
+          <div class="fbottom">${d.price?`<span class="dprice">${window.__esc(d.price)}</span>`:''}<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span></div><button class="detailsbtn" data-flip>details ↗</button>`;
     const baseChips=(d.base||[]).map(b=>`<span class="chip2 base-chip">${em(b[0])}${window.__esc(b[0])}${b[1]?` <span class="note">(${window.__esc(b[1])})</span>`:''}</span>`).join("");
-    const back=`<div class="bname">${window.__esc(d.name)}${_verifBadge(d)}</div>${d.price?`<div class="bprice">${d.price}</div>`:``}<div class="bdiv"></div>
+    const back=`<div class="bname">${window.__esc(d.name)}${_verifBadge(d)}</div>${d.price?`<div class="bprice">${window.__esc(d.price)}</div>`:``}<div class="bdiv"></div>
         ${brow('Tableside',`<div class="bts">${window.__esc(d.tableside)}</div>`)}
-        ${d.flavorRaw?`<div class="flavorstrip">${d.flavorRaw}</div>`:''}
+        ${d.flavorRaw?`<div class="flavorstrip">${window.__esc(d.flavorRaw)}</div>`:''}
         ${brow('🍶 Base spirits',`<div class="chips2">${baseChips}</div>`)}
         ${brow('🌿 Ingredients',`<div class="chips2">${chipsList(d.ingredients,{link:true})}</div>`)}
-        <div class="service-block">${d.glass?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${d.glass}</div></div>`:''}${d.garnish&&d.garnish.length?`<div class="svc-item" style="flex-basis:100%"><div class="svc-k">Garnish</div><div class="chips2" style="margin-top:4px">${chipsList(d.garnish,{gar:true,link:true})}</div></div>`:''}</div>
+        <div class="service-block">${d.glass?`<div class="svc-item"><div class="svc-k">Glass</div><div class="svc-v">${window.__esc(d.glass)}</div></div>`:''}${d.garnish&&d.garnish.length?`<div class="svc-item" style="flex-basis:100%"><div class="svc-k">Garnish</div><div class="chips2" style="margin-top:4px">${chipsList(d.garnish,{gar:true,link:true})}</div></div>`:''}</div>
         ${_verifSourceInput(d)}
         ${_allergBox(d)}`;
     return _bevWrap(d, front, fgrad, back);
@@ -5607,7 +5607,7 @@ const WINE_PN_BYGLASS={
        text on _created records. */
     else if(r&&r.id&&window.__mergeOv)r=window.__mergeOv(r);
     const id='w'+(WID++); WMAP[id]=r; if(r&&r.id&&window.__P4WORD)window.__P4WORD[id]=r.id;
-    const price=r.btg?`<div class="lprice">BTG ${r.btg}${r.btl?` · <span class="btl">${r.btl}/btl</span>`:''}</div>`:(r.btgPending?`<div class="lprice"><span class="sp-needsreview">BTG PRICE PENDING</span>${r.btl?` <span class="btl">· ${r.btl}/btl</span>`:''}</div>`:(r.btl?`<div class="lprice"><span class="btl">${r.btl}/btl</span></div>`:''));
+    const price=r.btg?`<div class="lprice">BTG ${window.__esc(r.btg)}${r.btl?` · <span class="btl">${window.__esc(r.btl)}/btl</span>`:''}</div>`:(r.btgPending?`<div class="lprice"><span class="sp-needsreview">BTG PRICE PENDING</span>${r.btl?` <span class="btl">· ${window.__esc(r.btl)}/btl</span>`:''}</div>`:(r.btl?`<div class="lprice"><span class="btl">${window.__esc(r.btl)}/btl</span></div>`:''));
     /* p30: `prod` is absent on the 484 printed-list rows - render only the
        truthy parts, never the word "undefined".  A non-750ml format is a
        DIFFERENT bottle (identity includes format), so it shows on the row. */
@@ -5636,10 +5636,10 @@ const WINE_PN_BYGLASS={
        stays spirits-only (p86, untouched) and keeps its old,
        genuinely-informative meaning there (34%). */
     const _nr=r.needsReview?(r.contentVerified===true?`<span class="lvr" title="content verified by staff">✓</span>`:`<span class="lnr" style="visibility:hidden">△</span>`):``;
-    const _fsub=[r.prod,r.vint].filter(Boolean).join(' · ');
-    if(r.feat) return `<div class="lrow feat" data-wid="${id}"><div class="lmain"><span class="feattag">FEATURED</span><div class="lname">${r.name}</div>${_nr}${_fsub?`<div class="lprod">${_fsub}</div>`:``}</div><div class="lprice" style="color:var(--gold-text)">view ›</div></div>`;
-    const _sub=[r.prod,(r.fmt&&r.fmt!=='750ml')?r.fmt:null].filter(Boolean).join(' · ');
-    return `<div class="lrow" data-wid="${id}"><span class="lvint">${r.vint}</span><div class="lmain"><div class="lname">${r.name}</div>${_nr}${_sub?`<div class="lprod">${_sub}</div>`:``}${(typeof PAIRHINT!=="undefined"&&PAIRHINT[r.name])?`<div class="lpair">${PAIRHINT[r.name]}</div>`:``}</div>${price}</div>`;
+    const _fsub=[r.prod,r.vint].filter(Boolean).map(function(x){return window.__esc(x);}).join(' · ');
+    if(r.feat) return `<div class="lrow feat" data-wid="${id}"><div class="lmain"><span class="feattag">FEATURED</span><div class="lname">${window.__esc(r.name)}</div>${_nr}${_fsub?`<div class="lprod">${_fsub}</div>`:``}</div><div class="lprice" style="color:var(--gold-text)">view ›</div></div>`;
+    const _sub=[r.prod,(r.fmt&&r.fmt!=='750ml')?r.fmt:null].filter(Boolean).map(function(x){return window.__esc(x);}).join(' · ');
+    return `<div class="lrow" data-wid="${id}"><span class="lvint">${window.__esc(r.vint)}</span><div class="lmain"><div class="lname">${window.__esc(r.name)}</div>${_nr}${_sub?`<div class="lprod">${_sub}</div>`:``}${(typeof PAIRHINT!=="undefined"&&PAIRHINT[window.__esc?r.name:r.name])?`<div class="lpair">${PAIRHINT[r.name]}</div>`:``}</div>${price}</div>`;
   }
   var wineChips=[["all","🍷 All"],["btg","🥂 By the Glass"],["sparkling","🍾 Sparkling"],["rose","🌸 Rosé"],["white","🥂 White"],["red","🍇 Red"],["sake","🍶 Sake"],["large","🧊 Large Format"],["dessert","🍯 Dessert"]];
   /* p30: the printed wine list's own three-tier order, published ONCE.
@@ -5763,6 +5763,14 @@ const WINE_PN_BYGLASS={
       if(body)html+='<div class="lgroup">'+window.__esc((window.WINE_SECT_LABEL||{})[sc]||sc)+'</div>'+body;
     });
     document.getElementById('wineList').innerHTML=html||'<div class="showing">No wines in this filter.</div>';
+    /* (p118) RB-2. The label used to be computed from the pre-render filter length,
+       so when one malformed record swallowed 440 rows out of the concatenated string
+       the header still calmly reported 512. A count that is asserted rather than
+       observed cannot report its own failure. Read it back off the DOM. */
+    try{
+      var _drawn=document.getElementById('wineList').querySelectorAll('.lrow').length;
+      window.__wineRowsDrawn=_drawn;
+    }catch(e){}
     var _p37live=WINE.filter(function(w){return !(window.__avOff&&window.__avOff(w));}).length;var _p37ax=[];if(wineFilter!=='all'){var _p37c=wineChips.filter(function(c){return c[0]===wineFilter;})[0];if(_p37c)_p37ax.push(_p37c[1].replace(/^\S+\s*/,''));}if(winePending)_p37ax.push('Pending');if(wineQ)_p37ax.push('"'+wineQ+'"');var _p37tail=_p37ax.length?(' · '+_p37ax.join(' · ')):'';document.getElementById('wineShowing').textContent='Showing '+rows.length+' of '+_p37live+' selections'+_p37tail;
   }
   window.__setWineQ=function(v){wineQ=v;renderWineList();};
@@ -6094,8 +6102,8 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
        "" for them), so the price div is already naturally blank - only the
        triangle badge is new here, reusing WINE's existing .lnr class. */
     const _nr=s.needsReview?`<span class="lnr" title="needs review — verified tasting notes pending">△</span>`:``;
-    const price=(s.oz||s.btl)?`<div class="lprice">${s.oz?s.oz+'/oz':''}${s.btl?`${s.oz?' · ':''}<span class="btl">${s.btl}/btl</span>`:''}</div>`:'';
-    return `<div class="lrow" data-sid="${id}"><div class="lmain"><div class="lname">${s.name}${_verifBadgeCompact(s)}${_nr}</div><div class="lprod">${s.dist}</div></div>${price}</div>`;}
+    const price=(s.oz||s.btl)?`<div class="lprice">${s.oz?s.oz+'/oz':''}${s.btl?`${s.oz?' · ':''}<span class="btl">${window.__esc(s.btl)}/btl</span>`:''}</div>`:'';
+    return `<div class="lrow" data-sid="${id}"><div class="lmain"><div class="lname">${window.__esc(s.name)}${_verifBadgeCompact(s)}${_nr}</div><div class="lprod">${window.__esc(s.dist)}</div></div>${price}</div>`;}
   var spiritChips=[["all","🥃 All"],["vodka","🍸 Vodka"],["gin","🌿 Gin"],["rum","🍹 Rum"],["tequila","🌵 Tequila"],["mezcal","🔥 Mezcal"],["whiskey","🥃 Whiskey"],["cognac","🍇 Cognac"],["calvados","🍎 Calvados"],["other","✨ Other"]];
   var spiritSectOrder=[["vodka","Vodka"],["gin","Gin"],["rum","Rum"],["tequila","Tequila"],["mezcal","Mezcal"],["whiskey","Whiskey"],["cognac","Cognac"],["calvados","Calvados"],["other","Other"]];
   document.getElementById('spiritChips').innerHTML=spiritChips.map(function(c,i){return '<button class="fchip'+(i===0?' on':'')+'" data-sf="'+c[0]+'">'+c[1]+'</button>';}).join("")+'<button class="fchip vf-toggle" id="spiritVfChip" type="button">🔎 Unverified <span class="fcount">0</span></button>';
@@ -6134,13 +6142,13 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
        existing .sh-sec/.sh-p classes - no new CSS. */
     if(s.needsReview){
       var _nrBadge='<span class="sp-needsreview"> NEEDS REVIEW</span>';
-      var _ptags='<div class="sh-tags"><span class="sh-tag">'+s.catLabel+'</span></div>';
+      var _ptags='<div class="sh-tags"><span class="sh-tag">'+window.__esc(s.catLabel)+'</span></div>';
       return '<div class="sh-top"><div><div class="sh-name">'+window.__esc(s.name)+_verifBadge(s)+_nrBadge+'</div><div class="sh-sub">'+window.__esc(s.dist)+'</div></div></div>'+_ptags+'<div class="sh-sec">Status</div><div class="sh-p">Catalogue record — verified tasting notes not yet on file. Name, category and distillery are confirmed; other fields are withheld pending verification.</div>'+_verifSourceInput(s);
     }
-    var price=(s.oz?s.oz+'/oz':'')+(s.btl?(s.oz?' ':'')+'<span class="btl">'+(s.oz?'· ':'')+s.btl+'/btl</span>':'');
-    var tags='<div class="sh-tags"><span class="sh-tag">'+s.catLabel+'</span></div>';
-    var box=(s.origin||s.serve)?'<div class="sh-box">'+(s.origin?'<div><div class="k">Origin</div><div class="vv">'+s.origin+'</div></div>':'')+(s.serve?'<div><div class="k">Serve</div><div class="vv">'+s.serve+'</div></div>':'')+'</div>':'';
-    var notes=(s.aroma||s.palate||s.finish)?'<div class="sh-sec">Tasting notes</div>'+(s.aroma?'<div class="sh-note"><b>Aroma</b>'+s.aroma+'</div>':'')+(s.palate?'<div class="sh-note"><b>Palate</b>'+s.palate+'</div>':'')+(s.finish?'<div class="sh-note"><b>Finish</b>'+window.__esc(s.finish)+'</div>':''):'';
+    var price=(s.oz?s.oz+'/oz':'')+(s.btl?(s.oz?' ':'')+'<span class="btl">'+(s.oz?'· ':'')+window.__esc(s.btl)+'/btl</span>':'');
+    var tags='<div class="sh-tags"><span class="sh-tag">'+window.__esc(s.catLabel)+'</span></div>';
+    var box=(s.origin||s.serve)?'<div class="sh-box">'+(s.origin?'<div><div class="k">Origin</div><div class="vv">'+window.__esc(s.origin)+'</div></div>':'')+(s.serve?'<div><div class="k">Serve</div><div class="vv">'+window.__esc(s.serve)+'</div></div>':'')+'</div>':'';
+    var notes=(s.aroma||s.palate||s.finish)?'<div class="sh-sec">Tasting notes</div>'+(s.aroma?'<div class="sh-note"><b>Aroma</b>'+window.__esc(s.aroma)+'</div>':'')+(s.palate?'<div class="sh-note"><b>Palate</b>'+window.__esc(s.palate)+'</div>':'')+(s.finish?'<div class="sh-note"><b>Finish</b>'+window.__esc(s.finish)+'</div>':''):'';
     return '<div class="sh-top"><div><div class="sh-name">'+window.__esc(s.name)+_verifBadge(s)+'</div><div class="sh-sub">'+window.__esc(s.dist)+'</div><div class="sh-prices">'+price+'</div></div></div>'+tags+box+(s.desc?'<div class="sh-sec">Description</div><div class="sh-p">'+window.__esc(s.desc)+'</div>':'')+(s.production?'<div class="sh-sec">Production</div><div class="sh-p">'+window.__esc(s.production)+'</div>':'')+notes+_verifSourceInput(s);
   }
   function belugaDetail(){return `
@@ -6978,15 +6986,15 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
     else{sheetBody.setAttribute('data-wxid',(r&&r.id)?String(r.id):'');openSheet(basicWine(r));}
   }
   function basicWine(r){
-    var price=(r.btg?'BTG '+r.btg:(r.btgPending?'<span class="sp-needsreview">BTG PRICE PENDING</span>':''))+(r.btl?(r.btg||r.btgPending?' ':'')+'<span class="btl">'+(r.btg?'· ':'')+r.btl+'/btl</span>':'')+(r.priceProv?'<span class="price-edited" title="Edited by '+window.__escA(String(r.priceProv.by||''))+' · '+window.__escA(String(r.priceProv.date||''))+' — diverges from the printed list">✎ edited</span>':'');
+    var price=(r.btg?'BTG '+window.__esc(r.btg):(r.btgPending?'<span class="sp-needsreview">BTG PRICE PENDING</span>':''))+(r.btl?(r.btg||r.btgPending?' ':'')+'<span class="btl">'+(r.btg?'· ':'')+window.__esc(r.btl)+'/btl</span>':'')+(r.priceProv?'<span class="price-edited" title="Edited by '+window.__escA(String(r.priceProv.by||''))+' · '+window.__escA(String(r.priceProv.date||''))+' — diverges from the printed list">✎ edited</span>':'');
     /* p30: prod-less records must not print "undefined" in sh-sub, and the
        bottle format earns its own tag - it is part of the wine's identity. */
-    var _shSub=[r.prod,r.vint].filter(Boolean).join(' · ');
+    var _shSub=[r.prod,r.vint].filter(Boolean).map(function(x){return window.__esc(x);}).join(' · ');
     var _shSubDiv=_shSub?'<div class="sh-sub">'+_shSub+'</div>':'';
-    var tags='<div class="sh-tags"><span class="sh-tag">'+r.sectLabel+'</span>'+(r.grapes?'<span class="sh-tag">'+r.grapes+'</span>':'')+(r.fmt&&r.fmt!=='750ml'?'<span class="sh-tag">'+r.fmt+'</span>':'')+'</div>';
-    var box=(r.temp||r.body)?'<div class="sh-box">'+(r.temp?'<div><div class="k">Serve at</div><div class="vv">'+r.temp+'</div></div>':'')+(r.body?'<div><div class="k">Body</div><div class="vv">'+r.body+'</div></div>':'')+'</div>':'';
-    var notes=(r.aroma||r.palate||r.finish)?'<div class="sh-sec">Tasting notes</div>'+(r.aroma?'<div class="sh-note"><b>Aroma</b>'+r.aroma+'</div>':'')+(r.palate?'<div class="sh-note"><b>Palate</b>'+r.palate+'</div>':'')+(r.finish?'<div class="sh-note"><b>Finish</b>'+r.finish+'</div>':''):'';
-    var genp=(r.genPairs&&r.genPairs.length)?'<div class="sh-sec">General pairings</div><div class="sh-p" style="font-size:10.5px;color:var(--muted-soft);margin:0 0 8px;font-style:italic">Classic style pairings</div><div class="pairs">'+r.genPairs.map(function(p){return '<span class="pchip">'+p+'</span>';}).join('')+'</div>':'';
+    var tags='<div class="sh-tags"><span class="sh-tag">'+window.__esc(r.sectLabel)+'</span>'+(r.grapes?'<span class="sh-tag">'+window.__esc(r.grapes)+'</span>':'')+(r.fmt&&r.fmt!=='750ml'?'<span class="sh-tag">'+window.__esc(r.fmt)+'</span>':'')+'</div>';
+    var box=(r.temp||r.body)?'<div class="sh-box">'+(r.temp?'<div><div class="k">Serve at</div><div class="vv">'+window.__esc(r.temp)+'</div></div>':'')+(r.body?'<div><div class="k">Body</div><div class="vv">'+window.__esc(r.body)+'</div></div>':'')+'</div>':'';
+    var notes=(r.aroma||r.palate||r.finish)?'<div class="sh-sec">Tasting notes</div>'+(r.aroma?'<div class="sh-note"><b>Aroma</b>'+window.__esc(r.aroma)+'</div>':'')+(r.palate?'<div class="sh-note"><b>Palate</b>'+window.__esc(r.palate)+'</div>':'')+(r.finish?'<div class="sh-note"><b>Finish</b>'+window.__esc(r.finish)+'</div>':''):'';
+    var genp=(r.genPairs&&r.genPairs.length)?'<div class="sh-sec">General pairings</div><div class="sh-p" style="font-size:10.5px;color:var(--muted-soft);margin:0 0 8px;font-style:italic">Classic style pairings</div><div class="pairs">'+r.genPairs.map(function(p){return '<span class="pchip">'+window.__esc(p)+'</span>';}).join('')+'</div>':'';
     /* (p51 #10) when the VERIFIED PAIRNAV panel is rendered below, any chip the
        panel already carries would be the second printing of the same dish.  The
        chip is dropped, never the dish: a chip the panel does NOT carry survives
@@ -7005,7 +7013,7 @@ if(b.classList.contains('gqpend')){winePending=!winePending;b.classList.toggle('
          anything was dropped. */
       if(_p51list.length)_p51lab='Additional catalog pairings';
     }
-    var pairs=_p51list.length?'<div class="sh-sec">'+_p51lab+'</div><div class="sh-p" style="font-size:10.5px;color:var(--muted-soft);margin:0 0 8px;font-style:italic">From the MILA catalog · pending sommelier verification</div><div class="pairs">'+_p51list.map(function(p){return '<span class="pchip gold">🍽 '+p+'</span>';}).join('')+'</div>':'';
+    var pairs=_p51list.length?'<div class="sh-sec">'+window.__esc(_p51lab)+'</div><div class="sh-p" style="font-size:10.5px;color:var(--muted-soft);margin:0 0 8px;font-style:italic">From the MILA catalog · pending sommelier verification</div><div class="pairs">'+_p51list.map(function(p){return '<span class="pchip gold">🍽 '+window.__esc(p)+'</span>';}).join('')+'</div>':'';
     /* (p53) the category style card -- prints only where the record has no
        authored text of its own, so the 30 full sheets are untouched. */
     var _wstyle=(window.__wineStyleBlock?window.__wineStyleBlock(r):'');
@@ -7511,7 +7519,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var _bk=(_wr&&typeof _wr.baked==='string')?_wr.baked:((it&&typeof it._bwhy==='string')?it._bwhy:((it&&it.why)||''));
     var _cw=(it&&it.why)||'';
     var _wy='<div class="pn-wybox" hidden><label class="pn-rjlab">Why does this pairing work? Say it in your own words.</label>'
-      +'<textarea class="pn-wyta" rows="3" spellcheck="true">'+E(_cw)+'</textarea>'
+      +'<textarea class="pn-wyta" maxlength="4000" rows="3" spellcheck="true">'+E(_cw)+'</textarea>'
       +((_cw!==_bk)?'<div class="pn-wyorig"><b>Original:</b> '+E(_bk)+'</div>':'')
       +'<div class="pn-rjact"><button class="pn-vb ghost" type="button" data-pnwycancel>Cancel</button>'
       +((_cw!==_bk)?'<button class="pn-vb ghost" type="button" data-pnwyreset>Restore original</button>':'')
@@ -7524,7 +7532,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     return _amk()+'<div class="pn-vact" data-eid="'+E(eid)+'" data-pdish="'+E((it&&it._did)||'')+'" data-baked="'+E(_bk)+'">'+head
       +'<button class="pn-vb ghost" type="button" data-pnwhyopen>✎ Reason</button>'
       +'<div class="pn-rjbox" hidden><label class="pn-rjlab">Why is this pairing wrong?</label>'
-      +'<textarea class="pn-rjta" rows="3" spellcheck="true"></textarea>'
+      +'<textarea class="pn-rjta" maxlength="4000" rows="3" spellcheck="true"></textarea>'
       +'<div class="pn-rjact"><button class="pn-vb ghost" type="button" data-pnrjcancel>Cancel</button>'
       +'<button class="pn-vb rej" type="button" data-pnrjsave>Save rejection</button></div></div>'
       +_wy+_tl74+_tb74+'</div>';
@@ -7883,7 +7891,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     chipList.forEach(function(c){var on=false;for(var i=0;i<edit.comps.length;i++){if(String(edit.comps[i]).toLowerCase()===String(c).toLowerCase()){on=true;break;}}h+='<button class="al-cmp'+(on?' on':'')+'" data-alcmp="'+window.__escA(c)+'">'+esc(c)+'</button>';});
     h+='</div>';
     if(edit.comps.length){var _secs=sectionsFor(edit.item,edit.comps);h+='<div class="al-secrow"><span class="al-seclbl">Section</span><span class="al-sechint">auto</span>'+_secs.map(secBadge).join(' ')+'</div>';}
-    h+='<div class="al-lbl">Note (optional)</div><textarea class="al-note" id="alNote" placeholder="e.g. hidden in the spice blend\u2026">'+esc(edit.note)+'</textarea>';
+    h+='<div class="al-lbl">Note (optional)</div><textarea class="al-note" maxlength="4000" id="alNote" placeholder="e.g. hidden in the spice blend\u2026">'+esc(edit.note)+'</textarea>';
     h+='<div class="al-lbl">Removable on request?</div><div class="al-tri">';
     ['yes','no','unknown'].forEach(function(r){h+='<button class="al-tb '+r+(edit.removable===r?' on':'')+'" data-altri="'+r+'">'+(r==='yes'?'Yes':r==='no'?'No':'Unknown')+'</button>';});
     h+='</div>';
@@ -7947,7 +7955,14 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   function head(t){return '<div class="pr-doc-head"><div class="pr-logo">MILĀ</div><div class="pr-doc-title">'+t+'</div><div class="pr-doc-sub">Miami Beach · Staff reference</div></div>';}
   function foot(){return '<div class="pr-foot">Zapheria · printed from the MILĀ app · reflects the current menu</div>';}
   function line(label,arr){return (arr&&arr.length)?'<div class="pr-l"><b>'+label+':</b> '+arr.join(', ')+'</div>':'';}
-  function imgdiv(photo){return photo?'<img class="pr-img" decoding="async" src="'+photo+'" alt="">':'<div class="pr-img ph"></div>';}
+  /* (p118) RB-4. This is the one place a photo value reached an src with neither
+     __safeImg nor escaping, in a document that is opened same-origin with a live
+     window.opener - so an imported colleague backup carrying a crafted photo string
+     could reach back into the app from the print popup. __safeImg already refuses
+     anything that is not a real image URL; it simply was not called. */
+  function imgdiv(photo){
+    var src='';try{src=window.__safeImg?window.__safeImg(photo):'';}catch(e){src='';}
+    return src?'<img class="pr-img" decoding="async" src="'+window.__escA(src)+'" alt="">':'<div class="pr-img ph"></div>';}
   /* emoji + colour parity with the on-screen menu */
   var EMX=(typeof EM!=='undefined')?EM:{};
   var EMKWX=(typeof EMKW!=='undefined')?EMKW:[];
@@ -9465,7 +9480,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   }
   function listSec(label,key,arr){
     var rows=(arr||[]).map(function(v,i){
-      return '<div class="ed-lirow"><input class="ed-inp" data-list="'+key+'" value="'+escAttr(v)+'" placeholder="'+esc(label)+'…"><button class="ed-lidel" data-del="'+key+'" data-idx="'+i+'" type="button" aria-label="Remove">−</button></div>';
+      return '<div class="ed-lirow"><input class="ed-inp" maxlength="256" data-list="'+key+'" value="'+escAttr(v)+'" placeholder="'+esc(label)+'…"><button class="ed-lidel" data-del="'+key+'" data-idx="'+i+'" type="button" aria-label="Remove">−</button></div>';
     }).join('');
     return '<label class="ed-lbl">'+label+'</label><div class="ed-list">'+rows+'</div>'
       +'<button class="ed-liadd" data-add="'+key+'" type="button">＋ Add</button>';
@@ -9529,11 +9544,11 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var isSake=(ed.bevForm==='sake');
     function fld(key,label,val,ph){
       return '<div><label class="ed-lbl">'+label+'</label>'
-        +'<input class="ed-inp" data-bf="'+key+'" value="'+escAttr(val||'')+'" placeholder="'+escAttr(ph||'Not sourced')+'"></div>';
+        +'<input class="ed-inp" maxlength="256" data-bf="'+key+'" value="'+escAttr(val||'')+'" placeholder="'+escAttr(ph||'Not sourced')+'"></div>';
     }
     function area(key,label,val,ph){
       return '<label class="ed-lbl">'+label+'</label>'
-        +'<textarea class="ed-inp" data-bf="'+key+'" placeholder="'+escAttr(ph||'Not sourced')+'">'+esc(val||'')+'</textarea>';
+        +'<textarea class="ed-inp" maxlength="4000" data-bf="'+key+'" placeholder="'+escAttr(ph||'Not sourced')+'">'+esc(val||'')+'</textarea>';
     }
     var priceLbl=isSake?'Price &amp; format':'Price &amp; format';
     var quick='<div class="w-sec"><label class="ed-lbl">'+priceLbl+'</label><div class="w-quickgrid">'
@@ -9579,21 +9594,21 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var descLbl=isBtl?'Description':'Story';
     var quick='<div class="w-sec"><label class="ed-lbl">Vintage &amp; price</label>'
       +'<div class="w-quickgrid">'
-      +'<div><label class="ed-lbl">Vintage</label><input class="ed-inp" data-wf="vintage" value="'+escAttr(ed.wVintage)+'" placeholder="e.g. 2021 or NV"></div>'
-      +'<div><label class="ed-lbl">Glass price</label><input class="ed-inp" data-wf="priceGlass" value="'+escAttr(ed.wPriceGlass)+'" placeholder="Not by the glass"></div>'
-      +'<div><label class="ed-lbl">Bottle price</label><input class="ed-inp" data-wf="priceBottle" value="'+escAttr(ed.wPriceBottle)+'" placeholder="Not by the bottle"></div>'
+      +'<div><label class="ed-lbl">Vintage</label><input class="ed-inp" maxlength="256" data-wf="vintage" value="'+escAttr(ed.wVintage)+'" placeholder="e.g. 2021 or NV"></div>'
+      +'<div><label class="ed-lbl">Glass price</label><input class="ed-inp" maxlength="256" data-wf="priceGlass" value="'+escAttr(ed.wPriceGlass)+'" placeholder="Not by the glass"></div>'
+      +'<div><label class="ed-lbl">Bottle price</label><input class="ed-inp" maxlength="256" data-wf="priceBottle" value="'+escAttr(ed.wPriceBottle)+'" placeholder="Not by the bottle"></div>'
       +'</div>'
       +(ed.wPriceProvNote?('<div class="w-pricenote">'+esc(ed.wPriceProvNote)+'</div>'):'')
       +'</div>';
     var tasteSvc='<div class="w-sec">'
-      +'<label class="ed-lbl">'+descLbl+'</label><textarea class="ed-inp" data-wf="desc" placeholder="Not sourced yet">'+esc(ed.wDesc)+'</textarea>'
-      +'<label class="ed-lbl">Aroma</label><textarea class="ed-inp" data-wf="aroma" placeholder="Not sourced yet">'+esc(ed.wAroma)+'</textarea>'
-      +'<label class="ed-lbl">Palate</label><textarea class="ed-inp" data-wf="palate" placeholder="Not sourced yet">'+esc(ed.wPalate)+'</textarea>'
-      +'<label class="ed-lbl">Finish</label><textarea class="ed-inp" data-wf="finish" placeholder="Not sourced yet">'+esc(ed.wFinish)+'</textarea>'
+      +'<label class="ed-lbl">'+descLbl+'</label><textarea class="ed-inp" maxlength="4000" data-wf="desc" placeholder="Not sourced yet">'+esc(ed.wDesc)+'</textarea>'
+      +'<label class="ed-lbl">Aroma</label><textarea class="ed-inp" maxlength="4000" data-wf="aroma" placeholder="Not sourced yet">'+esc(ed.wAroma)+'</textarea>'
+      +'<label class="ed-lbl">Palate</label><textarea class="ed-inp" maxlength="4000" data-wf="palate" placeholder="Not sourced yet">'+esc(ed.wPalate)+'</textarea>'
+      +'<label class="ed-lbl">Finish</label><textarea class="ed-inp" maxlength="4000" data-wf="finish" placeholder="Not sourced yet">'+esc(ed.wFinish)+'</textarea>'
       +'<div class="w-svcgrid">'
-      +'<div><label class="ed-lbl">Body</label><input class="ed-inp" data-wf="body" value="'+escAttr(ed.wBody)+'" placeholder="e.g. Medium"></div>'
-      +'<div><label class="ed-lbl">Serve at</label><input class="ed-inp" data-wf="temp" value="'+escAttr(ed.wTemp)+'" placeholder="e.g. 10-12\u00b0C"></div>'
-      +'<div><label class="ed-lbl">Pour size</label><input class="ed-inp" data-wf="pourSize" value="'+escAttr(ed.wPourSize)+'" placeholder="e.g. 1oz"></div>'
+      +'<div><label class="ed-lbl">Body</label><input class="ed-inp" maxlength="256" data-wf="body" value="'+escAttr(ed.wBody)+'" placeholder="e.g. Medium"></div>'
+      +'<div><label class="ed-lbl">Serve at</label><input class="ed-inp" maxlength="256" data-wf="temp" value="'+escAttr(ed.wTemp)+'" placeholder="e.g. 10-12\u00b0C"></div>'
+      +'<div><label class="ed-lbl">Pour size</label><input class="ed-inp" maxlength="256" data-wf="pourSize" value="'+escAttr(ed.wPourSize)+'" placeholder="e.g. 1oz"></div>'
       +'</div>';
     if(!isBtl){
       var _dv=ed.wDecant;
@@ -9602,24 +9617,24 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
         +'<button class="ed-tb a'+(_dv===false?' on':'')+'" data-wdec="false" type="button">No</button>'
         +'<button class="ed-tb p'+(_dv===true?' on':'')+'" data-wdec="true" type="button">Yes</button>'
         +'</div>'
-        +'<label class="ed-lbl">Glassware</label><input class="ed-inp" data-wf="glassware" value="'+escAttr(ed.wGlassware)+'" placeholder="e.g. Champagne Flute">';
+        +'<label class="ed-lbl">Glassware</label><input class="ed-inp" maxlength="256" data-wf="glassware" value="'+escAttr(ed.wGlassware)+'" placeholder="e.g. Champagne Flute">';
     }
     tasteSvc+='</div>';
-    var idBody='<label class="ed-lbl">Producer</label><input class="ed-inp" data-wf="producer" value="'+escAttr(ed.wProducer)+'" placeholder="Not sourced yet">'
-      +'<label class="ed-lbl">Cuv\u00e9e</label><input class="ed-inp" data-wf="cuvee" value="'+escAttr(ed.wCuvee)+'" placeholder="Not sourced yet">';
+    var idBody='<label class="ed-lbl">Producer</label><input class="ed-inp" maxlength="256" data-wf="producer" value="'+escAttr(ed.wProducer)+'" placeholder="Not sourced yet">'
+      +'<label class="ed-lbl">Cuv\u00e9e</label><input class="ed-inp" maxlength="256" data-wf="cuvee" value="'+escAttr(ed.wCuvee)+'" placeholder="Not sourced yet">';
     if(isBtl){
-      idBody+='<label class="ed-lbl">Region / Appellation</label><input class="ed-inp" data-wf="region" value="'+escAttr(ed.wRegion)+'" placeholder="Not sourced yet">';
+      idBody+='<label class="ed-lbl">Region / Appellation</label><input class="ed-inp" maxlength="256" data-wf="region" value="'+escAttr(ed.wRegion)+'" placeholder="Not sourced yet">';
     }else{
-      idBody+='<label class="ed-lbl">Appellation</label><input class="ed-inp" data-wf="region" value="'+escAttr(ed.wRegion)+'" placeholder="Not sourced yet">'
-        +'<label class="ed-lbl">Region</label><input class="ed-inp" data-wf="region2" value="'+escAttr(ed.wRegion2)+'" placeholder="Not sourced yet">';
+      idBody+='<label class="ed-lbl">Appellation</label><input class="ed-inp" maxlength="256" data-wf="region" value="'+escAttr(ed.wRegion)+'" placeholder="Not sourced yet">'
+        +'<label class="ed-lbl">Region</label><input class="ed-inp" maxlength="256" data-wf="region2" value="'+escAttr(ed.wRegion2)+'" placeholder="Not sourced yet">';
     }
-    idBody+='<label class="ed-lbl">Grapes</label><input class="ed-inp" data-wf="grapes" value="'+escAttr(ed.wGrapesText)+'" placeholder="Comma-separated, e.g. Chardonnay, Pinot Noir">';
+    idBody+='<label class="ed-lbl">Grapes</label><input class="ed-inp" maxlength="256" data-wf="grapes" value="'+escAttr(ed.wGrapesText)+'" placeholder="Comma-separated, e.g. Chardonnay, Pinot Noir">';
     if(!isBtl){
-      idBody+='<label class="ed-lbl">Blend</label><input class="ed-inp" data-wf="blend" value="'+escAttr(ed.wBlend)+'" placeholder="Not sourced yet">'
-        +'<label class="ed-lbl">Card subtitle</label><input class="ed-inp" data-f="sub" value="'+escAttr(ed.sub||'')+'" placeholder="Line under the name on the card front\u2026">'
+      idBody+='<label class="ed-lbl">Blend</label><input class="ed-inp" maxlength="256" data-wf="blend" value="'+escAttr(ed.wBlend)+'" placeholder="Not sourced yet">'
+        +'<label class="ed-lbl">Card subtitle</label><input class="ed-inp" maxlength="256" data-f="sub" value="'+escAttr(ed.sub||'')+'" placeholder="Line under the name on the card front\u2026">'
         +'<div class="ed-basenote">Shown on the drinks-list card front, under the name.</div>'
-        +'<label class="ed-lbl">Producer notes</label><textarea class="ed-inp" data-wf="producerNotes" placeholder="Not sourced yet">'+esc(ed.wProducerNotes)+'</textarea>'
-        +'<label class="ed-lbl">Tip</label><textarea class="ed-inp" data-wf="tip" placeholder="Not sourced yet">'+esc(ed.wTip)+'</textarea>';
+        +'<label class="ed-lbl">Producer notes</label><textarea class="ed-inp" maxlength="4000" data-wf="producerNotes" placeholder="Not sourced yet">'+esc(ed.wProducerNotes)+'</textarea>'
+        +'<label class="ed-lbl">Tip</label><textarea class="ed-inp" maxlength="4000" data-wf="tip" placeholder="Not sourced yet">'+esc(ed.wTip)+'</textarea>';
     }
     var sysInfo='';
     if(ed.wSysLines&&ed.wSysLines.length){
@@ -9647,7 +9662,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     }).join('');
     /* the source block is ALWAYS rendered (it is the gate, not a consequence of the gate) */
     var prov='<div class="ed-prov"><label class="ed-lbl">Verification source (required for “Verified free ✓”)</label>'
-        +'<input class="ed-inp" data-f="source" value="'+escAttr(ed.source)+'" placeholder="Who or what confirmed the absence?">'
+        +'<input class="ed-inp" maxlength="256" data-f="source" value="'+escAttr(ed.source)+'" placeholder="Who or what confirmed the absence?">'
         +'<div class="ed-provmeta" data-provmeta>'+(_srcOk
             ?('Will be stamped on every allergen you switch to “Verified free ✓”: verified by <b>'+esc(_zsig())+'</b> · '+today())
             :('Enter the source ('+SRCMIN+' characters minimum) to enable “Verified free ✓”.'))
@@ -9668,7 +9683,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
         +'<button class="ed-liadd" data-add="base" type="button">＋ Add base spirit</button>'
         +'<div class="ed-basenote">The treatment is the house preparation of that spirit (“Pandan-infused”, “Valrhona cocoa nib infused”). Leave it empty for a straight pour.</div>'
         +'<label class="ed-lbl">Card subtitle</label>'
-        +'<input class="ed-inp" data-f="sub" value="'+escAttr(ed.sub||'')+'" placeholder="Line under the name on the card front…">'
+        +'<input class="ed-inp" maxlength="256" data-f="sub" value="'+escAttr(ed.sub||'')+'" placeholder="Line under the name on the card front…">'
         +'<div class="ed-basenote">On most cocktails this line names the base spirit. If you change the spirit, change it here too — the front of the card is what the guest sees first.</div>';
     }
     /* (p100) a BTG wine (BEV kind:"wine") is NOT in WINE/SPIRITS, so the
@@ -9704,9 +9719,9 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +'</div><div class="ed-avnote">'+_avnote+'</div></div>';
     document.getElementById('edBody').innerHTML=
       '<div class="ed-title">Edit item</div><div class="ed-sub">'+esc(ed.id)+'</div>'
-      +'<label class="ed-lbl">Name</label><input class="ed-inp" data-f="name" value="'+escAttr(ed.name)+'">'
+      +'<label class="ed-lbl">Name</label><input class="ed-inp" maxlength="256" data-f="name" value="'+escAttr(ed.name)+'">'
       +'<div class="ed-err" id="edNameErr">'+(ed.nameErr?esc(ed.nameErr):'')+'</div>'
-      +((ed.wineKind||ed.bevForm)?'':'<label class="ed-lbl">Description</label><textarea class="ed-inp" data-f="desc">'+esc(ed.desc)+'</textarea>')
+      +((ed.wineKind||ed.bevForm)?'':'<label class="ed-lbl">Description</label><textarea class="ed-inp" maxlength="4000" data-f="desc">'+esc(ed.desc)+'</textarea>')
       +lists
       +winesec
       +'<label class="ed-lbl">Allergens</label><div class="ed-algrid">'+al+'</div>'+prov+extra
@@ -10150,9 +10165,9 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var rows=_actMissRows+foods.map(function(d){var nm=(window.__mergeOv?window.__mergeOv(d):d).name;var on=eff.activos.indexOf(d.id)>=0;return '<label class="hoy-pick-row"><input type="checkbox" value="'+esc(d.id)+'"'+(on?' checked':'')+'><span>'+esc(nm)+'</span></label>';}).join('');
     document.getElementById('hoyPickBody').innerHTML=
       '<div class="ed-title">Edit “Today”</div><div class="ed-sub">Pick the amuse and today\u2019s actives.</div>'
-      +'<label class="ed-lbl">Amuse</label><select class="ed-inp" id="hoyAmuse">'+opt+'</select>'
+      +'<label class="ed-lbl">Amuse</label><select class="ed-inp" maxlength="256" id="hoyAmuse">'+opt+'</select>'
       +'<label class="ed-lbl">Today\u2019s actives</label><div class="hoy-pick-list" id="hoyActList">'+rows+'</div>'
-      +'<label class="ed-lbl">Active special</label><select class="ed-inp" id="hoySpecial">'+sopt+'</select>'
+      +'<label class="ed-lbl">Active special</label><select class="ed-inp" maxlength="256" id="hoySpecial">'+sopt+'</select>'
       +'<button class="ed-btn" data-hoy="save" type="button">Save</button>'
       +'<button class="ed-btn ghost" data-hoy="cancel" type="button">Cancel</button>'
       +'<button class="ed-btn ghost" data-hoy="reset" type="button">Back to default</button>';
@@ -10535,10 +10550,10 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     return h;
   }
   function _cfInp(label,key,ph){
-    return '<label class="ed-lbl">'+esc(label)+'</label><input class="ed-inp" data-cf="'+escAttr(key)+'" value="'+escAttr(_cf[key]||'')+'" placeholder="'+escAttr(ph||'')+'">';
+    return '<label class="ed-lbl">'+esc(label)+'</label><input class="ed-inp" maxlength="256" data-cf="'+escAttr(key)+'" value="'+escAttr(_cf[key]||'')+'" placeholder="'+escAttr(ph||'')+'">';
   }
   function _cfTa(label,key,ph){
-    return '<label class="ed-lbl">'+esc(label)+'</label><textarea class="ed-inp" data-cf="'+escAttr(key)+'" placeholder="'+escAttr(ph||'')+'">'+esc(_cf[key]||'')+'</textarea>';
+    return '<label class="ed-lbl">'+esc(label)+'</label><textarea class="ed-inp" maxlength="4000" data-cf="'+escAttr(key)+'" placeholder="'+escAttr(ph||'')+'">'+esc(_cf[key]||'')+'</textarea>';
   }
   function _cfSubsect(label,key,note){
     /* (p42-U4) options come from WINE_SECTORDER itself — the same table
@@ -10558,12 +10573,12 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
         }).join('')+'</optgroup>';
     }).join('');
     return '<label class="ed-lbl">'+esc(label)+'</label>'
-      +'<select class="ed-inp" data-cf="'+escAttr(key)+'">'+body+'</select>'
+      +'<select class="ed-inp" maxlength="256" data-cf="'+escAttr(key)+'">'+body+'</select>'
       +(note?('<div class="ed-provmeta">'+esc(note)+'</div>'):'');
   }
   function _cfSel(label,key,list,note){
     return '<label class="ed-lbl">'+esc(label)+'</label>'
-      +'<select class="ed-inp" data-cf="'+escAttr(key)+'">'
+      +'<select class="ed-inp" maxlength="256" data-cf="'+escAttr(key)+'">'
       +list.map(function(v){return '<option value="'+escAttr(v)+'"'+(v===_cf[key]?' selected':'')+'>'+esc(v)+'</option>';}).join('')
       +'</select>'+(note?('<div class="ed-provmeta">'+esc(note)+'</div>'):'');
   }
@@ -11393,7 +11408,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
           return '<div class="zp-erow"><input class="ed-inp zp-ren" data-zren="'+escAttr(p)+'" value="'+escAttr(p)+'">'
             +'<button class="ed-btn ghost small" data-zrensave="'+escAttr(p)+'" type="button">Rename</button></div>';
         }).join('')+'</div>'
-      +'<div class="zp-addrow"><input class="ed-inp" id="zpNew" placeholder="New person\u2019s name">'
+      +'<div class="zp-addrow"><input class="ed-inp" maxlength="256" id="zpNew" placeholder="New person\u2019s name">'
       +'<button class="ed-btn small" data-zadd="1" type="button">Add</button></div>'
       +'<div class="zp-msg" id="zpMsg"></div>'
       +'<div class="p5-foot">Renaming only changes the list: <b>anything already signed keeps the name it was saved with</b>. '
