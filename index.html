@@ -9275,6 +9275,13 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     function farr(f,to){var v=it[f];if(v==null)return;if(Array.isArray(v)){m[to]=v.slice();return;}_warnField(d.id,f,v);}
     try{fstr('name','name');}catch(e){_warnField(d.id,'name',it.name);}
     try{fstr('description','tableside');}catch(e){_warnField(d.id,'description',it.description);}
+    /* (p123) F3. The beer form writes `tableside` directly - the one free-text field a
+       runner actually says at the table - and this whitelist never read it back, so all
+       four beers accepted the edit, toasted "Changes saved", and reverted on screen
+       immediately. Placed AFTER the legacy description->tableside mapping so an explicit
+       write wins over the inherited one. Third instance of this exact class: a field
+       written but absent from the read whitelist is saved and silently dropped. */
+    try{fstr('tableside','tableside');}catch(e){_warnField(d.id,'tableside',it.tableside);}
     try{if(typeof it.description==='string'&&Object.prototype.hasOwnProperty.call(m,'desc'))m.desc=it.description;}catch(e){}
     /* (p47) `base` is [[spirit,treatment],...]. Validated element by element: an
        overlay value that is not an array of 1-2 strings falls back to the baked
