@@ -805,6 +805,14 @@
   .fbottom{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
   .dprice{font-family:var(--serif);font-size:19px;color:var(--champagne)}
   .alpill{font-size:10.5px;font-weight:600;color:#5b4a2e;background:rgba(231,210,160,.92);padding:5px 10px;border-radius:14px}
+  /* (p117) UX-02: "we hold nothing for this item" must not look like "this item is clean".
+     Different colour, different word, and it is drawn whether or not a filter is open. */
+  .alpill.nd{color:#5a3d3a;background:rgba(168,32,26,.12);border:1px dashed rgba(168,32,26,.55)}
+  .ff-caution{margin:0 0 10px;padding:10px 12px;border-radius:10px;background:rgba(168,32,26,.08);
+    border:1px solid rgba(168,32,26,.3);font-size:12px;line-height:1.45;color:#3a2320}
+  .ff-caution b{display:block;font-weight:800;margin-bottom:2px}
+  .ab-nodata{margin-top:8px;font-size:11.5px;font-weight:600;line-height:1.45;color:#5a3d3a;
+    background:rgba(168,32,26,.1);border:1px dashed rgba(168,32,26,.5);border-radius:9px;padding:8px 10px}
   .detailsbtn{margin-top:12px;appearance:none;font-family:inherit;align-self:flex-start;font-size:12px;font-weight:600;color:var(--cream);background:rgba(243,240,233,.14);border:1px solid rgba(243,240,233,.4);border-radius:18px;padding:8px 14px;cursor:pointer;backdrop-filter:blur(4px);position:relative}
   /* (p80) MEASURED before: 80x32-34. Translucent painted background,
      so padding growth would visibly enlarge the glass chip. */
@@ -1921,7 +1929,7 @@
   <div class="ed-sheet" id="lgWhoSheet" role="dialog" aria-modal="true" aria-label="Who are you?">
     <div class="ed-drag"><div class="ed-grab"></div></div>
     <div class="sh-head"><div class="sh-title">Who are you?</div><button class="sh-x lg-who-x" id="lgWhoSheetX" type="button" aria-label="Close">✕</button></div>
-    <div class="sh-scroll"><div class="zp-list" id="lgWhoList"><button type="button" class="zp-pick" data-zpick="Dani"><span class="zp-nm">Dani</span></button><button type="button" class="zp-pick" data-zpick="Sindi"><span class="zp-nm">Sindi</span></button></div></div>
+    <div class="sh-scroll"><div class="zp-list" id="lgWhoList"><button type="button" class="zp-pick" data-zpick="Dani"><span class="zp-nm">Dani</span></button><button type="button" class="zp-pick" data-zpick="Sindi"><span class="zp-nm">Sindi</span></button><button type="button" class="zp-pick" data-zpick="Valentina"><span class="zp-nm">Valentina</span></button><button type="button" class="zp-pick" data-zpick="Laith"><span class="zp-nm">Laith</span></button><button type="button" class="zp-pick" data-zpick="Joaquín"><span class="zp-nm">Joaquín</span></button></div></div>
   </div>
 </div>
 <script>
@@ -3618,7 +3626,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
         ${brow('🫙 Sauces',d.sauces.length?`<div class="chips2">${chipsList(d.sauces,{link:true})}</div>`:'')}
         ${brow('🍃 Garnish',d.garnish.length?`<div class="chips2">${chipsList(d.garnish,{gar:true,link:true})}</div>`:'')}
         ${brow('Plating',d.plating?`<span class="bval">${d.plating}</span>`:'')}
-        <div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Key</b><span><i class="i"></i>Inherent</span><span><i class="r"></i>Removable</span><span><i class="p"></i>Pending</span><span class="lgt">Tap ⓘ for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}${d.allergExtra?`<span class="achip">+${d.allergExtra} more</span>`:''}</div></div>
+        <div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Key</b><span><i class="i"></i>Inherent</span><span><i class="r"></i>Removable</span><span><i class="p"></i>Pending</span><span class="lgt">Tap ⓘ for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}${d.allergExtra?`<span class="achip">+${d.allergExtra} more</span>`:''}</div>${(!d.allerg||!d.allerg.length)&&window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<div class="ab-nodata">No allergen data recorded for this item. That is not the same as &ldquo;no allergens&rdquo; \u2014 ask the kitchen before you answer a guest.</div>`:''}</div>
         ${d.prep?brow('🥢 Preparation',`<span class="bval">${d.prep}</span>`):''}
         ${dishWinePairChips(d)}
         ${provNote}
@@ -4422,7 +4430,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   }
   function _allergBox(d){
     if(!d.allerg||!d.allerg.length) return '';
-    return `<div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Key</b><span><i class="i"></i>Inherent</span><span><i class="r"></i>Removable</span><span><i class="p"></i>Pending</span><span class="lgt">Tap ⓘ for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}</div></div>`;
+    return `<div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Key</b><span><i class="i"></i>Inherent</span><span><i class="r"></i>Removable</span><span><i class="p"></i>Pending</span><span class="lgt">Tap ⓘ for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}</div>${(!d.allerg||!d.allerg.length)&&window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<div class="ab-nodata">No allergen data recorded for this item. That is not the same as &ldquo;no allergens&rdquo; \u2014 ask the kitchen before you answer a guest.</div>`:''}</div>`;
   }
   function wineCard(d){
     const front=_bevPhotoFrontBottle(d);
@@ -4434,7 +4442,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
     const _gr=Array.isArray(d.grapes)?d.grapes.filter(Boolean):(d.grapes?[d.grapes]:[]);
     const grapeLine=_gr.length?`<div class="dgrapes">${window.__esc(_gr.join(" · "))}</div>`:'';
     const fgrad=`<div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(d.sub||'')}</div>${grapeLine}
-          <div class="fbottom">${priceLine}${d.allerg&&d.allerg.length?`<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span>`:''}</div><button class="detailsbtn" data-flip>details ↗</button>`;
+          <div class="fbottom">${priceLine}${d.allerg&&d.allerg.length?`<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span>`:(window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<span class="alpill nd">\u26a0 No allergen data</span>`:'')}</div><button class="detailsbtn" data-flip>details ↗</button>`;
     const back=wineBack(d);
     return _bevWrap(d, front, fgrad, back);
   }
@@ -4541,7 +4549,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   function beerCard(d){
     const front=_bevPhotoFront(d,'tumbler');
     const fgrad=`<div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(d.sub||'')}</div>
-          <div class="fbottom">${d.price?`<span class="dprice">${d.price}</span>`:''}${d.allerg&&d.allerg.length?`<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span>`:''}</div><button class="detailsbtn" data-flip>details ↗</button>`;
+          <div class="fbottom">${d.price?`<span class="dprice">${d.price}</span>`:''}${d.allerg&&d.allerg.length?`<span class="alpill">⚠ ${window.__esc(d.allerg.join(" · "))}</span>`:(window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<span class="alpill nd">\u26a0 No allergen data</span>`:'')}</div><button class="detailsbtn" data-flip>details ↗</button>`;
     const back=`<div class="bname">${window.__esc(d.name)}${_verifBadge(d)}</div><div class="bdiv"></div>
       ${brow('Style · ABV',`<span class="bval">${window.__esc(d.sub||'')}</span>`)}
       ${d.origin?brow('Origin',`<span class="bval">${d.origin}</span>`):''}
@@ -4609,7 +4617,8 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
      The relation is deliberately symmetric-upward only: no chip can ever mark a flagged
      item as safe. When a flag cannot be normalized at all the item is dropped outright. */
   var FFSUP={Allium:['Allium','Garlic','Onion'],Garlic:['Garlic','Allium'],Onion:['Onion','Allium'],
-             Seafood:['Seafood','Fish','Shellfish'],Fish:['Fish','Seafood'],Shellfish:['Shellfish','Seafood'],
+             Seafood:['Seafood','Fish','Shellfish','Mollusk'],Fish:['Fish','Seafood'],
+             Shellfish:['Shellfish','Seafood'],Mollusk:['Mollusk','Seafood'],
              Spice:['Spice','Chili'],Chili:['Chili','Spice']};
   function dishAllergens(d){
     var m=_mrg(d),canon=[],unknown=[];
@@ -4675,6 +4684,55 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
     }
     return false;                          /* "unknown" answers nothing */
   }
+  /* (p117) THE ONLY THING THAT MAY BE CALLED VERIFIED.
+     A signed absence is a human act: allergenState says absent_verified AND
+     allergenProvenance carries verifiedBy + date + source. Everything else -
+     including a POS sheet that simply does not mention the allergen - is
+     "not declared", which is useful and is NOT the same claim. The count line
+     used to call all of it "verified free-from": 826 claims on screen against
+     34 real ones. These two helpers are what the label is now allowed to say. */
+  function _ffVerifiedAbsent(m, ff){
+    try{
+      var st=m&&m.allergenState, pv=m&&m.allergenProvenance;
+      if(!st||typeof st!=='object')return false;
+      var c=_canonAl(ff)||ff, sup=FFSUP[c]||[c], any=false;
+      for(var i=0;i<sup.length;i++){
+        var k=sup[i], v=String(st[k]==null?'':st[k]).toLowerCase().trim();
+        if(v!=='absent_verified')continue;
+        var p=pv&&pv[k];
+        if(!p||!p.verifiedBy||!p.date||!p.source)return false;
+        any=true;
+      }
+      return any;
+    }catch(e){return false;}
+  }
+  function _ffAllVerified(d, list){
+    if(!list||!list.length)return false;
+    var m=window.__mrgItem?window.__mrgItem(d):d;
+    for(var i=0;i<list.length;i++)if(!_ffVerifiedAbsent(m,list[i]))return false;
+    return true;
+  }
+  window.__ffVerifiedAbsent=function(d,ff){
+    var m=window.__mrgItem?window.__mrgItem(d):d;return _ffVerifiedAbsent(m,ff);};
+  /* (p117) "we hold no allergen information at all for this item" - independent of
+     any filter. UX-02: this used to be visible only while a free-from chip was on,
+     so on the ordinary menu a record with no data looked exactly like a record with
+     nothing in it. */
+  function _noAllergenInfo(m){
+    try{
+      var al=(m&&m.allerg)||[];
+      for(var i=0;i<al.length;i++)if(String(al[i]==null?'':al[i]).trim())return false;
+      var st=m&&m.allergenState;
+      if(st&&typeof st==='object')for(var k in st){
+        if(!Object.prototype.hasOwnProperty.call(st,k))continue;
+        var v=String(st[k]==null?'':st[k]).toLowerCase().trim();
+        if(v&&v!=='unknown')return false;
+      }
+      return true;
+    }catch(e){return true;}
+  }
+  window.__noAllergenInfo=function(d){
+    var m=window.__mrgItem?window.__mrgItem(d):d;return _noAllergenInfo(m);};
   function _ffNoData(d, list){
     if(!list||!list.length)return false;   /* no filter active -> no marker, ever */
     var m=window.__mrgItem?window.__mrgItem(d):d;
@@ -4705,7 +4763,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
      is appended.  Since p54 the floor IS the full canonical vocabulary (21), so
      every slot has a chip unconditionally; the derived tail now only catches
      labels that are not canonical at all. */
-  var FF_BASE=['Allium','Garlic','Onion','Gluten','Spice','Chili','Soy','Citrus','Sesame','Alcohol','Seafood','Fish','Dairy','Shellfish','Mustard','Nuts','Peanut','Egg','Caffeine','Mushroom','Coriander'];
+  var FF_BASE=['Allium','Garlic','Onion','Gluten','Spice','Chili','Soy','Citrus','Sesame','Alcohol','Seafood','Fish','Dairy','Shellfish','Mustard','Nuts','Peanut','Egg','Caffeine','Mushroom','Coriander','Coconut','Mollusk'];
   function _ffItems(){
     var a=[];try{a=(typeof FOOD!=='undefined'?FOOD:[]).slice();}catch(e){}
     try{if(typeof SPECIAL!=='undefined'&&SPECIAL)a.push(SPECIAL);}catch(e){}
@@ -4783,10 +4841,21 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
     var showSpecial=(foodState.cat==="All"||foodState.cat==="Specials")&&!foodState.q&&!foodState.freeFrom.length&&!(window.__avUnavail&&window.__avUnavail(SPECIAL));
     var html=(showSpecial?foodCard(SPECIAL):"")+vis.map(function(d){var c=foodCard(d);return _ffNoData(d,_ff)?_ffMark(c):c;}).join("");
     if(!vis.length&&!showSpecial){html+='<div class="emptystate">No dishes match. Try clearing a filter.</div>';}
-    var feed=document.getElementById('foodFeed');feed.innerHTML=html;
+    /* (p117) UX-01. The caution used to live in the filter sheet and scrolled out of
+       reach with the list. It now sits at the top of the result itself, where the claim
+       it qualifies is being made. */
+    var _ffCaution=_ff.length?'<div class="ff-caution"><b>Not declared is not the same as verified absent.</b> '+
+      'These are the records that do not list '+window.__esc(_ff.join(" + "))+'. Confirm with the kitchen for an allergy guest.</div>':'';
+    var feed=document.getElementById('foodFeed');feed.innerHTML=_ffCaution+html;
     // count line
     var n=list.length;
-    var label=foodState.freeFrom.length?(n+" verified free-from "+foodState.freeFrom.join(" + ")+(nod.length?" · "+nod.length+" with no allergen data":"")) :
+    /* (p117) ALG-01. Three bands, and only one of them is a verification.
+       "no X declared"  - the record declares its allergens and X is not among them.
+       "verified absent" - a person signed the absence and left provenance.
+       "no allergen data" - we hold nothing for this item.
+       The old line called the whole first band "verified free-from". */
+    var vok=list.filter(function(d){return _ffAllVerified(d,_ff);}).length;
+    var label=foodState.freeFrom.length?(n+" with no "+foodState.freeFrom.join(" + ")+" declared"+(vok?" · "+vok+" verified absent":"")+(nod.length?" · "+nod.length+" with no allergen data":"")) :
               foodState.q?(n+" result"+(n!==1?"s":"")+" for “"+foodState.q+"”") :
               (n+" of "+(window.__avCount?window.__avCount(FOOD):FOOD.length)+" dishes");
     document.getElementById('foodShowing').textContent=(showSpecial?"1 active special · ":"")+label;
@@ -4849,8 +4918,11 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       var c=bevCard(d);
       return _ffNoData(d,_ff)?_ffMark(c):c;
     }).join(""):'<div class="emptystate">No drinks in this category.</div>';
-    document.getElementById('bevFeed').innerHTML=html+`<div class="feed-note">The full on-menu beverage list — cocktails by sense, plus wines, sake &amp; more.</div>`;
-    var bs=document.getElementById('bevShowing');if(bs)bs.textContent=list.length+" drink"+(list.length!==1?"s":"")+(bevState.cat!=="All"?" · "+bevState.cat:"")+(nod.length?" · "+nod.length+" with no allergen data":"");
+    var _bvCaution=_ff.length?'<div class="ff-caution"><b>Not declared is not the same as verified absent.</b> '+
+      'These are the records that do not list '+window.__esc(_ff.join(" + "))+'. Confirm with the kitchen for an allergy guest.</div>':'';
+    document.getElementById('bevFeed').innerHTML=_bvCaution+html+`<div class="feed-note">The full on-menu beverage list — cocktails by sense, plus wines, sake &amp; more.</div>`;
+    var _bvok=_ff.length?list.filter(function(d){return _ffAllVerified(d,_ff);}).length:0;
+    var bs=document.getElementById('bevShowing');if(bs)bs.textContent=list.length+" drink"+(list.length!==1?"s":"")+(_ff.length?" with no "+_ff.join(" + ")+" declared"+(_bvok?" · "+_bvok+" verified absent":""):"")+(bevState.cat!=="All"?" · "+bevState.cat:"")+(nod.length?" · "+nod.length+" with no allergen data":"");
     var vc=document.getElementById('bevVfChip');if(vc){var n=_bevUnverifCount();var fc=vc.querySelector('.fcount');if(fc)fc.textContent=n;vc.classList.toggle('on',!!bevState.onlyUnverified);}
     window.__bevNoDataCount=nod.length;
     window.__bevMatchCount=list.length;
@@ -8253,7 +8325,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   /* (A1/A2) CANON carries the umbrella flag 'Seafood' and the distinct 'Garlic'/'Onion'
      flags that the live data actually uses. A label that is not in CANON and not in
      ALMAP is preserved verbatim as an "extra" — never rewritten, never dropped. */
-  var CANON=['Gluten','Dairy','Egg','Seafood','Fish','Shellfish','Soy','Sesame','Nuts','Peanut','Allium','Garlic','Onion','Citrus','Spice','Mustard','Alcohol','Caffeine','Mushroom','Coriander','Chili'];
+  var CANON=['Gluten','Dairy','Egg','Seafood','Fish','Shellfish','Soy','Sesame','Nuts','Peanut','Allium','Garlic','Onion','Citrus','Spice','Mustard','Alcohol','Caffeine','Mushroom','Coriander','Chili','Coconut','Mollusk'];
   var ALABEL={Mushroom:'Mushroom · Hongos'};   /* display label (key stays canonical) */
   /* (A1) NORMALIZATION MUST NEVER NARROW AN ALLERGEN.
      Every entry below maps a synonym to a label that is the SAME breadth or BROADER.
@@ -8265,13 +8337,21 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     gluten:'Gluten',wheat:'Gluten',dairy:'Dairy',milk:'Dairy',egg:'Egg',soy:'Soy',sesame:'Sesame',
     nuts:'Nuts','tree nuts':'Nuts',treenuts:'Nuts',peanut:'Peanut',peanuts:'Peanut',citrus:'Citrus',
     spice:'Spice',mustard:'Mustard',alcohol:'Alcohol',caffeine:'Caffeine',
-    mushroom:'Mushroom',mushrooms:'Mushroom',hongos:'Mushroom',coriander:'Coriander',nut:'Nuts','tree nut':'Nuts',chili:'Chili'};
+    mushroom:'Mushroom',mushrooms:'Mushroom',hongos:'Mushroom',coriander:'Coriander',nut:'Nuts','tree nut':'Nuts',chili:'Chili',
+    /* (p117) both are live in allergenState and on real dishes; without a mapping they
+       normalised to null, which drops the item out of EVERY free-from chip. Mollusk sits
+       under Seafood, so ALADD widens it upward - it must never narrow. */
+    coconut:'Coconut',mollusk:'Mollusk',mollusc:'Mollusk',molluscs:'Mollusk',mollusks:'Mollusk',
+    scallop:'Mollusk',mussel:'Mollusk',octopus:'Mollusk',squid:'Mollusk',clam:'Mollusk',oyster:'Mollusk'};
   /* additive-only specificity: a mapping may ADD a broader flag alongside, never replace.
      ALADD is read ONLY by the free-from filter's derived view (dishAllergens). It never
      touches a stored value: the literals 'Nut', 'Tree Nut' and 'Chili' survive byte-for-byte
      in every item's allerg[] — the sole effect is that the Nuts and Spice chips now match a
      SUPERSET. Deliberately not in ALMAP, which rewrites what gets written back. */
   var ALADD={nut:['Nuts'],nuts:['Nuts'],'tree nut':['Nuts'],'tree nuts':['Nuts'],treenut:['Nuts'],
+             mollusk:['Mollusk','Seafood'],mollusc:['Mollusk','Seafood'],scallop:['Mollusk','Seafood'],
+             mussel:['Mollusk','Seafood'],octopus:['Mollusk','Seafood'],squid:['Mollusk','Seafood'],
+             clam:['Mollusk','Seafood'],oyster:['Mollusk','Seafood'],
              chili:['Chili','Spice'],chilli:['Chili','Spice'],chile:['Chili','Spice'],'chili pepper':['Chili','Spice']};
   /* (p54) ADDITIVE STORAGE IMPLICATION. A token that resolves to a
      narrow slot also sets the broader slot it sits under, so that
@@ -8280,7 +8360,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
      pepper and shichimi are Spice and neither is a chili).
      Applied in the PRESENT pass only -- an implication must never be
      able to travel toward absence. */
-  var ALIMPLY={Chili:['Spice']};
+  var ALIMPLY={Chili:['Spice'],Mollusk:['Seafood']};
   function alImply(c){return (c&&ALIMPLY.hasOwnProperty(c))?ALIMPLY[c].slice():[];}
   window.__alimply=Object.freeze(JSON.parse(JSON.stringify(ALIMPLY)));
   window.__alImply=alImply;
@@ -8313,7 +8393,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
      buildId + exportedAt, so an import can tell a Zapheria backup from a random JSON and
      one restaurant's backup from another's. An export carrying NONE of the three is a
      LEGACY export (pre-2026-07-26): still ACCEPTED, then migrated in on save. */
-  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-07-30-p16';
+  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-08-14-p117';
   window.__buildId=BUILD_ID;   /* PHASE 12: cross-scope read of the build id that stamps a verification record */
   /* (B5) sticky marker: IndexedDB has held real data on this device at least once. */
   var IDB_SEEN='mila_overlay_idb_seen_v1';
@@ -11413,8 +11493,27 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
    can pick any name, and nothing here pretends otherwise. */
 (function(){
   var DB_NAME='mila', STORE='overlay', PKEY='people_v1';
-  var SEED=["Dani", "Sindi", "Valentina", "Laith"], ADMIN='Dani';
-  var _people=SEED.slice(), _active=null, _db=null, _mt=null;
+  /* (p116) ROSTER, not SEED. The shipped roster is the list OF RECORD: it is baked
+     into the build, so a new hire reaches every phone through a deploy instead of
+     being typed into one device and living only there. That is the structural half
+     of the Joaquin report - he was never in any build, he was a name somebody added
+     on one phone. Names added on a device are kept alongside the roster; names a
+     person removes are recorded in `removed` so the roster cannot resurrect them. */
+  var ROSTER=["Dani", "Sindi", "Valentina", "Laith", "Joaqu\u00edn"], ADMIN='Dani';
+  var SEED=ROSTER;
+  var _people=ROSTER.slice(), _active=null, _db=null, _mt=null;
+  /* (p116) load() is authoritative: nothing may be written before it has returned.
+     _loaded/_q/_pendingActive implement that; see save() and __zSetActive. */
+  var _removed=[], _migr={}, _loaded=false, _q=[], _pendingActive=null, _lost=false;
+  var ZSEEN='mila_people_seen_v1';
+  function _same(a,b){return String(a).toLowerCase()===String(b).toLowerCase();}
+  function _has(list,n){for(var i=0;i<list.length;i++)if(_same(list[i],n))return true;return false;}
+  function _flush(){
+    var q=_q; _q=[];
+    if(_pendingActive){var pa=_pendingActive;_pendingActive=null;
+      try{window.__zSetActive(pa);}catch(e){}}
+    q.forEach(function(f){try{f();}catch(e){}});
+  }
 
   function _e(s){return String(s==null?'':s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -11429,11 +11528,55 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       r.onerror=function(){cb(r.error||new Error('idb'));};
     }catch(e){cb(e);}
   }
-  function save(){
+  /* (p116) READ-MODIFY-WRITE, and it reports. The old save() put the in-memory
+     array straight over whatever was stored. Combined with the PHASE 18/19
+     early-bind shims - which call __zSetActive the instant PHASE 7 parses, one or
+     more turns BEFORE load() returns - an ordinary sign-in tap during a cold start
+     overwrote the stored list with the bare roster and destroyed every name that
+     phone had ever added. Memory was repaired by load() a moment later, so the
+     list looked correct for the rest of the session and the loss only surfaced the
+     next morning. That is the Joaquin bug, and it is why this function now reads
+     what is stored inside the same transaction and writes the union.
+     It also no longer swallows failure: every caller gets an error or a null. */
+  function save(cb){
+    cb=typeof cb==='function'?cb:function(){};
     idbo(function(err,db){
-      if(err)return;
-      try{var tx=db.transaction(STORE,'readwrite');
-        tx.objectStore(STORE).put({people:_people.slice(),active:_active},PKEY);}catch(e){}
+      if(err){cb(err);return;}
+      try{
+        var tx=db.transaction(STORE,'readwrite'), os=tx.objectStore(STORE), rq=os.get(PKEY);
+        rq.onsuccess=function(){
+          try{
+            var v=rq.result, out=[], rm=_removed.slice(), mg={}, k;
+            for(k in _migr)if(Object.prototype.hasOwnProperty.call(_migr,k))mg[k]=_migr[k];
+            if(v&&typeof v==='object'){
+              if(Object.prototype.toString.call(v.removed)==='[object Array]')
+                v.removed.forEach(function(p){if(p&&!_has(rm,p))rm.push(String(p));});
+              if(v.migrations&&typeof v.migrations==='object')
+                for(k in v.migrations)if(!Object.prototype.hasOwnProperty.call(mg,k))mg[k]=v.migrations[k];
+            }
+            _people.forEach(function(p){if(p&&!_has(out,p))out.push(p);});
+            if(v&&Object.prototype.toString.call(v.people)==='[object Array]')
+              v.people.forEach(function(p){
+                p=String(p==null?'':p).trim();
+                if(p&&p.length<=40&&!_has(out,p)&&!_has(rm,p))out.push(p);});
+            _people=out.slice();
+            os.put({people:out,active:_active,removed:rm,migrations:mg},PKEY);
+          }catch(e){}
+        };
+        rq.onerror=function(){
+          try{os.put({people:_people.slice(),active:_active,removed:_removed.slice(),migrations:_migr},PKEY);}catch(e){}
+        };
+        tx.oncomplete=function(){try{localStorage.setItem(ZSEEN,'1');}catch(e){}cb(null);};
+        tx.onerror=function(){cb(tx.error||new Error('write failed'));};
+        tx.onabort=function(){cb(tx.error||new Error('write aborted'));};
+      }catch(e){cb(e);}
+    });
+  }
+  /* (p116) IDP-05: a people write that fails must not be reported as done. */
+  function saveTold(what){
+    save(function(err){
+      if(!err)return;
+      try{window.__toast&&window.__toast('Could not save '+what+' to this device');}catch(e){}
     });
   }
   function addLocal(n){
@@ -11444,15 +11587,39 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   }
   function load(cb){
     idbo(function(err,db){
-      if(err){cb();return;}
+      if(err){_loaded=true;_flush();cb();return;}
       try{
         var tx=db.transaction(STORE,'readonly'),rq=tx.objectStore(STORE).get(PKEY);
         rq.onsuccess=function(){
-          var v=rq.result;
+          var v=rq.result, had=false, dirty=false;
           if(v&&typeof v==='object'){
-            if(Object.prototype.toString.call(v.people)==='[object Array]')v.people.forEach(addLocal);
-            if(typeof v.active==='string'&&_people.indexOf(v.active)>=0)_active=v.active;
+            had=true;
+            if(Object.prototype.toString.call(v.removed)==='[object Array]')
+              v.removed.forEach(function(p){if(p&&!_has(_removed,p))_removed.push(String(p));});
+            if(v.migrations&&typeof v.migrations==='object')
+              for(var mk in v.migrations)_migr[mk]=v.migrations[mk];
+            /* (p116) THE STORED LIST IS THE LIST. The old load() merged the stored
+               names INTO the seed, which made every shipped name un-removable and
+               un-renameable: renaming one reverted on the next boot and the old
+               identity came back ALIVE next to the new one, so one human ended up
+               with two signable rows. The stored record now wins outright; the
+               shipped roster only ADDS names this device has never seen and nobody
+               has removed - which is exactly how a new hire in the build reaches a
+               phone that is already in service. */
+            if(Object.prototype.toString.call(v.people)==='[object Array]'){
+              _people=[];
+              v.people.forEach(function(p){
+                p=String(p==null?'':p).trim();
+                if(p&&p.length<=40&&!_has(_people,p))_people.push(p);});
+            }
           }
+          ROSTER.forEach(function(p){
+            if(!_has(_people,p)&&!_has(_removed,p)){_people.push(p);dirty=true;}});
+          if(v&&typeof v.active==='string'&&_has(_people,v.active))_active=v.active;
+          /* (p116) IDP-06: an empty store on a device that has written before is
+             DATA LOSS (iOS evicts IndexedDB for sites unused for 7 days), not a
+             fresh install. Record it instead of booting clean and claiming health. */
+          try{if(!had&&localStorage.getItem(ZSEEN)==='1')_lost=true;}catch(e){}
           /* (p93) ONE-TIME RENAME: Lait -> Laith. `load()` ADDS the stored
              list to SEED rather than replacing it, so a device that stored
              the old spelling would otherwise show BOTH names. Drops the old
@@ -11471,29 +11638,49 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
              What this does NOT touch, deliberately: any updatedBy / verifiedBy /
              allergenProvenance stamp already carrying his name. Those stay. An audit
              trail you can edit afterwards is not an audit trail. */
+          /* (p116) GATED. Both blocks below used to run on EVERY load, on every
+             device, forever - which made them not migrations but permanent name
+             rules: a real new hire called Gonzalo could be added, could sign work,
+             and was deleted again on the next reload, every time. They now run once
+             per device behind a stored marker and are then never evaluated again. */
           try{
-            var _p107i=-1;
-            for(var _p107k=0;_p107k<_people.length;_p107k++)
-              if(String(_people[_p107k]).toLowerCase()==='gonzalo'){_p107i=_p107k;break;}
-            if(_p107i>=0){
-              var _p107was=(_active!=null&&String(_active).toLowerCase()==='gonzalo');
-              _people.splice(_p107i,1);
-              if(_p107was)_active=null;
-              save();
+            if(!_migr.p107){
+              var _p107i=-1;
+              for(var _p107k=0;_p107k<_people.length;_p107k++)
+                if(_same(_people[_p107k],'gonzalo')){_p107i=_p107k;break;}
+              if(_p107i>=0){
+                var _p107was=(_active!=null&&_same(_active,'gonzalo'));
+                _people.splice(_p107i,1);
+                if(!_has(_removed,'Gonzalo'))_removed.push('Gonzalo');
+                if(_p107was)_active=null;
+              }
+              _migr.p107=1;dirty=true;
             }
           }catch(e){}
           try{
-            var _p93i=-1;
-            for(var _p93k=0;_p93k<_people.length;_p93k++)
-              if(String(_people[_p93k]).toLowerCase()==='lait'){_p93i=_p93k;break;}
-            if(_p93i>=0){
-              var _p93was=(_active!=null&&String(_active).toLowerCase()==='lait');
-              _people.splice(_p93i,1);
-              if(_people.indexOf('Laith')<0)_people.push('Laith');
-              if(_p93was)_active='Laith';
-              save();
+            if(!_migr.p93){
+              var _p93i=-1;
+              for(var _p93k=0;_p93k<_people.length;_p93k++)
+                if(_same(_people[_p93k],'lait')){_p93i=_p93k;break;}
+              if(_p93i>=0){
+                var _p93was=(_active!=null&&_same(_active,'lait'));
+                _people.splice(_p93i,1);
+                if(!_has(_people,'Laith'))_people.push('Laith');
+                if(!_has(_removed,'Lait'))_removed.push('Lait');
+                /* (p116) NO INHERITED SIGNATURE. This line used to read
+                   _active='Laith', handing one person's live session to another:
+                   every verification and allergen provenance entry the phone wrote
+                   afterwards carried a name nobody had chosen. The p107 block above
+                   already stated the rule this broke - "a signature has to be chosen
+                   by a person, never inherited" - so it now signs the device out. */
+                if(_p93was)_active=null;
+              }
+              _migr.p93=1;dirty=true;
             }
           }catch(e){}
+          _loaded=true;
+          if(dirty)save();
+          _flush();
           cb();
         };
         rq.onerror=function(){cb();};
@@ -11585,9 +11772,21 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   window.__zIsAdmin=function(){return _active===ADMIN;};
   window.__zSetActive=function(n){
     n=String(n==null?'':n).trim();
-    if(!n||_people.indexOf(n)<0)return false;
+    if(!n)return false;
+    /* (p116) Before load() has returned, take the pick in MEMORY and hold the
+       write. The tap still lands instantly - the chip paints, the app proceeds -
+       but nothing touches storage until the stored list is in hand. Without this,
+       the tap that opens the app is the tap that erases it. */
+    if(!_loaded){
+      if(!_has(_people,n)&&!_has(ROSTER,n))return false;
+      if(!_has(_people,n))_people.push(n);
+      _active=n;_pendingActive=n;paint();
+      try{if(window.__zPanelRefresh)window.__zPanelRefresh();}catch(e){}
+      return true;
+    }
+    if(!_has(_people,n))return false;
     if(_active===n){paint();return true;}
-    _active=n;save();paint();
+    _active=n;saveTold('who you are');paint();
     try{if(window.__zPanelRefresh)window.__zPanelRefresh();}catch(e){}
     return true;
   };
@@ -11596,8 +11795,13 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     n=String(n==null?'':n).trim();
     if(!n)return {ok:false,error:'Enter a name.'};
     if(n.length>40)return {ok:false,error:'That name is too long (40 maximum).'};
+    /* (p116) The people list is not known yet; adding now would either be lost or
+       overwrite what is stored. The window is about a second - say so honestly
+       rather than confirm a write that has not happened. */
+    if(!_loaded)return {ok:false,error:'Still loading the people list \u2014 try again in a moment.'};
     if(!addLocal(n))return {ok:false,error:'There is already a person with that name.'};
-    save();paint();return {ok:true,name:n};
+    var i=_removed.length;while(i--)if(_same(_removed[i],n))_removed.splice(i,1);
+    saveTold(n);paint();return {ok:true,name:n};
   };
   window.__zRenamePerson=function(o,n){
     o=String(o==null?'':o).trim();n=String(n==null?'':n).trim();
@@ -11608,18 +11812,31 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     if(n===o)return {ok:true,name:n};
     for(var i=0;i<_people.length;i++)
       if(i!==ix&&_people[i].toLowerCase()===n.toLowerCase())return {ok:false,error:'There is already a person with that name.'};
+    if(!_loaded)return {ok:false,error:'Still loading the people list \u2014 try again in a moment.'};
     _people[ix]=n;
-    if(_active===o)_active=n;   /* the pointer moves; what is already SIGNED keeps the old name */
-    save();paint();return {ok:true,name:n};
+    /* (p116) IDP-07: record the old spelling as removed. The shipped roster is
+       re-applied on every load, so without this a renamed roster name came back
+       on the next boot and stood next to its own replacement as a second signable
+       identity for the same human. What is already SIGNED keeps the old name. */
+    if(!_has(_removed,o))_removed.push(o);
+    var ri=_removed.length;while(ri--)if(_same(_removed[ri],n))_removed.splice(ri,1);
+    if(_active===o)_active=n;
+    saveTold(n);paint();return {ok:true,name:n};
   };
   /* union, never a wholesale replace — an import must not shrink this list */
   window.__zMergePeople=function(list){
     var n=0;
     try{(list||[]).forEach(function(p){if(addLocal(p))n++;});}catch(e){}
-    if(n){save();paint();}
+    if(n){saveTold('the people list');paint();}
     return n;
   };
   window.__zMarkConflicts=marks;
+  /* (p116) read-only truth about this device's people store */
+  window.__zLoaded=function(){return _loaded;};
+  window.__zRemoved=function(){return _removed.slice();};
+  window.__zMigrations=function(){var o={},k;for(k in _migr)o[k]=_migr[k];return o;};
+  window.__zStorageLost=function(){return _lost;};
+  window.__zRoster=function(){return ROSTER.slice();};
 
   /* ---- clicks: pick a person / open the person panel ---- */
   document.addEventListener('click',function(e){
