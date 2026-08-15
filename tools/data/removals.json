@@ -1,0 +1,22 @@
+[
+ {
+  "dish": "dish.shishito-peppers",
+  "name": "Shishito Peppers",
+  "allergen": "Seafood",
+  "to": "absent_verified (as Fish)",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Foto del POS p2 (M-Shishito: spice, soy, alcohol) + confirmacion de Dani de que el tosa-miso que usa este plato es el vegano.",
+  "reason": "No es silencio del POS: es prueba positiva de ausencia. El POS no trae ningun termino de la familia de mar para este plato Y el aderezo concreto que se usa es vegano. Queda escrito como absent_verified con procedencia completa, que es la unica forma que el guardia acepta."
+ },
+ {
+  "dish": "dish.truffle-scallop-maki",
+  "name": "Truffle Scallop Maki",
+  "allergen": "Fish",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Foto del POS p50 (M-Truffle Scallop Maki: shellfish, citrus, egg, sesame, mollusk).",
+  "reason": "CORRECCION DE UN ERROR MIO EN p126. El plegado Seafood->Fish corrio sobre 22 registros con una sola excepcion (el pulpo). El POS p50 dice shellfish y mollusk y nunca seafood, asi que el plegado le puso una afirmacion de pescado a un plato de vieira. Fish vuelve a unknown: no se afirma ni se niega. Shellfish y Mollusk, que siempre fueron correctos, siguen present. La entrada de renames.json NO se borra: se enmienda, para que el error quede legible."
+ }
+]

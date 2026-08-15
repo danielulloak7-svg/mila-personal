@@ -156,10 +156,16 @@
   "dish": "dish.truffle-scallop-maki",
   "name": "Truffle Scallop Maki",
   "from": "Seafood",
-  "to": "Fish",
+  "to": "Shellfish",
   "renamedBy": "Dani",
   "date": "2026-08-15",
-  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan.",
+  "amended": {
+   "date": "2026-08-15",
+   "by": "Dani",
+   "was": "Fish",
+   "why": "Enmendado el mismo dia. El POS p50 dice shellfish y mollusk, nunca seafood, asi que el destino correcto del renombrado era Shellfish (que este plato ya tenia) y no Fish. Se enmienda en vez de borrarse para que el error de p126 quede en el registro. Ver removals.json."
+  }
  },
  {
   "dish": "dish.aburi-a5-kagoshima-wagyu-maki",

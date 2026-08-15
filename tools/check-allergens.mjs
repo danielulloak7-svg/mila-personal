@@ -26,6 +26,13 @@ const REVS = path.join(DATA, 'revocations.json');
    present AHORA. Si el destino no quedo marcado, sigue siendo un borrado y falla. */
 const RENS = path.join(DATA, 'renames.json');
 
+/* (p127) Un BORRADO autorizado es la unica salida que faltaba, y su vara es a proposito mas
+   alta que la del renombrado: un renombrado conserva la advertencia bajo otra etiqueta, un
+   borrado la apaga. Solo pasa si esta declarado en data/removals.json con firma humana,
+   fecha, fuente y motivo. Sin entrada en el registro, un present que baja sigue siendo un
+   FALLO, igual que antes. */
+const RMVS = path.join(DATA, 'removals.json');
+
 /* (p126) "Seafood" retirado del vocabulario: el POS lo usa y usa "fish" para lo mismo
    y nunca juntos, asi que se pliega dentro de Fish. Ver data/renames.json. */
 const VOCAB = ["Gluten","Dairy","Egg","Fish","Shellfish","Soy","Sesame","Nuts","Peanut",
@@ -125,7 +132,14 @@ if (process.argv.includes("--snapshot")){
   const allowed = new Set(revs.map(r => r.dish + "|" + r.allergen + "|" + r.to));
   const rens = fs.existsSync(RENS) ? JSON.parse(fs.readFileSync(RENS, 'utf8')) : [];
   const renMap = new Map(rens.map(r => [r.dish + "|" + r.from, r.to]));
-  let removed = 0, auth = 0, renamed = 0;
+  const rmvs = fs.existsSync(RMVS) ? JSON.parse(fs.readFileSync(RMVS, 'utf8')) : [];
+  const rmvMap = new Map(rmvs
+    .filter(r => r.removedBy && r.date && r.source && r.reason)
+    .map(r => [r.dish + "|" + r.allergen, r]));
+  const rmvBad = rmvs.filter(r => !(r.removedBy && r.date && r.source && r.reason));
+  rmvBad.forEach(r => bad("removals.json: la entrada " + r.dish + " / " + r.allergen +
+      " no lleva firma, fecha, fuente y motivo completos — no autoriza nada"));
+  let removed = 0, auth = 0, renamed = 0, authRm = 0;
   for (const [id, o] of Object.entries(prev)){
     const n = now[id];
     if (!n){ bad("desaparecio el registro " + o.name); continue; }
@@ -140,6 +154,7 @@ if (process.argv.includes("--snapshot")){
               " pero " + to + " NO quedo present — eso es un borrado, no un renombrado");
           removed++; continue;
         }
+        if (rmvMap.has(id + "|" + k)){ authRm++; continue; }
         bad(o.name + " · " + k + " bajo de present a " + nv + " — eso es quitar una marca de alergeno");
         removed++;
       } else if (v === "absent_verified" && nv !== "absent_verified"){
@@ -150,7 +165,8 @@ if (process.argv.includes("--snapshot")){
   }
   if (!removed) okly("nada se quito ni se degrado"
       + (auth ? " (" + auth + " revocacion(es) autorizada(s))" : "")
-      + (renamed ? " (" + renamed + " renombrado(s) autorizado(s), la advertencia sigue viva bajo la nueva etiqueta)" : ""));
+      + (renamed ? " (" + renamed + " renombrado(s) autorizado(s), la advertencia sigue viva bajo la nueva etiqueta)" : "")
+      + (authRm ? " (" + authRm + " borrado(s) autorizado(s) con firma, fuente y motivo en removals.json)" : ""));
 }
 
 console.log("\n" + "-".repeat(58));
