@@ -18,5 +18,55 @@
   "date": "2026-08-15",
   "source": "Foto del POS p50 (M-Truffle Scallop Maki: shellfish, citrus, egg, sesame, mollusk).",
   "reason": "CORRECCION DE UN ERROR MIO EN p126. El plegado Seafood->Fish corrio sobre 22 registros con una sola excepcion (el pulpo). El POS p50 dice shellfish y mollusk y nunca seafood, asi que el plegado le puso una afirmacion de pescado a un plato de vieira. Fish vuelve a unknown: no se afirma ni se niega. Shellfish y Mollusk, que siempre fueron correctos, siguen present. La entrada de renames.json NO se borra: se enmienda, para que el error quede legible."
+ },
+ {
+  "dish": "dish.beef-tenderloin",
+  "name": "8oz Angus Beef Tenderloin",
+  "allergen": "Gluten",
+  "to": "absent_verified",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Dani, 2026-08-15: \"las carnes en general no tienen gluten... por eso tienen shiso chimichurri\" - MILA runs gluten-free versions of its sauces so the plates do not carry gluten. Corroborated per dish below. POS p25 (soy, allium, spice, egg, citrus, alcohol, seafood, sesame) lists no gluten.",
+  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio."
+ },
+ {
+  "dish": "dish.wagyu-skirt-steak",
+  "name": "Wagyu Skirt Steak",
+  "allergen": "Gluten",
+  "to": "absent_verified",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Dani, 2026-08-15: \"las carnes en general no tienen gluten... por eso tienen shiso chimichurri\" - MILA runs gluten-free versions of its sauces so the plates do not carry gluten. Corroborated per dish below. POS p26 (sesame, garlic, onion, spice) lists no gluten.",
+  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio."
+ },
+ {
+  "dish": "dish.14oz-prime-ribeye",
+  "name": "14oz Prime Ribeye",
+  "allergen": "Gluten",
+  "to": "absent_verified",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Dani, 2026-08-15: \"las carnes en general no tienen gluten... por eso tienen shiso chimichurri\" - MILA runs gluten-free versions of its sauces so the plates do not carry gluten. Corroborated per dish below. POS p27 (sesame, garlic, onion, spice, dairy, mushroom) lists no gluten.",
+  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio."
+ },
+ {
+  "dish": "dish.dry-aged-striploin",
+  "name": "45-Day Dry-Aged Bone-In Striploin",
+  "allergen": "Gluten",
+  "to": "absent_verified",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Dani, 2026-08-15: \"las carnes en general no tienen gluten... por eso tienen shiso chimichurri\" - MILA runs gluten-free versions of its sauces so the plates do not carry gluten. Corroborated per dish below. No POS row, and the whole component list is smoked salt and fresh wasabi - there is nothing on the plate that could carry gluten.",
+  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio."
+ },
+ {
+  "dish": "dish.stone-axe-wagyu-ribeye",
+  "name": "Stone Axe Wagyu Ribeye",
+  "allergen": "Gluten",
+  "to": "absent_verified",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Dani, 2026-08-15: \"las carnes en general no tienen gluten... por eso tienen shiso chimichurri\" - MILA runs gluten-free versions of its sauces so the plates do not carry gluten. Corroborated per dish below. No POS row, but this is the 14oz Prime Ribeye recipe (MILA Wafu, grilled maitake) and that dish's POS row p27 lists no gluten.",
+  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio."
  }
 ]

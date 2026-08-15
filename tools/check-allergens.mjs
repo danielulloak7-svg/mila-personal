@@ -169,6 +169,79 @@ if (process.argv.includes("--snapshot")){
       + (authRm ? " (" + authRm + " borrado(s) autorizado(s) con firma, fuente y motivo en removals.json)" : ""));
 }
 
+/* 6 — el informe de fantasmas (p129) -------------------------------------------
+   Dani, 2026-08-15: "no seas tan extremo infiriendo cosas que no son". Tenia razon y las
+   banderas de gluten en las carnes eran mias: salieron de leer el nombre de una salsa y
+   suponer que llevaba. En MILA existen versiones sin gluten de las salsas justo para que
+   los platos no lo lleven, asi que la inferencia no solo no tenia fuente: iba al reves.
+
+   La regla es: una alergia se marca cuando ESTA DICHA — por la fila del POS de ese plato, o
+   porque los componentes del propio plato nombran el alergeno (mushroom, enoki, tobiko). El
+   nombre de una salsa no es una afirmacion sobre su contenido.
+
+   Esto NO falla el run y a proposito: una bandera sin respaldo escrito no es lo mismo que
+   una bandera equivocada (el tiramisu lleva gluten aunque nadie lo haya escrito). Lo que
+   hace es CONTAR, en cada corrida, cuantas banderas no tienen fuente en ninguno de los dos
+   lados — para que el numero se pueda bajar en vez de crecer callado. */
+console.log("\n6. informe de fantasmas (banderas sin fuente escrita)");
+{
+  const POSF = path.join(DATA, 'pos-extraction-2026-08-10.jsonl');
+  const MAPF = path.join(DATA, 'pos-map.json');
+  if (!fs.existsSync(POSF) || !fs.existsSync(MAPF)){
+    warn("falta el POS o el mapa POS->plato: no puedo contar fantasmas");
+  } else {
+    const posRows = fs.readFileSync(POSF,'utf8').split("\n").filter(Boolean).map(l => JSON.parse(l));
+    const posBy = new Map(posRows.map(r => [r.pos, r]));
+    const map = JSON.parse(fs.readFileSync(MAPF,'utf8'));
+    const inv = new Map(Object.entries(map).filter(([k,v]) => !String(v).startsWith('?')).map(([k,v]) => [v,k]));
+    const T = {sesame:['Sesame'],spice:['Spice'],citrus:['Citrus'],soy:['Soy'],
+      'garlic (allium)':['Garlic','Allium'],garlic:['Garlic','Allium'],allium:['Allium'],
+      onion:['Onion','Allium'],gluten:['Gluten'],dairy:['Dairy'],egg:['Egg'],eggs:['Egg'],
+      alcohol:['Alcohol'],seafood:['Fish'],fish:['Fish'],shellfish:['Shellfish'],
+      mollusk:['Mollusk'],mushroom:['Mushroom'],mustard:['Mustard'],chili:['Chili','Spice'],
+      nut:['Nuts'],nuts:['Nuts'],coconut:['Coconut']};
+    const LIT = {Gluten:['gluten','wheat','flour','bread','panko','tempura','cracker','brioche','pasta','spaghetti','noodle','soy sauce'],
+      Dairy:['milk','cream','butter','cheese','yoghurt','yogurt','burrata','parmesan','mascarpone','ricotta','panna cotta','gelato','ice cream'],
+      Egg:['egg','mayo','mayonnaise','aioli','meringue','tiramis','custard'],
+      Fish:['fish','salmon','tuna','hamachi','madai','seabass','sea bass','cod','branzino','sole','anchovy','bonito','katsuobushi','tobiko','caviar','roe','toro'],
+      Shellfish:['shrimp','prawn','crab','lobster','langoustine'],
+      Mollusk:['octopus','squid','scallop','clam','mussel','oyster'],
+      Soy:['soy','tamari','miso','ponzu','edamame','tofu'],Sesame:['sesame','tahini','goma','furikake'],
+      Nuts:['almond','hazelnut','pistachio','cashew','walnut','pecan','macadamia','praline','nut'],
+      'Tree Nut':['almond','hazelnut','pistachio','cashew','walnut','pecan','macadamia','nut'],
+      Peanut:['peanut'],Garlic:['garlic'],Onion:['onion','shallot','scallion','leek'],
+      Allium:['garlic','onion','shallot','scallion','leek','chive'],
+      Citrus:['citrus','yuzu','lemon','lime','orange','sudachi','kabosu','ponzu'],
+      Mustard:['mustard','karashi','dijon'],
+      Alcohol:['sake','mirin','wine','rum','vodka','whisk','tequila','champagne','marsala','vermouth','liqueur','beer'],
+      Mushroom:['mushroom','fungi','shiitake','enoki','maitake','truffle','porcini'],
+      Coriander:['coriander','cilantro'],
+      Chili:['chili','chilli','jalape','serrano','gochujan','harissa','sriracha','togarashi'],
+      Coconut:['coconut'],Caffeine:['coffee','espresso','matcha','tea','cacao','chocolate'],
+      Spice:['spice','pepper','chili','wasabi','togarashi','harissa']};
+    let ghosts = 0; const byA = {};
+    for (const r of (SETS.FOOD || [])){
+      const pn = inv.get(r.id);
+      const row = pn ? posBy.get(pn) : null;
+      const posSet = new Set();
+      if (row) for (const t of row.list) for (const c of (T[String(t).toLowerCase()] || [])) posSet.add(c);
+      const blob = [r.name, ...(r.ingredients||[]), ...(r.sauces||[]), ...(r.garnish||[]), r.tableside||'']
+        .join(' ').toLowerCase();
+      for (const a of (r.allerg || [])){
+        if (row && posSet.has(String(a))) continue;
+        if ((LIT[String(a)] || []).some(w => blob.includes(w))) continue;
+        ghosts++; byA[a] = (byA[a] || 0) + 1;
+      }
+    }
+    const top = Object.entries(byA).sort((x,y) => y[1]-x[1]).slice(0,6)
+      .map(([a,n]) => a + " " + n).join(", ");
+    if (ghosts) warn(ghosts + " bandera(s) sin fuente escrita ni en el POS ni en los componentes"
+        + (top ? " — las mas frecuentes: " + top : "")
+        + ". No son necesariamente falsas; son las que no pueden citarse.");
+    else okly("toda bandera viva se puede citar contra el POS o contra los componentes del plato");
+  }
+}
+
 console.log("\n" + "-".repeat(58));
 console.log(fails ? "RESULTADO: " + fails + " fallo(s)" + (warns ? ", " + warns + " aviso(s)" : "")
                   : "RESULTADO: todo en orden" + (warns ? " (" + warns + " aviso(s))" : ""));
