@@ -47,7 +47,12 @@
   "removedBy": "Dani",
   "date": "2026-08-15",
   "source": "Dani, 2026-08-15: \"las carnes en general no tienen gluten... por eso tienen shiso chimichurri\" - MILA runs gluten-free versions of its sauces so the plates do not carry gluten. Corroborated per dish below. POS p27 (sesame, garlic, onion, spice, dairy, mushroom) lists no gluten.",
-  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio."
+  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio.",
+  "reverted": {
+   "date": "2026-08-15",
+   "by": "Dani",
+   "why": "Revertido el mismo dia. Dani precisó cuál salsa lleva el gluten: la MILA Wafu. El borrado se mantiene en el registro porque pasó y porque el rastro es el producto — se marca revertido, no se borra."
+  }
  },
  {
   "dish": "dish.dry-aged-striploin",
@@ -67,6 +72,11 @@
   "removedBy": "Dani",
   "date": "2026-08-15",
   "source": "Dani, 2026-08-15: \"las carnes en general no tienen gluten... por eso tienen shiso chimichurri\" - MILA runs gluten-free versions of its sauces so the plates do not carry gluten. Corroborated per dish below. No POS row, but this is the 14oz Prime Ribeye recipe (MILA Wafu, grilled maitake) and that dish's POS row p27 lists no gluten.",
-  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio."
+  "reason": "La bandera venia de inferir el contenido de una salsa por su nombre. Dani: las carnes no llevan gluten, y por eso van con shiso chimichurri. Se firma como ausencia verificada, no se borra en silencio.",
+  "reverted": {
+   "date": "2026-08-15",
+   "by": "Dani",
+   "why": "Revertido el mismo dia. Dani precisó cuál salsa lleva el gluten: la MILA Wafu. El borrado se mantiene en el registro porque pasó y porque el rastro es el producto — se marca revertido, no se borra."
+  }
  }
 ]
