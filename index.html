@@ -8021,7 +8021,10 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
      buildId + exportedAt, so an import can tell a Zapheria backup from a random JSON and
      one restaurant's backup from another's. An export carrying NONE of the three is a
      LEGACY export (pre-2026-07-26): still ACCEPTED, then migrated in on save. */
-  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-08-14-p117';
+  /* (p133) The build id had been left at p117 through nine passes that changed the core,
+     and it is the stamp that goes on every verification AND now on every _base record.
+     A stale build id makes both of those lie about which core they were taken against. */
+  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-08-15-p133';
   window.__buildId=BUILD_ID;   /* PHASE 12: cross-scope read of the build id that stamps a verification record */
   /* (B5) sticky marker: IndexedDB has held real data on this device at least once. */
   var IDB_SEEN='mila_overlay_idb_seen_v1';
@@ -8170,7 +8173,10 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
      dish.  The membership test goes through hasOwnProperty.call and
      never through plain property access: a key named "constructor"
      would otherwise read as truthy and HIDE a real edit. */
-  var _P33BOOK={contentVerified:1,contentVerification:1,updatedAt:1,updatedBy:1};
+  /* (p133) _base is CC-08 bookkeeping - the hash of what each written field replaced. A
+     record carrying only a _base records no edit, and must not be counted as one, or the
+     panel would announce edits nobody made. */
+  var _P33BOOK={contentVerified:1,contentVerification:1,updatedAt:1,updatedBy:1,_base:1};
   function _p33IsEdit(v){
     if(!v||typeof v!=='object')return true;
     var ks=Object.keys(v);
@@ -8202,7 +8208,94 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   function saveOverlay(o){o=normalize(o);stampEnvelope(o);o._meta={updatedAt:new Date().toISOString(),updatedBy:_zsig()};_overlay=o;
     try{syncCreated();}catch(e){try{console.error('[p4] syncCreated',e);}catch(_e){}}
     persist();return true;}
-  function setItemOverride(id,patch){var o=getOverlay();o.items[id]=Object.assign({},o.items[id]||{},patch,{updatedAt:new Date().toISOString(),updatedBy:_zsig()});return saveOverlay(o);}
+  /* ================= (p133) CC-08 - WRITE TIME =================
+     Every field written here also records a short hash of the BAKED value it replaced and the
+     build it was read from. Without this, an overlay edit silently outranks every future
+     correction to the core and nothing can tell that the ground moved underneath it.
+     A hash, not the value: this is a change detector, not a backup. */
+  function _cc08Baked(id){
+    function scan(a){try{for(var i=0;i<a.length;i++)if(a[i]&&a[i].id===id)return a[i];}catch(e){}return null;}
+    try{if(typeof FOOD!=='undefined'){var f=scan(FOOD);if(f)return f;}}catch(e){}
+    try{if(typeof BEV!=='undefined'){var b=scan(BEV);if(b)return b;}}catch(e){}
+    try{if(typeof WINE!=='undefined'){var w=scan(WINE);if(w)return w;}}catch(e){}
+    try{if(typeof SPIRITS!=='undefined'){var p=scan(SPIRITS);if(p)return p;}}catch(e){}
+    try{if(typeof GLOSS!=='undefined'){var g=scan(GLOSS);if(g)return g;}}catch(e){}
+    try{if(typeof SPECIAL!=='undefined'&&SPECIAL&&SPECIAL.id===id)return SPECIAL;}catch(e){}
+    return null;
+  }
+  function _cc08Hash(v){
+    var str;
+    try{str=(v===undefined)?'\u0000undef':JSON.stringify(v);}catch(e){str=String(v);}
+    if(str===undefined)str='\u0000undef';
+    var h=5381,i=str.length;
+    while(i)h=(h*33^str.charCodeAt(--i))>>>0;
+    return h.toString(36)+':'+str.length;
+  }
+  var _CC08SKIP={updatedAt:1,updatedBy:1,_base:1,_created:1,_type:1,
+                 contentVerified:1,contentVerification:1};
+  function setItemOverride(id,patch){
+    var o=getOverlay();
+    var prev=o.items[id]||{};
+    var base=(prev&&typeof prev._base==='object'&&prev._base)?Object.assign({},prev._base):{};
+    try{
+      var baked=_cc08Baked(id);
+      if(baked&&patch&&typeof patch==='object'){
+        Object.keys(patch).forEach(function(k){
+          if(Object.prototype.hasOwnProperty.call(_CC08SKIP,k))return;
+          base[k]={h:_cc08Hash(baked[k]),b:BUILD_ID,at:new Date().toISOString()};
+        });
+      }
+    }catch(e){try{console.error('[p133] base capture',e);}catch(_e){}}
+    o.items[id]=Object.assign({},prev,patch,{updatedAt:new Date().toISOString(),updatedBy:_zsig()});
+    if(Object.keys(base).length)o.items[id]._base=base;
+    return saveOverlay(o);
+  }
+  /* ================= (p133) CC-08 - BOOT TIME =================
+     One pass over what is stored, comparing each remembered hash against the value the loaded
+     build actually carries. Where they differ, the item goes into the SAME _conflicts channel
+     the import flow uses, so it inherits the panel count, the review screen and the red
+     IN CONFLICT badge without a second UI being invented. Resolving through those buttons
+     writes through setItemOverride above, which refreshes _base - so a resolved conflict stops
+     being registered because it stops being true. */
+  function _cc08Scan(){
+    var o=getOverlay(),ids=Object.keys(o.items||{}),found=0,changed=false;
+    for(var i=0;i<ids.length;i++){
+      var id=ids[i],it=o.items[id];
+      var key='base:'+id;
+      var b=(it&&typeof it._base==='object')?it._base:null;
+      if(!b){ if(o._conflicts[key]){delete o._conflicts[key];changed=true;} continue; }
+      var baked=_cc08Baked(id);
+      if(!baked){ if(o._conflicts[key]){delete o._conflicts[key];changed=true;} continue; }
+      var stale=[];
+      Object.keys(b).forEach(function(f){
+        var rec=b[f];
+        if(!rec||typeof rec.h!=='string')return;
+        if(_cc08Hash(baked[f])!==rec.h)stale.push(f);
+      });
+      if(stale.length){
+        found++;
+        o._conflicts[key]={id:id,kind:'stale-base',fields:stale,
+          local:it,incoming:baked,
+          note:'The menu core was corrected after this was edited on a device.',
+          at:new Date().toISOString()};
+        changed=true;
+      }else if(o._conflicts[key]){delete o._conflicts[key];changed=true;}
+    }
+    if(changed){try{saveOverlay(o);}catch(e){}}
+    return found;
+  }
+  window.__cc08Scan=_cc08Scan;
+  window.__cc08Stale=function(){
+    var c=zConfSafe(),out=[];
+    Object.keys(c).forEach(function(k){if(c[k]&&c[k].kind==='stale-base')out.push(c[k]);});
+    return JSON.parse(JSON.stringify(out));
+  };
+  function zConfSafe(){try{var o=getOverlay();return (o&&o._conflicts)||{};}catch(e){return {};}}
+  (function(){
+    function go(){try{_cc08Scan();}catch(e){try{console.error('[p133] scan',e);}catch(_e){}}}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(go,300);});
+    else setTimeout(go,300);
+  })();
   function clearItem(id){var o=getOverlay();delete o.items[id];if(o.links)delete o.links[id];return saveOverlay(o);}
   /* ================= (p33-B) VERIFICATION QUEUE =================
      PHASE 12 owns the write path (window.__toggleContentVerify) and the
@@ -11340,8 +11433,14 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   /* ---- view: conflicts ---- */
   function renderPanelConflicts(o){
     var c=zConf(),keys=Object.keys(c).sort();
+    /* (p133) CC-08 entries land in this same list, so the sentence has to cover both
+       reasons a record can be in conflict: a file arrived, or the menu core moved under an
+       edit made on this device. */
+    var _st=keys.filter(function(k){return c[k]&&c[k].kind==='stale-base';}).length;
     var h='<div class="ed-sub p5-sub"><b>'+keys.length+'</b> item'+(keys.length!==1?'s':'')
-      +' arrived with two different versions. Until you choose, <b>yours stays active</b> and nothing is deleted.</div>';
+      +' have two different versions. Until you choose, <b>yours stays active</b> and nothing is deleted.'
+      +(_st?(' <b>'+_st+'</b> of them changed in the menu itself after you edited them here.'):'')
+      +'</div>';
     if(!keys.length){
       h+=p5Empty('No conflicts. Everything imported fitted what you already had.');
       document.getElementById('panelBody').innerHTML=h;return;
