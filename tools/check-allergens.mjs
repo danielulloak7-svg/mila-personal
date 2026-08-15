@@ -19,8 +19,16 @@ const APP  = path.resolve(HERE, '..', 'index.html');
 const DATA = path.join(HERE, 'data');
 const SNAP = path.join(DATA, 'allergen-snapshot.json');
 const REVS = path.join(DATA, 'revocations.json');
+/* (p126) Un RENOMBRADO no es un borrado. Cuando 'Seafood' se pliega dentro de 'Fish',
+   la advertencia no desaparece: cambia de etiqueta. El guardia de "nunca se quita un
+   present" se queda intacto — lo que se agrega es la unica excepcion que puede
+   demostrarse: el renombrado esta registrado con firma Y la etiqueta destino esta
+   present AHORA. Si el destino no quedo marcado, sigue siendo un borrado y falla. */
+const RENS = path.join(DATA, 'renames.json');
 
-const VOCAB = ["Gluten","Dairy","Egg","Seafood","Fish","Shellfish","Soy","Sesame","Nuts","Peanut",
+/* (p126) "Seafood" retirado del vocabulario: el POS lo usa y usa "fish" para lo mismo
+   y nunca juntos, asi que se pliega dentro de Fish. Ver data/renames.json. */
+const VOCAB = ["Gluten","Dairy","Egg","Fish","Shellfish","Soy","Sesame","Nuts","Peanut",
  "Allium","Garlic","Onion","Citrus","Spice","Mustard","Alcohol","Caffeine","Mushroom","Coriander",
  "Chili","Coconut","Mollusk"];
 const CHILDREN = ["Garlic","Onion"];      // Allium is the umbrella (Dani, 2026-08-10)
@@ -115,7 +123,9 @@ if (process.argv.includes("--snapshot")){
   const prev = JSON.parse(fs.readFileSync(SNAP, 'utf8'));
   const revs = fs.existsSync(REVS) ? JSON.parse(fs.readFileSync(REVS, 'utf8')) : [];
   const allowed = new Set(revs.map(r => r.dish + "|" + r.allergen + "|" + r.to));
-  let removed = 0, auth = 0;
+  const rens = fs.existsSync(RENS) ? JSON.parse(fs.readFileSync(RENS, 'utf8')) : [];
+  const renMap = new Map(rens.map(r => [r.dish + "|" + r.from, r.to]));
+  let removed = 0, auth = 0, renamed = 0;
   for (const [id, o] of Object.entries(prev)){
     const n = now[id];
     if (!n){ bad("desaparecio el registro " + o.name); continue; }
@@ -123,6 +133,13 @@ if (process.argv.includes("--snapshot")){
       const nv = n.state[k];
       if (v === nv) continue;
       if (v === "present" && nv !== "present"){
+        const to = renMap.get(id + "|" + k);
+        if (to && n.state[to] === "present"){ renamed++; continue; }
+        if (to){
+          bad(o.name + " · " + k + " se registro como renombrado a " + to +
+              " pero " + to + " NO quedo present — eso es un borrado, no un renombrado");
+          removed++; continue;
+        }
         bad(o.name + " · " + k + " bajo de present a " + nv + " — eso es quitar una marca de alergeno");
         removed++;
       } else if (v === "absent_verified" && nv !== "absent_verified"){
@@ -131,7 +148,9 @@ if (process.argv.includes("--snapshot")){
       }
     }
   }
-  if (!removed) okly("nada se quito ni se degrado" + (auth ? " (" + auth + " revocacion(es) autorizada(s))" : ""));
+  if (!removed) okly("nada se quito ni se degrado"
+      + (auth ? " (" + auth + " revocacion(es) autorizada(s))" : "")
+      + (renamed ? " (" + renamed + " renombrado(s) autorizado(s), la advertencia sigue viva bajo la nueva etiqueta)" : ""));
 }
 
 console.log("\n" + "-".repeat(58));

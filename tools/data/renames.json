@@ -1,0 +1,200 @@
+[
+ {
+  "dish": "dish.amuse-salmon-gunkan",
+  "name": "Salmon Gunkan Tartare",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.wagyu-beef-tartare",
+  "name": "Wagyu Beef Tartare",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.octopus-skewer",
+  "name": "Octopus Skewer",
+  "from": "Seafood",
+  "to": "Shellfish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS dice 'shellfish' para este plato y nunca 'seafood', asi que la marca pasa a Shellfish y no a Fish. Se agrega Mollusk al lado: un pulpo lo es, y una union nunca reduce una advertencia."
+ },
+ {
+  "dish": "dish.hamachi-crudo",
+  "name": "Hamachi Crudo",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.tuna-tartare",
+  "name": "Tuna Tartare",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.seaweed-salad",
+  "name": "Seaweed Salad",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.snow-crab-salad",
+  "name": "Snow Crab Salad",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.lobster-tempura",
+  "name": "Lobster Tempura",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.seared-salmon",
+  "name": "Seared Salmon",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.grilled-madagascan-shrimp",
+  "name": "Grilled Madagascan Shrimp",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.grilled-whole-branzino",
+  "name": "Grilled Whole Branzino",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.king-crab-hot-pot",
+  "name": "King Crab Hot Pot",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.whole-dover-sole",
+  "name": "Whole Dover Sole",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.32oz-prime-tomahawk",
+  "name": "32oz Australian Wagyu Tomahawk",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.seasonal-wild-mushrooms",
+  "name": "Seasonal Wild Mushrooms",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.salmon-avocado-maki",
+  "name": "Salmon Avocado Maki",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.spicy-tuna-maki",
+  "name": "Spicy Tuna Maki",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.truffle-scallop-maki",
+  "name": "Truffle Scallop Maki",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.aburi-a5-kagoshima-wagyu-maki",
+  "name": "Aburi A5 Kagoshima Wagyu Maki",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.truffle-wagyu-nigiri",
+  "name": "Truffle Wagyu Nigiri",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.nigiri-sampler-omakase",
+  "name": "Nigiri Sampler — Omakase",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "dish.sashimi-sampler-tasting-omakase",
+  "name": "Sashimi Sampler — Tasting Omakase",
+  "from": "Seafood",
+  "to": "Fish",
+  "renamedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ }
+]

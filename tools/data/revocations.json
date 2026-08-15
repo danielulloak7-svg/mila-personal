@@ -16,5 +16,14 @@
   "revokedBy": "Dani",
   "date": "2026-08-10",
   "reason": "La confirmacion de cocina del 2026-07-21 queda superada por MILA-Alergenos-2026-08-09.pdf hoja p23, que lista huevo. El plato es espagueti."
+ },
+ {
+  "dish": "dish.seaweed-salad",
+  "allergen": "Fish",
+  "from": "absent_verified",
+  "to": "present",
+  "revokedBy": "Dani",
+  "date": "2026-08-15",
+  "reason": "Al plegar Seafood dentro de Fish, la ausencia firmada de pescado choca con el 'seafood' del POS y con el Tosazu (bonito). Se conserva la advertencia y se retira la ausencia. PENDIENTE: la cocina decide si el bonito cuenta como pescado."
  }
 ]
