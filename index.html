@@ -10052,6 +10052,37 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     }catch(e){toast('Could not export');return false;}
   }
   document.getElementById('panelSheet').addEventListener('click',function(e){
+    /* (p134) F8 handlers */
+    var rfb=e.target.closest('[data-rfgo]');
+    if(rfb){
+      _rfSync();
+      if(rfb.getAttribute('data-rfgo')==='cancel'){_rf=null;panelBack();return;}
+      var res=window.__rotateBTG?window.__rotateBTG({
+        outId:_rf.outId,outReason:_rf.outReason,
+        incoming:{name:_rf.name,vintage:_rf.vintage,price:_rf.price,
+                  producer:_rf.producer,appellation:_rf.appellation}
+      }):{ok:false,error:'The rotation engine is not loaded.'};
+      if(!res.ok){_rf.err=res.error||'It could not be done.';_rf.ok='';renderPanelRotate(getOverlay());return;}
+      _rfInit();_rf.ok=res.summary||'Rotated.';
+      renderPanelRotate(getOverlay());rerender();
+      toastSave('Rotated \u2014 the new wine is waiting for a source');
+      return;
+    }
+    var qg=e.target.closest('[data-qgo]');
+    if(qg){
+      var qid=qg.getAttribute('data-qgo');
+      var fld=document.querySelector('[data-qsrc="'+qid.replace(/"/g,'\\"')+'"]');
+      var src=fld?String(fld.value||'').trim():'';
+      if(!src){toast('Write where the information comes from \u2014 that is the only thing that clears this.');if(fld)fld.focus();return;}
+      var who='';try{who=(window.__zActive&&window.__zActive())||'';}catch(e2){}
+      setItemOverride(qid,{quarantine:false,
+        srcNote:'Source attached '+(new Date().toISOString().slice(0,10))+(who?(' by '+who):'')+': '+src,
+        srcHuman:(who||'')+' \u00b7 '+(new Date().toISOString().slice(0,10))});
+      panelRender();rerender();toastSave('Source attached');
+      return;
+    }
+    var qe=e.target.closest('[data-qedit]');
+    if(qe){try{openEditor(qe.getAttribute('data-qedit'));}catch(e3){}return;}
     var rs=e.target.closest('[data-restore]');
     if(rs){setItemOverride(rs.getAttribute('data-restore'),{availability:'active'});panelRender();rerender();toastSave('Restored to the menu');return;}
     /* (B6) the per-item "Revertir" in the panel confirms too, naming the loss in place */
@@ -10720,11 +10751,16 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   function panelCur(){return _pstack.length?_pstack[_pstack.length-1]:'root';}
   function panelGo(view,opts){_pstack.push(view);_popts=opts||null;panelRender();p5Top();}
   function panelBack(){if(_pstack.length>1){_pstack.pop();_popts=null;panelRender();p5Top();}}
-  function panelReset(st){_pstack=(st&&st.length)?st.slice():['root'];_popts=null;panelRender();p5Top();}
+  function panelReset(st){_pstack=(st&&st.length)?st.slice():['root'];_popts=null;
+    /* (p134) leaving the rotate screen drops its half-typed state, so re-entering never
+       shows a stale wine name from a rotation somebody abandoned. */
+    if(!(st&&st.indexOf('rotate')>=0))_rf=null;
+    panelRender();p5Top();}
   var _P5TITLE={root:'My changes',edits:'Edited items',off:'Off-menu',
                 data:'Data and backup',newpick:'Add to the menu',import:'Import changes',
                 reset:'Back to the base version',person:'Who you are',people:'Manage people',
-                conflicts:'In conflict',merged:'Merge result',queue:'Verification queue',qdetail:'Item detail'};
+                conflicts:'In conflict',merged:'Merge result',queue:'Verification queue',qdetail:'Item detail',
+                rotate:'Rotate a wine by the glass',quar:'Waiting for a source'};
   function panelTitleFor(v){
     if(v==='newform')return (_cf&&_P4LABEL[_cf.type])||'New item';
     return _P5TITLE[v]||'My changes';
@@ -10743,6 +10779,8 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
                           else{_pstack=['root','person'];renderPanelPerson(o);}}
     else if(v==='conflicts')renderPanelConflicts(o);
     else if(v==='merged')renderPanelMerged(o);
+    else if(v==='rotate')renderPanelRotate(o);
+    else if(v==='quar')renderPanelQuar(o);
     else if(v==='queue')renderPanelQueue(o);
     else if(v==='qdetail')renderPanelQueueDetail(o,_popts);
     else if(v==='import'){if(_pendingImport)renderImportPreview();else{_pstack=['root'];renderPanelRoot(o);}}
@@ -11029,6 +11067,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
     var ids=editedIds(),n=ids.length;
     var _p33q=0;try{_p33q=(window.__zPendingList?window.__zPendingList().length:0);}catch(e){_p33q=0;}
     var _zc=0;try{_zc=window.__zConflictCount?window.__zConflictCount():0;}catch(e){}
+    var _q8=0;try{_q8=(window.__quarantined?window.__quarantined():[]).length;}catch(e){}
     var offs=(window.__avOffList?window.__avOffList():[]);
     var created=0;try{created=window.__createdIds().length;}catch(e){}
     var h='<button class="p5-add" data-p5go="newpick" type="button">'
@@ -11044,12 +11083,125 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
       +p5Row('queue','Needs verification',
         _p33q?('<b>'+_p33q+'</b> item'+(_p33q!==1?'s':'')+' waiting to be verified')
              :'Everything has been verified',_p33q,true)
+      /* (p134) F8: the rotation flow and its quarantine queue existed as functions with no
+         way in. A guard nobody can reach is not a guard. */
+      +p5Row('rotate','Rotate a wine by the glass',
+             'One goes off, one comes on \u2014 signed, and the new one starts with honest holes',0)
+      +p5Row('quar','Waiting for a source',
+             _q8?('<b>'+_q8+'</b> wine'+(_q8!==1?'s':'')+' on the list with no source attached')
+                :'Nothing is waiting for a source',_q8,true)
       +p5Row('data','Data and backup','Export, import or reset',0)
       +(_zc?p5Row('conflicts','In conflict',
                   '<b>'+_zc+'</b> item'+(_zc!==1?'s':'')+' with two different versions — you choose',_zc):'')
       +p5Row('person','Who you are','Signing as <b>'+esc(_zsig())+'</b>',0)
       +'</div>'
       +'<div class="p5-foot">Everything lives on this device. Export before you switch phones.</div>';
+    document.getElementById('panelBody').innerHTML=h;
+  }
+
+  /* ================= (p134) F8 - ROTATE A WINE BY THE GLASS =================
+     The engine (window.__rotateBTG) was already strict: signed or nothing, name + vintage +
+     price with no defaults, every sensory field left empty on purpose. This screen is only the
+     way in. Its error line prints the engine's own words verbatim - when a guard refuses, the
+     person should read the guard, not a paraphrase of it. */
+  var _rf=null;
+  function _rfInit(){
+    _rf={outId:'',name:'',vintage:'',price:'',producer:'',appellation:'',outReason:'',err:'',ok:''};
+  }
+  function _rfSync(){
+    var b=document.getElementById('panelBody');if(!b||!_rf)return;
+    [].slice.call(b.querySelectorAll('[data-rf]')).forEach(function(el){
+      _rf[el.getAttribute('data-rf')]=el.value;
+    });
+  }
+  function _rfBtgWines(){
+    /* The by-the-glass list is NOT a flag on the BEV records - it is WINE_PN_BYGLASS, which
+       maps a cellar wine (wine.*) to the pour that represents it on the drinks list (drink.*).
+       Those drink.* records ARE what __rotateBTG looks up, so they are what this list must
+       offer. Reading a btg flag off BEV instead returns nothing, which is exactly what the
+       first version of this function did. */
+    var out=[],seen={};
+    try{
+      var A=(typeof BEV!=='undefined')?BEV:[];
+      var pour={};
+      try{if(typeof WINE_PN_BYGLASS!=='undefined')
+        Object.keys(WINE_PN_BYGLASS).forEach(function(k){pour[WINE_PN_BYGLASS[k]]=1;});}catch(e){}
+      for(var i=0;i<A.length;i++){
+        var w=A[i];if(!w||!w.id)continue;
+        var m=window.__mergeOv?window.__mergeOv(w):w;
+        var onList=!!(pour[w.id]||m.btg||m.btgPending);
+        if(!onList||m.kind!=='wine')continue;
+        var av=window.__avail?window.__avail(m):(m.availability||'active');
+        if(String(av)==='off-menu')continue;
+        if(seen[w.id])continue;seen[w.id]=1;
+        out.push({id:w.id,name:m.name||w.id,sub:m.sub||''});
+      }
+    }catch(e){}
+    out.sort(function(a,b){return String(a.name).localeCompare(String(b.name));});
+    return out;
+  }
+  function _rfInp(label,key,ph,req){
+    return '<label class="ed-lbl">'+esc(label)+(req?' <b>\u00b7 required</b>':'')+'</label>'
+      +'<input class="ed-inp" maxlength="256" data-rf="'+escAttr(key)+'" value="'+escAttr(_rf[key]||'')+'" placeholder="'+escAttr(ph||'')+'">';
+  }
+  function renderPanelRotate(o){
+    if(!_rf)_rfInit();
+    var list=_rfBtgWines();
+    var h='<div class="ed-title">Rotate a wine by the glass</div>'
+      +'<div class="ed-sub">One wine comes off the list, one comes on. The new one is saved with '
+      +'<b>only what you read off the bottle</b> \u2014 aroma, palate, finish and pairings stay empty '
+      +'until someone attaches a source. That is deliberate: a by-the-glass rotation is the one '
+      +'place where invented tasting notes would reach a guest fastest.</div>';
+    if(_rf.ok){
+      h+='<div class="ed-sub" style="border-left:3px solid #4e7c5a;padding-left:10px"><b>Done.</b> '+esc(_rf.ok)+'</div>';
+    }
+    if(_rf.err){
+      h+='<div class="ed-sub" style="border-left:3px solid #a32e26;padding-left:10px"><b>'+esc(_rf.err)+'</b></div>';
+    }
+    if(!list.length){
+      h+=p5Empty('No wines are currently by the glass, so there is nothing to rotate off.');
+      document.getElementById('panelBody').innerHTML=h;return;
+    }
+    h+='<label class="ed-lbl">Coming off the list <b>\u00b7 required</b></label>'
+      +'<select class="ed-inp" data-rf="outId">'
+      +'<option value="">Pick a wine\u2026</option>'
+      +list.map(function(w){return '<option value="'+escAttr(w.id)+'"'+(w.id===_rf.outId?' selected':'')+'>'+esc(w.name)+'</option>';}).join('')
+      +'</select>'
+      +_rfInp('Why is it coming off','outReason','Sold out, seasonal change\u2026',false)
+      +'<div class="ed-sub" style="margin-top:14px"><b>Coming on</b></div>'
+      +_rfInp('Name','name','Exactly as the bottle says',true)
+      +_rfInp('Vintage','vintage','2022 \u2014 write NV if it has none',true)
+      +_rfInp('Price by the glass','price','24',true)
+      +_rfInp('Producer','producer','If the bottle says so',false)
+      +_rfInp('Appellation','appellation','If the bottle says so',false)
+      +'<div class="ed-imgrow" style="margin-top:14px">'
+      +'<button class="ed-btn" data-rfgo="save" type="button">Rotate</button>'
+      +'<button class="ed-btn ghost" data-rfgo="cancel" type="button">Cancel</button></div>';
+    document.getElementById('panelBody').innerHTML=h;
+  }
+
+  /* ================= (p134) F8 - WAITING FOR A SOURCE =================
+     The only way out of this queue is to attach a source. Not a dismiss button and not a
+     checkbox: a field that must contain something, stored with the signer and the date. A queue
+     you can clear without supplying what it asks for is a queue that launders unsourced data. */
+  function renderPanelQuar(o){
+    var q=[];try{q=window.__quarantined?window.__quarantined():[];}catch(e){}
+    var h='<div class="ed-sub p5-sub"><b>'+q.length+'</b> wine'+(q.length!==1?'s':'')
+      +' on the list with no source attached. They show honest holes on the card until one is.</div>';
+    if(!q.length){
+      h+=p5Empty('Nothing is waiting for a source. Every wine on the list can say where it came from.');
+      document.getElementById('panelBody').innerHTML=h;return;
+    }
+    h+='<div class="zc-list">'+q.map(function(w){
+      return '<div class="zc-item"><div class="zc-h">'+esc(w.name)+'</div>'
+        +(w.why?('<div class="ed-sub" style="margin:4px 0 8px">'+esc(String(w.why).slice(0,260))+'</div>'):'')
+        +'<label class="ed-lbl">Where does the information come from?</label>'
+        +'<input class="ed-inp" maxlength="256" data-qsrc="'+escAttr(w.id)+'" placeholder="Producer tech sheet, printed list, importer\u2026">'
+        +'<div class="ed-imgrow"><button class="ed-btn small" data-qgo="'+escAttr(w.id)+'" type="button">Attach the source</button>'
+        +'<button class="ed-btn ghost small" data-qedit="'+escAttr(w.id)+'" type="button">Open the card</button></div></div>';
+    }).join('')+'</div>'
+    +'<div class="p5-foot">There is no dismiss button here on purpose. The queue asks for a source, '
+    +'so the only thing that empties it is a source.</div>';
     document.getElementById('panelBody').innerHTML=h;
   }
 
