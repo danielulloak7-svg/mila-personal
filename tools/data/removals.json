@@ -78,5 +78,125 @@
    "by": "Dani",
    "why": "Revertido el mismo dia. Dani precisó cuál salsa lleva el gluten: la MILA Wafu. El borrado se mantiene en el registro porque pasó y porque el rastro es el producto — se marca revertido, no se borra."
   }
+ },
+ {
+  "dish": "dish.chicken-yakitori",
+  "name": "Chicken Yakitori",
+  "allergen": "Alcohol",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"alcohol no tiene. Si no esta en el POS, no esta.\" El gluten SI se queda: esta en el furikake, que ya figura en los componentes como Spicy Furikake."
+ },
+ {
+  "dish": "dish.wagyu-beef-tartare",
+  "name": "Wagyu Beef Tartare",
+  "allergen": "Onion",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "El POS p9 dice allium, no onion, y ningun componente nombra cebolla. Dani: si esta dicho onion se pone onion; si no, se queda allium. Allium se queda."
+ },
+ {
+  "dish": "dish.spinach-salad",
+  "name": "Spinach Salad",
+  "allergen": "Soy",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"no tiene eso ahi\". El POS p21 solo trae sesame, spice, chili, allium, mushroom."
+ },
+ {
+  "dish": "dish.japanese-a5-wagyu",
+  "name": "Japanese A5 Wagyu",
+  "allergen": "Onion",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"si en el POS no dice nada de onion, lo quitamos, igual que allium\"."
+ },
+ {
+  "dish": "dish.japanese-a5-wagyu",
+  "name": "Japanese A5 Wagyu",
+  "allergen": "Allium",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"si en el POS no dice nada de onion, lo quitamos, igual que allium\"."
+ },
+ {
+  "dish": "dish.crispy-cauliflower-tempura",
+  "name": "Crispy Cauliflower Tempura",
+  "allergen": "Soy",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"Soy no tiene\". Spice y Allium se quedan, confirmados por el."
+ },
+ {
+  "dish": "dish.grilled-artichokes",
+  "name": "Grilled Artichokes",
+  "allergen": "Dairy",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"si en el POS no dice dairy, lo quitamos\". El POS p43 trae garlic, spice, citrus, soy. ES LA MAS DEBIL DE LAS QUITADAS: descansa en el silencio del POS mas su decision, no en prueba positiva de ausencia. El dijo \"tenemos que asegurarnos\" — queda anotado."
+ },
+ {
+  "dish": "dish.aburi-a5-kagoshima-wagyu-maki",
+  "name": "Aburi A5 Kagoshima Wagyu Maki",
+  "allergen": "Gluten",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"no tiene spice, tampoco chili, tampoco gluten y alcohol. Si no estan ahi, no estan\". OJO: sus componentes nombran MILA Soy, y la salsa de soja es el portador clasico de gluten — el mismo caso que la wafu. Se aplica su decision y se deja dicho aqui."
+ },
+ {
+  "dish": "dish.aburi-a5-kagoshima-wagyu-maki",
+  "name": "Aburi A5 Kagoshima Wagyu Maki",
+  "allergen": "Alcohol",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"no tiene spice, tampoco chili, tampoco gluten y alcohol. Si no estan ahi, no estan\". OJO: sus componentes nombran MILA Soy, y la salsa de soja es el portador clasico de gluten — el mismo caso que la wafu. Se aplica su decision y se deja dicho aqui."
+ },
+ {
+  "dish": "dish.aburi-a5-kagoshima-wagyu-maki",
+  "name": "Aburi A5 Kagoshima Wagyu Maki",
+  "allergen": "Chili",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"no tiene spice, tampoco chili, tampoco gluten y alcohol. Si no estan ahi, no estan\". OJO: sus componentes nombran MILA Soy, y la salsa de soja es el portador clasico de gluten — el mismo caso que la wafu. Se aplica su decision y se deja dicho aqui."
+ },
+ {
+  "dish": "dish.aburi-a5-kagoshima-wagyu-maki",
+  "name": "Aburi A5 Kagoshima Wagyu Maki",
+  "allergen": "Spice",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"no tiene spice, tampoco chili, tampoco gluten y alcohol. Si no estan ahi, no estan\". OJO: sus componentes nombran MILA Soy, y la salsa de soja es el portador clasico de gluten — el mismo caso que la wafu. Se aplica su decision y se deja dicho aqui."
+ },
+ {
+  "dish": "dish.raspberry-cheesecake",
+  "name": "Raspberry Cheesecake",
+  "allergen": "Gluten",
+  "to": "unknown",
+  "removedBy": "Dani",
+  "date": "2026-08-15",
+  "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
+  "reason": "Dani: \"la base del cheesecake es un crumble de almonds, no tiene gluten\". El POS p57 lo respalda: dairy, sesame, egg, nut — sin gluten. Nuts sigue presente."
  }
 ]

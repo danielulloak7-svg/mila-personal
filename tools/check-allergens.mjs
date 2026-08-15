@@ -36,8 +36,8 @@ const RMVS = path.join(DATA, 'removals.json');
 /* (p126) "Seafood" retirado del vocabulario: el POS lo usa y usa "fish" para lo mismo
    y nunca juntos, asi que se pliega dentro de Fish. Ver data/renames.json. */
 const VOCAB = ["Gluten","Dairy","Egg","Fish","Shellfish","Soy","Sesame","Nuts","Peanut",
- "Allium","Garlic","Onion","Citrus","Spice","Mustard","Alcohol","Caffeine","Mushroom","Coriander",
- "Chili","Coconut","Mollusk"];
+ "Allium","Garlic","Onion","Citrus","Spice","Pepper","Mustard","Alcohol","Caffeine","Mushroom",
+ "Coriander","Chili","Coconut","Mollusk"];
 const CHILDREN = ["Garlic","Onion"];      // Allium is the umbrella (Dani, 2026-08-10)
 
 let fails = 0, warns = 0;
@@ -183,6 +183,11 @@ if (process.argv.includes("--snapshot")){
    una bandera equivocada (el tiramisu lleva gluten aunque nadie lo haya escrito). Lo que
    hace es CONTAR, en cada corrida, cuantas banderas no tienen fuente en ninguno de los dos
    lados — para que el numero se pueda bajar en vez de crecer callado. */
+/* (p132) El diccionario de abajo se amplio despues de que este informe llamara "fantasma" a
+   dos hechos que SI estaban escritos: el Coconut del Hamachi Crudo (sus componentes dicen
+   "Coconut Avocado Coulis") y el Alcohol del Yuzu Moon ("Mint Cachaca Granite"). El detector
+   no conocia la palabra cachaca. Un detector que inventa preguntas gasta justo la atencion
+   que este sistema existe para proteger. */
 console.log("\n6. informe de fantasmas (banderas sin fuente escrita)");
 {
   const POSF = path.join(DATA, 'pos-extraction-2026-08-10.jsonl');
@@ -200,8 +205,8 @@ console.log("\n6. informe de fantasmas (banderas sin fuente escrita)");
       alcohol:['Alcohol'],seafood:['Fish'],fish:['Fish'],shellfish:['Shellfish'],
       mollusk:['Mollusk'],mushroom:['Mushroom'],mustard:['Mustard'],chili:['Chili','Spice'],
       nut:['Nuts'],nuts:['Nuts'],coconut:['Coconut']};
-    const LIT = {Gluten:['gluten','wheat','flour','bread','panko','tempura','cracker','brioche','pasta','spaghetti','noodle','soy sauce'],
-      Dairy:['milk','cream','butter','cheese','yoghurt','yogurt','burrata','parmesan','mascarpone','ricotta','panna cotta','gelato','ice cream'],
+    const LIT = {Gluten:['gluten','wheat','flour','bread','panko','tempura','cracker','brioche','pasta','spaghetti','noodle','soy sauce','furikake','wafu','arare','teriyaki','eel sauce','wasabi','chimichurri','cookie','biscuit','crumble','opaline','wafer'],
+      Dairy:['milk','cream','butter','cheese','yoghurt','yogurt','burrata','parmesan','mascarpone','ricotta','panna cotta','gelato','ice cream','creamy','curd','sorbet'],
       Egg:['egg','mayo','mayonnaise','aioli','meringue','tiramis','custard'],
       Fish:['fish','salmon','tuna','hamachi','madai','seabass','sea bass','cod','branzino','sole','anchovy','bonito','katsuobushi','tobiko','caviar','roe','toro'],
       Shellfish:['shrimp','prawn','crab','lobster','langoustine'],
@@ -213,12 +218,13 @@ console.log("\n6. informe de fantasmas (banderas sin fuente escrita)");
       Allium:['garlic','onion','shallot','scallion','leek','chive'],
       Citrus:['citrus','yuzu','lemon','lime','orange','sudachi','kabosu','ponzu'],
       Mustard:['mustard','karashi','dijon'],
-      Alcohol:['sake','mirin','wine','rum','vodka','whisk','tequila','champagne','marsala','vermouth','liqueur','beer'],
+      Alcohol:['sake','mirin','wine','rum','vodka','whisk','tequila','champagne','marsala','vermouth','liqueur','beer','cachaca','cachaça','granite','granité','gin','soju','shochu','amaretto','kirsch'],
       Mushroom:['mushroom','fungi','shiitake','enoki','maitake','truffle','porcini'],
       Coriander:['coriander','cilantro'],
       Chili:['chili','chilli','jalape','serrano','gochujan','harissa','sriracha','togarashi'],
       Coconut:['coconut'],Caffeine:['coffee','espresso','matcha','tea','cacao','chocolate'],
-      Spice:['spice','pepper','chili','wasabi','togarashi','harissa']};
+      Spice:['spice','pepper','chili','wasabi','togarashi','harissa','espelette','peppercorn','tobanjan','kosho'],
+      Pepper:['pepper','peppercorn','piquillo','espelette']};
     let ghosts = 0; const byA = {};
     for (const r of (SETS.FOOD || [])){
       const pn = inv.get(r.id);
