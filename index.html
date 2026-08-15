@@ -162,7 +162,9 @@
   .ed-title{font-family:var(--serif);font-size:20px;color:var(--ink);font-weight:600;margin-bottom:2px}
   .ed-sub{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.4}
   .ed-lbl{display:block;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
-  .ed-inp{width:100%;box-sizing:border-box;font-family:inherit;font-size:14px;color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:11px;padding:10px 12px;line-height:1.4}
+  /* (p137) 16px floor. This one is the editor field, built at runtime, which is why the
+     at-rest scan missed it and the walk-every-surface test caught it. */
+  .ed-inp{width:100%;box-sizing:border-box;font-family:inherit;font-size:16px;color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:11px;padding:10px 12px;line-height:1.4}
   .ed-inp:focus{outline:none;border-color:rgba(176,141,87,.6)}
   textarea.ed-inp{min-height:60px;resize:vertical}
   .ed-algrid{display:flex;flex-direction:column;gap:7px}
@@ -408,7 +410,9 @@
   .pn-vb.prop{border:1px solid rgba(74,66,145,.55);background:rgba(74,66,145,.10);color:#4A4291}
   .pn-wybox{margin-top:6px}
   .pn-wybox[hidden]{display:none}
-  .pn-wyta{width:100%;box-sizing:border-box;font-family:inherit;font-size:12.5px;line-height:1.5;color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:9px;padding:8px 9px;resize:vertical}
+  /* (p137) 16px floor: a more specific rule beat the global one, so it is corrected
+     here rather than forced with !important. */
+  .pn-wyta{width:100%;box-sizing:border-box;font-family:inherit;font-size:16px;line-height:1.5;color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:9px;padding:8px 9px;resize:vertical}
   .pn-wyta:focus{outline:2px solid rgba(74,66,145,.5);outline-offset:1px}
   .pn-wyorig{font-size:10px;line-height:1.45;color:var(--muted);background:rgba(0,0,0,.03);border-left:2px solid var(--line);border-radius:0 7px 7px 0;padding:5px 8px;margin:6px 0 0}
   .pn-propbtn{appearance:none;-webkit-appearance:none;font-family:inherit;font-size:10.5px;font-weight:700;letter-spacing:.02em;padding:6px 12px;border-radius:9px;cursor:pointer;border:1px solid rgba(74,66,145,.55);background:rgba(74,66,145,.10);color:#4A4291;position:relative}
@@ -419,7 +423,7 @@
   .pn-propbox{margin:9px 0 2px;padding:10px 11px;border:1px solid rgba(74,66,145,.30);border-radius:11px;background:rgba(74,66,145,.05)}
   .pn-propbox[hidden]{display:none}
   .pn-plab{display:block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 5px}
-  .pn-psel{width:100%;box-sizing:border-box;font-family:inherit;font-size:12.5px;line-height:1.4;color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:9px;padding:8px 9px;margin-bottom:9px}
+  .pn-psel{width:100%;box-sizing:border-box;font-family:inherit;font-size:16px;line-height:1.4;color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:9px;padding:8px 9px;margin-bottom:9px}
   .pn-psel:focus{outline:2px solid rgba(74,66,145,.5);outline-offset:1px}
   .pn-pact{display:flex;gap:7px;justify-content:flex-end;margin-top:8px}
   .pn-perr{font-size:10px;line-height:1.4;color:#8A322B;margin-top:6px;min-height:0}
@@ -664,6 +668,23 @@
   .p13-fab:active{transform:scale(.92)}
   .p13-fab-ic{font-size:24px;line-height:1;margin-top:-2px}
 
+
+  /* ================= (p137) THE 16px FLOOR FOR ANYTHING YOU TYPE INTO =================
+     Safari on iOS zooms the viewport when a text control with a computed font-size under 16px
+     receives focus, and it does NOT zoom back out afterwards. Every search box here was 14.5px,
+     so every search left the page zoomed in with no way back.
+
+     This was masked until p122 by `maximum-scale=1, user-scalable=no` in the viewport meta.
+     That tag went away for a good reason — suppressing pinch-zoom is a direct WCAG 1.4.4
+     failure in an app that renders its allergen vocabulary at 8.5-11px — and putting it back
+     would trade a real accessibility failure for a cosmetic one. iOS's rule is absolute: 16px
+     and it does not zoom.
+
+     Written once and globally so that controls built at runtime (the editor, the login screen,
+     the rename rows, the verification source field, the rotation form) inherit the floor by
+     construction instead of by anyone remembering to visit them. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]),
+  textarea, select{font-size:16px}
 </style>
 <style>
   :root{
@@ -1095,7 +1116,7 @@
   .gp-edit{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
   .gp-edit[hidden]{display:none}
   .gp-edlab{display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-  .gp-edta{width:100%;box-sizing:border-box;font-family:inherit;font-size:13.5px;line-height:1.55;
+  .gp-edta{width:100%;box-sizing:border-box;font-family:inherit;font-size:16px;line-height:1.55;
     color:var(--ink);background:var(--cream-card);border:1px solid var(--line);border-radius:10px;
     padding:10px 11px;resize:vertical}
   .gp-edta:focus{outline:2px solid rgba(138,74,8,.55);outline-offset:1px}
