@@ -198,5 +198,45 @@
   "date": "2026-08-15",
   "source": "Revision punto por punto de las 54 banderas sin fuente, 2026-08-15.",
   "reason": "Dani: \"la base del cheesecake es un crumble de almonds, no tiene gluten\". El POS p57 lo respalda: dairy, sesame, egg, nut — sin gluten. Nuts sigue presente."
+ },
+ {
+  "dish": "dish.wild-fungi-dumpling",
+  "name": "Wild Fungi Dumpling",
+  "allergen": "Shellfish",
+  "to": "absent_verified",
+  "removedBy": "RDG kitchen",
+  "date": "2026-08-16",
+  "source": "RDG kitchen answer, e-mail thread of 2026-08-16",
+  "reason": "Respuesta textual de cocina: \"Fungi Dumplings - does not contain shellfish or any seafood it's a vegan dish.\""
+ },
+ {
+  "dish": "dish.wild-fungi-dumpling",
+  "name": "Wild Fungi Dumpling",
+  "allergen": "Fish",
+  "to": "absent_verified",
+  "removedBy": "RDG kitchen",
+  "date": "2026-08-16",
+  "source": "RDG kitchen answer, e-mail thread of 2026-08-16",
+  "reason": "Respuesta textual de cocina: \"Fungi Dumplings - does not contain shellfish or any seafood it's a vegan dish.\""
+ },
+ {
+  "dish": "dish.spicy-chipotle-lamb",
+  "name": "Spicy Chipotle Lamb",
+  "allergen": "Egg",
+  "to": "absent_verified",
+  "removedBy": "RDG kitchen",
+  "date": "2026-08-16",
+  "source": "RDG kitchen answer, e-mail thread of 2026-08-16",
+  "reason": "Respuesta textual de cocina: \"Lamb Chops - Dish is egg free.\""
+ },
+ {
+  "dish": "dish.crispy-brussel-sprouts",
+  "name": "Crispy Brussel Sprouts",
+  "allergen": "Fish",
+  "to": "absent_verified",
+  "removedBy": "RDG kitchen",
+  "date": "2026-08-16",
+  "source": "RDG kitchen answer, e-mail thread of 2026-08-16",
+  "reason": "Respuesta textual de cocina: \"Brussels Sprouts - no seafood contains.\""
  }
 ]

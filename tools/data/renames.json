@@ -202,5 +202,14 @@
   "renamedBy": "Dani",
   "date": "2026-08-15",
   "reason": "El POS usa 'seafood' en 26 platos y 'fish' en 3, y NUNCA los dos en el mismo plato. Los tagueados 'seafood' son salmon, dover sole, black cod, seabass, hamachi, atun: pescado con aleta. Son dos etiquetas para un mismo concepto, tecleadas sin criterio. 'shellfish' y 'mollusk' siguen separados y no se tocan."
+ },
+ {
+  "dish": "drink.golden-grove",
+  "name": "Golden Grove",
+  "from": "Coriander",
+  "to": "Cilantro",
+  "renamedBy": "Dani / cocina RDG",
+  "date": "2026-08-16",
+  "reason": "Cocina confirmo alergia a CILANTRO en ocho platos. Es la palabra que usan la cocina, la sala y el huesped. 'Coriander' solo estaba en este trago. Una planta, una palabra; la advertencia sigue viva bajo la nueva etiqueta."
  }
 ]

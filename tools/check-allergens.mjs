@@ -37,7 +37,7 @@ const RMVS = path.join(DATA, 'removals.json');
    y nunca juntos, asi que se pliega dentro de Fish. Ver data/renames.json. */
 const VOCAB = ["Gluten","Dairy","Egg","Fish","Shellfish","Soy","Sesame","Nuts","Peanut",
  "Allium","Garlic","Onion","Citrus","Spice","Pepper","Mustard","Alcohol","Caffeine","Mushroom",
- "Coriander","Chili","Coconut","Mollusk"];
+ "Cilantro","Chili","Coconut","Mollusk"];
 const CHILDREN = ["Garlic","Onion"];      // Allium is the umbrella (Dani, 2026-08-10)
 
 let fails = 0, warns = 0;
@@ -220,7 +220,7 @@ console.log("\n6. informe de fantasmas (banderas sin fuente escrita)");
       Mustard:['mustard','karashi','dijon'],
       Alcohol:['sake','mirin','wine','rum','vodka','whisk','tequila','champagne','marsala','vermouth','liqueur','beer','cachaca','cachaça','granite','granité','gin','soju','shochu','amaretto','kirsch'],
       Mushroom:['mushroom','fungi','shiitake','enoki','maitake','truffle','porcini'],
-      Coriander:['coriander','cilantro'],
+      Cilantro:['coriander','cilantro'],
       Chili:['chili','chilli','jalape','serrano','gochujan','harissa','sriracha','togarashi'],
       Coconut:['coconut'],Caffeine:['coffee','espresso','matcha','tea','cacao','chocolate'],
       Spice:['spice','pepper','chili','wasabi','togarashi','harissa','espelette','peppercorn','tobanjan','kosho'],
