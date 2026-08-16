@@ -1,0 +1,858 @@
+[
+ {
+  "page": 8,
+  "name": "CHARRED EDAMAME",
+  "allerg": [
+   "sesame",
+   "spice",
+   "citrus",
+   "soy",
+   "allium"
+  ],
+  "junk": []
+ },
+ {
+  "page": 8,
+  "name": "SHISHITO PEPPERS",
+  "allerg": [
+   "spice",
+   "soy",
+   "alcohol"
+  ],
+  "junk": []
+ },
+ {
+  "page": 8,
+  "name": "CHICKEN YAKITORI",
+  "allerg": [
+   "soy",
+   "gluten",
+   "alcohol",
+   "spice",
+   "citrus",
+   "allium",
+   "sesame"
+  ],
+  "junk": []
+ },
+ {
+  "page": 9,
+  "name": "ZUCCHINI &amp; EGGPLANT ‘CHIPS’",
+  "allerg": [
+   "gluten",
+   "allium",
+   "sesame",
+   "citrus",
+   "dairy",
+   "spice"
+  ],
+  "junk": []
+ },
+ {
+  "page": 9,
+  "name": "SALMON CRISPY RICE",
+  "allerg": [
+   "sesame",
+   "gluten",
+   "allium",
+   "soy",
+   "spice",
+   "alcohol",
+   "citrus",
+   "egg",
+   "fish"
+  ],
+  "junk": []
+ },
+ {
+  "page": 9,
+  "name": "SPICY TUNA CRISPY RICE",
+  "allerg": [
+   "fish",
+   "spice",
+   "gluten",
+   "egg",
+   "soy",
+   "citrus",
+   "allium"
+  ],
+  "junk": []
+ },
+ {
+  "page": 10,
+  "name": "GRILLED OCTOPUS SKEWER",
+  "allerg": [
+   "soy",
+   "gluten",
+   "spice",
+   "citrus",
+   "shellfish"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 10,
+  "name": "CAVIAR POTATO MILLEFEUILLE",
+  "allerg": [
+   "dairy",
+   "fish",
+   "citrus",
+   "allium",
+   "mustard"
+  ],
+  "junk": []
+ },
+ {
+  "page": 10,
+  "name": "WAGYU BEEF TARTARE",
+  "allerg": [
+   "egg",
+   "allium",
+   "alcohol",
+   "fish",
+   "citrus",
+   "mustard",
+   "soy"
+  ],
+  "junk": []
+ },
+ {
+  "page": 11,
+  "name": "WILD FUNGI DUMPLING V",
+  "allerg": [
+   "allium",
+   "gluten",
+   "spice",
+   "soy",
+   "citrus",
+   "sesame"
+  ],
+  "junk": []
+ },
+ {
+  "page": 13,
+  "name": "MADAI SASHIMI GF",
+  "allerg": [
+   "spice",
+   "citrus",
+   "allium",
+   "alcohol",
+   "fish"
+  ],
+  "junk": []
+ },
+ {
+  "page": 13,
+  "name": "HAMACHI CRUDO GF",
+  "allerg": [
+   "allium",
+   "spice",
+   "fish",
+   "citrus"
+  ],
+  "junk": []
+ },
+ {
+  "page": 13,
+  "name": "OYSTERS GF",
+  "allerg": [
+   "shellfish",
+   "allium",
+   "alcohol",
+   "spice",
+   "sesame",
+   "citrus"
+  ],
+  "junk": []
+ },
+ {
+  "page": 14,
+  "name": "TUNA TARTARE GF",
+  "allerg": [
+   "fish",
+   "sesame",
+   "citrus",
+   "spice",
+   "soy",
+   "alcohol",
+   "chili"
+  ],
+  "junk": []
+ },
+ {
+  "page": 14,
+  "name": "SEABREAM CARPACCIO GF",
+  "allerg": [
+   "fish",
+   "citrus",
+   "soy",
+   "spice"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 14,
+  "name": "BLUEFIN CHU TORO TARTAR",
+  "allerg": [
+   "fish",
+   "allium",
+   "chili",
+   "sesame",
+   "citrus",
+   "soy",
+   "gluten"
+  ],
+  "junk": []
+ },
+ {
+  "page": 16,
+  "name": "MILA HOUSE SALAD V",
+  "allerg": [
+   "sesame",
+   "alcohol",
+   "soy",
+   "gluten",
+   "spice",
+   "allium",
+   "citrus"
+  ],
+  "junk": [
+   "gf",
+   "v"
+  ]
+ },
+ {
+  "page": 16,
+  "name": "JAPANESE SEAWEED SALAD",
+  "allerg": [
+   "sesame",
+   "spice",
+   "soy",
+   "alcohol",
+   "citrus",
+   "allium",
+   "chili"
+  ],
+  "junk": []
+ },
+ {
+  "page": 16,
+  "name": "SPINACH SALAD GF V",
+  "allerg": [
+   "sesame",
+   "spice",
+   "chili"
+  ],
+  "junk": []
+ },
+ {
+  "page": 17,
+  "name": "SNOW CRAB SALAD",
+  "allerg": [
+   "sesame",
+   "gluten",
+   "shellfish",
+   "soy",
+   "citrus",
+   "fish"
+  ],
+  "junk": []
+ },
+ {
+  "page": 17,
+  "name": "BEETROOT TARTAR GF V",
+  "allerg": [
+   "sesame",
+   "soy",
+   "citrus",
+   "allium",
+   "spice",
+   "alcohol",
+   "fish"
+  ],
+  "junk": []
+ },
+ {
+  "page": 19,
+  "name": "&apos;SHAWARMA’ WAGYU GYOZA",
+  "allerg": [
+   "gluten",
+   "allium",
+   "sesame",
+   "soy",
+   "spice",
+   "citrus",
+   "fish",
+   "mushroom",
+   "alcohol"
+  ],
+  "junk": []
+ },
+ {
+  "page": 19,
+  "name": "TRUFFLE CREAM SPAGHETTI",
+  "allerg": [
+   "gluten",
+   "dairy",
+   "allium",
+   "alcohol",
+   "soy"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 19,
+  "name": "SEASONAL MUSHROOM HOTPOT",
+  "allerg": [
+   "soy",
+   "allium",
+   "alcohol",
+   "dairy",
+   "mushroom",
+   "citrus"
+  ],
+  "junk": []
+ },
+ {
+  "page": 20,
+  "name": "MAINE LOBSTER TEMPURA",
+  "allerg": [
+   "shellfish",
+   "egg",
+   "citrus",
+   "soy",
+   "gluten",
+   "spice",
+   "chili",
+   "seafood"
+  ],
+  "junk": []
+ },
+ {
+  "page": 22,
+  "name": "SEARED SALMON",
+  "allerg": [
+   "fish",
+   "spice",
+   "citrus",
+   "soy",
+   "dairy",
+   "allium"
+  ],
+  "junk": []
+ },
+ {
+  "page": 22,
+  "name": "GRILLED MADAGASCAN SHRIMP",
+  "allerg": [
+   "shellfish",
+   "dairy",
+   "soy",
+   "citrus",
+   "seafood",
+   "allium"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 22,
+  "name": "MARINATED CHILEAN SEABASS",
+  "allerg": [
+   "fish",
+   "shellfish",
+   "citrus",
+   "allium",
+   "spice",
+   "soy"
+  ],
+  "junk": []
+ },
+ {
+  "page": 23,
+  "name": "MEDITERRASIAN BLACK COD",
+  "allerg": [
+   "fish",
+   "spice",
+   "alcohol",
+   "allium",
+   "citrus",
+   "soy"
+  ],
+  "junk": []
+ },
+ {
+  "page": 23,
+  "name": "2 LB GRILLED WHOLE BRANZINO",
+  "allerg": [
+   "allium",
+   "citrus",
+   "gluten",
+   "alcohol",
+   "fish"
+  ],
+  "junk": []
+ },
+ {
+  "page": 23,
+  "name": "WHOLE DOVER SOLE GF",
+  "allerg": [
+   "sesame",
+   "citrus",
+   "diary",
+   "soy",
+   "allium",
+   "fish"
+  ],
+  "junk": []
+ },
+ {
+  "page": 24,
+  "name": "KING CRAB HOT POT GF",
+  "allerg": [
+   "shellfish",
+   "seafood",
+   "dairy",
+   "sesame",
+   "soy",
+   "spice",
+   "citrus",
+   "egg",
+   "allium"
+  ],
+  "junk": []
+ },
+ {
+  "page": 26,
+  "name": "SPICY CHIPOTLE LAMB CHOPS",
+  "allerg": [
+   "sesame",
+   "gluten",
+   "soy",
+   "spice",
+   "alcohol",
+   "dairy",
+   "egg"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 26,
+  "name": "FREE RANGE YOUNG CHICKEN",
+  "allerg": [
+   "soy",
+   "citrus",
+   "alcohol",
+   "allium",
+   "spice",
+   "egg"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 26,
+  "name": "8 OZ WAGYU SKIRT STEAK",
+  "allerg": [
+   "sesame",
+   "allium",
+   "spice"
+  ],
+  "junk": []
+ },
+ {
+  "page": 27,
+  "name": "8 oz ANGUS BEEF TENDERLOIN",
+  "allerg": [
+   "soy",
+   "allium",
+   "spice",
+   "egg",
+   "citrus",
+   "gluten",
+   "alcohol",
+   "fish",
+   "sesame"
+  ],
+  "junk": []
+ },
+ {
+  "page": 27,
+  "name": "14oz. PRIME RIBEYE",
+  "allerg": [
+   "sesame",
+   "allium",
+   "spice",
+   "dairy",
+   "citrus"
+  ],
+  "junk": []
+ },
+ {
+  "page": 27,
+  "name": "32oz. AUSTRALIAN WAGYU TOMAHAWK",
+  "allerg": [
+   "soy",
+   "allium",
+   "citrus",
+   "alcohol",
+   "chili",
+   "seafood",
+   "gluten"
+  ],
+  "junk": []
+ },
+ {
+  "page": 28,
+  "name": "JAPANESE A5 WAGYU",
+  "allerg": [
+   "soy",
+   "allium",
+   "citrus",
+   "egg",
+   "alcohol",
+   "seafood",
+   "gluten"
+  ],
+  "junk": [
+   "bone",
+   "in"
+  ]
+ },
+ {
+  "page": 28,
+  "name": "32oz 45-DAY DRY AGED BEEF BONE STRIPLOIN",
+  "allerg": [
+   "chili",
+   "allium",
+   "gluten"
+  ],
+  "junk": []
+ },
+ {
+  "page": 28,
+  "name": "32 oz 14 DAY DRY AGED PORTERHOUSE",
+  "allerg": [
+   "chili",
+   "allium",
+   "gluten"
+  ],
+  "junk": []
+ },
+ {
+  "page": 29,
+  "name": "12oz. STONE AXE WAGYU RIBEYE",
+  "allerg": [
+   "sesame",
+   "allium",
+   "spice",
+   "dairy"
+  ],
+  "junk": []
+ },
+ {
+  "page": 31,
+  "name": "GRILLED SWEET CORN",
+  "allerg": [
+   "dairy",
+   "spice",
+   "allium",
+   "sesame",
+   "gluten",
+   "soy",
+   "citrus"
+  ],
+  "junk": []
+ },
+ {
+  "page": 31,
+  "name": "BROCCOLINI GF",
+  "allerg": [
+   "soy",
+   "alcohol",
+   "citrus",
+   "sesame"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 31,
+  "name": "CRISPY BRUSSEL SPROUTS",
+  "allerg": [
+   "allium",
+   "soy"
+  ],
+  "junk": []
+ },
+ {
+  "page": 32,
+  "name": "GRILLED PURPLE ARTICHOKES",
+  "allerg": [
+   "allium",
+   "spice",
+   "citrus",
+   "mushroom"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 32,
+  "name": "SEASONAL WILD MUSHROOMS",
+  "allerg": [
+   "dairy",
+   "fish",
+   "allium",
+   "citrus",
+   "alcohol"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 32,
+  "name": "WASABI MASHED POTATOES",
+  "allerg": [
+   "spice",
+   "dairy"
+  ],
+  "junk": []
+ },
+ {
+  "page": 33,
+  "name": "CRISPY CAULIFLOWER TEMPURA",
+  "allerg": [
+   "spice",
+   "allium",
+   "gluten",
+   "sesame",
+   "soy",
+   "citrus"
+  ],
+  "junk": []
+ },
+ {
+  "page": 35,
+  "name": "NIGIRI SAMPLER - OMAKASE",
+  "allerg": [
+   "sesame",
+   "dairy",
+   "seafood",
+   "shellfish",
+   "citrus",
+   "allium",
+   "soy"
+  ],
+  "junk": [
+   "omakase"
+  ]
+ },
+ {
+  "page": 35,
+  "name": "SASHIMI SAMPLER – TASTING - OMAKASE",
+  "allerg": [
+   "seafood",
+   "shellfish"
+  ],
+  "junk": []
+ },
+ {
+  "page": 35,
+  "name": "TRUFFLE WAGYU NIGIRI",
+  "allerg": [
+   "dairy",
+   "soy",
+   "seafood"
+  ],
+  "junk": []
+ },
+ {
+  "page": 36,
+  "name": "MEDITERRANEAN VEGETABLE MAKI",
+  "allerg": [
+   "sesame",
+   "gluten",
+   "allium",
+   "soy",
+   "spice",
+   "alcohol",
+   "citrus"
+  ],
+  "junk": []
+ },
+ {
+  "page": 36,
+  "name": "BEETROOT MAKI GF V",
+  "allerg": [
+   "citrus",
+   "spice",
+   "soy",
+   "sesame",
+   "gluten",
+   "allium"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 36,
+  "name": "SALMON AVOCADO MAKI GF",
+  "allerg": [
+   "fish",
+   "sesame",
+   "citrus",
+   "spice"
+  ],
+  "junk": []
+ },
+ {
+  "page": 37,
+  "name": "SPICY HAMACHI MAKI",
+  "allerg": [
+   "gluten",
+   "fish",
+   "citrus",
+   "egg",
+   "sesame"
+  ],
+  "junk": []
+ },
+ {
+  "page": 37,
+  "name": "SPICY TUNA MAKI",
+  "allerg": [
+   "gluten",
+   "sesame",
+   "fish",
+   "egg",
+   "shellfish"
+  ],
+  "junk": []
+ },
+ {
+  "page": 37,
+  "name": "CRISPY SHRIMP MAKI",
+  "allerg": [
+   "sesame",
+   "gluten",
+   "allium",
+   "shellfish",
+   "spice",
+   "eggs"
+  ],
+  "junk": []
+ },
+ {
+  "page": 38,
+  "name": "TRUFFLE SCALLOP MAKI",
+  "allerg": [
+   "shellfish",
+   "citrus",
+   "egg",
+   "sesame"
+  ],
+  "junk": []
+ },
+ {
+  "page": 38,
+  "name": "ABURI A5 WAGYU MAKI",
+  "allerg": [
+   "citrus",
+   "seafood",
+   "gluten",
+   "soy"
+  ],
+  "junk": []
+ },
+ {
+  "page": 40,
+  "name": "CHOCOLATE LAVA CAKE",
+  "allerg": [
+   "gluten",
+   "egg",
+   "dairy",
+   "soy"
+  ],
+  "junk": []
+ },
+ {
+  "page": 40,
+  "name": "EXOTIC VACHERIN GF",
+  "allerg": [
+   "citrus",
+   "dairy",
+   "egg"
+  ],
+  "junk": [
+   "gf"
+  ]
+ },
+ {
+  "page": 40,
+  "name": "RASPBERRY CHEESECAKE GF",
+  "allerg": [
+   "dairy",
+   "sesame",
+   "egg",
+   "nut"
+  ],
+  "junk": []
+ },
+ {
+  "page": 41,
+  "name": "YUZU MOON GF V",
+  "allerg": [
+   "citrus",
+   "alcohol"
+  ],
+  "junk": [
+   "daily"
+  ]
+ },
+ {
+  "page": 41,
+  "name": "HOMEMADE ICE CREAM &amp; SORBET SELECTION",
+  "allerg": [
+   "dairy",
+   "egg",
+   "nut"
+  ],
+  "junk": [
+   "for",
+   "ice",
+   "cream"
+  ]
+ },
+ {
+  "page": 42,
+  "name": "MANJARI CHOCOLATE MOUSSE PARFAIT GF",
+  "allerg": [
+   "dairy",
+   "egg",
+   "nut",
+   "sesame"
+  ],
+  "junk": []
+ },
+ {
+  "page": 42,
+  "name": "CHEF DESSERT PLATTER",
+  "allerg": [],
+  "junk": []
+ }
+]
