@@ -1,0 +1,12 @@
+[
+ {
+  "id": "dish.oysters",
+  "from": "Oysters GF",
+  "to": "Oysters",
+  "occurrences": 155,
+  "by": "Dani",
+  "date": "2026-08-17",
+  "source": "Dani, 2026-08-17: \"cambiamos el nombre de ... gluten free, solamente Oysters\".",
+  "reason": "El token GF del titulo impreso del manual (\"OYSTERS GF -\") se filtro al NOMBRE del plato en p138 y se propago, porque el nombre es clave de union: ALNAME2ID, PAIRNAV, DISHPAIR y el array pairs[] de cada vino. Aparecia hasta en su propia lista de componentes. No se pierde nada: la insignia GF vive desde p140 en DIET, anclada a la pagina 13 del manual. La cita literal del titulo dentro de DIET NO se toca."
+ }
+]
