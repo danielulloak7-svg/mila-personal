@@ -1,0 +1,275 @@
+{
+ "source": {
+  "file": "tools/data/MILA_3F_FOOD_MANUAL_08.03.26.pdf",
+  "label": "MILA 3F Food Manual - 08.03.26",
+  "sha256": "40fe96e5e2dad313579e1f24d402a3a41ad667ac6b371b113205f4060b3c0ebc",
+  "extracted": "2026-08-16",
+  "extractedBy": "Claude - badge tokens read off the printed dish TITLE line, pages 8-42, checked by eye against the rendered pages",
+  "scope": "Only badges PRINTED on a title are recorded. A title without GF or V is silence, not a denial: nothing negative is written from this source."
+ },
+ "meaning": {
+  "GF": "Printed on the dish title in the kitchen manual. At MILA a GF title can mean the dish is gluten free AS SERVED or that the gluten component comes out on request (Dani, 2026-08-16: \"el Bluefin Chu Toro dice gluten free, pero realmente si tiene gluten, solo que se le puede remover\"). It is NOT a signed absence, it never removes or weakens an allergen flag, and where the app carries Gluten the app wins on the floor.",
+  "V": "Printed on the dish title in the kitchen manual. The manual never states whether V means vegetarian or vegan, so the app renders the mark verbatim and asserts nothing beyond it."
+ },
+ "badges": [
+  {
+   "dish": "dish.potato-millefeuille",
+   "page": 10,
+   "title": "CAVIAR POTATO MILLEFEUILLE GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.wild-fungi-dumpling",
+   "page": 11,
+   "title": "WILD FUNGI DUMPLING V",
+   "gf": false,
+   "v": true
+  },
+  {
+   "dish": "dish.madai-sashimi",
+   "page": 13,
+   "title": "MADAI SASHIMI GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.hamachi-crudo",
+   "page": 13,
+   "title": "HAMACHI CRUDO GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.oysters",
+   "page": 13,
+   "title": "OYSTERS GF –",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.tuna-tartare",
+   "page": 14,
+   "title": "TUNA TARTARE GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.seabream-carpaccio",
+   "page": 14,
+   "title": "SEABREAM CARPACCIO GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.bluefin-chu-toro-tartar",
+   "page": 14,
+   "title": "BLUEFIN CHU TORO TARTAR GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.mila-house-salad",
+   "page": 16,
+   "title": "MILA HOUSE SALAD V",
+   "gf": false,
+   "v": true
+  },
+  {
+   "dish": "dish.seaweed-salad",
+   "page": 16,
+   "title": "JAPANESE SEAWEED SALAD GF V",
+   "gf": true,
+   "v": true
+  },
+  {
+   "dish": "dish.spinach-salad",
+   "page": 16,
+   "title": "SPINACH SALAD GF V",
+   "gf": true,
+   "v": true
+  },
+  {
+   "dish": "dish.beetroot-tartar",
+   "page": 17,
+   "title": "BEETROOT TARTAR GF V",
+   "gf": true,
+   "v": true
+  },
+  {
+   "dish": "dish.seasonal-mushroom-hotpot",
+   "page": 19,
+   "title": "SEASONAL MUSHROOM HOTPOT GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.marinated-chilean-seabass",
+   "page": 22,
+   "title": "MARINATED CHILEAN SEABASS GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.mediterrasian-black-cod",
+   "page": 23,
+   "title": "MEDITERRASIAN BLACK COD GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.whole-dover-sole",
+   "page": 23,
+   "title": "WHOLE DOVER SOLE GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.king-crab-hot-pot",
+   "page": 24,
+   "title": "KING CRAB HOT POT GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.free-range-young-chicken",
+   "page": 26,
+   "title": "FREE RANGE YOUNG CHICKEN GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.wagyu-skirt-steak",
+   "page": 26,
+   "title": "8 OZ WAGYU SKIRT STEAK GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.broccolini",
+   "page": 31,
+   "title": "BROCCOLINI GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.crispy-brussel-sprouts",
+   "page": 31,
+   "title": "CRISPY BRUSSEL SPROUTS GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.grilled-artichokes",
+   "page": 32,
+   "title": "GRILLED PURPLE ARTICHOKES GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.seasonal-wild-mushrooms",
+   "page": 32,
+   "title": "SEASONAL WILD MUSHROOMS GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.wasabi-mashed-potatoes",
+   "page": 32,
+   "title": "WASABI MASHED POTATOES GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.crispy-cauliflower-tempura",
+   "page": 33,
+   "title": "CRISPY CAULIFLOWER TEMPURA V",
+   "gf": false,
+   "v": true
+  },
+  {
+   "dish": "dish.mediterranean-vegetable-maki",
+   "page": 36,
+   "title": "MEDITERRANEAN VEGETABLE MAKI GF V",
+   "gf": true,
+   "v": true
+  },
+  {
+   "dish": "dish.beetroot-maki",
+   "page": 36,
+   "title": "BEETROOT MAKI GF V",
+   "gf": true,
+   "v": true
+  },
+  {
+   "dish": "dish.salmon-avocado-maki",
+   "page": 36,
+   "title": "SALMON AVOCADO MAKI GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.exotic-vacherin",
+   "page": 40,
+   "title": "EXOTIC VACHERIN GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.raspberry-cheesecake",
+   "page": 40,
+   "title": "RASPBERRY CHEESECAKE GF",
+   "gf": true,
+   "v": false
+  },
+  {
+   "dish": "dish.yuzu-moon",
+   "page": 41,
+   "title": "YUZU MOON GF V",
+   "gf": true,
+   "v": true
+  },
+  {
+   "dish": "dish.manjari-chocolate-mousse-parfait",
+   "page": 42,
+   "title": "MANJARI CHOCOLATE MOUSSE PARFAIT GF",
+   "gf": true,
+   "v": false
+  }
+ ],
+ "overrides": [
+  {
+   "dish": "dish.seaweed-salad",
+   "name": "Seaweed Salad",
+   "drop": "V",
+   "by": "Dani",
+   "date": "2026-08-16",
+   "source": "Dani, 2026-08-16: \"la seaweed salad si trae fish. No se por que la marca como vegano, bueno, si trae fish.\" El tosazu de este plato lleva bonito, y Fish esta present en la app.",
+   "reason": "El manual imprime V en el titulo de la pagina 16. El plato lleva pescado. La marca V no se escribe: publicarla seria ofrecerle a un huesped vegetariano un plato con bonito. El GF del mismo titulo si se escribe, porque ahi no hay choque.",
+   "display": "The dish carries Fish: its tosazu is built on bonito.",
+   "displayDate": "Aug 16, 2026"
+  }
+ ],
+ "openWithKitchen": [
+  {
+   "dish": "dish.spinach-salad",
+   "name": "Spinach Salad",
+   "allergen": "Gluten",
+   "by": "Dani",
+   "date": "2026-08-16",
+   "note": "Dani, 2026-08-16: \"dejemosla colocada en vez de quitarla... dejame marcado lo que tiene la spinach salad, por si acaso. Yo despues lo cuadro directamente en la app con el chef.\" La bandera de Gluten SE QUEDA y queda marcada en pantalla hasta que el chef la resuelva.",
+   "display": "Gluten stays flagged: still to be settled with the kitchen.",
+   "displayDate": "Aug 16, 2026"
+  },
+  {
+   "dish": "dish.mediterranean-vegetable-maki",
+   "name": "Mediterranean Vegetable Maki",
+   "allergen": "Gluten",
+   "by": "Dani",
+   "date": "2026-08-16",
+   "note": "Dani, 2026-08-16: \"en Mediterranean Maki, no estoy seguro acerca del gluten\". Sin certeza no se toca: la bandera se queda.",
+   "display": "Gluten stays flagged: not confirmed either way, so nothing is touched.",
+   "displayDate": "Aug 16, 2026"
+  }
+ ]
+}

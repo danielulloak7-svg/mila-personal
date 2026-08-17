@@ -152,6 +152,22 @@
   .editbtn:active{transform:scale(.97)}
   .alk-absent{margin-top:8px;font-size:11px;font-weight:600;color:#3f6b4b;background:rgba(78,124,90,.1);border:1px solid rgba(78,124,90,.3);border-radius:9px;padding:7px 9px}
   .alk-absent-by{color:var(--muted);font-weight:500}
+  /* (p140) diet marks. Green = the menu's own badge. Amber = the badge and the
+     record disagree, which on this menu means "removable on request", never
+     "the flag is wrong". */
+  .dietp{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.05em;color:#26543a;background:rgba(210,232,216,.95);border:1px solid rgba(78,124,90,.55);padding:4px 9px;border-radius:14px}
+  .dietp+.dietp{margin-left:6px}
+  .dietp.dietp-v{color:#2f5220;background:rgba(219,232,199,.95);border-color:rgba(108,140,60,.55)}
+  .dietp.dietp-ask{color:#7a3f08;background:rgba(248,224,196,.95);border-color:rgba(214,120,20,.6)}
+  .dietbox{margin-top:8px;border:1px solid rgba(78,124,90,.3);background:rgba(78,124,90,.06);border-radius:9px;padding:7px 9px}
+  .dietrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .dietb{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.05em;color:#26543a;background:rgba(78,124,90,.16);border:1px solid rgba(78,124,90,.5);border-radius:7px;padding:2px 7px}
+  .dietb.dietb-v{color:#2f5220;background:rgba(108,140,60,.16);border-color:rgba(108,140,60,.5)}
+  .dietb.dietb-ask{color:#7a3f08;background:rgba(214,120,20,.14);border-color:rgba(214,120,20,.55)}
+  .dietsrc{font-size:10.5px;color:var(--muted);font-weight:500}
+  .dietask{margin-top:6px;font-size:11px;line-height:1.45;font-weight:500;color:#6d3806;background:rgba(214,120,20,.1);border:1px solid rgba(214,120,20,.34);border-radius:8px;padding:6px 8px}
+  .dietrev{margin-top:6px;font-size:10.5px;line-height:1.45;color:#5b5346;font-weight:500}
+
   .dish.edited .catpill::after,.dish.edited .catpill.b::after{content:" ✎"}
   /* sheets */
   .ed-dim{position:fixed;inset:0;z-index:80;background:rgba(15,12,9,.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .28s}
@@ -2727,6 +2743,26 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
   window.__P4TAX={"foodCat": ["AMUSE", "EARTH", "PASTRY", "RAW BAR", "SALADS", "SIGNATURES", "SUSHI", "TAPAS", "VEGETABLES", "WATER"], "bevSense": ["BEER", "CHAMPAGNE & SPARKLING", "DESSERT", "REDS", "ROSÉ", "SAKE", "SIGHT", "SIGNATURE", "SMELL", "TOUCH", "WHITES", "ZERO-PROOF"], "bevKind": ["beer", "cocktail", "mocktail", "wine"], "wineSect": ["dessert", "large", "red", "rose", "sake", "sparkling", "white"], "spiritCat": ["calvados", "cognac", "gin", "mezcal", "other", "rum", "tequila", "vodka", "whiskey"]};
   window.__P4WORD={"0": "wine.billecart-salmon-louis-salmon-2013-750", "1": "wine.moet-and-chandon-dom-perignon-2017-750", "2": "wine.moet-and-chandon-dom-perignon-p2-2004-750", "3": "wine.moet-and-chandon-dom-perignon-p3-1992-750", "4": "wine.walter-scott-cuvee-anne-eola-amity-hills-2023-750", "5": "wine.lingua-franca-sisters-2022-750", "6": "wine.ceritas-zephyr-2022-750", "7": "wine.kistler-les-noisethiers-2023-750", "8": "wine.aubert-uv-sl-vineyard-2024-750", "9": "wine.lewis-cellars-2023-750", "10": "wine.chateau-desclans-garrus-2024-750", "11": "wine.chateau-desclans-estate-2024-750", "12": "wine.chateau-minuty-rose-et-or-2024-750", "13": "wine.antica-terra-equisite-corpse-2022-750", "14": "wine.walter-scott-combe-verte-2024-750", "15": "wine.et-file-2022-750", "16": "wine.trout-lily-ranch-adams-vineyard-2012-750", "17": "wine.lingua-franca-tongue-n-cheek-2022-750", "18": "wine.walter-scott-justice-vineyard-2023-750", "19": "wine.kosta-browne-cerise-vineyard-2020-750", "20": "wine.chev-2021-750", "21": "wine.kosta-browne-2023-750", "22": "wine.mateo-2023-750", "23": "wine.akabu-nv-750", "24": "wine.kinmon-akita-x3-amairo-genshu-nv-750", "25": "wine.heavensake-j2-nv-750", "26": "wine.chateau-dyquem-2016-750", "27": "wine.chateau-suduiraut-2013-750", "28": "wine.moet-and-chandon-dom-perignon-2013-magnum", "29": "wine.moet-and-chandon-dom-perignon-rose-2009-magnum"};
   window.__P4SORD={"0": "spirit.angels-envy", "1": "spirit.basil-haydens", "2": "spirit.buffalo-trace", "3": "spirit.jeffersons-ocean", "4": "spirit.michters-small-batch", "5": "spirit.michters-toasted-single-barrel", "6": "spirit.casa-del-sol-anejo", "7": "spirit.casa-dragones-blanco", "8": "spirit.casa-dragones-joven", "9": "spirit.casa-noble-blanco", "10": "spirit.casamigos-blanco", "11": "spirit.plantation-3-stars", "12": "spirit.plantation-o-f-t-d", "13": "spirit.plantation-original-dark", "14": "spirit.plantation-stiggins-fancy-pineapple", "15": "spirit.camus-borderies-vsop", "16": "spirit.courvoisier-vs", "17": "spirit.dusse-vsop", "18": "spirit.beefeater-gin", "19": "spirit.citadelle-gin-de-france", "20": "spirit.drumshanbo-irish-gunpowder", "21": "spirit.beluga-gold-line", "22": "spirit.belvedere", "23": "spirit.belvedere-lemon-and-basil", "24": "spirit.del-maguey-vida-clasico", "25": "spirit.del-maguey-chichicapa", "26": "spirit.ming-river-baijiu", "27": "spirit.avua-cachaca-amburana", "28": "spirit.batavia-arrack", "29": "spirit.amaras-cupreata"};
+  /* ================= (p140) THE MENU'S OWN DIET MARKS =================
+     The printed kitchen manual badges 32 dish TITLES GF or V.  The app held no
+     such marker on any dish, so a runner reading this phone could not answer
+     "is this one gluten free?" with what the menu itself says - he had to
+     remember the paper.
+
+     PROHIBITION: a badge NEVER removes, weakens or overrides an allergen flag.
+     PAIRED INVARIANT: where the menu says GF and the record still carries
+     Gluten, BOTH are shown and the line states which one governs the floor.
+     That pair is not a contradiction to be resolved - it is MILA's own meaning
+     of GF (Dani, 2026-08-16: the gluten comes out on request).  A title with no
+     badge writes NOTHING: silence in the manual is never stored as a denial.
+
+     Source pinned in tools/data/diet-badges.json - MILA 3F Food Manual · 08.03.26, sha256 40fe96e5e2da, titles pages 8–42.
+     Overrides carry a signature: the manual prints V on the Seaweed Salad and
+     that mark is withheld, because the dish carries Fish. */
+  const DIET={"dish.beetroot-maki": {"gf": 1, "p": 36, "t": "BEETROOT MAKI GF V", "v": 1}, "dish.beetroot-tartar": {"gf": 1, "p": 17, "t": "BEETROOT TARTAR GF V", "v": 1}, "dish.bluefin-chu-toro-tartar": {"gf": 1, "p": 14, "t": "BLUEFIN CHU TORO TARTAR GF", "v": 0}, "dish.broccolini": {"gf": 1, "p": 31, "t": "BROCCOLINI GF", "v": 0}, "dish.crispy-brussel-sprouts": {"gf": 1, "p": 31, "t": "CRISPY BRUSSEL SPROUTS GF", "v": 0}, "dish.crispy-cauliflower-tempura": {"gf": 0, "p": 33, "t": "CRISPY CAULIFLOWER TEMPURA V", "v": 1}, "dish.exotic-vacherin": {"gf": 1, "p": 40, "t": "EXOTIC VACHERIN GF", "v": 0}, "dish.free-range-young-chicken": {"gf": 1, "p": 26, "t": "FREE RANGE YOUNG CHICKEN GF", "v": 0}, "dish.grilled-artichokes": {"gf": 1, "p": 32, "t": "GRILLED PURPLE ARTICHOKES GF", "v": 0}, "dish.hamachi-crudo": {"gf": 1, "p": 13, "t": "HAMACHI CRUDO GF", "v": 0}, "dish.king-crab-hot-pot": {"gf": 1, "p": 24, "t": "KING CRAB HOT POT GF", "v": 0}, "dish.madai-sashimi": {"gf": 1, "p": 13, "t": "MADAI SASHIMI GF", "v": 0}, "dish.manjari-chocolate-mousse-parfait": {"gf": 1, "p": 42, "t": "MANJARI CHOCOLATE MOUSSE PARFAIT GF", "v": 0}, "dish.marinated-chilean-seabass": {"gf": 1, "p": 22, "t": "MARINATED CHILEAN SEABASS GF", "v": 0}, "dish.mediterranean-vegetable-maki": {"gf": 1, "p": 36, "t": "MEDITERRANEAN VEGETABLE MAKI GF V", "v": 1}, "dish.mediterrasian-black-cod": {"gf": 1, "p": 23, "t": "MEDITERRASIAN BLACK COD GF", "v": 0}, "dish.mila-house-salad": {"gf": 0, "p": 16, "t": "MILA HOUSE SALAD V", "v": 1}, "dish.oysters": {"gf": 1, "p": 13, "t": "OYSTERS GF –", "v": 0}, "dish.potato-millefeuille": {"gf": 1, "p": 10, "t": "CAVIAR POTATO MILLEFEUILLE GF", "v": 0}, "dish.raspberry-cheesecake": {"gf": 1, "p": 40, "t": "RASPBERRY CHEESECAKE GF", "v": 0}, "dish.salmon-avocado-maki": {"gf": 1, "p": 36, "t": "SALMON AVOCADO MAKI GF", "v": 0}, "dish.seabream-carpaccio": {"gf": 1, "p": 14, "t": "SEABREAM CARPACCIO GF", "v": 0}, "dish.seasonal-mushroom-hotpot": {"gf": 1, "p": 19, "t": "SEASONAL MUSHROOM HOTPOT GF", "v": 0}, "dish.seasonal-wild-mushrooms": {"gf": 1, "p": 32, "t": "SEASONAL WILD MUSHROOMS GF", "v": 0}, "dish.seaweed-salad": {"gf": 1, "p": 16, "t": "JAPANESE SEAWEED SALAD GF V", "v": 0}, "dish.spinach-salad": {"gf": 1, "p": 16, "t": "SPINACH SALAD GF V", "v": 1}, "dish.tuna-tartare": {"gf": 1, "p": 14, "t": "TUNA TARTARE GF", "v": 0}, "dish.wagyu-skirt-steak": {"gf": 1, "p": 26, "t": "8 OZ WAGYU SKIRT STEAK GF", "v": 0}, "dish.wasabi-mashed-potatoes": {"gf": 1, "p": 32, "t": "WASABI MASHED POTATOES GF", "v": 0}, "dish.whole-dover-sole": {"gf": 1, "p": 23, "t": "WHOLE DOVER SOLE GF", "v": 0}, "dish.wild-fungi-dumpling": {"gf": 0, "p": 11, "t": "WILD FUNGI DUMPLING V", "v": 1}, "dish.yuzu-moon": {"gf": 1, "p": 41, "t": "YUZU MOON GF V", "v": 1}};
+  const DIET_SRC={"label": "MILA 3F Food Manual · 08.03.26", "sha": "40fe96e5e2da", "pages": "8–42"};
+  const DIET_REVIEW={"dish.mediterranean-vegetable-maki": "Gluten stays flagged: not confirmed either way, so nothing is touched. — Dani · Aug 16, 2026", "dish.spinach-salad": "Gluten stays flagged: still to be settled with the kitchen. — Dani · Aug 16, 2026"};
+  const DIET_DROPPED={"dish.seaweed-salad": {"by": "Dani", "date": "Aug 16, 2026", "mark": "V", "why": "The dish carries Fish: its tosazu is built on bonito."}};
   const FOOD=[
     {id:"dish.amuse-salmon-gunkan",name:"Salmon Gunkan Tartare",cat:"AMUSE",sub:"Amuse-bouche · compliments of the kitchen",price:"",photo:"assets/img/01f46475eb4cf92d.jpg",allerg:["Fish","Citrus","Allium","Dairy","Spice"],tableside:"Current amuse — cured salmon tartare gunkan wrapped in cucumber: yuzu-avocado-jalapeño dressing, wasabi crème fraîche, crispy capers. Compliments of the kitchen for select guests.",ingredients:["Cured Salmon","Cucumber","Yuzu-Avocado-Jalapeño Dressing","Wasabi Crème Fraîche"],sauces:["Yuzu-Avocado-Jalapeño Dressing","Wasabi Crème Fraîche"],garnish:["Chive","Dill","Crispy Capers"],plating:"",prep:"",currentAmuse:{"name":"Salmon Gunkan Tartare","served":"Compliments of the kitchen · select guests","profile":"Cured salmon & cucumber gunkan — yuzu, avocado & jalapeño dressing, wasabi crème fraîche, crispy capers","updated":"Updated Jul 12, 2026 · Kitchen"},allergenState:{"Gluten":"unknown","Dairy":"present","Egg":"unknown","Fish":"present","Shellfish":"unknown","Soy":"unknown","Sesame":"unknown","Nuts":"unknown","Peanut":"unknown","Allium":"present","Garlic":"unknown","Onion":"unknown","Citrus":"present","Spice":"present","Pepper":"unknown","Mustard":"unknown","Alcohol":"unknown","Caffeine":"unknown","Mushroom":"unknown","Cilantro":"unknown","Chili":"unknown","Coconut":"unknown","Mollusk":"unknown"},availability:"off-menu",srcNote:"Off the menu as of 2026-08-15 (Dani). The record is KEPT, not deleted - off-menu is recoverable and the allergen history stays intact for when it comes back."},
     {id:"dish.gochujan-miso-tuna-taco",name:"Gochujan Miso Tuna Taco",cat:"AMUSE",sub:"Amuse-bouche · compliments of the kitchen",price:"",photo:"",needsImage:true,tableside:"",ingredients:["Furikake","Taco Shell","Tuna Mix","Gochujan Miso Sauce","Avocado Jalapeno"],sauces:["Avocado Jalapeno","Gochujan Miso Sauce"],garnish:[],plating:"",prep:"",allerg:["Citrus","Chili","Soy","Sesame","Fish"],absentVerified:[],allergenState:{"Gluten":"unknown","Dairy":"unknown","Egg":"unknown","Seafood":"unknown","Fish":"present","Shellfish":"unknown","Soy":"present","Sesame":"present","Nuts":"unknown","Peanut":"unknown","Allium":"unknown","Garlic":"unknown","Onion":"unknown","Citrus":"present","Spice":"present","Pepper":"unknown","Mustard":"unknown","Alcohol":"unknown","Caffeine":"unknown","Mushroom":"unknown","Cilantro":"unknown","Chili":"present","Coconut":"unknown","Mollusk":"unknown"},allergenProvenance:{},needsReview:true,src:"dani-device-2026-08-15",srcNote:"Created by Dani on his phone 2026-08-15 and baked into the build the same day. Allergens are as he entered them and are NOT complete: the record names Tuna Mix while Fish is still unknown, and Taco Shell / Gochujan Miso while Gluten is still unknown. Both are on the review list; neither was filled in here, because a plausible guess about a raw-fish amuse is exactly what this app exists to prevent. | Fish added 2026-08-15 on Dani's instruction: the record's own components name Tuna Mix. It was missing when the dish was created on the phone. | CONFIRMED by Dani 2026-08-15 (Citrus): Dani: lo marco la cocina directamente, asi que el citrico esta en algun componente que aun no esta escrito; el lo busca y lo agrega. These flags could not be cited against the POS or the components; his word is now the source."},
@@ -3147,7 +3183,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
       ${front}
         ${catpill}
         <div class="fgrad"><div class="dname">${window.__esc(d.name)}</div><div class="dsub">${window.__esc(_p77CatSub(d))}</div>
-          <div class="fbottom">${priceF}<span class="alpill">${alpill(d)}</span></div>
+          <div class="fbottom">${priceF}${window.__dietPill?window.__dietPill(d):''}<span class="alpill">${alpill(d)}</span></div>
           <button class="detailsbtn" data-flip>details ↗</button></div>
       </div>
       <div class="face back"><div class="backscroll">
@@ -3155,7 +3191,7 @@ window.__safeImg=function(s){s=String(s==null?'':s);return /^(?:data:image\/(?:p
         <!-- (p128) UX-14: the allergen box used to sit after Plating, which put it below
              the fold of this scroller on 20 of 71 dishes at 320px. Flipping the card IS
              the allergen gesture, so the answer goes first. -->
-        <div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Can the kitchen remove it?</b><span><i class="i"></i>No \u2014 inherent</span><span><i class="r"></i>Yes \u2014 removable</span><span><i class="p"></i>Not checked yet</span><span class="lgt">Tap \u24d8 for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}${d.allergExtra?`<span class="achip">+${window.__esc(d.allergExtra)} more</span>`:''}</div>${(!d.allerg||!d.allerg.length)&&window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<div class="ab-nodata">No allergen data recorded for this item. That is not the same as &ldquo;no allergens&rdquo; \u2014 ask the kitchen before you answer a guest.</div>`:''}</div>
+        <div class="allergbox"><div class="abtitle">⚠ ALLERGENS</div><div class="alk-legend"><b>Can the kitchen remove it?</b><span><i class="i"></i>No \u2014 inherent</span><span><i class="r"></i>Yes \u2014 removable</span><span><i class="p"></i>Not checked yet</span><span class="lgt">Tap \u24d8 for source</span></div><div class="chips2">${achips(d.allerg,d.id)}${window.__absentLine?window.__absentLine(d):''}${window.__dietLine?window.__dietLine(d):''}${d.allergExtra?`<span class="achip">+${window.__esc(d.allergExtra)} more</span>`:''}</div>${(!d.allerg||!d.allerg.length)&&window.__noAllergenInfo&&window.__noAllergenInfo(d)?`<div class="ab-nodata">No allergen data recorded for this item. That is not the same as &ldquo;no allergens&rdquo; \u2014 ask the kitchen before you answer a guest.</div>`:''}</div>
         ${brow('Tableside',`<div class="bts">${window.__esc(d.tableside)}</div>`)}
         ${d.currentOyster?`<div class="curoy"><div class="coyk"><span class="live"></span>CURRENT OYSTERS</div><div class="coyn">${d.currentOyster.name}</div><div class="coyo">${d.currentOyster.origin}</div><div class="coyp">${d.currentOyster.profile}</div><div class="coyu">✓ ${d.currentOyster.updated}</div></div>`:''}
         ${d.currentAmuse?`<div class="curoy"><div class="coyk"><span class="live"></span>CURRENT AMUSE</div><div class="coyn">${d.currentAmuse.name}</div><div class="coyo">${d.currentAmuse.served}</div><div class="coyp">${d.currentAmuse.profile}</div><div class="coyu">✓ ${d.currentAmuse.updated}</div></div>`:''}
@@ -8098,7 +8134,7 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   /* (p133) The build id had been left at p117 through nine passes that changed the core,
      and it is the stamp that goes on every verification AND now on every _base record.
      A stale build id makes both of those lie about which core they were taken against. */
-  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-08-16-p139';
+  var SCHEMA_VERSION=2, RESTAURANT='mila-miami-beach', BUILD_ID='2026-08-16-p140';
   window.__buildId=BUILD_ID;   /* PHASE 12: cross-scope read of the build id that stamps a verification record */
   /* (B5) sticky marker: IndexedDB has held real data on this device at least once. */
   var IDB_SEEN='mila_overlay_idb_seen_v1';
@@ -9116,7 +9152,46 @@ window.openLbx=function(src){var l=document.getElementById('lbx');l.querySelecto
   };
   /* (A3) the published line renders the ACTUAL stored provenance, never a hardcoded name.
      An entry without complete verifiedBy+date+source is not shown as verified at all. */
+/* (p140) the diet marks render exactly like __absentLine: inline, with the
+     source on the line, no popover to tap.  A mark that cannot name its page
+     is not drawn at all. */
+  window.__dietMark=function(d){try{return (d&&d.id&&typeof DIET!=='undefined'&&DIET[d.id])||null;}catch(e){return null;}};
+  window.__dietHas=function(d,a){try{var st=(d&&d.allergenState)||{};if(st[a]==='present')return true;
+    return !!(d&&d.allerg&&d.allerg.indexOf(a)>=0);}catch(e){return false;}};
+  /* (p140) the modifier classes are NAMESPACED on purpose. The first cut used
+     class="dietb ask" and the badge vanished from the card: `.ask` is already
+     the Zapheria Ask sheet, position:fixed and translated 102% off screen. The
+     markup was correct and the pixel was gone - a DOM assertion would have
+     passed. Nothing in this layer may use a bare, generic modifier again. */
+  window.__dietPill=function(d){
+    var m=window.__dietMark(d);if(!m)return '';
+    var ask=m.gf&&window.__dietHas(d,'Gluten');
+    var out='';
+    if(m.gf)out+='<span class="dietp'+(ask?' dietp-ask':'')+'">GF'+(ask?'*':'')+'</span>';
+    if(m.v)out+='<span class="dietp dietp-v">V</span>';
+    return out;};
+  window.__dietLine=function(d){
+    var id=(d&&d.id)||'',m=window.__dietMark(d),dr=null,rv='';
+    try{dr=(typeof DIET_DROPPED!=='undefined'&&DIET_DROPPED[id])||null;}catch(e){}
+    try{rv=(typeof DIET_REVIEW!=='undefined'&&DIET_REVIEW[id])||'';}catch(e){}
+    if(!m&&!dr&&!rv)return '';
+    var lab='';try{lab=(typeof DIET_SRC!=='undefined'&&DIET_SRC.label)||'';}catch(e){}
+    var h='<div class="dietbox">';
+    if(m){
+      var ask=m.gf&&window.__dietHas(d,'Gluten');
+      h+='<div class="dietrow">';
+      if(m.gf)h+='<span class="dietb'+(ask?' dietb-ask':'')+'">GF'+(ask?'*':'')+'</span>';
+      if(m.v)h+='<span class="dietb dietb-v">V</span>';
+      h+='<span class="dietsrc">printed on the dish title — '+esc(lab)+' · p.'+esc(String(m.p))+'</span></div>';
+      if(ask)h+='<div class="dietask"><b>GF on the menu, Gluten on this record.</b> At MILA a GF title can mean the gluten comes out on request, not that the plate is gluten free as it stands. The flag governs: name the gluten to the guest, then confirm the removal with the kitchen.</div>';
+      var fl=['Fish','Shellfish','Mollusk','Seafood'].filter(function(a){return window.__dietHas(d,a);});
+      if(m.v&&fl.length)h+='<div class="dietask"><b>V on the menu, '+esc(fl.join(' + '))+' on this record.</b> Ask the kitchen before you offer it as a vegetarian dish.</div>';
+    }
+    if(dr)h+='<div class="dietask"><b>The manual prints '+esc(dr.mark)+' on this title — it is not published here.</b> '+esc(dr.why)+' — '+esc(dr.by)+' · '+esc(dr.date)+'</div>';
+    if(rv)h+='<div class="dietrev">'+esc(rv)+'</div>';
+    return h+'</div>';};
   window.__absentLine=function(d){
+
     if(!d||!d.absentVerified||!d.absentVerified.length)return '';
     var pv=d.allergenProvenance||{},groups=[],idx={};
     d.absentVerified.forEach(function(a){

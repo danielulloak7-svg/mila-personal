@@ -12,6 +12,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -54,6 +55,15 @@ function dataset(name){
   const j = h.indexOf("[", m.index); let d = 0, k = j;
   for(;;){ const c = h[k]; if(c === "[") d++; else if(c === "]"){ d--; if(!d) break; } k++; }
   return eval(h.slice(j, k + 1));
+}
+/* (p140) La capa de dieta es un OBJETO, no un array. Mismo recorte de llaves,
+   misma regla: si no parsea, no se juzga en silencio - se falla arriba. */
+function datasetObj(name){
+  const m = h.match(new RegExp("(?:const|var|let)\\s+" + name + "\\s*=\\s*\\{"));
+  if (!m) return null;
+  const j = h.indexOf("{", m.index); let d = 0, k = j;
+  for(;;){ const c = h[k]; if(c === "{") d++; else if(c === "}"){ d--; if(!d) break; } k++; }
+  return eval("(" + h.slice(j, k + 1) + ")");
 }
 
 console.log("\nMILA · comprobacion de alergenos");
@@ -245,6 +255,62 @@ console.log("\n6. informe de fantasmas (banderas sin fuente escrita)");
         + (top ? " — las mas frecuentes: " + top : "")
         + ". No son necesariamente falsas; son las que no pueden citarse.");
     else okly("toda bandera viva se puede citar contra el POS o contra los componentes del plato");
+  }
+}
+
+/* 7 - las marcas de dieta del manual (p140) -----------------------------------
+   Esta seccion NO juzga el SIGNIFICADO de una marca. Dani fijo la regla el
+   2026-08-16: un titulo GF y una bandera de Gluten NO se contradicen, porque en
+   MILA el GF puede querer decir "el gluten sale a peticion". Prohibir esa pareja
+   habria borrado informacion verdadera. Lo que si se comprueba es la CADENA:
+   que cada marca publicada venga del registro, que el registro venga del PDF
+   fijado por sha256, y que cada override firmado este realmente aplicado. */
+console.log("\n7. marcas de dieta del manual (GF / V)");
+{
+  const REGF = path.join(DATA, 'diet-badges.json');
+  const PDF  = path.join(DATA, 'MILA_3F_FOOD_MANUAL_08.03.26.pdf');
+  let live = null; try { live = datasetObj('DIET'); } catch(e){ bad("DIET no parsea: " + e.message); }
+  if (!fs.existsSync(REGF)){
+    if (live && Object.keys(live).length) bad("la app publica marcas de dieta y no existe tools/data/diet-badges.json");
+    else okly("no hay capa de dieta y no hay registro: coherente");
+  } else {
+    const reg = JSON.parse(fs.readFileSync(REGF,'utf8'));
+    if (fs.existsSync(PDF)){
+      const sha = crypto.createHash('sha256').update(fs.readFileSync(PDF)).digest('hex');
+      if (sha !== reg.source.sha256) bad("el PDF del manual ya no coincide con el sha256 del registro - reextraer antes de confiar en una sola marca");
+      else okly("la fuente sigue fijada: " + reg.source.sha256.slice(0,12) + "...");
+    } else warn("no encuentro el PDF del manual aqui: el sha256 del registro no se puede reverificar en esta maquina");
+
+    const byDish = new Map(reg.badges.map(b => [b.dish, b]));
+    const dropped = new Map();
+    for (const o of (reg.overrides||[])) dropped.set(o.dish + "|" + String(o.drop).toUpperCase(), o);
+    const ids = new Set((SETS.FOOD||[]).map(r => r.id));
+    let problems = 0, published = 0;
+    const flag = (m) => { bad(m); problems++; };
+    for (const [id, m] of Object.entries(live || {})){
+      if (!ids.has(id)){ flag("DIET publica " + id + " y ese plato no existe en FOOD"); continue; }
+      const b = byDish.get(id);
+      if (!b){ flag("DIET publica " + id + " y el registro no lo trae"); continue; }
+      if (m.p !== b.page || m.t !== b.title) flag(id + ": la pagina o el titulo publicados no son los del registro");
+      if (m.gf && !b.gf) flag(id + ": publica GF y el registro no lo trae");
+      if (m.v  && !b.v ) flag(id + ": publica V y el registro no lo trae");
+      if (m.gf && dropped.has(id + "|GF")) flag(id + ": hay un override firmado que retira GF y la app lo sigue publicando");
+      if (m.v  && dropped.has(id + "|V") ) flag(id + ": hay un override firmado que retira V y la app lo sigue publicando");
+      published += (m.gf?1:0) + (m.v?1:0);
+    }
+    for (const o of (reg.overrides||[])){
+      if (!o.by || !o.date || !o.source || !o.reason)
+        flag("override sobre " + o.dish + " sin firma, fecha, fuente o motivo - no vale");
+    }
+    if (!problems)
+      okly(published + " marca(s) publicada(s), todas con pagina y titulo del registro; " +
+           (reg.overrides||[]).length + " override(s) firmado(s) y aplicado(s)");
+    const foodById = new Map((SETS.FOOD||[]).map(r => [r.id, r]));
+    const pairs = Object.entries(live || {}).filter(([id,m]) => {
+      const r = foodById.get(id); if (!r || !m.gf) return false;
+      return (r.allergenState && r.allergenState.Gluten === 'present') || (r.allerg||[]).includes('Gluten');
+    }).map(([id]) => (foodById.get(id)||{}).name);
+    if (pairs.length) okly(pairs.length + " plato(s) con GF impreso y Gluten en ficha - se muestran los dos, en ambar: " + pairs.join(", "));
   }
 }
 
