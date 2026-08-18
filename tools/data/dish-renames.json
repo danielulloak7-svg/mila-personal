@@ -8,5 +8,16 @@
   "date": "2026-08-17",
   "source": "Dani, 2026-08-17: \"cambiamos el nombre de ... gluten free, solamente Oysters\".",
   "reason": "El token GF del titulo impreso del manual (\"OYSTERS GF -\") se filtro al NOMBRE del plato en p138 y se propago, porque el nombre es clave de union: ALNAME2ID, PAIRNAV, DISHPAIR y el array pairs[] de cada vino. Aparecia hasta en su propia lista de componentes. No se pierde nada: la insignia GF vive desde p140 en DIET, anclada a la pagina 13 del manual. La cita literal del titulo dentro de DIET NO se toca."
+ },
+ {
+  "id": "dish.shishito-peppers",
+  "field": "component",
+  "from": "Tozasu Miso",
+  "to": "Tozasu Miso (Vegano)",
+  "occurrences": 11,
+  "by": "Dani",
+  "date": "2026-08-17",
+  "source": "Dani, 2026-08-17: \"queremos el tosazu o miso, el tosazu regular y tosazu vegano, para que se puedan utilizar los dos\". Y su propia firma del 2026-08-15 en removals.json: \"el tosa-miso que usa este plato es el vegano\".",
+  "reason": "El chip de salsa del Shishito resolvia a gx:tozazu-miso, cuya definicion cita el FOOD INDEX impreso: \"bonito flakes\". En la misma tarjeta el plato dice \"Verified FREE OF: Fish\". Dos afirmaciones escritas, incompatibles sobre UNA salsa - porque son dos salsas. El nombre del componente pasa a nombrar la version que el plato realmente lleva. Las dos definiciones del indice impreso NO se editan. La frase de tableside tampoco: el menu dice tozasu miso y eso es lo que dice."
  }
 ]
