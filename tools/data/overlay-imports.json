@@ -1,0 +1,62 @@
+[
+ {
+  "import": "p144",
+  "exportedAt": "2026-08-31T21:29:57.630Z",
+  "fromBuild": "2026-08-17-p142",
+  "intoBuild": "2026-08-31-p144",
+  "by": "Dani",
+  "date": "2026-08-31",
+  "source": "Overlay export from Dani's phone (IndexedDB mila/overlay v1), schemaVersion 2.",
+  "applied": [
+   {
+    "id": "dish.seabream-carpaccio",
+    "change": "allergen ADD: Alcohol",
+    "deviceEdit": "2026-08-16T14:40:03.429Z"
+   },
+   {
+    "id": "drink.verdant-air",
+    "change": "allergen ADD: Cilantro",
+    "deviceEdit": "2026-08-18T21:43:45.579Z"
+   },
+   {
+    "id": "dish.octopus-skewer",
+    "change": "allergen ADD: Dairy, plus the Dairy->Romesco Sauce link (removable: no), written to all three link stores",
+    "deviceEdit": "2026-08-28T21:17:20.510Z"
+   },
+   {
+    "id": "dish.gochujan-miso-tuna-taco",
+    "change": "already in the build since 2026-08-15 - nothing imported. Only its ALNAME2ID join key was added, which was missing.",
+    "deviceEdit": "2026-08-15T16:47:33.636Z",
+    "note": "The overlay's `created` copy is the phone's original and does NOT carry Fish. The build's copy does, added on Dani's instruction because the components name Tuna Mix, and it also holds his Citrus confirmation. Importing the overlay copy would have been a downgrade. A first pass of this patch inserted it as a new record and produced a DUPLICATE that the allergen guard and all eight suites passed - both were valid records - caught only by rendering the food feed and looking at two identical cards with different allergen lines."
+   },
+   {
+    "id": "hoy",
+    "change": "HOY_DEFAULT: amuse -> dish.gochujan-miso-tuna-taco, special -> none, activos unchanged"
+   },
+   {
+    "id": "special.dry-aged-wagyu-sliders",
+    "change": "marked off-menu in BAKED_AVAIL",
+    "reason": "Dani in words (\"el special que teniamos, que era el Wagyu Sliders, ya salio\") and his device state (hoy.special = \"none\") both say it is out. HOY_DEFAULT alone was not enough: the Food menu reads SPECIAL directly, so the chip still said \"Specials 1\" and the card still drew - caught by rendering the menu. Off-menu, NOT deleted: the record keeps its eight allergens and its history, and one word brings it back."
+   }
+  ],
+  "refused": [
+   {
+    "id": "dish.snow-crab-salad",
+    "change": "allergen ADD: Seafood",
+    "reason": "Seafood is a RETIRED vocabulary term - folded into Fish in p126, and ALMAP still maps seafood->Fish. The dish already carries Fish present, so the import would add no true information and would resurrect a dead label. The device edit is dated 2026-08-14, BEFORE the fold, so it is a leftover rather than news."
+   },
+   {
+    "id": "dish.spicy-chipotle-lamb",
+    "change": "Egg allergenProvenance -> verifiedBy Dani / source \"Rdg Email\"",
+    "reason": "The build already holds the stronger signature for the same fact on the same date: verifiedBy \"RDG kitchen\" with the verbatim answer - \"Lamb Chops - Dish is egg free.\" absent_verified is the one state that must never lose provenance, so the fuller record stands. The overlay's own _conflicts block flags this as stale-base; this is that flag resolved."
+   },
+   {
+    "id": "*",
+    "change": "allergenState key \"Coriander\"",
+    "reason": "Vocabulary drift - the device still writes the pre-CANON term. The 23-term CANON says Cilantro. Normalised on the way in; nothing written under the retired key."
+   }
+  ],
+  "removals": 0,
+  "note": "No allergen flag was removed anywhere in this import. An overlay is a PATCH: an item carries only the fields that device touched, and its allergen list lives in `allergens` - `allerg` appears only inside stale _base fingerprints. Reading `allerg` would make every untouched item look emptied."
+ }
+]
