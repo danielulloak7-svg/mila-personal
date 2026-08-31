@@ -1,0 +1,90 @@
+[
+ {
+  "dish": "dish.mila-house-salad",
+  "name": "MILA House Salad",
+  "by": "Dani",
+  "date": "2026-08-21",
+  "sheet": {
+   "source": "MILA kitchen sheet, House Salad, photographed by Dani 2026-08-21",
+   "transcribedBy": "Claude, verbatim from the photograph",
+   "date": "2026-08-21",
+   "main": {
+    "ingredients": [
+     "Tango Lettuce (South Florida Produce)",
+     "Red Water Cress",
+     "Avocado",
+     "Watermelon Radish",
+     "Purple Ninja Radish",
+     "Baby Golden Beets",
+     "Myoga",
+     "Shiso Leaf",
+     "Wasabi Truffle Dressing",
+     "Pumpkin Seed Furikake"
+    ],
+    "allergens": [
+     "Sesame",
+     "Alcohol",
+     "Mustard",
+     "Soy",
+     "Gluten",
+     "Chili",
+     "Allium",
+     "Citrus",
+     "Egg"
+    ]
+   },
+   "subrecipes": [
+    {
+     "name": "Wasabi Truffle Dressing",
+     "ingredients": [
+      "Arbequina Oil",
+      "Shiragiku Su Vinegar",
+      "Saikyo Miso",
+      "Sugar",
+      "Mirin",
+      "Sesame Oil",
+      "Frozen Ginger Paste",
+      "Yuzu Juice",
+      "Wasabi Oil",
+      "Water",
+      "White Truffle Oil",
+      "Kewpie Mayonnaise",
+      "Kosher Salt",
+      "Wasabi Paste"
+     ],
+     "allergens": [
+      "Chili",
+      "Egg"
+     ]
+    },
+    {
+     "name": "Pumpkin Seed Furikake",
+     "ingredients": [
+      "Pumpkin Seeds (fried)",
+      "Black Toasted Sesame Seeds",
+      "White Toasted Sesame Seeds",
+      "Sunflower Seeds (fried)",
+      "Maldon Sea Salt",
+      "Crispy Shallots",
+      "Gochugaru",
+      "Brown Sugar",
+      "Aji no Moto"
+     ],
+     "allergens": [
+      "Sesame",
+      "Gluten",
+      "Chili",
+      "Allium"
+     ]
+    }
+   ]
+  },
+  "allergensAdded": [
+   "Mustard",
+   "Chili",
+   "Egg"
+  ],
+  "allergensRemoved": [],
+  "note": "Spice is NOT removed: the sheet does not mention it, and silence is not a denial. Campari Tomatoes leave the plate because the sheet enumerates the ingredients and the tomato is not among them. Mustard has no traceable ingredient on any of the three sheets."
+ }
+]
